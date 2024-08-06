@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getProvinces, getDistricts, getWards } from "../../data/api.jsx";
+import { getProvinces, getDistricts, getWards } from "../../data/api";
 import { Link, useNavigate } from "react-router-dom";
 
 const OrderInfor = ({ discount, ship, voucherCode }) => {

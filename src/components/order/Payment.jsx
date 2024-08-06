@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import Breadcrumbs from "../elements/Breadcrumb";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useCartContext } from "../../context/CartContext";
-import {
-  checkQRPaymet,
-  deleteOrder,
-  fetchCreateOrder,
-} from "../../data/api.jsx";
+// import {
+//   checkQRPaymet,
+//   deleteOrder,
+//   fetchCreateOrder,
+// } from "../../data/api";
 import toast, { Toaster } from "react-hot-toast";
 
 const Payment = () => {

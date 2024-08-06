@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import RenderRating from "../elements/RenderRating";
+import RenderRating from "../Elements/RenderRating";
 import { useCartContext } from "../../context/CartContext";
 import { useWishlistContext } from "../../context/WishlistContext";
 import { Toaster } from "react-hot-toast";
