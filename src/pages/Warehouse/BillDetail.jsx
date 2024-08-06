@@ -2,7 +2,7 @@ import { Col, Divider, Row, Typography } from "antd";
 import { Card } from "primereact/card";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { fetchProducts } from "../../data/api";
+// import { fetchProducts } from "../../data/api";
 import { Button } from "flowbite-react";
 import Loading from "../../components/Loading";
 
@@ -14,19 +14,19 @@ const BillDetail = () => {
   const [products, setProducts] = useState([]);
   const [inputBillDetails, setInputBillDetails] = useState([]);
 
-  useEffect(() => {
-    const getProducts = async () => {
-      try {
-        const productData = await fetchProducts();
-        setProducts(productData);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-        setLoading(false);
-      }
-    };
-    getProducts();
-  }, []);
+  // useEffect(() => {
+  //   const getProducts = async () => {
+  //     try {
+  //       const productData = await fetchProducts();
+  //       setProducts(productData);
+  //       setLoading(false);
+  //     } catch (error) {
+  //       console.error("Error fetching products:", error);
+  //       setLoading(false);
+  //     }
+  //   };
+  //   getProducts();
+  // }, []);
 
   useEffect(() => {
     const findProductById = (product_id) => {

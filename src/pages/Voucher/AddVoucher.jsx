@@ -19,15 +19,15 @@ const AddVoucher = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // // Gọi API để lấy dữ liệu category
-    // fetchGetVoucherType().then((res) => {
-    //   console.log(res);
-    //   if (res && res.data.result) {
-    //     setVoucherTypes(res.data.result);
-    //   }
-    // });
-  }, []);
+  // useEffect(() => {
+  //   // Gọi API để lấy dữ liệu category
+  //   fetchGetVoucherType().then((res) => {
+  //     console.log(res);
+  //     if (res && res.data.result) {
+  //       setVoucherTypes(res.data.result);
+  //     }
+  //   });
+  // }, []);
 
   const handleChangeSelectedVoucherType = (event) => {
     setSelectedVoucherType(event.target.value);
@@ -57,7 +57,6 @@ const AddVoucher = () => {
       discount: Number(discount),
       amount: Number(amount),
     };
-
     // await fetchUploadVoucher(voucher, token)
     //   .then((res) => {
     //     console.log(res.data);

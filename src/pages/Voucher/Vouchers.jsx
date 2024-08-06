@@ -18,66 +18,68 @@ const Vouchers = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
 
-  useEffect(() => {
-    // const getVouchers = async () => {
-    //   const data = await fetchGetVoucher();
-    //   setVouchers(data);
-    //   setLoading(false);
-    // };
-    // getVouchers();
-    // fetchGetVoucherType().then((res) => {
-    //   if (res && res.data.result) {
-    //     setVoucherTypes(res.data.result);
-    //   }
-    // });
-  }, []);
+  // useEffect(() => {
+  //   const getVouchers = async () => {
+  //     const data = await fetchGetVoucher();
+  //     setVouchers(data);
+  //     setLoading(false);
+  //   };
+
+  //   getVouchers();
+
+  //   fetchGetVoucherType().then((res) => {
+  //     if (res && res.data.result) {
+  //       setVoucherTypes(res.data.result);
+  //     }
+  //   });
+  // }, []);
 
   const toggleModal = (voucher = null) => {
     setSelectedVoucher(voucher);
     setShowModal(!showModal);
   };
 
-  const showDeleteConfirm = (voucherId) => {
-    Modal.confirm({
-      title: "Bạn có chắc chắn muốn xóa voucher này?",
-      content: "Hành động này không thể hoàn tác.",
-      onOk: async () => {
-        try {
-          handleDelete(voucherId);
-          notification.success({
-            message: "Thành công",
-            description: `Xóa thành công!`,
-            placement: "top",
-          });
-        } catch (error) {
-          console.log(error);
-          notification.error({
-            message: "Lỗi",
-            description: "Có lỗi xảy ra khi xóa voucher",
-            placement: "top",
-          });
-        }
-      },
-      onCancel() {
-        console.log("Cancel");
-      },
-      okButtonProps: {
-        style: {
-          backgroundColor: "#46B5C1",
-          borderColor: "#46B5C1",
-        },
-      },
-      cancelButtonProps: {
-        style: {
-          backgroundColor: "#FF4D4F",
-          borderColor: "#FF4D4F",
-          color: "#FFFFFF",
-        },
-      },
-      cancelText: "Đóng",
-      okText: "Đồng ý",
-    });
-  };
+  // const showDeleteConfirm = (voucherId) => {
+  //   Modal.confirm({
+  //     title: "Bạn có chắc chắn muốn xóa voucher này?",
+  //     content: "Hành động này không thể hoàn tác.",
+  //     onOk: async () => {
+  //       try {
+  //         handleDelete(voucherId);
+  //         notification.success({
+  //           message: "Thành công",
+  //           description: `Xóa thành công!`,
+  //           placement: "top",
+  //         });
+  //       } catch (error) {
+  //         console.log(error);
+  //         notification.error({
+  //           message: "Lỗi",
+  //           description: "Có lỗi xảy ra khi xóa voucher",
+  //           placement: "top",
+  //         });
+  //       }
+  //     },
+  //     onCancel() {
+  //       console.log("Cancel");
+  //     },
+  //     okButtonProps: {
+  //       style: {
+  //         backgroundColor: "#46B5C1",
+  //         borderColor: "#46B5C1",
+  //       },
+  //     },
+  //     cancelButtonProps: {
+  //       style: {
+  //         backgroundColor: "#FF4D4F",
+  //         borderColor: "#FF4D4F",
+  //         color: "#FFFFFF",
+  //       },
+  //     },
+  //     cancelText: "Đóng",
+  //     okText: "Đồng ý",
+  //   });
+  // };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -114,19 +116,19 @@ const Vouchers = () => {
     //   });
   };
 
-  const handleDelete = async (voucherId) => {
-    // await fetchDeleteVoucher(voucherId, token)
-    //   .then((res) => {
-    //     sessionStorage.setItem("delete", "true");
-    //     window.location.reload();
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     toast.error("Xóa voucher thất bại", {
-    //       position: "top-right",
-    //     });
-    //   });
-  };
+  // const handleDelete = async (voucherId) => {
+  //   await fetchDeleteVoucher(voucherId, token)
+  //     .then((res) => {
+  //       sessionStorage.setItem("delete", "true");
+  //       window.location.reload();
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       toast.error("Xóa voucher thất bại", {
+  //         position: "top-right",
+  //       });
+  //     });
+  // };
 
   if (loading) {
     return <Loading />;
@@ -218,7 +220,7 @@ const Vouchers = () => {
           </Button>
           <Button
             type="link"
-            onClick={() => showDeleteConfirm(record._id)}
+            // onClick={() => showDeleteConfirm(record._id)}
             style={{
               backgroundColor: "#ff4d4f",
               fontSize: "5px",

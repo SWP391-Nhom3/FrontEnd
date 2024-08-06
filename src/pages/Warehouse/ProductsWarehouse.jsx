@@ -16,19 +16,19 @@ const ProductsWarehouse = () => {
 
   const { Search } = Input;
 
-  useEffect(() => {
-    // const getData = async () => {
-    //   try {
-    //     const productData = await fetchProductInWarehouse();
-    //     setProducts(productData.data.result);
-    //     setLoading(false);
-    //   } catch (error) {
-    //     console.error("Error fetching data:", error);
-    //     setLoading(false);
-    //   }
-    // };
-    // getData();
-  }, []);
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     try {
+  //       const productData = await fetchProductInWarehouse();
+  //       setProducts(productData.data.result);
+  //       setLoading(false);
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //       setLoading(false);
+  //     }
+  //   };
+  //   getData();
+  // }, []);
 
   if (loading) {
     return <Loading />;

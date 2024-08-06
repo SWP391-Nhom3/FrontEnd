@@ -20,27 +20,27 @@ const Users = () => {
       : "Chưa có thông tin";
   };
 
-  useEffect(() => {
-    // const fetchUsers = async () => {
-    //   try {
-    //     const result = JSON.parse(localStorage.getItem("result"));
-    //     const res = await fetchAllUsers(result);
-    //     const formattedUsers = res.data.users.map((user) => ({
-    //       ...user,
-    //       full_name: user.full_name || "Chưa có thông tin",
-    //       date_of_birth: formatDate(user.date_of_birth),
-    //       phone: user.phone || "Chưa có thông tin",
-    //       address: user.address || "Chưa có thông tin",
-    //     }));
+  // useEffect(() => {
+  //   const fetchUsers = async () => {
+  //     try {
+  //       const result = JSON.parse(localStorage.getItem("result"));
+  //       const res = await fetchAllUsers(result);
+  //       const formattedUsers = res.data.users.map((user) => ({
+  //         ...user,
+  //         full_name: user.full_name || "Chưa có thông tin",
+  //         date_of_birth: formatDate(user.date_of_birth),
+  //         phone: user.phone || "Chưa có thông tin",
+  //         address: user.address || "Chưa có thông tin",
+  //       }));
 
-    //     setUsers(formattedUsers);
-    //     setLoading(false);
-    //   } catch (error) {
-    //     console.error("Error fetching users:", error);
-    //   }
-    // };
-    fetchUsers();
-  }, []);
+  //       setUsers(formattedUsers);
+  //       setLoading(false);
+  //     } catch (error) {
+  //       console.error("Error fetching users:", error);
+  //     }
+  //   };
+  //   fetchUsers();
+  // }, []);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);

@@ -5,12 +5,12 @@ import { InputMask } from "primereact/inputmask";
 import { Card } from "primereact/card";
 import { Col, DatePicker, Row, message, notification } from "antd";
 import { useNavigate } from "react-router-dom";
-import {
-  // fetchUploadStaff,
-  getDistricts,
-  getProvinces,
-  getWards,
-} from "../../data/api";
+// import {
+//   fetchUploadStaff,
+//   getDistricts,
+//   getProvinces,
+//   getWards,
+// } from "../../data/api";
 import {
   Button,
   HStack,
@@ -114,47 +114,47 @@ const AddStaff = () => {
   };
 
   const [provinces, setProvinces] = useState([]);
-  useEffect(() => {
-    const getProvince = async () => {
-      try {
-        const provinceList = await getProvinces();
-        setProvinces(provinceList);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const getProvince = async () => {
+  //     try {
+  //       const provinceList = await getProvinces();
+  //       setProvinces(provinceList);
+  //     } catch (error) {
+  //       console.error("Error fetching products:", error);
+  //     }
+  //   };
 
-    getProvince();
-  }, []);
+  //   getProvince();
+  // }, []);
 
   const [districts, setDistricts] = useState([]);
 
-  useEffect(() => {
-    const getDistrict = async (id) => {
-      try {
-        const districtList = await getDistricts(id);
-        setDistricts(districtList);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const getDistrict = async (id) => {
+  //     try {
+  //       const districtList = await getDistricts(id);
+  //       setDistricts(districtList);
+  //     } catch (error) {
+  //       console.error("Error fetching products:", error);
+  //     }
+  //   };
 
-    getDistrict();
-  }, []);
+  //   getDistrict();
+  // }, []);
 
   const [wards, setWards] = useState([]);
-  useEffect(() => {
-    const getWard = async () => {
-      try {
-        const wardList = await getWards();
-        setWards(wardList);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const getWard = async () => {
+  //     try {
+  //       const wardList = await getWards();
+  //       setWards(wardList);
+  //     } catch (error) {
+  //       console.error("Error fetching products:", error);
+  //     }
+  //   };
 
-    getWard();
-  }, []);
+  //   getWard();
+  // }, []);
 
   const handleProvinceSelect = async (item) => {
     const id = item.target.value;
@@ -162,7 +162,7 @@ const AddStaff = () => {
     setSelectedProvince({ id, name });
     console.log(selectedProvince);
 
-    setDistricts(await getDistricts(Number(id)));
+    // setDistricts(await getDistricts(Number(id)));
   };
 
   const handleDistrictSelect = async (item) => {
@@ -171,7 +171,7 @@ const AddStaff = () => {
     console.log(selectedDistrict);
 
     setSelectedDistrict({ id, name });
-    setWards(await getWards(Number(id)));
+    // setWards(await getWards(Number(id)));
   };
 
   const handleWardSelect = async (item) => {

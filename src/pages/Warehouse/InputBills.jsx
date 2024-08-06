@@ -24,35 +24,36 @@ const InputBills = () => {
   const { Search } = Input;
 
   //ham nay lay bill
-  useEffect(() => {
-    // fetchAllBills()
-    //   .then((data) => {
-    //     if (data && data.length > 0) {
-    //       setBills(data);
-    //       console.log(data);
-    //     }
-    //     setLoading(false);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error fetching bills:", error);
-    //     setLoading(false);
-    //   });
-  }, []);
+  // useEffect(() => {
+  //   fetchAllBills()
+  //     .then((data) => {
+  //       if (data && data.length > 0) {
+  //         setBills(data);
+  //         console.log(data);
+  //       }
+  //       setLoading(false);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching bills:", error);
+  //       setLoading(false);
+  //     });
+  // }, []);
 
   //ham nay lay product
-  useEffect(() => {
-    // const getProducts = async () => {
-    //   try {
-    //     const productData = await fetchProducts();
-    //     setProducts(productData);
-    //     setLoading(false);
-    //   } catch (error) {
-    //     console.error("Error fetching products:", error);
-    //     setLoading(false);
-    //   }
-    // };
-    // getProducts();
-  }, []);
+  // useEffect(() => {
+  //   const getProducts = async () => {
+  //     try {
+  //       const productData = await fetchProducts();
+  //       setProducts(productData);
+  //       setLoading(false);
+  //     } catch (error) {
+  //       console.error("Error fetching products:", error);
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   getProducts();
+  // }, []);
 
   const productPriceMap = products.reduce((map, product) => {
     map[product._id] = product.price;

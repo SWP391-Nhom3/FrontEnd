@@ -28,19 +28,19 @@ const AddBill = () => {
     setSorter(sorter);
   };
 
-  useEffect(() => {
-    // const getProducts = async () => {
-    //   try {
-    //     const productData = await fetchProducts();
-    //     setProducts(productData);
-    //     setLoading(false);
-    //   } catch (error) {
-    //     console.error("Error fetching products:", error);
-    //     setLoading(false);
-    //   }
-    // };
-    // getProducts();
-  }, []);
+  // useEffect(() => {
+  //   const getProducts = async () => {
+  //     try {
+  //       const productData = await fetchProducts();
+  //       setProducts(productData);
+  //       setLoading(false);
+  //     } catch (error) {
+  //       console.error("Error fetching products:", error);
+  //       setLoading(false);
+  //     }
+  //   };
+  //   getProducts();
+  // }, []);
 
   const productTable = [
     {
@@ -261,20 +261,20 @@ const AddBill = () => {
       total: calculateTotal(),
     };
 
-    // try {
-    //   await fetchUploadBill(inputBill, token);
-    //   toast.success('Tạo đơn nhập hàng thành công', {
-    //     position: 'top-right',
-    //   });
-    //   setBillProducts([]);
-    //   setFormState({});
-    //   window.location.reload();
-    // } catch (error) {
-    //   console.error('Lỗi từ server:', error.response.data);
-    //   toast.error(`Lỗi khi tạo đơn: ${error.response.data.message}`, {
-    //     position: 'top-right',
-    //   });
-    // }
+    try {
+      // await fetchUploadBill(inputBill, token);
+      toast.success("Tạo đơn nhập hàng thành công", {
+        position: "top-right",
+      });
+      setBillProducts([]);
+      setFormState({});
+      window.location.reload();
+    } catch (error) {
+      console.error("Lỗi từ server:", error.response.data);
+      toast.error(`Lỗi khi tạo đơn: ${error.response.data.message}`, {
+        position: "top-right",
+      });
+    }
   };
 
   if (loading) {

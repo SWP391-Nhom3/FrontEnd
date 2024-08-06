@@ -567,7 +567,7 @@ const AwaitOrderDetail = () => {
                   >
                     <Button
                       type="default"
-                      onClick={handleCancelOrder}
+                      // onClick={handleCancelOrder}
                       style={{
                         backgroundColor: "#ff4d4f",
                         fontSize: "15px",
@@ -577,7 +577,7 @@ const AwaitOrderDetail = () => {
                     </Button>
                     <Button
                       type="default"
-                      onClick={handleConfirmOrder}
+                      // onClick={handleConfirmOrder}
                       style={{
                         backgroundColor: "#55B6C3",
                         fontSize: "15px",
