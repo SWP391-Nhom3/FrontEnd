@@ -4,6 +4,7 @@ import { FaUser } from "react-icons/fa";
 // import { fetchLogout } from "../../data/api.jsx";
 import { Link, useNavigate } from "react-router-dom";
 import { FaHistory } from "react-icons/fa";
+
 const UserBtn = () => {
   const user = JSON.parse(localStorage.getItem("user")) || null;
   const verify = user?.verify;

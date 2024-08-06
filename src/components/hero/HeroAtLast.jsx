@@ -1,4 +1,5 @@
 import React from "react";
+
 import banner from "../../assets/images/background/banner.png";
 
 function HeroAtLast() {
@@ -13,7 +14,7 @@ function HeroAtLast() {
             <h1 className="mb-6 text-4xl font-bold text-black md:text-6xl lg:text-7xl">
               Các loại sữa khác từ
               <br className="hidden md:block" />
-              <span className="text-primary-500">MomBabyMilk</span>
+              <span className="text-primary-500">MilkJoy</span>
             </h1>
           </div>
         </div>

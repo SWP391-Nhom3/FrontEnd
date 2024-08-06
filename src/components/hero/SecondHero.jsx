@@ -1,4 +1,5 @@
 import React from "react";
+
 import banner from "../../assets/images/background/banner_baby.png";
 
 function SecondHero() {

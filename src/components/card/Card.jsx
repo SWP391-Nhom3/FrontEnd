@@ -4,14 +4,16 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { FaShoppingCart } from "react-icons/fa";
-import "./Swiper.css";
-import RenderRating from "../elements/RenderRating";
 import { Link } from "react-router-dom";
-import { useCartContext } from "../../context/CartContext";
 import { Toaster } from "react-hot-toast";
 
+import "./Swiper.css";
+import RenderRating from "../elements/RenderRating";
+
+import { useCartContext } from "../../context/CartContext";
+
 const ProductCard = ({ products, headline }) => {
-  // const { addCartItem } = useCartContext();
+  const { addCartItem } = useCartContext();
   const productsToShow = products.slice(0, 12);
   const settings = {
     dots: true,
@@ -134,7 +136,7 @@ const ProductCard = ({ products, headline }) => {
                       )}
                     </div>
                     <button
-                      onClick={{}}
+                      onClick={() => addCartItem(product)}
                       disabled={product.amount === 0}
                       className="flex items-center justify-center rounded-lg bg-primary-500 p-3 text-center text-base font-medium text-white hover:bg-primary-600 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-500 dark:focus:ring-primary-600"
                     >

@@ -27,11 +27,11 @@ export default function MainFooter() {
         <div className="mb-8 border-t border-gray-300"></div>
         <div className="flex items-center justify-between">
           <div>
-            <Footer.Brand href="/" src={logo} alt="MomBabyMilk Logo" />
+            <Footer.Brand href="/" src={logo} alt="MilkJoy Logo" />
           </div>
           <div className="flex space-x-8">
             <div>
-              <Footer.Title title="Về MOMBABYMILK" />
+              <Footer.Title title="Về MilkJoy" />
               <Footer.LinkGroup col>
                 <Footer.Link href="/about_us">Về chúng tôi</Footer.Link>
                 <Footer.Link href="/contact">Liên hệ</Footer.Link>
@@ -52,7 +52,7 @@ export default function MainFooter() {
         </div>
         <Footer.Divider />
         <div className="w-full sm:flex sm:items-center sm:justify-between">
-          <Footer.Copyright by="MomBabyMilk" year={2024} />
+          <Footer.Copyright by="MilkJoy" year={2024} />
           <div className="mt-4 flex space-x-6 sm:mt-0 sm:justify-center"></div>
         </div>
       </div>

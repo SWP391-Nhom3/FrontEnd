@@ -1,4 +1,5 @@
 import React from "react";
+
 import hero_img from "../../assets/images/body/hero_img.jpg";
 
 function Hero() {
@@ -9,7 +10,7 @@ function Hero() {
           <div className="md:w-1/2 lg:w-2/3">
             <h1 className="mb-6 text-4xl font-bold text-white md:text-6xl lg:text-7xl">
               Chào mừng đến với <br className="hidden md:block" />
-              <span className="text-black">MomBabyMilk</span> Website
+              <span className="text-black">MilkJoy</span> Website
             </h1>
             <p className="mb-8 text-lg text-gray-800 md:text-xl lg:text-2xl">
               Nơi cung cấp tất cả loại sữa dinh dưỡng cho mẹ và bé.

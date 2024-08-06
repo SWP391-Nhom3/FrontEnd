@@ -3,11 +3,12 @@ import { Link } from "react-router-dom";
 import LogoImg from "../../assets/images/logo/Logo.png";
 import SearchBar from "./SearchBar";
 // import UserBtn from "./userBtn";
-// import { useCartContext } from "../../context/CartContext";
-// import { useWishlistContext } from "../../context/WishlistContext";
+import { useCartContext } from "../../context/CartContext";
+import { useWishlistContext } from "../../context/WishlistContext";
+
 const NavBar = () => {
-  // const { cartAmount } = useCartContext();
-  // const { wishlistAmount } = useWishlistContext();
+  const { cartAmount } = useCartContext();
+  const { wishlistAmount } = useWishlistContext();
   return (
     <>
       <header className="min-h-16">
@@ -23,7 +24,7 @@ const NavBar = () => {
                 }, 100);
               }}
             >
-              <img className="h-8 md:h-20" src={LogoImg} alt="" />
+              <img className="h-8 rounded-lg md:h-20" src={LogoImg} alt="" />
             </Link>
           </div>
           {/* search */}
@@ -43,9 +44,9 @@ const NavBar = () => {
               {/* wishlist */}
               <li className="relative ml-2 inline-block lg:ml-4">
                 <a className="" href="/wishlist">
-                  {/* <div className="absolute -top-1 right-0 z-10 bg-yellow-400 text-xs font-bold px-1 py-0.5 rounded-sm">
+                  <div className="absolute -top-1 right-0 z-10 rounded-sm bg-primary-400 px-1 py-0.5 text-xs font-bold text-white">
                     {wishlistAmount}
-                  </div> */}
+                  </div>
                   <svg
                     className="h-9 p-2 text-gray-500 lg:h-10"
                     aria-hidden="true"
@@ -66,9 +67,9 @@ const NavBar = () => {
               {/* cart */}
               <li className="relative ml-2 inline-block lg:ml-4">
                 <a className="" href="/cart">
-                  {/* <div className="absolute -top-1 right-0 z-10 bg-yellow-400 text-xs font-bold px-1 py-0.5 rounded-sm">
+                  <div className="absolute -top-1 right-0 z-10 rounded-sm bg-primary-400 px-1 py-0.5 text-xs font-bold text-white">
                     {cartAmount}
-                  </div> */}
+                  </div>
                   <svg
                     className="h-9 p-2 text-gray-500 lg:h-10"
                     aria-hidden="true"
