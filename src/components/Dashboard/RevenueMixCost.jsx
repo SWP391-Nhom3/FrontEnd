@@ -71,7 +71,7 @@ const RevenueMixCost = () => {
   };
 
   const processedData = processData(revenues, timeRange, selectedYear);
-  console.log(processedData);
+  // console.log(processedData);
 
   const chartData = {
     labels: processedData.map((item) => item.key),

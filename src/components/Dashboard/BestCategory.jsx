@@ -91,7 +91,7 @@ const BestCategory = () => {
     },
   };
   if (loading) {
-    return <Spin tip="Loading..." />;
+    return <Spin />;
   }
   return (
     <div>

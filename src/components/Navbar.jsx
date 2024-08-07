@@ -69,20 +69,20 @@ const Navbar = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
         title="Menu"
         customFunc={handleActiveMenu}
         color={currentColor}
-        icon={<AiOutlineMenu />}
+        icon={<AiOutlineMenuFold />}
       />
       <div className="flex">
         {/* <NavButton title="Chat" dotColor="#03C9D7" customFunc={() => handleClick('chat')} color={currentColor} icon={<BsChatLeft />} />
         <NavButton title="Notification" dotColor="rgb(254, 201, 15)" customFunc={() => handleClick('notification')} color={currentColor} icon={<RiNotification3Line />} /> */}
         <TooltipComponent content="Profile" position="BottomCenter">
           <div
-            className="hover:bg-light-gray flex cursor-pointer items-center gap-2 rounded-lg p-1"
+            className="flex cursor-pointer items-center gap-2 rounded-lg p-1 hover:bg-light-gray"
             onClick={() => handleClick("userProfile")}
           >
             <p>
-              <span className="text-14 text-gray-400">Xin chào,</span>{" "}
-              <span className="text-14 ml-1 font-bold text-gray-400">
-                {user.username}
+              {/* <span className="text-gray-400 text-14">Xin chào,</span>{' '} */}
+              <span className="ml-1 text-14 font-bold text-gray-400">
+                {/* {user.username} */}
               </span>
             </p>
             <MdKeyboardArrowDown className="text-14 text-gray-400" />

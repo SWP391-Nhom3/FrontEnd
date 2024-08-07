@@ -67,7 +67,7 @@ const ProductStock = ({ selectedOption }) => {
   return (
     <div>
       {loading ? (
-        <Spin tip="Loading..." />
+        <Spin />
       ) : (
         <>
           {selectedOption === "Sắp hết" && renderProductList(smallestAmounts)}

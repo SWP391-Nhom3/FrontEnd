@@ -8,12 +8,12 @@
 // import { imageDb } from "../../data/firebase.config";
 // import { getDownloadURL, listAll, ref, uploadBytes } from "firebase/storage";
 // import { v4 } from "uuid";
-// import {
-//   fetchBrandStaff,
-//   fetchCategories,
-//   fetchUpdateProduct,
-//   fetchUploadProduct,
-// } from "../../data/api";
+// // import {
+// //   fetchBrandStaff,
+// //   fetchCategories,
+// //   fetchUpdateProduct,
+// //   fetchUploadProduct,
+// // } from "../../data/api";
 // import { Col, notification, Row, Upload } from "antd";
 // import { Card } from "primereact/card";
 // import { PlusOutlined } from "@ant-design/icons";
@@ -38,35 +38,35 @@
 
 //   const navigate = useNavigate();
 
-//   useEffect(() => {
-//     // Gọi API để lấy dữ liệu category
-//     fetchCategories()
-//       .then((response) => response.json())
-//       .then((data) => {
-//         if (data && data.result) {
-//           setCategories(data.result);
-//         }
-//       })
-//       .catch((error) => console.error("Error fetching categories:", error));
+//   // useEffect(() => {
+//   //   // Gọi API để lấy dữ liệu category
+//   //   // fetchCategories()
+//   //     .then((response) => response.json())
+//   //     .then((data) => {
+//   //       if (data && data.result) {
+//   //         setCategories(data.result);
+//   //       }
+//   //     })
+//   //     .catch((error) => console.error("Error fetching categories:", error));
 
-//     // Gọi API để lấy dữ liệu brand
-//     fetchBrandStaff()
-//       .then((response) => response.json())
-//       .then((data) => {
-//         if (data && data.result) {
-//           setBrands(data.result);
-//         }
-//       })
-//       .catch((error) => console.error("Error fetching brands:", error));
+//   //   // Gọi API để lấy dữ liệu brand
+//   //   fetchBrandStaff()
+//   //     .then((response) => response.json())
+//   //     .then((data) => {
+//   //       if (data && data.result) {
+//   //         setBrands(data.result);
+//   //       }
+//   //     })
+//   //     .catch((error) => console.error("Error fetching brands:", error));
 
-//     listAll(ref(imageDb, "files")).then((imgs) => {
-//       imgs.items.forEach((val) => {
-//         getDownloadURL(val).then((url) => {
-//           setImgUrl(url);
-//         });
-//       });
-//     });
-//   }, []);
+//   //   listAll(ref(imageDb, "files")).then((imgs) => {
+//   //     imgs.items.forEach((val) => {
+//   //       getDownloadURL(val).then((url) => {
+//   //         setImgUrl(url);
+//   //       });
+//   //     });
+//   //   });
+//   // }, []);
 
 //   const handleChange = ({ fileList: newFileList }) => {
 //     setFileList(newFileList.slice(-1));
@@ -120,12 +120,12 @@
 //       const url = await getDownloadURL(snapshot.ref);
 
 //       product.imgUrl = url;
-//       await sendURL(product, id);
+//       // await sendURL(product, id);
 //     }
 //   }
-//   const sendURL = async (product, id) => {
-//     return await fetchUpdateProduct(product, token, id);
-//   };
+//   // const sendURL = async (product, id) => {
+//   //   return await fetchUpdateProduct(product, token, id);
+//   // };
 //   const handleSubmit = async (event) => {
 //     event.preventDefault();
 //     const form = event.target;
@@ -139,26 +139,26 @@
 //       age,
 //       discount,
 //     };
-//     // send data to db:
-//     await fetchUploadProduct(product, token)
-//       .then(async (res) => {
-//         const id = res.data.result.insertedId
-//         await uploadImage(product, id);
-//       })
-//       .then((data) => {
-//         notification.success({
-//           message: "Thêm sản phẩm thành công!",
-//           placement: "top",
-//         })
-//         form.reset();
-//         setFileList([]);
-//         setSelectedCategoryId("");
-//         setSelectedBrandId("");
-//       })
-//       .catch((error) => {
-//         console.log(error.response);
-//       });
-//   };
+//   //    send data to db:
+//   //    await fetchUploadProduct(product, token)
+//   //     .then(async (res) => {
+//   //       const id = res.data.result.insertedId
+//   //       await uploadImage(product, id);
+//   //     })
+//   //     .then((data) => {
+//   //       notification.success({
+//   //         message: "Thêm sản phẩm thành công!",
+//   //         placement: "top",
+//   //       })
+//   //       form.reset();
+//   //       setFileList([]);
+//   //       setSelectedCategoryId("");
+//   //       setSelectedBrandId("");
+//   //     })
+//   //     .catch((error) => {
+//   //       console.log(error.response);
+//   //     });
+//   // };
 
 //   return (
 //     <div style={{ display: 'flex', justifyContent: 'center', minHeight: '100vh' }}>
@@ -359,4 +359,4 @@
 //   );
 // };
 
-// export default AddProduct;
+// // export default AddProduct;

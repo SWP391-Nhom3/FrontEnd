@@ -713,7 +713,7 @@ export const adminlinks = [
         type: "sub",
         // path: 'users',
         subLinks: [
-          { name: "allUser", path: "users", label: "Tất cả nguời dùng" },
+          { name: "allUser", path: "users", label: "Tất cả người dùng" },
           { name: "addStaff", path: "add-staff", label: "Thêm nhân viên" },
         ],
       },

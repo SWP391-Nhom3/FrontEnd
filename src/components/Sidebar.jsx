@@ -50,32 +50,32 @@ const Sidebar = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
     };
   }, []);
 
-  useEffect(() => {
-    const getOrders = async () => {
-      try {
-        // const orderData = await fetchOrder();
-        // setOrders(orderData);
-      } catch (error) {
-        console.error("Error fetching orders:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const getOrders = async () => {
+  //     try {
+  //       // const orderData = await fetchOrder();
+  //       // setOrders(orderData);
+  //     } catch (error) {
+  //       console.error("Error fetching orders:", error);
+  //     }
+  //   };
 
-    getOrders();
-  }, []);
+  //   getOrders();
+  // }, []);
 
-  useEffect(() => {
-    const getFeedbacks = async () => {
-      try {
-        // const feedbackData = await fetchAllFeedback();
-        // setFeedbacks(feedbackData.data.result);
-      } catch (error) {
-        console.error("Error fetching feedback:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const getFeedbacks = async () => {
+  //     try {
+  //       // const feedbackData = await fetchAllFeedback();
+  //       // setFeedbacks(feedbackData.data.result);
+  //     } catch (error) {
+  //       console.error("Error fetching feedback:", error);
+  //     }
+  //   };
 
-    getFeedbacks();
-    console.log(feedbacks);
-  }, []);
+  //   getFeedbacks();
+  //   console.log(feedbacks);
+  // }, []);
 
   const feedbackCount = feedbacks.filter((fb) => !fb.reply_feedback).length;
   const badFeedbackCount = feedbacks.filter(
@@ -123,7 +123,7 @@ const Sidebar = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
                 type="button"
                 onClick={() => setActiveMenu(!activeMenu)}
                 style={{ color: currentColor }}
-                className="hover:bg-light-gray mt-4 block rounded-full p-3 text-xl md:hidden"
+                className="mt-4 block rounded-full p-3 text-xl hover:bg-light-gray md:hidden"
               >
                 <MdOutlineCancel />
               </button>

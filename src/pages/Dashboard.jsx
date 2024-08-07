@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BsBoxSeam, BsCurrencyDollar } from "react-icons/bs";
-import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
+// import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 
 import { useStateContext } from "../context/ContextProvider";
 // import {
@@ -20,8 +20,8 @@ import ProductStock from "../components/Dashboard/ProductStock";
 import MonthlyOrder from "../components/Dashboard/MonthlyOrder";
 
 const DropDown = ({ currentMode, onSelect }) => (
-  <div className="border-1 border-color w-28 rounded-md px-2 py-1">
-    <DropDownListComponent
+  <div className="w-28 rounded-md border-1 border-color px-2 py-1">
+    {/* <DropDownListComponent
       id="time"
       fields={{ text: "option", value: "Id" }}
       style={{
@@ -36,7 +36,7 @@ const DropDown = ({ currentMode, onSelect }) => (
       popupHeight="220px"
       popupWidth="120px"
       change={(e) => onSelect(e.itemData.option)}
-    />
+    /> */}
   </div>
 );
 
@@ -469,9 +469,9 @@ const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
     },
   ];
 
-  if (loading) {
-    return <div className="mx-6 h-full w-full py-6">Loading...</div>;
-  }
+  // if (loading) {
+  //   return <div className="mx-6 h-full w-full py-6">Loading...</div>;
+  // }
   return (
     <div className="mt-24">
       {isAuthenticatedAdmin && (
@@ -521,7 +521,7 @@ const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
 
           {/*Row 2*/}
           <div className="flex flex-wrap justify-center gap-10">
-            <div className="dark:bg-secondary-dark-bg md:w-780 m-3 rounded-2xl bg-white p-4 dark:text-gray-200">
+            <div className="m-3 rounded-2xl bg-white p-4 dark:bg-secondary-dark-bg dark:text-gray-200 md:w-780">
               <div className="flex justify-between">
                 <p className="text-xl font-semibold">
                   Bảng tương quan giữa doanh thu và vốn
@@ -533,7 +533,7 @@ const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
             </div>
             <div>
               <div
-                className="md:w-400 m-3 rounded-2xl p-4"
+                className="m-3 rounded-2xl p-4 md:w-400"
                 style={{ backgroundColor: currentColor }}
               >
                 <div className="flex items-center justify-between">
@@ -547,7 +547,7 @@ const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
                 </div>
               </div>
 
-              <div className="dark:bg-secondary-dark-bg md:w-400 m-3 flex items-center justify-center gap-10 rounded-2xl bg-white p-8 dark:text-gray-200">
+              <div className="m-3 flex items-center justify-center gap-10 rounded-2xl bg-white p-8 dark:bg-secondary-dark-bg dark:text-gray-200 md:w-400">
                 <div>
                   <p className="text-xl font-semibold">
                     Thống kê phân loại sữa theo lượt mua
@@ -563,7 +563,7 @@ const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
 
           {/* Row 3 */}
           <div className="m-4 flex flex-wrap justify-center gap-10">
-            <div className="dark:bg-secondary-dark-bg rounded-2xl bg-white p-6 dark:text-gray-200">
+            <div className="rounded-2xl bg-white p-6 dark:bg-secondary-dark-bg dark:text-gray-200">
               <div className="flex items-center justify-between gap-2">
                 <p className="text-xl font-semibold">Số lượng hàng tồn kho</p>
                 <DropDown
@@ -571,11 +571,11 @@ const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
                   onSelect={setSelectedOption}
                 />
               </div>
-              <div className="md:w-400 mt-2 w-72">
+              <div className="mt-2 w-72 md:w-400">
                 <ProductStock selectedOption={selectedOption} />
               </div>
             </div>
-            <div className="dark:bg-secondary-dark-bg md:w-760 w-96 rounded-2xl bg-white p-6 dark:text-gray-200">
+            <div className="w-96 rounded-2xl bg-white p-6 dark:bg-secondary-dark-bg dark:text-gray-200 md:w-760">
               <div className="mb-10 flex items-center justify-between gap-2">
                 <p className="text-xl font-semibold">
                   Thống kê trạng thái đơn hàng theo tháng

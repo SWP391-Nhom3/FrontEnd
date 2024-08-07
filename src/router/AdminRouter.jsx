@@ -16,10 +16,7 @@ const AdminRouter = () => {
 
   return (
     <Routes>
-      <Route
-        path="/"
-        element={<Dashboard isAuthenticatedAdmin={isAuthenticatedAdmin} />}
-      />
+      <Route path="/" element={<Dashboard isAuthenticatedAdmin={true} />} />
       <Route path="/users" element={<Users />} />
       <Route path="/add-staff" element={<AddStaff />} />
       {/* <Route path="/products" element={<Products />} /> */}

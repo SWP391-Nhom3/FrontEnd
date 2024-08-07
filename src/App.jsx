@@ -11,7 +11,6 @@ import "primereact/resources/themes/lara-light-blue/theme.css";
 import "primereact/resources/themes/bootstrap4-light-blue/theme.css";
 import "antd/dist/reset.css";
 
-// import StaffRouter from "./router/StaffRouter";
 import AdminRouter from "./router/AdminRouter";
 import AuthRouter from "./router/AuthRouter";
 
@@ -51,7 +50,7 @@ const App = () => {
     localStorage.getItem("isAuthenticatedStaff") === "true";
 
   return (
-    <div className={currentMode === "Dark" ? "dark" : ""}>
+    <div>
       <BrowserRouter>
         <div className="dark:bg-main-dark-bg relative flex">
           {isAuthenticatedStaff ? (
@@ -109,7 +108,9 @@ const App = () => {
               </div>
             </>
           ) : (
-            <AuthRouter />
+            <div className="w-0 dark:bg-secondary-dark-bg">
+              <Sidebar isAuthenticatedAdmin={true} />
+            </div>
           )}
         </div>
         <Header />
