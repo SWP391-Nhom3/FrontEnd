@@ -1,11 +1,61 @@
+const flowbite = require("flowbite-react/tailwind");
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}", flowbite.content()],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: {
+          50: "#fef2f2",
+          100: "#fecdd3",
+          200: "#fda4af",
+          300: "#fb7185",
+          400: "#f43f5e",
+          500: "#e11d48",
+          600: "#be123c",
+          700: "#9f1239",
+          800: "#831843",
+          900: "#6e1137",
+          950: "#4a0a25",
+        },
+      },
+    },
+    fontFamily: {
+      body: [
+        "Inter",
+        "ui-sans-serif",
+        "system-ui",
+        "-apple-system",
+        "system-ui",
+        "Segoe UI",
+        "Roboto",
+        "Helvetica Neue",
+        "Arial",
+        "Noto Sans",
+        "sans-serif",
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Noto Color Emoji",
+      ],
+      sans: [
+        "Inter",
+        "ui-sans-serif",
+        "system-ui",
+        "-apple-system",
+        "system-ui",
+        "Segoe UI",
+        "Roboto",
+        "Helvetica Neue",
+        "Arial",
+        "Noto Sans",
+        "sans-serif",
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Noto Color Emoji",
+      ],
+    },
   },
-  plugins: [],
-}
+  plugins: [flowbite.plugin()],
+};
