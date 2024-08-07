@@ -6,11 +6,9 @@ import {
   MdOutlineCancel,
 } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
-
 import { adminlinks, stafflinks } from "../data/dummy";
 import { useStateContext } from "../context/ContextProvider";
 import logoImg from "../assets/logo/Logo.png";
-// import { fetchAllFeedback, fetchOrder } from "../data/api";
 import { Badge } from "antd";
 
 const Sidebar = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
@@ -24,10 +22,12 @@ const Sidebar = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
     if (activeMenu !== undefined && screenSize <= 900) {
       setActiveMenu(false);
     }
+    console.log("handleCloseSideBar triggered");
   };
 
   const toggleSubmenu = (name) => {
     setActiveSubmenu(activeSubmenu === name ? null : name);
+    console.log("toggleSubmenu triggered for:", name);
   };
 
   const sidebarRef = useRef(null);
@@ -50,33 +50,6 @@ const Sidebar = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   const getOrders = async () => {
-  //     try {
-  //       // const orderData = await fetchOrder();
-  //       // setOrders(orderData);
-  //     } catch (error) {
-  //       console.error("Error fetching orders:", error);
-  //     }
-  //   };
-
-  //   getOrders();
-  // }, []);
-
-  // useEffect(() => {
-  //   const getFeedbacks = async () => {
-  //     try {
-  //       // const feedbackData = await fetchAllFeedback();
-  //       // setFeedbacks(feedbackData.data.result);
-  //     } catch (error) {
-  //       console.error("Error fetching feedback:", error);
-  //     }
-  //   };
-
-  //   getFeedbacks();
-  //   console.log(feedbacks);
-  // }, []);
-
   const feedbackCount = feedbacks.filter((fb) => !fb.reply_feedback).length;
   const badFeedbackCount = feedbacks.filter(
     (fb) => !fb.reply_feedback && fb.rating < 3,
@@ -92,7 +65,10 @@ const Sidebar = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
 
   return (
     <div
-      className="ml-3 h-screen overflow-auto pb-10 md:overflow-hidden md:hover:overflow-auto"
+      ref={sidebarRef}
+      className={`ml-3 h-screen overflow-auto pb-10 md:overflow-hidden md:hover:overflow-auto ${
+        activeMenu ? "" : "hidden"
+      }`}
       style={{
         overflow: "auto",
         msOverflowStyle: "none" /* Internet Explorer 10+ */,

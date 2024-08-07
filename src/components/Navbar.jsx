@@ -13,7 +13,10 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
   <TooltipComponent content={title} position="BottomCenter">
     <button
       type="button"
-      onClick={() => customFunc()}
+      onClick={() => {
+        console.log(`NavButton clicked: ${title}`);
+        customFunc();
+      }}
       style={{ color }}
       className="hover:bg-light-gray relative rounded-full p-3 text-xl"
     >
@@ -47,7 +50,7 @@ const Navbar = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
     handleResize();
 
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [setScreenSize]);
 
   useEffect(() => {
     if (screenSize <= 900) {
@@ -55,12 +58,16 @@ const Navbar = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
     } else {
       setActiveMenu(true);
     }
-  }, [screenSize]);
+  }, [screenSize, setActiveMenu]);
 
-  const handleActiveMenu = () => setActiveMenu(!activeMenu);
+  const handleActiveMenu = () => {
+    console.log("handleActiveMenu triggered");
+    console.log("activeMenu before:", activeMenu);
+    setActiveMenu(!activeMenu);
+    console.log("activeMenu after:", !activeMenu);
+  };
 
   return (
-    // <div className="flex justify-between p-2 md:ml-6 md:mr-6 relative">
     <div
       className="relative flex w-full justify-between p-2"
       style={{ backgroundColor: "#FAFBFB" }}
@@ -72,25 +79,20 @@ const Navbar = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
         icon={<AiOutlineMenuFold />}
       />
       <div className="flex">
-        {/* <NavButton title="Chat" dotColor="#03C9D7" customFunc={() => handleClick('chat')} color={currentColor} icon={<BsChatLeft />} />
-        <NavButton title="Notification" dotColor="rgb(254, 201, 15)" customFunc={() => handleClick('notification')} color={currentColor} icon={<RiNotification3Line />} /> */}
         <TooltipComponent content="Profile" position="BottomCenter">
           <div
             className="flex cursor-pointer items-center gap-2 rounded-lg p-1 hover:bg-light-gray"
             onClick={() => handleClick("userProfile")}
           >
-            <p>
-              {/* <span className="text-gray-400 text-14">Xin chào,</span>{' '} */}
+            {/* <p>
+              <span className="text-14 text-gray-400">Xin chào,</span>{" "}
               <span className="ml-1 text-14 font-bold text-gray-400">
-                {/* {user.username} */}
+                {user.username}
               </span>
-            </p>
-            <MdKeyboardArrowDown className="text-14 text-gray-400" />
+            </p> */}
+            {/* <MdKeyboardArrowDown className="text-14 text-gray-400" /> */}
           </div>
         </TooltipComponent>
-
-        {/* {isClicked.chat && (<Chat />)}
-        {isClicked.notification && (<Notification />)} */}
         {isAuthenticatedAdmin && isClicked.userProfile && (
           <UserProfile isAdmin={true} />
         )}
