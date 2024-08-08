@@ -110,7 +110,7 @@ const ProductCard = ({ products, headline }) => {
                     </h5>
                   </Link>
                   <div className="mb-2 mt-1 flex items-center">
-                    <RenderRating rating={product.rating} />
+                    {/* <RenderRating rating={product.rating} /> */}
                     <span className="ml-2 mr-1 rounded bg-primary-100 px-2 py-0.5 text-xs font-semibold text-primary-800 dark:bg-primary-200 dark:text-primary-800">
                       {product.rating.toFixed(1)}
                     </span>

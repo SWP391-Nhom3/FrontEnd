@@ -60,13 +60,13 @@ const Payment = () => {
     };
 
     clearCart();
-    toast.success("Đặt Hàng Thành Công");
-    if (user) {
-      if (membership !== undefined) {
-        user.member_ship = membership;
-        localStorage.setItem("user", JSON.stringify(user));
-      }
-    }
+    // toast.success("Đặt Hàng Thành Công");
+    // if (user) {
+    //   if (membership !== undefined) {
+    //     user.member_ship = membership;
+    //     localStorage.setItem("user", JSON.stringify(user));
+    //   }
+    // }
     navigate("/thanks", {
       state: {
         isCheck: true,

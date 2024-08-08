@@ -22,10 +22,12 @@ const Sidebar = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
     if (activeMenu !== undefined && screenSize <= 900) {
       setActiveMenu(false);
     }
+    console.log("handleCloseSideBar triggered");
   };
 
   const toggleSubmenu = (name) => {
     setActiveSubmenu(activeSubmenu === name ? null : name);
+    console.log("toggleSubmenu triggered for:", name);
   };
 
   const sidebarRef = useRef(null);

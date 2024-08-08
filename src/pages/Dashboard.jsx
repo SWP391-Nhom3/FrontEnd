@@ -499,7 +499,6 @@ const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
           <AdminNavbar isAuthenticatedAdmin={true} />
         </div>
         <div>
-          {themeSettings && <ThemeSettings />}
           <div className="mt-24">
             {isAuthenticatedAdmin && (
               <div>
