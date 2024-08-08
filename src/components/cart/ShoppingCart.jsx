@@ -8,7 +8,6 @@ import { useCartContext } from "../../context/CartContext";
 // import { fetchGetAllVoucher, fetchGetMe, fetchGetVoucher, fetchRefreshToken } from "../../data/api";
 import { Button } from "flowbite-react";
 import { ImGift } from "react-icons/im";
-import { useWishlistContext } from "../../context/WishlistContext";
 const ShoppingCart = () => {
   const user = JSON.parse(localStorage.getItem("user")) || null;
   const verify = user === null ? 0 : user.verify;
@@ -20,8 +19,6 @@ const ShoppingCart = () => {
     decreaseAmount,
     cartAmount,
   } = useCartContext();
-  const { checkWishlistItem, addWishlistItem, removeWishlistItem } =
-    useWishlistContext();
   const [voucherCode, setVoucherCode] = useState("");
   const [discount, setDiscount] = useState(0);
   const [ship, setShip] = useState(0);
@@ -307,23 +304,6 @@ const ShoppingCart = () => {
                             {product.product_name}
                           </Link>
                           <div className="flex items-center gap-4">
-                            {checkWishlistItem(product) ? (
-                              <button
-                                className="flex items-center justify-center rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100"
-                                onClick={() => removeWishlistItem(product._id)}
-                              >
-                                <FaHeart className="-ms-2 me-2 h-5 w-5 text-red-500" />
-                                Yêu Thích
-                              </button>
-                            ) : (
-                              <button
-                                className="flex items-center justify-center rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100"
-                                onClick={() => addWishlistItem(product)}
-                              >
-                                <FaRegHeart className="-ms-2 me-2 h-5 w-5" />
-                                Yêu Thích
-                              </button>
-                            )}
                             <button
                               type="button"
                               onClick={() => removeCartItem(product._id)}
@@ -401,7 +381,7 @@ const ShoppingCart = () => {
                       ship: ship,
                       voucherCode: voucherCode,
                     }}
-                    className="flex w-full items-center justify-center rounded-lg bg-[#1d4ed8] px-5 py-2.5 text-sm font-medium text-white hover:bg-[#1e40af] focus:outline-none focus:ring-4 focus:ring-[#93c5fd]"
+                    className="flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-500 focus:outline-none focus:ring-4 focus:ring-[#93c5fd]"
                   >
                     Thanh Toán Ngay
                   </Link>

@@ -1,7 +1,6 @@
 import { useLocation } from "react-router-dom";
-import RenderRating from "../Elements/RenderRating";
+import RenderRating from "../elements/RenderRating";
 import { useCartContext } from "../../context/CartContext";
-import { useWishlistContext } from "../../context/WishlistContext";
 import { Toaster } from "react-hot-toast";
 import {
   FaAngleDown,
@@ -21,8 +20,6 @@ const ProductDetail = () => {
   const location = useLocation();
   const product = location.state?.product || null;
   const { addCartItem } = useCartContext();
-  const { checkWishlistItem, addWishlistItem, removeWishlistItem } =
-    useWishlistContext();
   const [reviews, setReviews] = useState([]);
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [showAllReviews, setShowAllReviews] = useState(false);
@@ -153,24 +150,6 @@ const ProductDetail = () => {
             </div>
 
             <div className="mt-6 sm:mt-8 sm:flex sm:items-center sm:gap-4">
-              {checkWishlistItem(product) ? (
-                <button
-                  className="flex items-center justify-center rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100"
-                  onClick={() => removeWishlistItem(product._id)}
-                >
-                  <FaHeart className="-ms-2 me-2 h-5 w-5 text-red-500" />
-                  Yêu Thích
-                </button>
-              ) : (
-                <button
-                  className="flex items-center justify-center rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100"
-                  onClick={() => addWishlistItem(product)}
-                >
-                  <FaRegHeart className="-ms-2 me-2 h-5 w-5" />
-                  Yêu Thích
-                </button>
-              )}
-
               {product.amount > 0 ? (
                 <button
                   className="mt-4 flex items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 sm:mt-0"

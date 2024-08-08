@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 import successImg from "../../assets/images/background/order-success-poster.png";
 import { IoMdCloseCircleOutline } from "react-icons/io";
-import Breadcrumbs from "../Elements/Breadcrumb";
+import Breadcrumbs from "../elements/Breadcrumb";
 
 const Thanks = () => {
   const location = useLocation();
@@ -110,7 +110,7 @@ const Thanks = () => {
       {isCheck ? (
         <div>
           <div className="min-h-[60vh] w-full bg-gray-200">
-            <div className="flex h-72 items-center justify-center">
+            <div className="h-50 flex items-center justify-center">
               <img src={successImg} alt="" />
             </div>
             <div className="text-center">

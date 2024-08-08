@@ -5,6 +5,7 @@ import SecondHero from "../../components/hero/SecondHero";
 import ProductCard from "../../components/card/Card";
 import HeroAtLast from "../../components/hero/HeroAtLast";
 import Header from "../Header";
+import MainFooter from "../../components/Footer/index";
 
 const Home = () => {
   const mockProducts = [
@@ -146,6 +147,7 @@ const Home = () => {
       {/* <CategoryGrid /> */}
       <ProductCard products={mockProducts} headline={"Sữa chua"} />
       <ProductCard products={mockProducts} headline={"Sữa hạt"} />
+      <MainFooter />
     </div>
   );
 };

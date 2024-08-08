@@ -3,8 +3,9 @@ import { BsBoxSeam, BsCurrencyDollar } from "react-icons/bs";
 // import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 
 import { useStateContext } from "../context/ContextProvider";
-import { Navbar, Sidebar, ThemeSettings } from "../components";
-import MainFooter from "../components/Footer";
+import AdminNavbar from "../components/header/AdimNavbar";
+import Sidebar from "../components/Sidebar";
+import AdminFooter from "../components/Footer/AdminFooter";
 
 // import {
 //   fetchAllUsers,
@@ -495,7 +496,7 @@ const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
         }
       >
         <div className="navbar bg-main-bg dark:bg-main-dark-bg fixed w-full md:static">
-          <Navbar isAuthenticatedAdmin={true} />
+          <AdminNavbar isAuthenticatedAdmin={true} />
         </div>
         <div>
           {themeSettings && <ThemeSettings />}
@@ -627,7 +628,7 @@ const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
           </div>
         </div>
       </div>
-      <MainFooter />
+      <AdminFooter />
     </div>
   );
 };
