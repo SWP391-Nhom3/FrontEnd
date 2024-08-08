@@ -6,6 +6,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaHistory } from "react-icons/fa";
 
 const UserBtn = () => {
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    navigate("/login");
+    localStorage.removeItem("user");
+  };
   const user = JSON.parse(localStorage.getItem("user")) || null;
   const verify = user?.verify;
   // const navigate = useNavigate();
@@ -51,7 +56,11 @@ const UserBtn = () => {
             </Dropdown.Item>
           </Link>
           <Dropdown.Divider />
-          <Dropdown.Item icon={HiLogout} onClick={{}} className="w-48">
+          <Dropdown.Item
+            icon={HiLogout}
+            onClick={handleLogout}
+            className="w-48"
+          >
             Đăng Xuất
           </Dropdown.Item>
         </>
@@ -81,7 +90,11 @@ const UserBtn = () => {
             Tích Điểm
           </Dropdown.Item>
           <Dropdown.Divider />
-          <Dropdown.Item icon={HiLogout} onClick={{}} className="w-48">
+          <Dropdown.Item
+            icon={HiLogout}
+            onClick={handleLogout}
+            className="w-48"
+          >
             Đăng Xuất
           </Dropdown.Item>
         </>

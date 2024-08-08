@@ -1,7 +1,7 @@
 import React from "react";
 import { MdOutlineCancel } from "react-icons/md";
 import Buttonlogout from "@mui/material/Button";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Modal } from "antd";
 
 import Button from "./Button";
@@ -10,12 +10,19 @@ import { adminProfileData, staffProfileData } from "../data/dummy";
 
 const UserProfile = ({ isAdmin }) => {
   const user = JSON.parse(localStorage.getItem("user"));
+  const navigate = useNavigate();
 
+  const handleLogoutConfirmation = () => {
+    // Điều hướng người dùng tới trang login
+    navigate("/login");
+    localStorage.removeItem("user");
+  };
   const handleLogout = async () => {
     const result = JSON.parse(localStorage.getItem("result"));
     Modal.confirm({
       title: "Xác nhận đăng xuất",
       content: `Bạn có chắc chắn muốn đăng xuất?`,
+      onConfirm: handleLogoutConfirmation,
       // onOk: async () => {
       //   // const logout = async () => {
       //   //   await fetchLogout(result)
@@ -59,7 +66,7 @@ const UserProfile = ({ isAdmin }) => {
   };
   return (
     <div className="nav-item absolute right-1 top-10 w-96 rounded-lg bg-white p-5 dark:bg-[#42464D]">
-      <div className="border-color border-b-1 flex items-center justify-between gap-5 pb-6">
+      <div className="border-b-1 border-color flex items-center justify-between gap-5 pb-6">
         <div>
           <p className="text-xl font-semibold dark:text-gray-200">
             {" "}

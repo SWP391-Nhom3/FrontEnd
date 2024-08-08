@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 import LogoImg from "../../assets/images/logo/Logo.png";
 import SearchBar from "./SearchBar";
-// import UserBtn from "./userBtn";
+import UserBtn from "./userBtn";
 import { useCartContext } from "../../context/CartContext";
 
 const NavBar = () => {
@@ -62,10 +62,9 @@ const NavBar = () => {
                   </svg>
                 </a>
               </li>
-              {/* user */}
-              {/* <li className="ml-2 lg:ml-4 relative inline-block">
+              <li className="relative ml-2 inline-block lg:ml-4">
                 <UserBtn />
-              </li> */}
+              </li>
             </ul>
           </nav>
         </div>

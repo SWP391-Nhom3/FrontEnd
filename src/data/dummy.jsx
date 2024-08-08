@@ -699,7 +699,7 @@ export const adminlinks = [
     links: [
       {
         name: "Dashboard",
-        path: "/",
+        path: "/dashboard",
         icon: <FiShoppingBag />,
       },
     ],

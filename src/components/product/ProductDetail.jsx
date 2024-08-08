@@ -1,5 +1,4 @@
 import { useLocation } from "react-router-dom";
-import RenderRating from "../elements/RenderRating";
 import { useCartContext } from "../../context/CartContext";
 import { Toaster } from "react-hot-toast";
 import {
@@ -138,7 +137,7 @@ const ProductDetail = () => {
 
               <div className="mt-2 flex items-center gap-2 sm:mt-0">
                 <div className="flex items-center gap-1">
-                  <RenderRating rating={product.rating} />
+                  {/* <RenderRating rating={product.rating} /> */}
                 </div>
                 <p className="text-sm font-medium leading-none text-gray-500">
                   ({product.rating.toFixed(1)})
@@ -208,7 +207,7 @@ const ProductDetail = () => {
                           <p className="text-lg font-semibold">
                             {review.username}
                           </p>
-                          <RenderRating rating={review.rating} />
+                          {/* <RenderRating rating={review.rating} /> */}
                         </div>
                       </div>
                       <div className="mx-2 flex text-black">
@@ -251,7 +250,7 @@ const ProductDetail = () => {
                           <p className="text-lg font-semibold">
                             {review.username}
                           </p>
-                          <RenderRating rating={review.rating} />
+                          {/* <RenderRating rating={review.rating} /> */}
                         </div>
                       </div>
                       <div className="mx-2 flex text-black">
@@ -361,7 +360,7 @@ const ProductDetail = () => {
 
               <div className="mt-2 flex items-center gap-2 sm:mt-0">
                 <div className="flex items-center gap-1">
-                  <RenderRating rating={product.rating} />
+                  {/* <RenderRating rating={product.rating} /> */}
                 </div>
                 <p className="text-sm font-medium leading-none text-gray-500">
                   ({product.rating.toFixed(1)})
@@ -421,7 +420,7 @@ const ProductDetail = () => {
                           <p className="text-lg font-semibold">
                             {review.username}
                           </p>
-                          <RenderRating rating={review.rating} />
+                          {/* <RenderRating rating={review.rating} /> */}
                         </div>
                       </div>
                       <div className="mx-2 flex text-black">
@@ -464,7 +463,7 @@ const ProductDetail = () => {
                           <p className="text-lg font-semibold">
                             {review.username}
                           </p>
-                          <RenderRating rating={review.rating} />
+                          {/* <RenderRating rating={review.rating} /> */}
                         </div>
                       </div>
                       <div className="mx-2 flex text-black">

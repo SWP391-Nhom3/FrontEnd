@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { BrowserRouter } from "react-router-dom";
 
-import Header from "./pages/Header";
+import SiginIn from "./pages/Auth/Login";
+import SiginUp from "./pages/Auth/Register";
 import Home from "./pages/Home";
-// import AdminFooter from "./components/footer/AdminFooter";
 import Product from "./pages/Product";
 import Cart from "./pages/Cart";
 import Order from "./pages/Order";
@@ -40,17 +40,19 @@ const App = () => {
     checkToken();
   }, []);
 
-  // const isAuthenticatedAdmin =
-  //   localStorage.getItem("isAuthenticatedAdmin") === "true";
-  // const isAuthenticatedStaff =
-  //   localStorage.getItem("isAuthenticatedStaff") === "true";
+  const isAuthenticatedAdmin =
+    localStorage.getItem("isAuthenticatedAdmin") === "true";
+  const isAuthenticatedStaff =
+    localStorage.getItem("isAuthenticatedStaff") === "true";
 
   return (
     <div>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/login" element={<SiginIn />} />
           <Route path="/product" element={<Product />} />
+          <Route path="/register" element={<SiginUp />} />
           <Route path="/list-products" element={<ListProduct />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/order" element={<Order />} />
