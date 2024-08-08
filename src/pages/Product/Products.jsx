@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import RenderRating from "../../components/Element/RenderRating";
+import RenderRating from "../../components/Elements/RenderRating";
 import { useNavigate } from "react-router-dom";
 // import { fetchProducts, fetchUpdateProduct } from "../../data/api";
 import { Card } from "primereact/card";

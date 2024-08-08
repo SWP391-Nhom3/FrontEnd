@@ -446,10 +446,8 @@ const baseUrl = "https://open.oapi.vn/location";
 class Http {
   // get:
   async get(url) {
-    console.log(url);
     const response = await fetch(url);
     if (response.ok) {
-      console.log(url);
       return response.json();
     } else {
       throw new Error(response.statusText);

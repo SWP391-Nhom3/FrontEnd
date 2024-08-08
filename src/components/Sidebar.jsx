@@ -22,12 +22,10 @@ const Sidebar = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
     if (activeMenu !== undefined && screenSize <= 900) {
       setActiveMenu(false);
     }
-    console.log("handleCloseSideBar triggered");
   };
 
   const toggleSubmenu = (name) => {
     setActiveSubmenu(activeSubmenu === name ? null : name);
-    console.log("toggleSubmenu triggered for:", name);
   };
 
   const sidebarRef = useRef(null);
@@ -99,7 +97,7 @@ const Sidebar = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
                 type="button"
                 onClick={() => setActiveMenu(!activeMenu)}
                 style={{ color: currentColor }}
-                className="mt-4 block rounded-full p-3 text-xl hover:bg-light-gray md:hidden"
+                className="hover:bg-light-gray mt-4 block rounded-full p-3 text-xl md:hidden"
               >
                 <MdOutlineCancel />
               </button>

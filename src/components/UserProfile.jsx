@@ -37,9 +37,7 @@ const UserProfile = ({ isAdmin }) => {
 
       //   logout();
       // },
-      onCancel() {
-        console.log("Cancel");
-      },
+      onCancel() {},
       okButtonProps: {
         style: {
           backgroundColor: "#46B5C1",

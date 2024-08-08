@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Breadcrumbs from "../elements/Breadcrumb";
+import Breadcrumbs from "../Elements/Breadcrumb";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useCartContext } from "../../context/CartContext";
 // import {

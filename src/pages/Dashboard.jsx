@@ -3,6 +3,9 @@ import { BsBoxSeam, BsCurrencyDollar } from "react-icons/bs";
 // import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 
 import { useStateContext } from "../context/ContextProvider";
+import { Navbar, Sidebar, ThemeSettings } from "../components";
+import MainFooter from "../components/Footer";
+
 // import {
 //   fetchAllUsers,
 //   fetchOrder,
@@ -20,7 +23,7 @@ import ProductStock from "../components/Dashboard/ProductStock";
 import MonthlyOrder from "../components/Dashboard/MonthlyOrder";
 
 const DropDown = ({ currentMode, onSelect }) => (
-  <div className="w-28 rounded-md border-1 border-color px-2 py-1">
+  <div className="border-1 border-color w-28 rounded-md px-2 py-1">
     {/* <DropDownListComponent
       id="time"
       fields={{ text: "option", value: "Id" }}
@@ -41,7 +44,8 @@ const DropDown = ({ currentMode, onSelect }) => (
 );
 
 const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
-  const { currentColor, currentMode } = useStateContext();
+  const { currentColor, currentMode, activeMenu, themeSettings } =
+    useStateContext();
   const [loading, setLoading] = useState(true);
   const [revenues, setRevenues] = useState([]);
   // const [profit, setProfit] = useState([]);
@@ -473,125 +477,157 @@ const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
   //   return <div className="mx-6 h-full w-full py-6">Loading...</div>;
   // }
   return (
-    <div className="mt-24">
-      {isAuthenticatedAdmin && (
-        <div>
-          {/*Row 1*/}
-          <div className="flex flex-wrap justify-center lg:flex-nowrap">
-            <Row justify="space-between" gutter={[16, 16]}>
-              {earningData.map((item) => (
-                <Col key={item.title} span={4}>
-                  <div
-                    style={{ position: "relative" }}
-                    className="dark:bg-secondary-dark-bg h-44 rounded-2xl bg-white p-4 pt-9 dark:text-gray-200 md:w-56"
-                  >
-                    <div
-                      style={{
-                        position: "absolute",
-                        right: "10px",
-                        top: "10px",
-                      }}
-                    >
-                      {item.dropdown}
-                    </div>
-                    <button
-                      type="button"
-                      style={{
-                        color: item.iconColor,
-                        backgroundColor: item.iconBg,
-                      }}
-                      className="opacity-0.9 rounded-full p-4 text-2xl hover:drop-shadow-xl"
-                    >
-                      {item.icon}
-                    </button>
-                    <p className="mt-3">
-                      <span className="text-lg font-semibold">
-                        {item.amount}
-                      </span>
-                      <span className={`text-sm text-${item.pcColor} ml-2`}>
-                        {item.percentage}
-                      </span>
-                    </p>
-                    <p className="mt-1 text-sm text-gray-400">{item.title}</p>
-                  </div>
-                </Col>
-              ))}
-            </Row>
-          </div>
-
-          {/*Row 2*/}
-          <div className="flex flex-wrap justify-center gap-10">
-            <div className="m-3 rounded-2xl bg-white p-4 dark:bg-secondary-dark-bg dark:text-gray-200 md:w-780">
-              <div className="flex justify-between">
-                <p className="text-xl font-semibold">
-                  Bảng tương quan giữa doanh thu và vốn
-                </p>
-              </div>
-              <div>
-                <RevenueMixCost />
-              </div>
-            </div>
-            <div>
-              <div
-                className="m-3 rounded-2xl p-4 md:w-400"
-                style={{ backgroundColor: currentColor }}
-              >
-                <div className="flex items-center justify-between">
-                  <p className="text-xl font-semibold text-white">
-                    Thống kê lợi nhuận
-                  </p>
-                </div>
-
-                <div className="mt-0">
-                  <MonthlyProfit />
-                </div>
-              </div>
-
-              <div className="m-3 flex items-center justify-center gap-10 rounded-2xl bg-white p-8 dark:bg-secondary-dark-bg dark:text-gray-200 md:w-400">
-                <div>
-                  <p className="text-xl font-semibold">
-                    Thống kê phân loại sữa theo lượt mua
-                  </p>
-                </div>
-
-                <div className="w-40">
-                  <BestCategory />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Row 3 */}
-          <div className="m-4 flex flex-wrap justify-center gap-10">
-            <div className="rounded-2xl bg-white p-6 dark:bg-secondary-dark-bg dark:text-gray-200">
-              <div className="flex items-center justify-between gap-2">
-                <p className="text-xl font-semibold">Số lượng hàng tồn kho</p>
-                <DropDown
-                  currentMode={currentMode}
-                  onSelect={setSelectedOption}
-                />
-              </div>
-              <div className="mt-2 w-72 md:w-400">
-                <ProductStock selectedOption={selectedOption} />
-              </div>
-            </div>
-            <div className="w-96 rounded-2xl bg-white p-6 dark:bg-secondary-dark-bg dark:text-gray-200 md:w-760">
-              <div className="mb-10 flex items-center justify-between gap-2">
-                <p className="text-xl font-semibold">
-                  Thống kê trạng thái đơn hàng theo tháng
-                </p>
-              </div>
-              <div className="overflow-auto md:w-full">
-                <MonthlyOrder />
-              </div>
-            </div>
-          </div>
+    <div>
+      {activeMenu ? (
+        <div className="sidebar dark:bg-secondary-dark-bg fixed w-72 bg-white">
+          <Sidebar isAuthenticatedAdmin={true} isAuthenticatedStaff={true} />
+        </div>
+      ) : (
+        <div className="dark:bg-secondary-dark-bg w-0">
+          <Sidebar isAuthenticatedAdmin={true} isAuthenticatedStaff={true} />
         </div>
       )}
+      <div
+        className={
+          activeMenu
+            ? "bg-main-bg dark:bg-main-dark-bg min-h-screen w-full md:ml-72"
+            : "flex-2 bg-main-bg dark:bg-main-dark-bg min-h-screen w-full"
+        }
+      >
+        <div className="navbar bg-main-bg dark:bg-main-dark-bg fixed w-full md:static">
+          <Navbar isAuthenticatedAdmin={true} />
+        </div>
+        <div>
+          {themeSettings && <ThemeSettings />}
+          <div className="mt-24">
+            {isAuthenticatedAdmin && (
+              <div>
+                {/*Row 1*/}
+                <div className="flex flex-wrap justify-center lg:flex-nowrap">
+                  <Row justify="space-between" gutter={[16, 16]}>
+                    {earningData.map((item) => (
+                      <Col key={item.title} span={4}>
+                        <div
+                          style={{ position: "relative" }}
+                          className="dark:bg-secondary-dark-bg h-44 rounded-2xl bg-white p-4 pt-9 dark:text-gray-200 md:w-56"
+                        >
+                          <div
+                            style={{
+                              position: "absolute",
+                              right: "10px",
+                              top: "10px",
+                            }}
+                          >
+                            {item.dropdown}
+                          </div>
+                          <button
+                            type="button"
+                            style={{
+                              color: item.iconColor,
+                              backgroundColor: item.iconBg,
+                            }}
+                            className="opacity-0.9 rounded-full p-4 text-2xl hover:drop-shadow-xl"
+                          >
+                            {item.icon}
+                          </button>
+                          <p className="mt-3">
+                            <span className="text-lg font-semibold">
+                              {item.amount}
+                            </span>
+                            <span
+                              className={`text-sm text-${item.pcColor} ml-2`}
+                            >
+                              {item.percentage}
+                            </span>
+                          </p>
+                          <p className="mt-1 text-sm text-gray-400">
+                            {item.title}
+                          </p>
+                        </div>
+                      </Col>
+                    ))}
+                  </Row>
+                </div>
 
-      {isAuthenticatedStaff && (
-        <div className="w-full">Dashboard cho staff</div>
-      )}
+                {/*Row 2*/}
+                <div className="flex flex-wrap justify-center gap-10">
+                  <div className="dark:bg-secondary-dark-bg md:w-780 m-3 rounded-2xl bg-white p-4 dark:text-gray-200">
+                    <div className="flex justify-between">
+                      <p className="text-xl font-semibold">
+                        Bảng tương quan giữa doanh thu và vốn
+                      </p>
+                    </div>
+                    <div>
+                      <RevenueMixCost />
+                    </div>
+                  </div>
+                  <div>
+                    <div
+                      className="md:w-400 m-3 rounded-2xl p-4"
+                      style={{ backgroundColor: currentColor }}
+                    >
+                      <div className="flex items-center justify-between">
+                        <p className="text-xl font-semibold text-white">
+                          Thống kê lợi nhuận
+                        </p>
+                      </div>
+
+                      <div className="mt-0">
+                        <MonthlyProfit />
+                      </div>
+                    </div>
+
+                    <div className="dark:bg-secondary-dark-bg md:w-400 m-3 flex items-center justify-center gap-10 rounded-2xl bg-white p-8 dark:text-gray-200">
+                      <div>
+                        <p className="text-xl font-semibold">
+                          Thống kê phân loại sữa theo lượt mua
+                        </p>
+                      </div>
+
+                      <div className="w-40">
+                        <BestCategory />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Row 3 */}
+                <div className="m-4 flex flex-wrap justify-center gap-10">
+                  <div className="dark:bg-secondary-dark-bg rounded-2xl bg-white p-6 dark:text-gray-200">
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="text-xl font-semibold">
+                        Số lượng hàng tồn kho
+                      </p>
+                      <DropDown
+                        currentMode={currentMode}
+                        onSelect={setSelectedOption}
+                      />
+                    </div>
+                    <div className="md:w-400 mt-2 w-72">
+                      <ProductStock selectedOption={selectedOption} />
+                    </div>
+                  </div>
+                  <div className="dark:bg-secondary-dark-bg md:w-760 w-96 rounded-2xl bg-white p-6 dark:text-gray-200">
+                    <div className="mb-10 flex items-center justify-between gap-2">
+                      <p className="text-xl font-semibold">
+                        Thống kê trạng thái đơn hàng theo tháng
+                      </p>
+                    </div>
+                    <div className="overflow-auto md:w-full">
+                      <MonthlyOrder />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {isAuthenticatedStaff && (
+              <div className="w-full">Dashboard cho staff</div>
+            )}
+          </div>
+        </div>
+      </div>
+      <MainFooter />
     </div>
   );
 };

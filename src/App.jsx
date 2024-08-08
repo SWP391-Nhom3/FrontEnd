@@ -23,6 +23,16 @@ import Order from "./pages/Order";
 import Payment from "./components/order/Payment";
 import Thanks from "./components/order/Thanks";
 import ListProduct from "./components/product/ListProduct";
+import Dashboard from "./pages/Dashboard";
+import Users from "./pages/User/Users";
+import AddStaff from "./pages/User/AddStaff";
+import InputBills from "./pages/Warehouse/InputBills";
+// import Products from "./pages/Product/Products";
+import BillDetail from "./pages/Warehouse/BillDetail";
+import AwaitOrderDetail from "./pages/Order/AwaitOrderDetail";
+import OrderDetail from "./pages/Order/OrderDetail";
+import ApprovedOrder from "./pages/Order/Orders";
+import ProductsWarehouse from "./pages/Warehouse/ProductsWarehouse";
 
 const App = () => {
   const { currentMode, activeMenu, themeSettings } = useStateContext();
@@ -44,76 +54,14 @@ const App = () => {
     checkToken();
   }, []);
 
-  const isAuthenticatedAdmin =
-    localStorage.getItem("isAuthenticatedAdmin") === "true";
-  const isAuthenticatedStaff =
-    localStorage.getItem("isAuthenticatedStaff") === "true";
+  // const isAuthenticatedAdmin =
+  //   localStorage.getItem("isAuthenticatedAdmin") === "true";
+  // const isAuthenticatedStaff =
+  //   localStorage.getItem("isAuthenticatedStaff") === "true";
 
   return (
     <div>
       <BrowserRouter>
-        <div className="dark:bg-main-dark-bg relative flex">
-          {isAuthenticatedStaff ? (
-            <>
-              {activeMenu ? (
-                <div className="sidebar dark:bg-secondary-dark-bg fixed w-72 bg-white">
-                  <Sidebar isAuthenticatedStaff={isAuthenticatedStaff} />
-                </div>
-              ) : (
-                <div className="dark:bg-secondary-dark-bg w-0">
-                  <Sidebar isAuthenticatedStaff={isAuthenticatedStaff} />
-                </div>
-              )}
-              <div
-                className={
-                  activeMenu
-                    ? "dark:bg-main-dark-bg bg-main-bg min-h-screen w-full md:ml-72"
-                    : "bg-main-bg dark:bg-main-dark-bg flex-2 min-h-screen w-full"
-                }
-              >
-                <div className="bg-main-bg dark:bg-main-dark-bg navbar fixed w-full md:static">
-                  <Navbar isAuthenticatedStaff={isAuthenticatedStaff} />
-                </div>
-                <div>
-                  {themeSettings && <ThemeSettings />}
-                  {/* <StaffRouter /> */}
-                </div>
-              </div>
-            </>
-          ) : isAuthenticatedAdmin ? (
-            <>
-              {activeMenu ? (
-                <div className="sidebar dark:bg-secondary-dark-bg fixed w-72 bg-white">
-                  <Sidebar isAuthenticatedAdmin={isAuthenticatedAdmin} />
-                </div>
-              ) : (
-                <div className="dark:bg-secondary-dark-bg w-0">
-                  <Sidebar isAuthenticatedAdmin={isAuthenticatedAdmin} />
-                </div>
-              )}
-              <div
-                className={
-                  activeMenu
-                    ? "dark:bg-main-dark-bg bg-main-bg min-h-screen w-full md:ml-72"
-                    : "bg-main-bg dark:bg-main-dark-bg flex-2 min-h-screen w-full"
-                }
-              >
-                <div className="bg-main-bg dark:bg-main-dark-bg navbar fixed w-full md:static">
-                  <Navbar isAuthenticatedAdmin={isAuthenticatedAdmin} />
-                </div>
-                <div>
-                  {themeSettings && <ThemeSettings />}
-                  <AdminRouter />
-                </div>
-              </div>
-            </>
-          ) : (
-            <div className="w-0 dark:bg-secondary-dark-bg">
-              <Sidebar isAuthenticatedAdmin={true} />
-            </div>
-          )}
-        </div>
-        <Header />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/product" element={<Product />} />
@@ -123,7 +71,56 @@ const App = () => {
           <Route path="/payment" element={<Payment />} />
           <Route path="/thanks" element={<Thanks />} />
         </Routes>
-        <MainFooter />
+
+        <Routes>
+          <Route
+            path="/dashboard"
+            element={<Dashboard isAuthenticatedAdmin={true} />}
+          />
+          <Route path="/users" element={<Users />} />
+          <Route path="/add-staff" element={<AddStaff />} />
+          {/* <Route path="/products" element={<Products />} /> */}
+          <Route path="/orders" element={<ApprovedOrder />} />
+          <Route path="/await-orderDetail" element={<AwaitOrderDetail />} />
+          <Route path="/order-detail" element={<OrderDetail />} />
+          <Route path="/input-bills" element={<InputBills />} />
+          <Route path="/bill-detail" element={<BillDetail />} />
+          <Route path="/products-warehouse" element={<ProductsWarehouse />} />
+        </Routes>
+
+        {/* admin */}
+        {/* <div>
+          {activeMenu ? (
+            <div className="sidebar dark:bg-secondary-dark-bg fixed w-72 bg-white">
+              <Sidebar
+                isAuthenticatedAdmin={false}
+                isAuthenticatedStaff={false}
+              />
+            </div>
+          ) : (
+            <div className="dark:bg-secondary-dark-bg w-0">
+              <Sidebar
+                isAuthenticatedAdmin={false}
+                isAuthenticatedStaff={false}
+              />
+            </div>
+          )}
+          <div
+            className={
+              activeMenu
+                ? "bg-main-bg dark:bg-main-dark-bg min-h-screen w-full md:ml-72"
+                : "flex-2 bg-main-bg dark:bg-main-dark-bg min-h-screen w-full"
+            }
+          >
+            <div className="navbar bg-main-bg dark:bg-main-dark-bg fixed w-full md:static">
+              <Navbar isAuthenticatedAdmin={false} />
+            </div>
+            <div>
+              {themeSettings && <ThemeSettings />}
+             
+            </div>
+          </div>
+        </div> */}
       </BrowserRouter>
     </div>
   );

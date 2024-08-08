@@ -4,6 +4,7 @@ import Hero from "../../components/hero/Hero";
 import SecondHero from "../../components/hero/SecondHero";
 import ProductCard from "../../components/card/Card";
 import HeroAtLast from "../../components/hero/HeroAtLast";
+import Header from "../Header";
 
 const Home = () => {
   const mockProducts = [
@@ -131,6 +132,7 @@ const Home = () => {
 
   return (
     <div className="container mx-auto min-h-screen">
+      <Header />
       <Hero />
       <ProductCard products={mockProducts} headline={"Sản phẩm mới"} />
       <ProductCard products={mockProducts} headline={"Sản phẩm bán chạy"} />

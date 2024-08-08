@@ -6,7 +6,7 @@ import { Toaster } from "react-hot-toast";
 import { useEffect, useState } from "react";
 
 import banner from "../../assets/images/body/babyDrinkMilk.png";
-import Breadcrumbs from "../../components/elements/Breadcrumb";
+import Breadcrumbs from "../../components/Elements/Breadcrumb";
 
 const ListProduct = () => {
   const { addCartItem } = useCartContext();
