@@ -1,11 +1,13 @@
 import React from "react";
 import { MdOutlineCancel } from "react-icons/md";
-import { Button } from ".";
-import { adminProfileData, staffProfileData } from "../data/dummy";
 import Buttonlogout from "@mui/material/Button";
 import { NavLink } from "react-router-dom";
 import { Modal } from "antd";
+
+import Button from "./Button";
+import { adminProfileData, staffProfileData } from "../data/dummy";
 // import { fetchLogout, fetchRefreshToken } from "../data/api";
+
 const UserProfile = ({ isAdmin }) => {
   const user = JSON.parse(localStorage.getItem("user"));
 

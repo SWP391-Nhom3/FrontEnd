@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
 import "./Swiper.css";
-import RenderRating from "../Elements/RenderRating";
+import RenderRating from "../elements/RenderRating";
 
 import { useCartContext } from "../../context/CartContext";
 

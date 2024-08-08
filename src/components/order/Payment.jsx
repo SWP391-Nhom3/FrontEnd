@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Breadcrumbs from "../Elements/Breadcrumb";
+import Breadcrumbs from "../elements/Breadcrumb";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useCartContext } from "../../context/CartContext";
 // import {
@@ -446,7 +446,7 @@ const Payment = () => {
                     >
                       các điều khoản và điều kiện
                     </Link>{" "}
-                    việc mua và đổi trả của MomBabyMilk{" "}
+                    việc mua và đổi trả của MilkJoy{" "}
                   </label>
                 </div>
                 {errorMessage && (
