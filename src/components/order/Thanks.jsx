@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 import successImg from "../../assets/images/background/order-success-poster.png";
 import { IoMdCloseCircleOutline } from "react-icons/io";
-import Breadcrumbs from "../elements/Breadcrumb";
+import Breadcrumbs from "../Elements/Breadcrumb";
 
 const Thanks = () => {
   const location = useLocation();

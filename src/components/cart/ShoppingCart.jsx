@@ -1,12 +1,13 @@
-import cartEmptyImg from "../../assets/images/background/cart_empty.png";
 import { MdDeleteForever } from "react-icons/md";
-import { useCartContext } from "../../context/CartContext";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { FaHeart, FaRegHeart } from "react-icons/fa6";
+
+import cartEmptyImg from "../../assets/images/background/cart_empty.png";
+import { useCartContext } from "../../context/CartContext";
 // import { fetchGetAllVoucher, fetchGetMe, fetchGetVoucher, fetchRefreshToken } from "../../data/api";
 import { Button } from "flowbite-react";
 import { ImGift } from "react-icons/im";
-import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import { useWishlistContext } from "../../context/WishlistContext";
 const ShoppingCart = () => {
   const user = JSON.parse(localStorage.getItem("user")) || null;

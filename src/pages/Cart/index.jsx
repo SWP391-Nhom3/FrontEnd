@@ -1,5 +1,5 @@
 import React from "react";
-import Breadcrumbs from "../../components/elements/Breadcrumb";
+import Breadcrumbs from "../../components/Elements/Breadcrumb";
 import ShoppingCart from "../../components/cart/ShoppingCart";
 
 const Cart = () => {

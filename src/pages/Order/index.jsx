@@ -1,7 +1,8 @@
 import React from "react";
-import Breadcrumbs from "../../components/elements/Breadcrumb";
-import OrderInfor from "../../components/order/OrderInfor";
 import { useLocation } from "react-router-dom";
+
+import Breadcrumbs from "../../components/Elements/Breadcrumb";
+import OrderInfor from "../../components/order/OrderInfor";
 const Order = () => {
   const location = useLocation();
 
