@@ -4,9 +4,13 @@ import LogoImg from "../../assets/images/logo/Logo.png";
 import SearchBar from "./SearchBar";
 import UserBtn from "./userBtn";
 import { useCartContext } from "../../context/CartContext";
+import { useEffect } from "react";
 
 const NavBar = () => {
   const { cartAmount } = useCartContext();
+  useEffect(() => {
+    document.title = "MilkJoy Shop";
+  }, []);
   return (
     <>
       <header className="min-h-16">

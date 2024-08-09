@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LinkToGoogle from "../Google/LinkToGoogle";
 // import { fetchLogin } from "../../../data/api.jsx";
@@ -10,6 +10,9 @@ const LoginForm = () => {
     email: sessionStorage.getItem("email") || "",
     password: sessionStorage.getItem("password") || "",
   });
+  useEffect(() => {
+    document.title = "Login";
+  }, []);
   const mockUsers = [
     {
       email: "admin@example.com",
@@ -47,12 +50,13 @@ const LoginForm = () => {
     );
 
     if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
       // Kiểm tra nếu người dùng là admin thì chuyển hướng đến dashboard
       if (user.role === "admin") {
+        localStorage.setItem("admin", JSON.stringify(user));
         localStorage.setItem("isAuthenticated", "true");
         navigate("/dashboard");
       } else {
+        localStorage.setItem("user", JSON.stringify(user));
         navigate("/"); // Hoặc trang dành cho người dùng thông thường
       }
       toast.success("Đăng nhập thành công!");
