@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 
 import SiginIn from "./pages/Auth/Login";
 import SiginUp from "./pages/Auth/Register";
+import ForgotPassword from "./pages/Auth/ForgotPassword";
 import Home from "./pages/Home";
 import Product from "./pages/Product";
 import Cart from "./pages/Cart";
@@ -53,6 +54,7 @@ const App = () => {
           <Route path="/login" element={<SiginIn />} />
           <Route path="/product" element={<Product />} />
           <Route path="/register" element={<SiginUp />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/list-products" element={<ListProduct />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/order" element={<Order />} />
