@@ -47,6 +47,7 @@ const DropDown = ({ currentMode, onSelect }) => (
 const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
   const { currentColor, currentMode, activeMenu, themeSettings } =
     useStateContext();
+
   const [loading, setLoading] = useState(true);
   const [revenues, setRevenues] = useState([]);
   // const [profit, setProfit] = useState([]);
@@ -82,7 +83,9 @@ const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
     // };
     // getRevenue();
   }, [revenueTimeRange, profitTimeRange]);
-
+  useEffect(() => {
+    document.title = "Administrator Dashboard";
+  }, []);
   //fetch customer
   useEffect(() => {
     // const getCustomer = async () => {

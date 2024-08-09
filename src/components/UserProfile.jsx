@@ -9,7 +9,7 @@ import { adminProfileData, staffProfileData } from "../data/dummy";
 // import { fetchLogout, fetchRefreshToken } from "../data/api";
 
 const UserProfile = ({ isAdmin }) => {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem("admin"));
   const navigate = useNavigate();
 
   const handleLogoutConfirmation = () => {
