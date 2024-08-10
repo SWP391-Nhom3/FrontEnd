@@ -25,7 +25,7 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
   </TooltipComponent>
 );
 
-const user = JSON.parse(localStorage.getItem("user"));
+const user = JSON.parse(localStorage.getItem("admin"));
 
 const Navbar = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
   const {
