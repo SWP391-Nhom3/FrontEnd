@@ -66,7 +66,8 @@ const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
   const [salesTimeRange, setSalesTimeRange] = useState("thisWeek");
   const [order, setOrder] = useState([]);
   const { Option } = Select;
-
+  const isAdmin = JSON.parse(localStorage.getItem("isAdmin")) || null;
+  const isStaff = JSON.parse(localStorage.getItem("isStaff")) || null;
   //fetch revenue
   useEffect(() => {
     // const getRevenue = async () => {
@@ -503,7 +504,7 @@ const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
         </div>
         <div>
           <div className="mt-24">
-            {isAuthenticatedAdmin && (
+            {isAdmin && (
               <div>
                 {/*Row 1*/}
                 <div className="flex flex-wrap justify-center lg:flex-nowrap">
@@ -624,7 +625,7 @@ const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
               </div>
             )}
 
-            {isAuthenticatedStaff && (
+            {isStaff && (
               <div className="w-full">Dashboard cho staff</div>
             )}
           </div>

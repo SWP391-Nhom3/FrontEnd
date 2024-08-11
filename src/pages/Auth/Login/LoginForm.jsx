@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import LinkToGoogle from "../Google/LinkToGoogle";
 // import { fetchLogin } from "../../../data/api.jsx";
 import { toast, Toaster } from "react-hot-toast";
+import { fetchLogin } from "../../../data/api";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -45,71 +46,41 @@ const LoginForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const { email, password } = formValues;
-    const user = mockUsers.find(
-      (user) => user.email === email && user.password === password,
-    );
 
-    if (user) {
-      // Kiểm tra nếu người dùng là admin thì chuyển hướng đến dashboard
-      if (user.role === "admin") {
-        localStorage.setItem("admin", JSON.stringify(user));
-        localStorage.setItem("isAuthenticated", "true");
-        navigate("/dashboard");
-      } else {
-        localStorage.setItem("user", JSON.stringify(user));
-        navigate("/"); // Hoặc trang dành cho người dùng thông thường
-      }
-      toast.success("Đăng nhập thành công!");
-    } else {
-      toast.error("Email hoặc mật khẩu không chính xác!");
-    }
-    // await fetchLogin({
-    //   email,
-    //   password,
-    // })
-    //   .then((res) => {
-    //     const user = res.data.user;
-    //     localStorage.setItem("user", JSON.stringify(user));
-    //     localStorage.setItem("result", JSON.stringify(res.data.result));
+    await fetchLogin(email, password)
+      .then((res) => {
+        console.log(res);
+        localStorage.setItem("result", JSON.stringify(res.data.data));
+        localStorage.setItem("role", JSON.stringify(res.data.data.user.roles));
+        const checkRole = res.data.data.user.roles.map(role => role.name);;
+        console.log(checkRole);
+        if (checkRole[0] === "MEMBER") {
+          localStorage.setItem("isMember", "true");
+        } else if (checkRole[0] === "ADMIN") {
+          localStorage.setItem("isAdmin", "true");
+        } else {
+          localStorage.setItem("isStaff", "true");
+        }
+        
+        if (rememberMe) {
+          sessionStorage.setItem('email', email);
+          sessionStorage.setItem('password', password);
+        } else {
+          sessionStorage.removeItem('email');
+          sessionStorage.removeItem('password');
+        }
 
-    //     if (user.verify === 0) {
-    //       toast.error("Vui lòng xác nhận email!", {
-    //         duration: 5000,
-    //       });
-    //       navigate("/otp", {
-    //         state: {
-    //           navigateTo: "/profile",
-    //           email: user.email,
-    //           user_id: user._id,
-    //         },
-    //       });
-    //       return;
-    //     }
-    //     if (rememberMe) {
-    //       sessionStorage.setItem("email", email);
-    //       sessionStorage.setItem("password", password);
-    //     } else {
-    //       sessionStorage.removeItem("email");
-    //       sessionStorage.removeItem("password");
-    //     }
+        localStorage.getItem("isMember") === "true" ? navigate("/") : navigate("/dashboard");
+        window.location.reload();
+      })
+      .catch((error) => {
+        let errorList = [];
+        for (let [key, value] of Object.entries(error.response.data.errors)) {
+          errorList.push(value);
+          setErrorList(errorList);
+        }
+      });
 
-    //     toast.success("Đăng nhập thành công!", {
-    //       duration: 2000,
-    //     });
-    //     navigate("/");
-    //     window.scrollTo(0, 0);
-    //   })
-    //   .catch((error) => {
-    //     let errorList = [];
-    //     for (let [, value] of Object.entries(error.response.data.errors)) {
-    //       errorList.push(value);
-    //       setErrorList(errorList);
-    //     }
-    //     toast.error("Có lỗi xảy ra, vui lòng thử lại!", {
-    //       position: "top-right",
-    //       duration: 3000,
-    //     });
-    //   });
   };
 
   return (

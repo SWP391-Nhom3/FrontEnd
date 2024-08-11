@@ -1,4 +1,25 @@
-// import axios from "axios";
+import axios from "axios";
+
+const HOSTNAME = "http://localhost:8080/api";
+
+//login api
+export const fetchLogin = async (email, password) => {
+  return await axios.post(`${HOSTNAME}/auth/login`, {
+    email,
+    password,
+  });
+};
+
+//register api
+export const fetchRegister = async ({
+  email,
+  password,
+}) => {
+  return await axios.post(`${HOSTNAME}/users/register`, {
+    email,
+    password,
+  });
+};
 
 // // eslint-disable-next-line no-undef
 // const SCHEMA_HOSTNAME = process.env.REACT_APP_SCHEMA_HOSTNAME;

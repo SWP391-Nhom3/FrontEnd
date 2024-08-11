@@ -11,8 +11,8 @@ const UserBtn = () => {
     navigate("/login");
     localStorage.removeItem("user");
   };
-  const user = JSON.parse(localStorage.getItem("user")) || null;
-  const verify = user?.verify;
+  const result = JSON.parse(localStorage.getItem("result")) || null;
+  // const verify = user?.verify;
   // const navigate = useNavigate();
   // const handleLogout = async () => {
   //   const result = JSON.parse(localStorage.getItem("result"));
@@ -30,7 +30,7 @@ const UserBtn = () => {
       inline
       placement="bottom"
     >
-      {user === null ? (
+      {result === null ? (
         <>
           <Dropdown.Item icon={HiViewGrid} className="w-48" href="/login">
             Đăng Nhập
@@ -40,36 +40,36 @@ const UserBtn = () => {
             Đăng Ký
           </Dropdown.Item>
         </>
-      ) : verify === 0 ? (
-        <>
-          <Link
-            to="/otp"
-            state={{
-              navigateTo: "/profile",
-              email: user.email,
-              user_id: user._id,
-            }}
-            onClick={() => window.scrollTo(0, 0)}
-          >
-            <Dropdown.Item icon={HiCog} className="w-48">
-              Xác Minh Email
-            </Dropdown.Item>
-          </Link>
-          <Dropdown.Divider />
-          <Dropdown.Item
-            icon={HiLogout}
-            onClick={handleLogout}
-            className="w-48"
-          >
-            Đăng Xuất
-          </Dropdown.Item>
-        </>
+        // ) : verify === 0 ? (
+        //   <>
+        //     <Link
+        //       to="/otp"
+        //       state={{
+        //         navigateTo: "/profile",
+        //         email: user.email,
+        //         user_id: user._id,
+        //       }}
+        //       onClick={() => window.scrollTo(0, 0)}
+        //     >
+        //       <Dropdown.Item icon={HiCog} className="w-48">
+        //         Xác Minh Email
+        //       </Dropdown.Item>
+        //     </Link>
+        //     <Dropdown.Divider />
+        //     <Dropdown.Item
+        //       icon={HiLogout}
+        //       onClick={handleLogout}
+        //       className="w-48"
+        //     >
+        //       Đăng Xuất
+        //     </Dropdown.Item>
+        //   </>
       ) : (
         <>
           <Dropdown.Header>
-            <span className="block text-sm">{user.username}</span>
+            <span className="block text-sm">{result.user.lastName} {result.user.firstName}</span>
             <span className="block truncate text-sm font-medium">
-              {user.email}
+              {result.user.email}
             </span>
           </Dropdown.Header>
           <Dropdown.Item icon={HiViewGrid} className="w-48" href="/profile">
