@@ -1,33 +1,35 @@
 import React, { useEffect, useState } from "react";
-// import RenderRating from "../../components/Element/RenderRating";
 import { useNavigate } from "react-router-dom";
-// import { fetchProducts, fetchUpdateProduct } from "../../data/api";
 import { Card } from "primereact/card";
 import { Button, Image, Modal, Rate, Switch, Table, notification } from "antd";
 import Loading from "../../components/Loading";
 import Search from "antd/es/input/Search";
+import axios from "axios";
+
 const Product = () => {
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(7);
+  const [searchText, setSearchText] = useState("");
   const navigate = useNavigate();
   const isAuthenticatedStaff =
     localStorage.getItem("isAuthenticatedStaff") === "true";
-  const [searchText, setSearchText] = useState("");
+  console.log(products);
 
   useEffect(() => {
-    // const getProducts = async () => {
-    //   try {
-    //     const productData = await fetchProducts();
-    //     setProducts(productData);
-    //     setLoading(false);
-    //   } catch (error) {
-    //     console.error("Error fetching products:", error);
-    //     setLoading(false);
-    //   }
-    // };
-    // getProducts();
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/products",
+        );
+        setProducts(response.data.data);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchData();
   }, []);
 
   const updateProduct = async (product) => {
@@ -35,22 +37,67 @@ const Product = () => {
     const id = product._id;
     // await fetchUpdateProduct(product, token, id);
   };
+  const handleDeleteProduct = async (id) => {
+    Modal.confirm({
+      title: "Xác nhận xóa sản phẩm",
+      content: "Bạn có chắc chắn muốn xóa sản phẩm này?",
+      onOk: async () => {
+        try {
+          // Xóa sản phẩm
+          await axios.delete(`http://localhost:8080/api/products/${id}`);
+          
+          // Làm mới danh sách sản phẩm
+          const response = await axios.get("http://localhost:8080/api/products");
+          setProducts(response.data.data);
+  
+          notification.success({
+            message: "Thành công",
+            description: "Sản phẩm đã được xóa thành công!",
+            placement: "top",
+          });
+        } catch (error) {
+          console.error("Error deleting product:", error.response ? error.response.data : error.message);
+          notification.error({
+            message: "Lỗi",
+            description: "Có lỗi xảy ra khi xóa sản phẩm!",
+            placement: "top",
+          });
+        }
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+      okButtonProps: {
+        style: {
+          backgroundColor: "#FF4D4F",
+          borderColor: "#FF4D4F",
+        },
+      },
+      cancelButtonProps: {
+        style: {
+          backgroundColor: "#46B5C1",
+          borderColor: "#46B5C1",
+          color: "#FFFFFF",
+        },
+      },
+      cancelText: "Đóng",
+      okText: "Đồng ý",
+    });
+  };
+  
+
 
   const handleSwitchChange = (checked, product) => {
     Modal.confirm({
       title: "Xác nhận thay đổi trạng thái sản phẩm",
-      content: `Bạn có muốn thay đổi trạng thái sản phẩm? Hiện đang ${
-        checked ? "tắt" : "bật"
-      }`,
+      content: `Bạn có muốn thay đổi trạng thái sản phẩm? Hiện đang ${checked ? "tắt" : "bật"}`,
       onOk: async () => {
         product.isActive = checked;
         await updateProduct(product);
         setProducts([...products]);
         notification.success({
           message: "Thành công",
-          description: `Thay đổi thành công! Sản phẩm hiện đang ${
-            checked ? "bật" : "tắt"
-          }`,
+          description: `Thay đổi thành công! Sản phẩm hiện đang ${checked ? "bật" : "tắt"}`,
           placement: "top",
         });
       },
@@ -85,31 +132,32 @@ const Product = () => {
     },
     {
       title: "Sản Phẩm",
-      dataIndex: "product_name",
-      key: "product_name",
+      dataIndex: "name",
+      key: "name",
       width: "15%",
       render: (text) => <span>{text}</span>,
     },
     {
       title: "Loại Sản Phẩm",
-      dataIndex: "category_name",
-      key: "category_name",
+      dataIndex: "category",
+      key: "category",
       width: "10%",
-      sorter: (a, b) => a.category_name.localeCompare(b.category_name),
+      render: (category) => <span>{category.name}</span>,
     },
     {
       title: "Thương Hiệu",
-      dataIndex: "brand_name",
-      key: "brand_name",
+      dataIndex: "brand",
+      key: "brand",
       width: "10%",
-      sorter: (a, b) => a.brand_name.localeCompare(b.brand_name),
+      render: (brand) => <span>{brand.name}</span>,
+      sorter: (a, b) => a.brand.name.localeCompare(b.brand.name),
     },
     {
       title: "Số Lượng",
-      dataIndex: "amount",
-      key: "amount",
+      dataIndex: "stockQuantity",
+      key: "stockQuantity",
       width: "5%",
-      sorter: (a, b) => a.amount - b.amount,
+      sorter: (a, b) => a.stockQuantity - b.stockQuantity,
     },
     {
       title: "Đánh Giá",
@@ -154,8 +202,8 @@ const Product = () => {
     },
     {
       title: "Doanh Thu",
-      dataIndex: "revenue",
-      key: "revenue",
+      dataIndex: "price",
+      key: "price",
       width: 100,
       render: (text, record) => {
         const revenue = record.sales * record.price;
@@ -165,45 +213,64 @@ const Product = () => {
         }).format(revenue);
       },
     },
+    {
+      title: "Action",
+      key: "action",
+      width: 100,
+      render: (text, record) => (
+        <Button
+          type="primary"
+          danger
+          onClick={() => handleDeleteProduct(record.id)}
+        >
+          Xóa
+        </Button>
+      ),
+    },
     ...(isAuthenticatedStaff
       ? [
-          {
-            title: "Trạng Thái",
-            dataIndex: "isActive",
-            key: "isActive",
-            width: 100,
-            sorter: (a, b) => a.isActive - b.isActive,
-            render: (text, record) => (
-              <Switch
-                checked={record.isActive}
-                onChange={(checked) => handleSwitchChange(checked, record)}
-                style={{
-                  backgroundColor: record.isActive ? "#4A99FF" : "#898989",
-                }}
-              />
-            ),
-          },
-          {
-            title: "Chi Tiết",
-            dataIndex: "_id",
-            key: "_id",
-            width: 100,
-            render: (text) => <a href={`/edit-product?id=${text}`}>Chi Tiết</a>,
-          },
-        ]
+        {
+          title: "Trạng Thái",
+          dataIndex: "isActive",
+          key: "isActive",
+          width: 100,
+          sorter: (a, b) => a.isActive - b.isActive,
+          render: (text, record) => (
+            <Switch
+              checked={record.isActive}
+              onChange={(checked) => handleSwitchChange(checked, record)}
+              style={{
+                backgroundColor: record.isActive ? "#4A99FF" : "#898989",
+              }}
+            />
+          ),
+        },
+        {
+          title: "Chi Tiết",
+          dataIndex: "_id",
+          key: "_id",
+          width: 100,
+          render: (text) => <a href={`/edit-product?id=${text}`}>Chi Tiết</a>,
+        }
+      ]
       : []),
   ];
 
   const onSearch = (value) => {
     setSearchText(value);
   };
-  const filteredProducts = products.filter((product) =>
-    product.product_name.toLowerCase().includes(searchText.toLowerCase()),
+
+  const filteredProducts = products.filter(
+    (product) =>
+      product.name &&
+      product.name.toLowerCase().includes(searchText.toLowerCase())
   );
+
 
   if (loading) {
     return <Loading />;
   }
+
   return (
     <div style={{ display: "flex", justifyContent: "center", height: "auto" }}>
       <Card
@@ -224,7 +291,7 @@ const Product = () => {
               onSearch={onSearch}
               style={{ width: "40%" }}
             />
-            {/* {isAuthenticatedStaff &&
+            {isAuthenticatedStaff && (
               <Button
                 type="primary"
                 size="large"
@@ -232,7 +299,8 @@ const Product = () => {
                 onClick={() => navigate("/add-product")}
               >
                 Thêm sản phẩm mới
-              </Button>} */}
+              </Button>
+            )}
             <div>
               <h5 className="flex justify-between text-sm sm:text-base">
                 <div className="text-gray-500">Tổng sản phẩm: </div>
@@ -246,7 +314,7 @@ const Product = () => {
                     currency: "VND",
                   }).format(
                     products.reduce(
-                      (sum, product) => sum + product.sales * product.price,
+                      (sum, product) => sum + product.price * product.stockQuantity,
                       0,
                     ),
                   )}
@@ -273,4 +341,5 @@ const Product = () => {
     </div>
   );
 };
+
 export default Product;
