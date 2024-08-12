@@ -116,10 +116,8 @@ const App = () => {
           </>
         ) : (
           <>
-            {" "}
             <Header />
             <Routes>
-              {" "}
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<SiginIn />} />
               <Route path="/product" element={<Product />} />

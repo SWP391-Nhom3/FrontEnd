@@ -13,39 +13,20 @@ const UserProfile = ({ isAdmin }) => {
   const navigate = useNavigate();
 
   const handleLogoutConfirmation = () => {
-    // Điều hướng người dùng tới trang login
     navigate("/login");
     localStorage.removeItem("user");
+    localStorage.removeItem("role");
+    localStorage.removeItem("result");
+    localStorage.removeItem("isAdmin");
+    localStorage.removeItem("isStaff");
+    window.location.reload();
   };
   const handleLogout = async () => {
-    const result = JSON.parse(localStorage.getItem("result"));
     Modal.confirm({
       title: "Xác nhận đăng xuất",
       content: `Bạn có chắc chắn muốn đăng xuất?`,
       onConfirm: handleLogoutConfirmation,
-      // onOk: async () => {
-      //   // const logout = async () => {
-      //   //   await fetchLogout(result)
-      //   //     .then((res) => {
-      //   //       localStorage.clear();
-      //   //       window.location.reload();
-      //   //     })
-      //   //     .catch(async (err) => {
-      //   //       await fetchRefreshToken(result)
-      //   //         .then((res) => {
-      //   //           logout();
-      //   //         })
-      //   //         .catch((error) => {
-      //   //           localStorage.clear();
-      //   //           window.location.reload();
-      //   //         });
-      //   //     });
-      //   //   localStorage.clear();
-      //   //   window.location.reload();
-      //   // };
 
-      //   logout();
-      // },
       onCancel() {},
       okButtonProps: {
         style: {

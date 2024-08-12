@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const HOSTNAME = "http://localhost:8081/api";
+const HOSTNAME = "http://localhost:8080/api";
 
 //login api
 export const fetchLogin = async (email, password) => {
