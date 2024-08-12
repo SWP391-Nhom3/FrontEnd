@@ -16,10 +16,10 @@ const ForgotPasswordForm = () => {
       [name]: value,
     });
   };
-  
+
   //!! Fetch forgot password ở đây !!
   const handleSubmit = async (event) => {
-   /* event.preventDefault();
+    /* event.preventDefault();
     const { email } = formValues;
     await fetchForgotPassword({ email })
       .then((res) => {
@@ -42,9 +42,9 @@ const ForgotPasswordForm = () => {
   };
 
   return (
-    <div className="w-full px-10 py-12 rounded-3xl border-solid border-2 border-[rgba(0,0,0,0.1)] shadow-2xl">
+    <div className="w-full rounded-3xl border-2 border-solid border-[rgba(0,0,0,0.1)] px-10 py-12 shadow-2xl">
       <Toaster />
-      <p className="font-medium text-2xl text-gray-500 mt-4">
+      <p className="mt-4 text-2xl font-medium text-gray-500">
         Vui lòng kiểm tra mail sau khi xác nhận!
       </p>
       <div className="mt-8">
@@ -52,7 +52,7 @@ const ForgotPasswordForm = () => {
           <div className="flex flex-col">
             <label className="text-lg font-medium">Địa Chỉ Email</label>
             <input
-              className="w-full border-2 rounded-xl p-4 mt-1 bg-transparent border-[rgba(0,0,0,0.2)]"
+              className="mt-1 w-full rounded-xl border-2 border-[rgba(0,0,0,0.2)] bg-transparent p-4"
               id="email"
               name="email"
               value={formValues.email}
@@ -63,13 +63,13 @@ const ForgotPasswordForm = () => {
           <div className="mt-8 flex flex-col gap-y-4">
             <button
               type="submit"
-              className="active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01] ease-in-out transform py-4 bg-violet-500 rounded-xl text-white font-bold text-lg"
+              className="transform rounded-xl bg-violet-500 py-4 text-lg font-bold text-white transition-all ease-in-out hover:scale-[1.01] active:scale-[.98] active:duration-75"
             >
               Xác Nhận
             </button>
           </div>
           {errorList.length > 0 && (
-            <div className="error-list mt-3 mb-3">
+            <div className="error-list mb-3 mt-3">
               {errorList.map((error, index) => (
                 <p key={index} className="text-red-600">
                   {error}

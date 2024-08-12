@@ -49,11 +49,10 @@ const LoginForm = () => {
 
     await fetchLogin(email, password)
       .then((res) => {
-        console.log(res);
         localStorage.setItem("result", JSON.stringify(res.data.data));
+        localStorage.setItem("user", JSON.stringify(res.data.data.user));
         localStorage.setItem("role", JSON.stringify(res.data.data.user.roles));
-        const checkRole = res.data.data.user.roles.map(role => role.name);;
-        console.log(checkRole);
+        const checkRole = res.data.data.user.roles.map((role) => role.name);
         if (checkRole[0] === "MEMBER") {
           localStorage.setItem("isMember", "true");
         } else if (checkRole[0] === "ADMIN") {
@@ -61,16 +60,18 @@ const LoginForm = () => {
         } else {
           localStorage.setItem("isStaff", "true");
         }
-        
+
         if (rememberMe) {
-          sessionStorage.setItem('email', email);
-          sessionStorage.setItem('password', password);
+          sessionStorage.setItem("email", email);
+          sessionStorage.setItem("password", password);
         } else {
-          sessionStorage.removeItem('email');
-          sessionStorage.removeItem('password');
+          sessionStorage.removeItem("email");
+          sessionStorage.removeItem("password");
         }
 
-        localStorage.getItem("isMember") === "true" ? navigate("/") : navigate("/dashboard");
+        localStorage.getItem("isMember") === "true"
+          ? navigate("/")
+          : navigate("/dashboard");
         window.location.reload();
       })
       .catch((error) => {
@@ -80,7 +81,6 @@ const LoginForm = () => {
           setErrorList(errorList);
         }
       });
-
   };
 
   return (

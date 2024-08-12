@@ -8,7 +8,7 @@ import {
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { adminlinks, stafflinks } from "../data/dummy";
 import { useStateContext } from "../context/ContextProvider";
-import logoImg from "../assets/logo/Logo.png";
+import logoImg from "../assets/images/logo/Logo.png";
 import { Badge } from "antd";
 
 const Sidebar = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
@@ -22,7 +22,6 @@ const Sidebar = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
     if (activeMenu !== undefined && screenSize <= 900) {
       setActiveMenu(false);
     }
-    console.log("handleCloseSideBar triggered");
   };
 
   const toggleSubmenu = (name) => {
@@ -90,9 +89,9 @@ const Sidebar = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
               onClick={handleCloseSideBar}
               className="ml-3 mt-4 flex items-center gap-3 text-xl font-extrabold tracking-tight text-slate-900 dark:text-white"
             >
-              <span className="my-2 w-full">
-                <img src={logoImg} alt="logo" />
-              </span>
+              <div className="my-2 w-1/2">
+                <img className="rounded-lg" src={logoImg} alt="logo" />
+              </div>
             </Link>
             <TooltipComponent content="Menu" position="BottomCenter">
               <button

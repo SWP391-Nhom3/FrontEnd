@@ -9,7 +9,7 @@ import { adminProfileData, staffProfileData } from "../data/dummy";
 // import { fetchLogout, fetchRefreshToken } from "../data/api";
 
 const UserProfile = ({ isAdmin }) => {
-  const user = JSON.parse(localStorage.getItem("admin"));
+  const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
 
   const handleLogoutConfirmation = () => {
@@ -69,16 +69,13 @@ const UserProfile = ({ isAdmin }) => {
       <div className="border-b-1 border-color flex items-center justify-between gap-5 pb-6">
         <div>
           <p className="text-xl font-semibold dark:text-gray-200">
-            {" "}
-            {user.full_name}{" "}
+            {user.firstName} {user.lastName}
           </p>
           <p className="text-lg font-semibold text-gray-500 dark:text-gray-400">
-            {" "}
             {isAdmin ? "Quản trị viên" : "Nhân viên"}
           </p>
           <p className="text-sm font-semibold text-gray-500 dark:text-gray-400">
-            {" "}
-            {user.email}{" "}
+            {user.email}
           </p>
         </div>
         <Button
@@ -114,8 +111,7 @@ const UserProfile = ({ isAdmin }) => {
                       {item.title}
                     </p>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
-                      {" "}
-                      {item.desc}{" "}
+                      {item.desc}
                     </p>
                   </div>
                 </div>

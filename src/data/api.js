@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const HOSTNAME = "http://localhost:8080/api";
+const HOSTNAME = "http://localhost:8081/api";
 
 //login api
 export const fetchLogin = async (email, password) => {
@@ -11,10 +11,7 @@ export const fetchLogin = async (email, password) => {
 };
 
 //register api
-export const fetchRegister = async ({
-  email,
-  password,
-}) => {
+export const fetchRegister = async ({ email, password }) => {
   return await axios.post(`${HOSTNAME}/users/register`, {
     email,
     password,

@@ -40,6 +40,7 @@ const UserBtn = () => {
             Đăng Ký
           </Dropdown.Item>
         </>
+      ) : (
         // ) : verify === 0 ? (
         //   <>
         //     <Link
@@ -64,10 +65,11 @@ const UserBtn = () => {
         //       Đăng Xuất
         //     </Dropdown.Item>
         //   </>
-      ) : (
         <>
           <Dropdown.Header>
-            <span className="block text-sm">{result.user.lastName} {result.user.firstName}</span>
+            <span className="block text-sm">
+              {result.user.lastName} {result.user.firstName}
+            </span>
             <span className="block truncate text-sm font-medium">
               {result.user.email}
             </span>
