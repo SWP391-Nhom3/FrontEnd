@@ -25,7 +25,7 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
   </TooltipComponent>
 );
 
-const user = JSON.parse(localStorage.getItem("admin"));
+const user = JSON.parse(localStorage.getItem("user"));
 
 const Navbar = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
   const {
@@ -80,9 +80,9 @@ const Navbar = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
             onClick={() => handleClick("userProfile")}
           >
             <p>
-              <span className="text-14 text-gray-400">Xin chào,</span>{" "}
+              <span className="text-14 text-gray-400">Xin chào,</span>
               <span className="text-14 ml-1 font-bold text-gray-400">
-                {user?.email}
+                {user?.firstName}
               </span>
             </p>
             <MdKeyboardArrowDown className="text-14 text-gray-400" />

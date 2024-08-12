@@ -9,16 +9,16 @@ const ForgotPassword = () => {
       <Breadcrumbs headline="Quên Mật Khẩu" />
       <div
         className={
-          "w-full bg-cover bg-center flex flex-col lg:flex-row gap-8 my-4"
+          "my-4 flex w-full flex-col gap-8 bg-cover bg-center lg:flex-row"
         }
         style={{ backgroundImage: `url(${logBg})` }}
       >
-        <div className="lg:w-3/5 hidden lg:block">
-          <div className="flex items-center justify-center w-full h-full">
-            <img src={forgotImg} className="w-[80%] h-auto" />
+        <div className="hidden lg:block lg:w-3/5">
+          <div className="flex h-full w-full items-center justify-center">
+            <img src={forgotImg} className="h-auto w-[80%]" />
           </div>
         </div>
-        <div className="lg:w-2/5 w-full flex items-center justify-center">
+        <div className="flex w-full items-center justify-center lg:w-2/5">
           <ForgotPasswordForm />
         </div>
       </div>

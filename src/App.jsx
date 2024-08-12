@@ -18,11 +18,15 @@ import Contact from "./pages/InformationPage/Contact";
 import ListProduct from "./components/product/ListProduct";
 import Dashboard from "./pages/Dashboard";
 import { useStateContext } from "./context/ContextProvider";
+import Sidebar from "./components/Sidebar";
+import AdminFooter from "./components/Footer/AdminFooter";
+import AdminNavbar from "./components/header/AdminNavbar";
+import Header from "./pages/Header";
 
 import "./App.css";
 
 const App = () => {
-  const { currentMode, activeMenu } = useStateContext();
+  const { currentMode, activeMenu, themeSettings } = useStateContext();
 
   const result = JSON.parse(localStorage.getItem("result")) || null;
   useEffect(() => {
@@ -41,34 +45,96 @@ const App = () => {
     checkToken();
   }, []);
 
-  const isAuthenticatedAdmin =
-    localStorage.getItem("isAuthenticatedAdmin") === "true";
-  const isAuthenticatedStaff =
-    localStorage.getItem("isAuthenticatedStaff") === "true";
-
+  const isAuthenticatedAdmin = localStorage.getItem("isAdmin") === "true";
+  const isAuthenticatedStaff = localStorage.getItem("isStaff") === "true";
   return (
     <div>
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<SiginIn />} />
-          <Route path="/product" element={<Product />} />
-          <Route path="/register" element={<SiginUp />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/list-products" element={<ListProduct />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/order" element={<Order />} />
-          <Route path="/payment" element={<Payment />} />
-          <Route path="/thanks" element={<Thanks />} />
-          <Route path="/about_us" element={<AboutUs />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/exchange_policy" element={<ExchangePolicy />} />
-          <Route path="/privacy_policy" element={<PrivacyPolicy />} />
-          <Route
-            path="/dashboard"
-            element={<Dashboard isAuthenticatedAdmin={true} />}
-          />
-        </Routes>
+        {isAuthenticatedStaff ? (
+          <>
+            {activeMenu ? (
+              <div className="sidebar dark:bg-secondary-dark-bg fixed w-72 bg-white">
+                <Sidebar isAuthenticatedStaff={isAuthenticatedStaff} />
+              </div>
+            ) : (
+              <div className="dark:bg-secondary-dark-bg w-0">
+                <Sidebar isAuthenticatedStaff={isAuthenticatedStaff} />
+              </div>
+            )}
+            <div
+              className={
+                activeMenu
+                  ? "dark:bg-main-dark-bg bg-main-bg min-h-screen w-full md:ml-72"
+                  : "bg-main-bg dark:bg-main-dark-bg flex-2 min-h-screen w-full"
+              }
+            >
+              <div className="bg-main-bg dark:bg-main-dark-bg navbar fixed w-full md:static">
+                <AdminNavbar isAuthenticatedStaff={isAuthenticatedStaff} />
+              </div>
+              <Routes>
+                <Route
+                  path="/dashboard"
+                  element={
+                    <Dashboard isAuthenticatedStaff={isAuthenticatedStaff} />
+                  }
+                />
+              </Routes>
+            </div>
+            <AdminFooter />
+          </>
+        ) : isAuthenticatedAdmin ? (
+          <>
+            {activeMenu ? (
+              <div className="sidebar dark:bg-secondary-dark-bg fixed w-72 bg-white">
+                <Sidebar isAuthenticatedAdmin={isAuthenticatedAdmin} />
+              </div>
+            ) : (
+              <div className="dark:bg-secondary-dark-bg w-0">
+                <Sidebar isAuthenticatedAdmin={isAuthenticatedAdmin} />
+              </div>
+            )}
+            <div
+              className={
+                activeMenu
+                  ? "dark:bg-main-dark-bg bg-main-bg min-h-screen w-full md:ml-72"
+                  : "bg-main-bg dark:bg-main-dark-bg flex-2 min-h-screen w-full"
+              }
+            >
+              <div className="bg-main-bg dark:bg-main-dark-bg navbar fixed w-full md:static">
+                <AdminNavbar isAuthenticatedAdmin={isAuthenticatedAdmin} />
+              </div>
+              <Routes>
+                <Route
+                  path="/dashboard"
+                  element={
+                    <Dashboard isAuthenticatedAdmin={isAuthenticatedAdmin} />
+                  }
+                />
+              </Routes>
+            </div>
+            <AdminFooter />
+          </>
+        ) : (
+          <>
+            <Header />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<SiginIn />} />
+              <Route path="/product" element={<Product />} />
+              <Route path="/register" element={<SiginUp />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/list-products" element={<ListProduct />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/order" element={<Order />} />
+              <Route path="/payment" element={<Payment />} />
+              <Route path="/thanks" element={<Thanks />} />
+              <Route path="/about_us" element={<AboutUs />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/exchange_policy" element={<ExchangePolicy />} />
+              <Route path="/privacy_policy" element={<PrivacyPolicy />} />
+            </Routes>
+          </>
+        )}
       </BrowserRouter>
     </div>
   );

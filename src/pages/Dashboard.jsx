@@ -3,9 +3,6 @@ import { BsBoxSeam, BsCurrencyDollar } from "react-icons/bs";
 // import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 
 import { useStateContext } from "../context/ContextProvider";
-import AdminNavbar from "../components/header/AdimNavbar";
-import Sidebar from "../components/Sidebar";
-import AdminFooter from "../components/Footer/AdminFooter";
 
 // import {
 //   fetchAllUsers,
@@ -45,8 +42,7 @@ const DropDown = ({ currentMode, onSelect }) => (
 );
 
 const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
-  const { currentColor, currentMode, activeMenu, themeSettings } =
-    useStateContext();
+  const { currentColor, currentMode } = useStateContext();
 
   const [loading, setLoading] = useState(true);
   const [revenues, setRevenues] = useState([]);
@@ -66,7 +62,6 @@ const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
   const [salesTimeRange, setSalesTimeRange] = useState("thisWeek");
   const [order, setOrder] = useState([]);
   const { Option } = Select;
-
   //fetch revenue
   useEffect(() => {
     // const getRevenue = async () => {
@@ -168,13 +163,6 @@ const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
       endOfWeek.setDate(startOfWeek.getDate() + 6);
       endOfWeek.setHours(23, 59, 59, 999);
 
-      console.log(
-        "dau tuan:",
-        startOfWeek.toISOString(),
-        "cuoi tuan:",
-        endOfWeek.toISOString(),
-      );
-
       filteredData = data.filter((item) => {
         const completedDate = convertToVietnamTime(
           new Date(item.completed_date),
@@ -244,13 +232,6 @@ const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
       const endOfWeek = new Date(startOfWeek);
       endOfWeek.setDate(startOfWeek.getDate() + 6);
       endOfWeek.setHours(23, 59, 59, 999);
-
-      console.log(
-        "dau tuan:",
-        startOfWeek.toISOString(),
-        "cuoi tuan:",
-        endOfWeek.toISOString(),
-      );
 
       filteredData = data.filter((item) => {
         const completedDate = convertToVietnamTime(
@@ -347,7 +328,6 @@ const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
           item.order.status === 2
         );
       });
-      console.log("sales:", filteredData);
     } else if (timeRange === "thisMonth") {
       filteredData = data.filter((item) => {
         const completedDate = convertToVietnamTime(
@@ -481,156 +461,125 @@ const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
   //   return <div className="mx-6 h-full w-full py-6">Loading...</div>;
   // }
   return (
-    <div>
-      {activeMenu ? (
-        <div className="sidebar dark:bg-secondary-dark-bg fixed w-72 bg-white">
-          <Sidebar isAuthenticatedAdmin={true} isAuthenticatedStaff={true} />
-        </div>
-      ) : (
-        <div className="dark:bg-secondary-dark-bg w-0">
-          <Sidebar isAuthenticatedAdmin={true} isAuthenticatedStaff={true} />
-        </div>
-      )}
-      <div
-        className={
-          activeMenu
-            ? "bg-main-bg dark:bg-main-dark-bg min-h-screen w-full md:ml-72"
-            : "flex-2 bg-main-bg dark:bg-main-dark-bg min-h-screen w-full"
-        }
-      >
-        <div className="navbar bg-main-bg dark:bg-main-dark-bg fixed w-full md:static">
-          <AdminNavbar isAuthenticatedAdmin={true} />
-        </div>
+    <div className="mt-24">
+      {isAuthenticatedAdmin && (
         <div>
-          <div className="mt-24">
-            {isAuthenticatedAdmin && (
-              <div>
-                {/*Row 1*/}
-                <div className="flex flex-wrap justify-center lg:flex-nowrap">
-                  <Row justify="space-between" gutter={[16, 16]}>
-                    {earningData.map((item) => (
-                      <Col key={item.title} span={4}>
-                        <div
-                          style={{ position: "relative" }}
-                          className="dark:bg-secondary-dark-bg h-44 rounded-2xl bg-white p-4 pt-9 dark:text-gray-200 md:w-56"
-                        >
-                          <div
-                            style={{
-                              position: "absolute",
-                              right: "10px",
-                              top: "10px",
-                            }}
-                          >
-                            {item.dropdown}
-                          </div>
-                          <button
-                            type="button"
-                            style={{
-                              color: item.iconColor,
-                              backgroundColor: item.iconBg,
-                            }}
-                            className="opacity-0.9 rounded-full p-4 text-2xl hover:drop-shadow-xl"
-                          >
-                            {item.icon}
-                          </button>
-                          <p className="mt-3">
-                            <span className="text-lg font-semibold">
-                              {item.amount}
-                            </span>
-                            <span
-                              className={`text-sm text-${item.pcColor} ml-2`}
-                            >
-                              {item.percentage}
-                            </span>
-                          </p>
-                          <p className="mt-1 text-sm text-gray-400">
-                            {item.title}
-                          </p>
-                        </div>
-                      </Col>
-                    ))}
-                  </Row>
-                </div>
-
-                {/*Row 2*/}
-                <div className="flex flex-wrap justify-center gap-10">
-                  <div className="dark:bg-secondary-dark-bg md:w-780 m-3 rounded-2xl bg-white p-4 dark:text-gray-200">
-                    <div className="flex justify-between">
-                      <p className="text-xl font-semibold">
-                        Bảng tương quan giữa doanh thu và vốn
-                      </p>
-                    </div>
-                    <div>
-                      <RevenueMixCost />
-                    </div>
-                  </div>
-                  <div>
+          {/*Row 1*/}
+          <div className="flex flex-wrap justify-center lg:flex-nowrap">
+            <Row justify="space-between" gutter={[16, 16]}>
+              {earningData.map((item) => (
+                <Col key={item.title} span={4}>
+                  <div
+                    style={{ position: "relative" }}
+                    className="dark:bg-secondary-dark-bg h-44 rounded-2xl bg-white p-4 pt-9 dark:text-gray-200 md:w-56"
+                  >
                     <div
-                      className="md:w-400 m-3 rounded-2xl p-4"
-                      style={{ backgroundColor: currentColor }}
+                      style={{
+                        position: "absolute",
+                        right: "10px",
+                        top: "10px",
+                      }}
                     >
-                      <div className="flex items-center justify-between">
-                        <p className="text-xl font-semibold text-white">
-                          Thống kê lợi nhuận
-                        </p>
-                      </div>
-
-                      <div className="mt-0">
-                        <MonthlyProfit />
-                      </div>
+                      {item.dropdown}
                     </div>
-
-                    <div className="dark:bg-secondary-dark-bg md:w-400 m-3 flex items-center justify-center gap-10 rounded-2xl bg-white p-8 dark:text-gray-200">
-                      <div>
-                        <p className="text-xl font-semibold">
-                          Thống kê phân loại sữa theo lượt mua
-                        </p>
-                      </div>
-
-                      <div className="w-40">
-                        <BestCategory />
-                      </div>
-                    </div>
+                    <button
+                      type="button"
+                      style={{
+                        color: item.iconColor,
+                        backgroundColor: item.iconBg,
+                      }}
+                      className="opacity-0.9 rounded-full p-4 text-2xl hover:drop-shadow-xl"
+                    >
+                      {item.icon}
+                    </button>
+                    <p className="mt-3">
+                      <span className="text-lg font-semibold">
+                        {item.amount}
+                      </span>
+                      <span className={`text-sm text-${item.pcColor} ml-2`}>
+                        {item.percentage}
+                      </span>
+                    </p>
+                    <p className="mt-1 text-sm text-gray-400">{item.title}</p>
                   </div>
+                </Col>
+              ))}
+            </Row>
+          </div>
+
+          {/*Row 2*/}
+          <div className="flex flex-wrap justify-center gap-10">
+            <div className="dark:bg-secondary-dark-bg md:w-780 m-3 rounded-2xl bg-white p-4 dark:text-gray-200">
+              <div className="flex justify-between">
+                <p className="text-xl font-semibold">
+                  Bảng tương quan giữa doanh thu và vốn
+                </p>
+              </div>
+              <div>
+                <RevenueMixCost />
+              </div>
+            </div>
+            <div>
+              <div
+                className="md:w-400 m-3 rounded-2xl p-4"
+                style={{ backgroundColor: currentColor }}
+              >
+                <div className="flex items-center justify-between">
+                  <p className="text-xl font-semibold text-white">
+                    Thống kê lợi nhuận
+                  </p>
                 </div>
 
-                {/* Row 3 */}
-                <div className="m-4 flex flex-wrap justify-center gap-10">
-                  <div className="dark:bg-secondary-dark-bg rounded-2xl bg-white p-6 dark:text-gray-200">
-                    <div className="flex items-center justify-between gap-2">
-                      <p className="text-xl font-semibold">
-                        Số lượng hàng tồn kho
-                      </p>
-                      <DropDown
-                        currentMode={currentMode}
-                        onSelect={setSelectedOption}
-                      />
-                    </div>
-                    <div className="md:w-400 mt-2 w-72">
-                      <ProductStock selectedOption={selectedOption} />
-                    </div>
-                  </div>
-                  <div className="dark:bg-secondary-dark-bg md:w-760 w-96 rounded-2xl bg-white p-6 dark:text-gray-200">
-                    <div className="mb-10 flex items-center justify-between gap-2">
-                      <p className="text-xl font-semibold">
-                        Thống kê trạng thái đơn hàng theo tháng
-                      </p>
-                    </div>
-                    <div className="overflow-auto md:w-full">
-                      <MonthlyOrder />
-                    </div>
-                  </div>
+                <div className="mt-0">
+                  <MonthlyProfit />
                 </div>
               </div>
-            )}
 
-            {isAuthenticatedStaff && (
-              <div className="w-full">Dashboard cho staff</div>
-            )}
+              <div className="dark:bg-secondary-dark-bg md:w-400 m-3 flex items-center justify-center gap-10 rounded-2xl bg-white p-8 dark:text-gray-200">
+                <div>
+                  <p className="text-xl font-semibold">
+                    Thống kê phân loại sữa theo lượt mua
+                  </p>
+                </div>
+
+                <div className="w-40">
+                  <BestCategory />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Row 3 */}
+          <div className="m-4 flex flex-wrap justify-center gap-10">
+            <div className="dark:bg-secondary-dark-bg rounded-2xl bg-white p-6 dark:text-gray-200">
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-xl font-semibold">Số lượng hàng tồn kho</p>
+                <DropDown
+                  currentMode={currentMode}
+                  onSelect={setSelectedOption}
+                />
+              </div>
+              <div className="md:w-400 mt-2 w-72">
+                <ProductStock selectedOption={selectedOption} />
+              </div>
+            </div>
+            <div className="dark:bg-secondary-dark-bg md:w-760 w-96 rounded-2xl bg-white p-6 dark:text-gray-200">
+              <div className="mb-10 flex items-center justify-between gap-2">
+                <p className="text-xl font-semibold">
+                  Thống kê trạng thái đơn hàng theo tháng
+                </p>
+              </div>
+              <div className="overflow-auto md:w-full">
+                <MonthlyOrder />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <AdminFooter />
+      )}
+
+      {isAuthenticatedStaff && (
+        <div className="w-full">Dashboard cho staff</div>
+      )}
     </div>
   );
 };

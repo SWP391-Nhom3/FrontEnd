@@ -9,43 +9,24 @@ import { adminProfileData, staffProfileData } from "../data/dummy";
 // import { fetchLogout, fetchRefreshToken } from "../data/api";
 
 const UserProfile = ({ isAdmin }) => {
-  const user = JSON.parse(localStorage.getItem("admin"));
+  const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
 
   const handleLogoutConfirmation = () => {
-    // Điều hướng người dùng tới trang login
     navigate("/login");
     localStorage.removeItem("user");
+    localStorage.removeItem("role");
+    localStorage.removeItem("result");
+    localStorage.removeItem("isAdmin");
+    localStorage.removeItem("isStaff");
+    window.location.reload();
   };
   const handleLogout = async () => {
-    const result = JSON.parse(localStorage.getItem("result"));
     Modal.confirm({
       title: "Xác nhận đăng xuất",
       content: `Bạn có chắc chắn muốn đăng xuất?`,
       onConfirm: handleLogoutConfirmation,
-      // onOk: async () => {
-      //   // const logout = async () => {
-      //   //   await fetchLogout(result)
-      //   //     .then((res) => {
-      //   //       localStorage.clear();
-      //   //       window.location.reload();
-      //   //     })
-      //   //     .catch(async (err) => {
-      //   //       await fetchRefreshToken(result)
-      //   //         .then((res) => {
-      //   //           logout();
-      //   //         })
-      //   //         .catch((error) => {
-      //   //           localStorage.clear();
-      //   //           window.location.reload();
-      //   //         });
-      //   //     });
-      //   //   localStorage.clear();
-      //   //   window.location.reload();
-      //   // };
 
-      //   logout();
-      // },
       onCancel() {},
       okButtonProps: {
         style: {
@@ -69,16 +50,13 @@ const UserProfile = ({ isAdmin }) => {
       <div className="border-b-1 border-color flex items-center justify-between gap-5 pb-6">
         <div>
           <p className="text-xl font-semibold dark:text-gray-200">
-            {" "}
-            {user.full_name}{" "}
+            {user.firstName} {user.lastName}
           </p>
           <p className="text-lg font-semibold text-gray-500 dark:text-gray-400">
-            {" "}
             {isAdmin ? "Quản trị viên" : "Nhân viên"}
           </p>
           <p className="text-sm font-semibold text-gray-500 dark:text-gray-400">
-            {" "}
-            {user.email}{" "}
+            {user.email}
           </p>
         </div>
         <Button
@@ -114,8 +92,7 @@ const UserProfile = ({ isAdmin }) => {
                       {item.title}
                     </p>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
-                      {" "}
-                      {item.desc}{" "}
+                      {item.desc}
                     </p>
                   </div>
                 </div>
