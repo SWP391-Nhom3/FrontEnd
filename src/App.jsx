@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { BrowserRouter } from "react-router-dom";
-
+import Products from "./pages/Product/Products";
 import SiginIn from "./pages/Auth/Login";
 import SiginUp from "./pages/Auth/Register";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
@@ -125,6 +125,7 @@ const App = () => {
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/list-products" element={<ListProduct />} />
               <Route path="/cart" element={<Cart />} />
+              <Route path="/products" element={<Products />} />
               <Route path="/order" element={<Order />} />
               <Route path="/payment" element={<Payment />} />
               <Route path="/thanks" element={<Thanks />} />
