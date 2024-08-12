@@ -11,6 +11,7 @@ import Cart from "./pages/Cart";
 import Order from "./pages/Order";
 import Payment from "./components/order/Payment";
 import Thanks from "./components/order/Thanks";
+import Filter from "./pages/Filter/Filter";
 import AboutUs from "./pages/InformationPage/AboutUs";
 import ExchangePolicy from "./pages/InformationPage/ExchangePolicy";
 import PrivacyPolicy from "./pages/InformationPage/PrivacyPolicy";
@@ -128,6 +129,7 @@ const App = () => {
               <Route path="/order" element={<Order />} />
               <Route path="/payment" element={<Payment />} />
               <Route path="/thanks" element={<Thanks />} />
+              <Route path="/filter" element={<Filter />} />
               <Route path="/about_us" element={<AboutUs />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/exchange_policy" element={<ExchangePolicy />} />
