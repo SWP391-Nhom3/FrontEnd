@@ -7,10 +7,7 @@ import Header from "../Header";
 const Product = () => {
   return (
     <>
-      <Header />
       <Breadcrumbs headline="Thông Tin Chi Tiết" />
-
-      {/* product */}
       <ProductDetail />
     </>
   );

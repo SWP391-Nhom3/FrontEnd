@@ -1,9 +1,15 @@
-import React from "react";
+import { useContext } from "react";
+//
+import { AuthContext } from "../context/JWTContext";
+
+// ----------------------------------------------------------------------
 
 const useAuth = () => {
-  // Giả sử bạn lưu trạng thái đăng nhập trong localStorage hoặc context
-  const isAuthenticated = localStorage.getItem("isAuthenticated");
-  return { isAuthenticated };
+  const context = useContext(AuthContext);
+
+  if (!context) throw new Error("Auth context must be use inside AuthProvider");
+
+  return context;
 };
 
 export default useAuth;

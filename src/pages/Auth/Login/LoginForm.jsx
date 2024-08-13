@@ -4,10 +4,11 @@ import LinkToGoogle from "../Google/LinkToGoogle";
 import { Toaster } from "react-hot-toast";
 import { fetchLogin } from "../../../data/api";
 import { Tabs } from "antd";
-
+import useAuth from "../../../hooks/useAuth";
 const { TabPane } = Tabs;
 
 const LoginForm = () => {
+  const { login } = useAuth();
   const [formValues, setFormValues] = useState({
     email: sessionStorage.getItem("email") || "",
     password: sessionStorage.getItem("password") || "",
@@ -33,38 +34,47 @@ const LoginForm = () => {
     const { email, password } = formValues;
 
     try {
-      const res = await fetchLogin(email, password);
-      localStorage.setItem("result", JSON.stringify(res.data.data));
-      localStorage.setItem("user", JSON.stringify(res.data.data.user));
-      localStorage.setItem("role", JSON.stringify(res.data.data.user.roles));
-      const checkRole = res.data.data.user.roles.map((role) => role.name);
-      if (checkRole[0] === "MEMBER") {
-        localStorage.setItem("isMember", "true");
-      } else if (checkRole[0] === "ADMIN") {
-        localStorage.setItem("isAdmin", "true");
-      } else {
-        localStorage.setItem("isStaff", "true");
-      }
-
-      if (rememberMe) {
-        sessionStorage.setItem("email", email);
-        sessionStorage.setItem("password", password);
-      } else {
-        sessionStorage.removeItem("email");
-        sessionStorage.removeItem("password");
-      }
-
-      localStorage.getItem("isMember") === "true"
-        ? navigate("/")
-        : navigate("/dashboard");
-      window.location.reload();
+      await login(email, password);
     } catch (error) {
-      let errorList = [];
       for (let [key, value] of Object.entries(error.response.data.errors)) {
         errorList.push(value);
         setErrorList(errorList);
       }
     }
+
+    // try {
+    //   const res = await fetchLogin(email, password);
+    //   localStorage.setItem("result", JSON.stringify(res.data.data));
+    //   localStorage.setItem("user", JSON.stringify(res.data.data.user));
+    //   localStorage.setItem("role", JSON.stringify(res.data.data.user.roles));
+    //   const checkRole = res.data.data.user.roles.map((role) => role.name);
+    //   if (checkRole[0] === "MEMBER") {
+    //     localStorage.setItem("isMember", "true");
+    //   } else if (checkRole[0] === "ADMIN") {
+    //     localStorage.setItem("isAdmin", "true");
+    //   } else {
+    //     localStorage.setItem("isStaff", "true");
+    //   }
+
+    //   if (rememberMe) {
+    //     sessionStorage.setItem("email", email);
+    //     sessionStorage.setItem("password", password);
+    //   } else {
+    //     sessionStorage.removeItem("email");
+    //     sessionStorage.removeItem("password");
+    //   }
+
+    //   localStorage.getItem("isMember") === "true"
+    //     ? navigate("/")
+    //     : navigate("/dashboard");
+    //   window.location.reload();
+    // } catch (error) {
+    //   let errorList = [];
+    //   for (let [key, value] of Object.entries(error.response.data.errors)) {
+    //     errorList.push(value);
+    //     setErrorList(errorList);
+    //   }
+    // }
   };
 
   return (
