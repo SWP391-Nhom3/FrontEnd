@@ -6,6 +6,7 @@ import SiginIn from "./pages/Auth/Login";
 import SiginUp from "./pages/Auth/Register";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
 import Home from "./pages/Home";
+import Products from "./pages/Product/Products";
 import Product from "./pages/Product";
 import Cart from "./pages/Cart";
 import Order from "./pages/Order";
@@ -74,9 +75,7 @@ const App = () => {
               <Routes>
                 <Route
                   path="/dashboard"
-                  element={
-                    <Dashboard isAuthenticatedStaff={isAuthenticatedStaff} />
-                  }
+                  element={<Dashboard isAuthenticatedStaff={isAuthenticatedStaff} />}
                 />
               </Routes>
             </div>
@@ -106,38 +105,35 @@ const App = () => {
               <Routes>
                 <Route
                   path="/dashboard"
-                  element={
-                    <Dashboard isAuthenticatedAdmin={isAuthenticatedAdmin} />
-                  }
+                  element={<Dashboard isAuthenticatedAdmin={isAuthenticatedAdmin} />}
                 />
+              </Routes>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<SiginIn />} />
+                <Route path="/product" element={<Product />} />
+                <Route path="/products" element={<Products />} />
+                <Route path="/register" element={<SiginUp />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/list-products" element={<ListProduct />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/order" element={<Order />} />
+                <Route path="/payment" element={<Payment />} />
+                <Route path="/thanks" element={<Thanks />} />
+                <Route path="/about_us" element={<AboutUs />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/exchange_policy" element={<ExchangePolicy />} />
+                <Route path="/privacy_policy" element={<PrivacyPolicy />} />
               </Routes>
             </div>
             <AdminFooter />
           </>
-        ) : (
-          <>
-            <Header />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<SiginIn />} />
-              <Route path="/product" element={<Product />} />
-              <Route path="/register" element={<SiginUp />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/list-products" element={<ListProduct />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/order" element={<Order />} />
-              <Route path="/payment" element={<Payment />} />
-              <Route path="/thanks" element={<Thanks />} />
-              <Route path="/about_us" element={<AboutUs />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/exchange_policy" element={<ExchangePolicy />} />
-              <Route path="/privacy_policy" element={<PrivacyPolicy />} />
-            </Routes>
-          </>
-        )}
+        ) : null}
+
       </BrowserRouter>
     </div>
   );
+
 };
 
 export default App;
