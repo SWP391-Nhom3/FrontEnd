@@ -8,6 +8,8 @@ import { Tabs } from "antd";
 const { TabPane } = Tabs;
 
 const LoginForm = () => {
+  const navigate = useNavigate();
+
   const [formValues, setFormValues] = useState({
     email: sessionStorage.getItem("email") || "",
     password: sessionStorage.getItem("password") || "",
@@ -59,11 +61,7 @@ const LoginForm = () => {
         : navigate("/dashboard");
       window.location.reload();
     } catch (error) {
-      let errorList = [];
-      for (let [key, value] of Object.entries(error.response.data.errors)) {
-        errorList.push(value);
-        setErrorList(errorList);
-      }
+      console.error(error);
     }
   };
 
