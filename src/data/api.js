@@ -56,6 +56,16 @@ export const fetchUploadProduct = async (product, token) => {
   }
 }
 
+//get all product api
+export const fetchProducts = async () => {
+  return await axios.get(`${HOSTNAME}/products`);
+}
+
+//change status product api
+export const fetchChangeProductStatus = async (id) => {
+  return await axios.patch(`${HOSTNAME}/products/${id}/status`);
+}
+
 // // eslint-disable-next-line no-undef
 // const SCHEMA_HOSTNAME = process.env.REACT_APP_SCHEMA_HOSTNAME;
 
