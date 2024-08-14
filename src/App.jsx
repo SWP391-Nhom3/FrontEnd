@@ -25,15 +25,6 @@ import AdminNavbar from "./components/header/AdminNavbar";
 import Header from "./pages/Header";
 
 import "./App.css";
-import Brands from "./pages/Brand/Brands";
-import AddBrands from "./pages/Brand/AddBrands";
-import Categories from "./pages/Category/Categories";
-import AddCategory from "./pages/Category/AddCategory";
-import EditCategory from "./pages/Category/EditCategory";
-import AddBill from "./pages/Warehouse/AddBill";
-import InputBills from "./pages/Warehouse/InputBills";
-import BillDetail from "./pages/Warehouse/BillDetail";
-import ProductsWarehouse from "./pages/Warehouse/ProductsWarehouse";
 
 const App = () => {
   const { currentMode, activeMenu, themeSettings } = useStateContext();
@@ -131,21 +122,6 @@ const App = () => {
                 <Route path="/list-products" element={<ListProduct />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/order" element={<Order />} />
-                {/* brand */}
-                <Route path="/brands" element={<Brands />} />
-                <Route path="/add-brand" element={<AddBrands />} />
-                {/* category */}
-                <Route path="/categories" element={<Categories />} />
-                <Route path="/add-category" element={<AddCategory />} />
-                <Route path="/edit-category" element={<EditCategory />} />
-                {/* warehouse */}
-                <Route path="/add-inputbill" element={<AddBill />} />
-                <Route path="/input-bills" element={<InputBills />} />
-                <Route path="/bill-detail" element={<BillDetail />} />
-                <Route
-                  path="/products-warehouse"
-                  element={<ProductsWarehouse />}
-                />
                 <Route path="/payment" element={<Payment />} />
                 <Route path="/thanks" element={<Thanks />} />
                 <Route path="/about_us" element={<AboutUs />} />

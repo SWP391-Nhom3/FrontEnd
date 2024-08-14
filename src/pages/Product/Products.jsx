@@ -35,16 +35,16 @@ const Products = () => {
     localStorage.getItem("isAuthenticatedStaff") === "true";
   console.log(editForm);
 
-  const fetchData = async () => {
-    try {
-      const response = await axios.get("http://localhost:8080/api/products");
-      setProducts(response.data.data);
-      setLoading(false);
-    } catch (error) {
-      console.error(error);
-    }
-  };
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/api/products");
+        setProducts(response.data.data);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
+    };
     fetchData();
   }, []);
 
@@ -90,7 +90,7 @@ const Products = () => {
       });
       setIsEditModalVisible(false);
       editForm.resetFields();
-      fetchData();
+      fetchProducts();
     } catch (error) {
       console.error(
         "Error updating product:",
