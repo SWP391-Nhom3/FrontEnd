@@ -23,29 +23,22 @@ const AddCategory = () => {
     event.preventDefault();
 
     const category = {
-      category_name: categoryName,
-      description: description,
+      name: categoryName,
     };
 
     console.log("category nè: ", category);
 
-    await fetchAddCategory(category, token)
-      .then(async (res) => {
-        console.log(res.data);
-        const category = res.data.data;
-        console.log("category up: ", category);
-      })
-      .then((data) => {
-        notification.success({
-          message: "Tạo phân loại mới thành công",
-          placement: "top",
-        });
-        setCategoryName("");
-        setDescription("");
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
+    const res = await fetchAddCategory(category, token);
+    console.log("category up: ", res.data);
+    notification.success({
+      message: "Tạo phân loại mới thành công",
+      placement: "top",
+      onClose: () => {
+        navigate("/categories");
+      },
+    });
+
+    setCategoryName("");
   };
 
   return (

@@ -7,10 +7,11 @@ import { InputNumber } from "primereact/inputnumber";
 import { InputTextarea } from "primereact/inputtextarea";
 import axios from "axios";
 import { fetchAddBrand } from "../../data/api";
+import { useNavigate } from "react-router-dom";
 
 const AddBrands = () => {
   const [brandName, setBrandName] = useState("");
-
+  const navigate = useNavigate();
   const token = localStorage.getItem("accessToken");
 
   const handleChange = (setter) => (event) => {
@@ -20,32 +21,23 @@ const AddBrands = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const brand = {
-      brand_name: brandName,
+    const category = {
+      name: brandName,
     };
 
-    await fetchAddBrand(brand, token)
-      .then((res) => {
-        console.log(res.data);
-        const newBrand = res.data.data; // Đổi tên biến để tránh nhầm lẫn
-        console.log("brand: ", newBrand);
-        notification.success({
-          message: "Tạo nhãn hàng thành công",
-          placement: "top",
-        });
-        setBrandName("");
-      })
-      .catch((error) => {
-        console.error(error.response);
-        notification.error({
-          // Thêm thông báo lỗi cho người dùng
-          message: "Lỗi khi tạo nhãn hàng",
-          description:
-            error.response?.data?.message ||
-            "Có lỗi xảy ra, vui lòng thử lại sau.",
-          placement: "top",
-        });
-      });
+    console.log("category nè: ", category);
+
+    const res = await fetchAddBrand(category, token);
+    console.log("category up: ", res.data);
+    notification.success({
+      message: "Tạo nhãn hàng mới thành công",
+      placement: "top",
+      onClose: () => {
+        navigate("/brands");
+      },
+    });
+
+    setBrandName("");
   };
 
   return (

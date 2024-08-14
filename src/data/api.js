@@ -207,15 +207,22 @@ export const fetchCategoryById = async (id) => {
 
 //add-category
 export const fetchAddCategory = async (category, token) => {
-  return await axios.post(
-    `${HOSTNAME}/categories/`,
-    { ...category },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
+  try {
+    const response = await axios.post(
+      `${HOSTNAME}/categories`,
+      { ...category },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    },
-  );
+    );
+    return response.data; // Hoặc xử lý phản hồi theo cách bạn muốn
+  } catch (error) {
+    // Xử lý lỗi tại đây, ví dụ: thông báo lỗi cho người dùng
+    console.error("An error occurred while adding the category:", error);
+    throw error; // Hoặc xử lý lỗi theo cách bạn muốn
+  }
 };
 
 //upload-category
@@ -395,7 +402,7 @@ export const fetchUpdateCategory = async (category, token, id) => {
 //addbrand
 export const fetchAddBrand = async (brand, token) => {
   return await axios.post(
-    `${HOSTNAME}/brands/`,
+    `${HOSTNAME}/brands`,
     { ...brand },
     {
       headers: {

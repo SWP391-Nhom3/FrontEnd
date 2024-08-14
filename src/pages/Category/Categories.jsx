@@ -17,10 +17,10 @@ const Categories = () => {
         setCategories(res.data.data);
         console.log("brands", res.data.data);
       } catch (error) {
-        console.error("Error fetching brands:", error);
+        console.error("Error fetching cates:", error);
         notification.error({
           message: "Error",
-          description: "Failed to fetch brands",
+          description: "Failed to fetch cates",
         });
       }
     };
