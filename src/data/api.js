@@ -200,39 +200,39 @@ export const fetchChangeProductStatus = async (id) => {
 //   return fetch(`${SCHEMA_HOSTNAME}/categories/all-categories`);
 // };
 
-// //get-category-by-id
-// export const fetchCategoryById = async (id) => {
-//   return fetch(`${SCHEMA_HOSTNAME}/categories/category/${id}`);
-// };
+//get-category-by-id
+export const fetchCategoryById = async (id) => {
+  return fetch(`${HOSTNAME}/categories/category/${id}`);
+};
 
-// //add-category
-// export const fetchAddCategory = async (category, token) => {
-//   return await axios.post(
-//     `${SCHEMA_HOSTNAME}/categories/upload`,
-//     { ...category },
-//     {
-//       headers: {
-//         Authorization: `Bearer ${token.access_token}`,
-//       },
-//     },
-//   );
-// };
+//add-category
+export const fetchAddCategory = async (category, token) => {
+  return await axios.post(
+    `${HOSTNAME}/categories/`,
+    { ...category },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+};
 
-// //upload-category
-// export const fetchUpdateCategory = async (category, token, id) => {
-//   return await axios.patch(
-//     `${SCHEMA_HOSTNAME}/categories/category/${id}`,
-//     {
-//       category_name: category.category_name,
-//       description: category.description,
-//     },
-//     {
-//       headers: {
-//         Authorization: `Bearer ${token.access_token}`,
-//       },
-//     },
-//   );
-// };
+//upload-category
+export const fetchUpdateCategory = async (category, token, id) => {
+  return await axios.patch(
+    `${HOSTNAME}/categories/category/${id}`,
+    {
+      category_name: category.category_name,
+      description: category.description,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token.access_token}`,
+      },
+    },
+  );
+};
 
 // //upload -bill
 // export const fetchUploadBill = async (inputBill, token) => {
@@ -392,23 +392,18 @@ export const fetchChangeProductStatus = async (id) => {
 //   });
 // };
 
-// //get-all-brand
-// export const fetchBrands = async () => {
-//   return await axios.get(`${SCHEMA_HOSTNAME}/brands/all-brands`);
-// };
-
-// //addbrand
-// export const fetchAddBrand = async (brand, token) => {
-//   return await axios.post(
-//     `${SCHEMA_HOSTNAME}/brands/upload`,
-//     { ...brand },
-//     {
-//       headers: {
-//         Authorization: `Bearer ${token.access_token}`,
-//       },
-//     },
-//   );
-// };
+//addbrand
+export const fetchAddBrand = async (brand, token) => {
+  return await axios.post(
+    `${HOSTNAME}/brands/`,
+    { ...brand },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+};
 // //logout
 // export const fetchLogout = async (result) => {
 //   return await axios.post(
