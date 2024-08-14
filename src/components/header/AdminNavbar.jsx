@@ -74,7 +74,11 @@ const Navbar = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
       <div className="flex">
         {/* <NavButton title="Chat" dotColor="#03C9D7" customFunc={() => handleClick('chat')} color={currentColor} icon={<BsChatLeft />} />
         <NavButton title="Notification" dotColor="rgb(254, 201, 15)" customFunc={() => handleClick('notification')} color={currentColor} icon={<RiNotification3Line />} /> */}
-        <TooltipComponent content="Profile" position="BottomCenter">
+        <TooltipComponent content="Profile" position="BottomCenter" style={{
+            position: "fixed",
+            right: "0px",
+            top: "20px",
+          }}>
           <div
             className="hover:bg-light-gray flex cursor-pointer items-center gap-2 rounded-lg p-1"
             onClick={() => handleClick("userProfile")}
