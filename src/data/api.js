@@ -18,6 +18,44 @@ export const fetchRegister = async ({ email, password }) => {
   });
 };
 
+//get all category api
+export const fetchCategories = async () => {
+  return await axios.get(`${HOSTNAME}/categories`);
+}
+
+//get all brand api
+export const fetchBrands = async () => {
+  return await axios.get(`${HOSTNAME}/brands`);
+}
+
+//create product api
+export const fetchUploadProduct = async (product, token) => {
+  const formData = new FormData();
+  Object.keys(product).forEach(key => {
+    if (key === 'files' && Array.isArray(product[key])) {
+      product[key].forEach(file => {
+        formData.append('files', file);
+      });
+    } else {
+      formData.append(key, product[key]);
+    }
+  });
+  try {
+    return await axios.post(
+      `${HOSTNAME}/products`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  } catch (error) {
+    console.error('Error uploading product:', error);
+    throw error; 
+  }
+}
+
 // // eslint-disable-next-line no-undef
 // const SCHEMA_HOSTNAME = process.env.REACT_APP_SCHEMA_HOSTNAME;
 

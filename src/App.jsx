@@ -25,6 +25,8 @@ import AdminNavbar from "./components/header/AdminNavbar";
 import Header from "./pages/Header";
 
 import "./App.css";
+import ProductManagement from "./pages/ProductMangement";
+import AddProduct from "./pages/ProductMangement/AddProduct";
 
 const App = () => {
   const { currentMode, activeMenu, themeSettings } = useStateContext();
@@ -79,6 +81,8 @@ const App = () => {
                     <Dashboard isAuthenticatedStaff={isAuthenticatedStaff} />
                   }
                 />
+                <Route path="/products" element ={<ProductManagement />} />
+                <Route path="/add-product" element ={<AddProduct />} />
               </Routes>
             </div>
             <AdminFooter />
