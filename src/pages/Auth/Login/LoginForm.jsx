@@ -37,6 +37,7 @@ const LoginForm = () => {
     try {
       const res = await fetchLogin(email, password);
       localStorage.setItem("result", JSON.stringify(res.data.data));
+      localStorage.setItem("accessToken", res.data.data.accessToken);
       localStorage.setItem("user", JSON.stringify(res.data.data.user));
       localStorage.setItem("role", JSON.stringify(res.data.data.user.roles));
       const checkRole = res.data.data.user.roles.map((role) => role.name);
