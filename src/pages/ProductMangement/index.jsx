@@ -27,6 +27,7 @@ const ProductManagement = () => {
     fetchProducts()
       .then((data) => {
         const result = data.data.success;
+
         if (result) {
           setProducts(data.data.data);
         }
