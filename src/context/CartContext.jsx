@@ -3,7 +3,6 @@ import toast, { Toaster } from "react-hot-toast";
 
 const CartContext = createContext();
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const useCartContext = () => {
   return useContext(CartContext);
 };
@@ -24,15 +23,12 @@ export const CartContextProvider = ({ children }) => {
   );
 
   const totalPrice = cartItems.reduce((total, item) => {
-    const discount = parseFloat(item.discount) / 100;
-    const itemTotal = item.price * item.quantity * (1 - discount);
+    const itemTotal = item.price * item.quantity;
     return total + itemTotal;
   }, 0);
 
   const removeCartItem = (id) => {
-    const currentItemIndex = cartItems.findIndex((item) => item._id === id);
-    const newCartItems = [...cartItems];
-    newCartItems.splice(currentItemIndex, 1);
+    const newCartItems = cartItems.filter((item) => item.id !== id);
     setCartItems(newCartItems);
     toast.success("Sản phẩm đã được xóa khỏi giỏ hàng", {
       position: "top-right",
@@ -43,10 +39,10 @@ export const CartContextProvider = ({ children }) => {
   const addCartItem = (product) => {
     setCartItems((prevCartItems) => {
       const currentCart = prevCartItems.find(
-        (cartItem) => cartItem._id === product._id,
+        (cartItem) => cartItem.id === product.id,
       );
       if (currentCart) {
-        if (currentCart.quantity >= product.amount) {
+        if (currentCart.quantity >= product.stockQuantity) {
           toast.error("Số lượng mua vượt quá số lượng trong kho", {
             position: "top-right",
             duration: 1000,
@@ -54,7 +50,7 @@ export const CartContextProvider = ({ children }) => {
           return prevCartItems;
         } else {
           const updatedCart = prevCartItems.map((cartItem) =>
-            cartItem._id === product._id
+            cartItem.id === product.id
               ? { ...currentCart, quantity: currentCart.quantity + 1 }
               : cartItem,
           );
@@ -82,15 +78,15 @@ export const CartContextProvider = ({ children }) => {
 
       products.forEach((product) => {
         const currentCart = updatedCartItems.find(
-          (cartItem) => cartItem._id === product._id,
+          (cartItem) => cartItem.id === product.id,
         );
 
         if (currentCart) {
-          if (currentCart.quantity >= product.amount) {
-            exceededQuantityProducts.push(product.product_name);
+          if (currentCart.quantity >= product.stockQuantity) {
+            exceededQuantityProducts.push(product.name);
           } else {
             updatedCartItems = updatedCartItems.map((cartItem) =>
-              cartItem._id === product._id
+              cartItem.id === product.id
                 ? { ...currentCart, quantity: currentCart.quantity + 1 }
                 : cartItem,
             );
@@ -126,14 +122,14 @@ export const CartContextProvider = ({ children }) => {
   const increaseAmount = (product) => {
     setCartItems((prevItems) =>
       prevItems.map((item) =>
-        item._id === product._id && item.quantity < product.amount
+        item.id === product.id && item.quantity < product.stockQuantity
           ? { ...item, quantity: item.quantity + 1 }
           : item,
       ),
     );
 
-    const currentCart = cartItems.find((item) => item._id === product._id);
-    if (currentCart && currentCart.quantity >= product.amount) {
+    const currentCart = cartItems.find((item) => item.id === product.id);
+    if (currentCart && currentCart.quantity >= product.stockQuantity) {
       toast.error(`Số lượng mua vượt quá số lượng trong kho`, {
         position: "top-right",
         duration: 1000,
@@ -143,14 +139,14 @@ export const CartContextProvider = ({ children }) => {
 
   const decreaseAmount = (id) => {
     setCartItems((prevItems) => {
-      const currentCart = prevItems.find((item) => item._id === id);
+      const currentCart = prevItems.find((item) => item.id === id);
       if (currentCart) {
         if (currentCart.quantity > 1) {
           return prevItems.map((item) =>
-            item._id === id ? { ...item, quantity: item.quantity - 1 } : item,
+            item.id === id ? { ...item, quantity: item.quantity - 1 } : item,
           );
         } else {
-          return prevItems.filter((item) => item._id !== id);
+          return prevItems.filter((item) => item.id !== id);
         }
       }
       return prevItems;

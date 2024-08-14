@@ -9,7 +9,6 @@ import { isValidToken, setSession } from "../utils/jwt";
 const initialState = {
   isAuthenticated: false,
   isInitialized: false,
-  user: null,
 };
 
 const handlers = {
@@ -76,7 +75,7 @@ function AuthProvider({ children }) {
           setSession(accessToken);
 
           const response = await axios.get("/users/myInfo");
-          const { user } = response.data.data;
+          const user = response.data.data;
 
           dispatch({
             type: "INITIALIZE",

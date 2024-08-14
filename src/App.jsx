@@ -3,28 +3,17 @@ import { createBrowserRouter } from "react-router-dom";
 
 import MainLayout from "./layouts/main/index";
 import SiginIn from "./pages/Auth/Login";
-import SiginUp from "./pages/Auth/Register";
-import ForgotPassword from "./pages/Auth/ForgotPassword";
 import Home from "./pages/Home";
 import Product from "./pages/Product";
-import Cart from "./pages/Cart";
-import Order from "./pages/Order";
-import Payment from "./components/order/Payment";
-import Thanks from "./components/order/Thanks";
-import AboutUs from "./pages/InformationPage/AboutUs";
-import ExchangePolicy from "./pages/InformationPage/ExchangePolicy";
-import PrivacyPolicy from "./pages/InformationPage/PrivacyPolicy";
-import Contact from "./pages/InformationPage/Contact";
-import ListProduct from "./components/product/ListProduct";
-import Dashboard from "./pages/Dashboard";
-import { useStateContext } from "./context/ContextProvider";
-import Sidebar from "./components/Sidebar";
-import AdminFooter from "./components/Footer/AdminFooter";
-import AdminNavbar from "./components/header/AdminNavbar";
-import Header from "./pages/Header";
 import GuestGuard from "./guards/GuestGuard";
+import AuthGuard from "./guards/AuthGuard";
 import DashboardLayout from "./layouts/dashboard/index";
 import Authenticate from "./pages/Auth/Google/Authenticate";
+import Products from "./pages/dashboard/Product/ProductManagementPage";
+import CreateProductForm from "./pages/dashboard/Product/CreateProductForm";
+import CreateBatchForm from "./pages/dashboard/Batch/CreateBatchForm";
+import Cart from "./pages/Cart/index";
+import OrderInfor from "./components/order/OrderInfor";
 
 import "./App.css";
 
@@ -32,6 +21,12 @@ const router = createBrowserRouter([
   {
     path: "/dashboard",
     element: <DashboardLayout />,
+    children: [
+      { element: <Products />, index: true },
+      { path: "/dashboard/products", element: <Products /> },
+      { path: "/dashboard/product/add", element: <CreateProductForm /> },
+      { path: "/dashboard/batches/add", element: <CreateBatchForm /> },
+    ],
   },
   {
     path: "/",
@@ -45,6 +40,18 @@ const router = createBrowserRouter([
           <GuestGuard>
             <SiginIn />
           </GuestGuard>
+        ),
+      },
+      {
+        path: "/cart",
+        element: <Cart />,
+      },
+      {
+        path: "/order",
+        element: (
+          <AuthGuard>
+            <OrderInfor />
+          </AuthGuard>
         ),
       },
       {

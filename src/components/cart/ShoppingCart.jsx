@@ -5,7 +5,6 @@ import { FaHeart, FaRegHeart } from "react-icons/fa6";
 
 import cartEmptyImg from "../../assets/images/background/cart_empty.png";
 import { useCartContext } from "../../context/CartContext";
-// import { fetchGetAllVoucher, fetchGetMe, fetchGetVoucher, fetchRefreshToken } from "../../data/api";
 import { Button } from "flowbite-react";
 import { ImGift } from "react-icons/im";
 const ShoppingCart = () => {
@@ -26,50 +25,6 @@ const ShoppingCart = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [voucherList, setVoucherList] = useState([]);
   const token = JSON.parse(localStorage.getItem("result"));
-  // const getMeProfile = async () => {
-  //   await fetchGetMe(token)
-  //     .then((res) => {
-  //       const point = res.data.result.member_ship;
-  //       user.member_ship = point
-  //       localStorage.setItem("user", JSON.stringify(user));
-  //     })
-  //     .catch(async (error) => {
-  //       if (error.response.status === 401) {
-  //         await fetchRefreshToken(token)
-  //           .then(async (res) => {
-  //             localStorage.setItem("result", JSON.stringify(res.data.result));
-  //             await getMeProfile();
-  //           })
-  //           .catch((error) => {
-  //             if (error.response.status === 401) {
-  //               localStorage.removeItem("user");
-  //               localStorage.removeItem("result");
-  //             }
-  //           });
-  //       }
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   if(user) getMeProfile();
-  // }, []);
-
-  // useEffect(() => {
-  //   const getVouchers = async () => {
-  //     try {
-  //       const data = await fetchGetAllVoucher();
-  //       const currentDate = new Date();
-  //       const sortedVouchers = data.data.result
-  //         .filter((voucher) => voucher.voucher_type === 1)
-  //         .filter((voucher) => new Date(voucher.expire_date) > currentDate)
-  //         .filter((voucher) => voucher.membership <= user.member_ship);
-  //       setVoucherList(sortedVouchers);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   getVouchers();
-  // }, [user]);
 
   const handleRadioChange = (event) => {
     const selectedValue = event.target.value;
@@ -80,23 +35,6 @@ const ShoppingCart = () => {
   const handChangeVoucherCode = (e) => {
     setVoucherCode(e.target.value);
   };
-
-  // const handClickVoucher = async (event) => {
-  //   event.preventDefault();
-  //   await fetchGetVoucher(voucherCode)
-  //     .then((res) => {
-  //       setDiscount(Number(res.data.discount));
-  //     })
-  //     .catch((error) => {
-  //       let errorList = [];
-  //       setDiscount(0);
-  //       setVoucherCode("");
-  //       for (let [key, value] of Object.entries(error.response.data.errors)) {
-  //         errorList.push(value);
-  //         setErrorList(errorList);
-  //       }
-  //     });
-  // };
 
   const calculateShip = (cartAmount) => {
     if (cartAmount > 20) {
@@ -112,8 +50,7 @@ const ShoppingCart = () => {
     setShip(calculateShip(cartAmount));
   }, [cartAmount]);
 
-  const total =
-    totalPrice + ship - discount > 0 ? totalPrice + ship - discount : 0;
+  const total = totalPrice - discount > 0 ? totalPrice - discount : 0;
 
   return (
     <>
@@ -223,20 +160,23 @@ const ShoppingCart = () => {
                   {cartItems.map((product) => (
                     // cart Item
                     <div
-                      key={product._id}
+                      key={product.id}
                       className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm md:p-6"
                     >
                       <div className="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
-                        <img className="h-20 w-20" src={product.imgUrl} />
+                        <img
+                          className="h-20 w-20"
+                          src={product.coverImageUrl}
+                        />
                         <img
                           className="hidden h-20 w-20"
-                          src={product.imgUrl}
+                          src={product.coverImageUrl}
                         />
                         <div className="flex items-center justify-between md:order-3 md:justify-end">
                           <div className="flex items-center">
                             <button
                               type="button"
-                              onClick={() => decreaseAmount(product._id)}
+                              onClick={() => decreaseAmount(product.id)}
                               className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100"
                             >
                               <svg
@@ -285,10 +225,7 @@ const ShoppingCart = () => {
                           </div>
                           <div className="text-end md:order-4 md:w-32">
                             <p className="text-base font-bold text-gray-900">
-                              {Number(
-                                product.price -
-                                  (product.price * product.discount) / 100,
-                              ).toLocaleString("vi-VN", {
+                              {Number(product.price).toLocaleString("vi-VN", {
                                 style: "currency",
                                 currency: "VND",
                               })}
@@ -301,7 +238,7 @@ const ShoppingCart = () => {
                             state={{ product: product }}
                             className="text-base font-medium text-gray-900 hover:underline"
                           >
-                            {product.product_name}
+                            {product.name}
                           </Link>
                           <div className="flex items-center gap-4">
                             <button
@@ -338,17 +275,7 @@ const ShoppingCart = () => {
                           })}
                         </dd>
                       </dl>
-                      <dl className="flex items-center justify-between gap-4">
-                        <dt className="text-base font-normal text-gray-500">
-                          Phí ship:
-                        </dt>
-                        <dd className="text-base font-medium text-green-600">
-                          {Number(ship).toLocaleString("vi-VN", {
-                            style: "currency",
-                            currency: "VND",
-                          })}
-                        </dd>
-                      </dl>
+
                       <dl className="flex items-center justify-between gap-4">
                         <dt className="text-base font-normal text-gray-500">
                           Mã giảm giá

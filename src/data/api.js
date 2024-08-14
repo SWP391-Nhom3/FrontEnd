@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../utils/axios";
 
 const HOSTNAME = "http://localhost:8080/api";
 
@@ -259,9 +259,9 @@ export const fetchRegister = async ({ email, password }) => {
 //   );
 // };
 
-// //updateProduct
-// export const fetchUpdateProduct = async (product, token, id) => {
-//   return await axios.patch(
+//updateProduct
+// export const fetchUpdateProduct = async (product, id) => {
+//   return await axios.put(
 //     `${SCHEMA_HOSTNAME}/products/product/${id}`,
 //     {
 //       brand_id: product.brand_id,
@@ -380,15 +380,15 @@ export const fetchRegister = async ({ email, password }) => {
 //   );
 // };
 
-// export const fetchProducts = async () => {
-//   try {
-//     const res = await axios.get(`${SCHEMA_HOSTNAME}/products/all-products`);
-//     return res.data.result;
-//   } catch (error) {
-//     console.error("Error fetching products:", error);
-//     throw error;
-//   }
-// };
+export const fetchProducts = async () => {
+  try {
+    const res = await axios.get("products");
+    return res.data.data;
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    throw error;
+  }
+};
 
 // export const fetchOrder = async () => {
 //   try {

@@ -8,12 +8,12 @@ import { MainNav } from "../../components/header/MainNav";
 export default function MainLayout() {
   return (
     <>
-      <Navbar />
-      <MainNav />
-
-      <Outlet />
-
-      <MainFooter />
+      <div className="mx-auto max-w-[1440px] px-4">
+        <Navbar />
+        <MainNav />
+        <Outlet />
+        <MainFooter />
+      </div>
     </>
   );
 }

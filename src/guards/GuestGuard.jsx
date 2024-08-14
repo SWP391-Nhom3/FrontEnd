@@ -11,7 +11,6 @@ GuestGuard.propTypes = {
 
 export default function GuestGuard({ children }) {
   const { isAuthenticated, user } = useAuth();
-  console.log("is", user);
   if (isAuthenticated && user.roles?.length > 0) {
     const roleNames = user.roles.map((role) => role.name);
 

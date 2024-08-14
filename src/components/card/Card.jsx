@@ -1,3 +1,4 @@
+import React from "react";
 import { Card } from "flowbite-react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -8,13 +9,13 @@ import { Link } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
 import "./Swiper.css";
-import RenderRating from "../elements/RenderRating";
-
 import { useCartContext } from "../../context/CartContext";
 
 const ProductCard = ({ products, headline }) => {
   const { addCartItem } = useCartContext();
   const productsToShow = products.slice(0, 12);
+  console.log("cccccccccccccccc", products);
+
   const settings = {
     dots: true,
     infinite: true,
@@ -73,11 +74,9 @@ const ProductCard = ({ products, headline }) => {
       </div>
       <Slider {...settings}>
         {productsToShow.map((product) => {
-          if (product.isActive) {
-            const discountedPrice =
-              product.price - (product.price * product.discount) / 100;
+          if (product.stockQuantity > 0) {
             return (
-              <div key={product._id} className="p-1">
+              <div key={product.id} className="p-1">
                 <Card className="product-card relative m-1 flex h-full max-w-xs flex-col justify-between">
                   <Link
                     to="/product"
@@ -87,10 +86,10 @@ const ProductCard = ({ products, headline }) => {
                     <div className="product-image-container relative">
                       <img
                         className="product-image mx-auto"
-                        src={product.imgUrl}
-                        alt={product.product_name}
+                        src={product.coverImageUrl}
+                        alt={product.name}
                       />
-                      {product.amount === 0 && (
+                      {product.stockQuantity === 0 && (
                         <div className="out-of-stock-overlay">
                           <span className="text-xl font-bold text-white">
                             Hết hàng
@@ -106,38 +105,18 @@ const ProductCard = ({ products, headline }) => {
                         WebkitBoxOrient: "vertical",
                       }}
                     >
-                      {product.product_name}
+                      {product.name}
                     </h5>
                   </Link>
-                  <div className="mb-2 mt-1 flex items-center">
-                    {/* <RenderRating rating={product.rating} /> */}
-                    <span className="ml-2 mr-1 rounded bg-primary-100 px-2 py-0.5 text-xs font-semibold text-primary-800 dark:bg-primary-200 dark:text-primary-800">
-                      {product.rating.toFixed(1)}
-                    </span>
-                  </div>
                   <div className="flex h-20 w-full items-end justify-between">
                     <div className="flex flex-col justify-between">
-                      {product.discount > 0 ? (
-                        <>
-                          <span className="text-xl font-bold text-gray-900 dark:text-white">
-                            {formatCurrency(discountedPrice)}
-                          </span>
-                          <span className="text-sm text-gray-500 line-through dark:text-gray-400">
-                            {formatCurrency(product.price)}
-                          </span>
-                          <span className="text-sm text-green-500">
-                            Giảm {product.discount}%
-                          </span>
-                        </>
-                      ) : (
-                        <span className="mt-auto text-xl font-bold text-gray-900 dark:text-white">
-                          {formatCurrency(product.price)}
-                        </span>
-                      )}
+                      <span className="text-xl font-bold text-gray-900 dark:text-white">
+                        {formatCurrency(product.price)}
+                      </span>
                     </div>
                     <button
                       onClick={() => addCartItem(product)}
-                      disabled={product.amount === 0}
+                      disabled={product.stockQuantity === 0}
                       className="flex items-center justify-center rounded-lg bg-primary-500 p-3 text-center text-base font-medium text-white hover:bg-primary-600 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-500 dark:focus:ring-primary-600"
                     >
                       <span className="mr-1">Thêm</span>

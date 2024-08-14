@@ -1,0 +1,106 @@
+/* Sidebar.css */
+
+/* Căn chỉnh Sidebar để tràn chiều cao màn hình và hỗ trợ overflow */
+.sidebar-container {
+  z-index: 1000; /* Đảm bảo sidebar có z-index cao */
+  position: fixed; /* Giữ sidebar ở vị trí cố định */
+  top: 0;
+  left: 0;
+  margin-left: 0.75rem; /* 3px (ml-3 in Tailwind) */
+  height: 100vh; /* full screen height */
+  overflow: auto;
+  padding-bottom: 2.5rem; /* pb-10 in Tailwind */
+}
+
+.sidebar-container::-webkit-scrollbar {
+  display: none; /* Ẩn scrollbar trên Chrome, Safari và Opera */
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 0.75rem; /* 3px */
+  margin-top: 1rem; /* 4px */
+  gap: 0.75rem; /* 3px */
+}
+
+.logo {
+  width: 100%;
+  margin: 0.5rem 0; /* top-bottom 2px */
+}
+
+.menu-button {
+  margin-top: 1rem; /* 4px */
+  padding: 0.75rem; /* p-3 */
+  border-radius: 50%;
+  font-size: 1.875rem; /* 3xl */
+}
+
+.menu-section {
+  margin-top: 2.5rem; /* mt-10 */
+}
+
+.menu-title {
+  margin: 0.75rem 0.75rem 1rem 0.75rem; /* m-3 mt-4 */
+  text-transform: uppercase;
+  color: #94a3b8; /* gray-400 */
+}
+
+.menu-item {
+  margin-bottom: 0.5rem; /* mb-2 */
+}
+
+.submenu-container {
+  margin-left: 1rem; /* ml-4 */
+  margin-top: 0.5rem; /* mt-2 */
+  padding-left: 1rem; /* pl-4 */
+  border-radius: 0.5rem; /* rounded-lg */
+}
+
+.active-link {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem; /* 5px */
+  padding: 0.75rem 1rem; /* pt-3 pb-2.5 pl-4 */
+  border-radius: 0.5rem;
+  color: white;
+  background-color: var(--active-link-bg-color);
+}
+
+.normal-link {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  color: #374151; /* gray-700 */
+  background-color: transparent;
+  transition: background-color 0.2s;
+}
+
+.normal-link:hover {
+  background-color: #e5e7eb; /* light-gray */
+}
+
+.icon-arrow {
+  font-size: 1.5rem; /* 24px */
+  margin-left: auto;
+}
+
+.navbar-container {
+  z-index: 900; /* Z-index thấp hơn sidebar */
+  position: relative;
+  width: 100%;
+  background-color: #f8f9fa;
+  padding: 10px 20px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Đảm bảo navbar không đè lên sidebar */
+.navbar-container + .sidebar-container {
+  margin-left: 250px; /* Khoảng cách bằng với chiều rộng của sidebar */
+}
