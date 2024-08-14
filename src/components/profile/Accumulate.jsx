@@ -35,7 +35,7 @@ const Accumulate = () => {
   // useEffect(() => {
   //   getMeProfile();
   // }, []);
-  
+
   //!! FETCH GET VOUCHER
   // useEffect(() => {
   //   const getVouchers = async () => {
@@ -91,7 +91,7 @@ const Accumulate = () => {
             color="light"
             size={"lg"}
             disabled
-            className="text-blue-500 font-semibold"
+            className="font-semibold text-blue-500"
           >
             <ImGift className="mr-2 h-5 w-5" />
             Điểm tích lũy:{" "}
@@ -104,40 +104,40 @@ const Accumulate = () => {
       </div>
       <hr className="my-4" />
       <div className="container mx-auto p-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 place-items-center">
+        <div className="grid grid-cols-1 place-items-center gap-8 sm:grid-cols-2 md:grid-cols-3">
           {vouchers.map((voucher, index) => (
             <div
               key={voucher._id}
-              className="bg-white max-w-sm rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition duration-500 transform hover:scale-105 cursor-pointer"
+              className="max-w-sm transform cursor-pointer overflow-hidden rounded-2xl bg-white shadow-lg transition duration-500 hover:scale-105 hover:shadow-2xl"
             >
               <div
-                className={`h-20 flex items-center justify-between ${
+                className={`flex h-20 items-center justify-between ${
                   Number(point) < voucher.membership
                     ? "bg-red-500"
                     : "bg-green-500"
                 }`}
               >
-                <h1 className="text-white mx-3 border-2 py-2 px-4 rounded-full">
+                <h1 className="mx-3 rounded-full border-2 px-4 py-2 text-white">
                   {index + 1}
                 </h1>
-                <p className="mr-20 text-white text-lg">
+                <p className="mr-20 text-lg text-white">
                   VR{voucher._id.substring(voucher._id.length - 5)}
                 </p>
-                <p className="mr-4 text-white font-thin text-lg">
+                <p className="mr-4 text-lg font-thin text-white">
                   {Number(voucher.discount).toLocaleString("vi-VN", {
                     style: "currency",
                     currency: "VND",
                   })}
                 </p>
               </div>
-              <p className="py-6 text-lg tracking-wide ml-16">
+              <p className="ml-16 py-6 text-lg tracking-wide">
                 Điểm để đổi:{" "}
                 {Number(voucher.membership).toLocaleString("vi-VN", {
                   style: "currency",
                   currency: "VND",
                 })}
               </p>
-              <div className="flex justify-between px-5 mb-2 text-sm text-gray-600">
+              <div className="mb-2 flex justify-between px-5 text-sm text-gray-600">
                 <p>
                   Hết hạn: {new Date(voucher.expire_date).toLocaleDateString()}
                 </p>

@@ -8,11 +8,11 @@ const Profile = () => {
     <div>
       <Breadcrumbs headline="Thông tin tài khoản" />
       <div className="bg-[#f5f5f5] py-4">
-        <div className="container flex gap-4 my-4 mx-4">
-          <div className="w-1/5 ">
+        <div className="container mx-4 my-4 flex gap-4">
+          <div className="w-1/5">
             <SideBarProfile />
           </div>
-          <div className="w-4/5 bg-white border p-10 mx-10 rounded-xl">
+          <div className="mx-10 w-4/5 rounded-xl border bg-white p-10">
             <Outlet />
           </div>
         </div>

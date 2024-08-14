@@ -41,9 +41,9 @@ const ChangePassword = () => {
     <div>
       <h1 className="text-2xl font-semibold">Mật khẩu & Bảo mật</h1>
       <hr className="my-4" />
-      <div className="w-full flex items-center">
+      <div className="flex w-full items-center">
         <div className="w-1/2 border-r px-10">
-          <h1 className="text-xl font-semibold mb-3">Đổi mật khẩu</h1>
+          <h1 className="mb-3 text-xl font-semibold">Đổi mật khẩu</h1>
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
             <div>
               <div className="mb-2 block">
@@ -71,19 +71,19 @@ const ChangePassword = () => {
                 onChange={handleChange}
               />
             </div>
-            <Button type="submit" className="text-lg font-semibold my-3">
+            <Button type="submit" className="my-3 text-lg font-semibold">
               Lưu thay đổi
             </Button>
           </form>
           {errorList.length > 0 && (
-          <div className="error-list mt-3 mb-3">
-            {errorList.map((error, index) => (
-              <p key={index} className="text-red-600">
-                {error}
-              </p>
-            ))}
-          </div>
-        )}
+            <div className="error-list mb-3 mt-3">
+              {errorList.map((error, index) => (
+                <p key={index} className="text-red-600">
+                  {error}
+                </p>
+              ))}
+            </div>
+          )}
         </div>
         <div className="w-1/2 px-10">
           <h1 className="text-xl font-semibold">Mật khẩu của bạn</h1>

@@ -69,8 +69,6 @@ const EditProfile = () => {
   //   getMeProfile();
   // }, []);
 
-
-
   // useEffect(() => {
   //   const getProvince = async () => {
   //     try {
@@ -224,14 +222,14 @@ const EditProfile = () => {
             Chỉnh sửa thông tin tài khoản
           </h1>
           <div>
-            <form className="space-y-4 my-4 px-8" onSubmit={handleSubmit}>
-              <div className="w-full mx-auto flex gap-10">
+            <form className="my-4 space-y-4 px-8" onSubmit={handleSubmit}>
+              <div className="mx-auto flex w-full gap-10">
                 <div className="w-1/3">
                   <label className="block text-gray-700">Tên đăng nhập: </label>
                   <input
                     type="text"
                     name="username"
-                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required
                     placeholder="Nhập tên đăng nhập..."
                     value={profile.username}
@@ -243,7 +241,7 @@ const EditProfile = () => {
                   <input
                     type="text"
                     name="name"
-                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required
                     placeholder="Nhập họ và tên..."
                     value={profile.name}
@@ -256,7 +254,7 @@ const EditProfile = () => {
                     <input
                       type="text"
                       name="phone"
-                      className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                       required
                       placeholder="Nhập số điện thoại..."
                       value={profile.phone}
@@ -268,7 +266,7 @@ const EditProfile = () => {
                 </div>
               </div>
               <div>
-                <div className="flex items-center gap-8 my-5">
+                <div className="my-5 flex items-center gap-8">
                   <div className="w-1/3">
                     <label
                       htmlFor="select-city-input-3"
@@ -336,7 +334,7 @@ const EditProfile = () => {
                   </div>
                 </div>
               </div>
-              <div className="w-full mx-auto gap-10 flex my-5">
+              <div className="mx-auto my-5 flex w-full gap-10">
                 <div className="w-1/2">
                   <label
                     htmlFor="company_name"
@@ -358,7 +356,7 @@ const EditProfile = () => {
                 </div>
               </div>
               {errorList.length > 0 && (
-                <div className="error-list mt-3 mb-3">
+                <div className="error-list mb-3 mt-3">
                   {errorList.map((error, index) => (
                     <p key={index} className="text-red-600">
                       {error}
@@ -369,13 +367,13 @@ const EditProfile = () => {
               <div className="flex gap-4">
                 <button
                   onClick={() => setIsEditing(false)}
-                  className="w-1/2 py-2 px-4 bg-red-500 text-white font-bold rounded-md hover:bg-red-600"
+                  className="w-1/2 rounded-md bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-600"
                 >
                   Hủy thay đổi
                 </button>
                 <button
                   type="submit"
-                  className="w-1/2 py-2 px-4 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600"
+                  className="w-1/2 rounded-md bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-600"
                 >
                   Lưu thay đổi
                 </button>
@@ -387,8 +385,8 @@ const EditProfile = () => {
         <>
           <h1 className="text-2xl font-semibold">Tổng quan</h1>
           <hr className="my-3" />
-          <div className="w-full mx-auto">
-            <div className="w-full grid grid-cols-4">
+          <div className="mx-auto w-full">
+            <div className="grid w-full grid-cols-4">
               <div>
                 <p className="text-lg">Tên đăng nhập</p>
                 <p className="text-lg font-semibold">{profile.username}</p>
@@ -423,7 +421,7 @@ const EditProfile = () => {
             <form>
               <button
                 onClick={() => setIsEditing(true)}
-                className="py-2 px-4 bg-blue-500 text-white font-bold rounded-md"
+                className="rounded-md bg-blue-500 px-4 py-2 font-bold text-white"
               >
                 Chỉnh sửa
               </button>

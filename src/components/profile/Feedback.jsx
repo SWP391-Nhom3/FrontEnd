@@ -126,19 +126,19 @@ const Feedback = () => {
 
     if (textFilter) {
       filteredReviews = filteredReviews.filter((review) =>
-        review.description.toLowerCase().includes(textFilter.toLowerCase())
+        review.description.toLowerCase().includes(textFilter.toLowerCase()),
       );
     }
 
     if (startFilter) {
       filteredReviews = filteredReviews.filter(
-        (review) => new Date(review.created_at) >= new Date(startFilter)
+        (review) => new Date(review.created_at) >= new Date(startFilter),
       );
     }
 
     if (endFilter) {
       filteredReviews = filteredReviews.filter(
-        (review) => new Date(review.created_at) <= new Date(endFilter)
+        (review) => new Date(review.created_at) <= new Date(endFilter),
       );
     }
 
@@ -190,25 +190,25 @@ const Feedback = () => {
             placeholder="Nội dung đánh giá..."
             value={textFilter}
             onChange={(e) => setTextFilter(e.target.value)}
-            className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-3/6"
+            className="w-3/6 rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <input
             type="date"
             placeholder="Từ ngày"
             value={startFilter}
             onChange={(e) => setStartFilter(e.target.value)}
-            className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-1/6"
+            className="w-1/6 rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <input
             type="date"
             placeholder="Đến ngày"
             value={endFilter}
             onChange={(e) => setEndFilter(e.target.value)}
-            className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-1/6"
+            className="w-1/6 rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button
             type="submit"
-            className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 flex items-center"
+            className="flex items-center rounded-md bg-blue-500 p-2 text-white hover:bg-blue-600"
           >
             <FaFilter className="mr-2" />
             Lọc
@@ -217,7 +217,9 @@ const Feedback = () => {
         <div className="overflow-x-auto">
           <Table hoverable className="border">
             <Table.Head>
-              <Table.HeadCell className="w-1/7 border">Ngày viết</Table.HeadCell>
+              <Table.HeadCell className="w-1/7 border">
+                Ngày viết
+              </Table.HeadCell>
               <Table.HeadCell className="w-2/7 border">Nội dung</Table.HeadCell>
               <Table.HeadCell className="w-1/7 border">Đánh giá</Table.HeadCell>
               <Table.HeadCell className="w-2/7 border">
@@ -230,18 +232,20 @@ const Feedback = () => {
             <Table.Body className="divide-y">
               {currentItems.length > 0 ? (
                 currentItems.map((item) => (
-                  <Table.Row key={item._id} className="bg-white border">
-                    <Table.Cell className="whitespace-nowrap font-medium text-gray-900 border">
+                  <Table.Row key={item._id} className="border bg-white">
+                    <Table.Cell className="whitespace-nowrap border font-medium text-gray-900">
                       {formatDate(item.created_at)}
                     </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap font-medium text-gray-900 border">
+                    <Table.Cell className="whitespace-nowrap border font-medium text-gray-900">
                       {item.description}
                     </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap font-medium text-gray-900 border">
+                    <Table.Cell className="whitespace-nowrap border font-medium text-gray-900">
                       <RenderRating rating={item.rating} />
                     </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap font-medium text-gray-900 border">
-                      {item.reply_feedback !== null ? item.reply_feedback.description : ""}
+                    <Table.Cell className="whitespace-nowrap border font-medium text-gray-900">
+                      {item.reply_feedback !== null
+                        ? item.reply_feedback.description
+                        : ""}
                     </Table.Cell>
                     <Table.Cell>
                       <Button
@@ -265,21 +269,23 @@ const Feedback = () => {
             </Table.Body>
           </Table>
         </div>
-        <div className="flex justify-end items-center mt-6 mx-4 space-x-1">
+        <div className="mx-4 mt-6 flex items-center justify-end space-x-1">
           <button
             onClick={handlePrevClick}
-            className={`px-2 py-1 border rounded ${
-              currentPage === 1 ? "bg-gray-300 cursor-not-allowed" : "bg-white text-blue-500"
+            className={`rounded border px-2 py-1 ${
+              currentPage === 1
+                ? "cursor-not-allowed bg-gray-300"
+                : "bg-white text-blue-500"
             }`}
             disabled={currentPage === 1}
           >
-            <FaChevronLeft className="h-6"/>
+            <FaChevronLeft className="h-6" />
           </button>
           {Array.from({ length: totalPages }, (_, index) => (
             <button
               key={index + 1}
               onClick={() => handleClick(index + 1)}
-              className={`px-3 py-1 border rounded ${
+              className={`rounded border px-3 py-1 ${
                 index + 1 === currentPage
                   ? "bg-blue-500 text-white"
                   : "bg-white text-blue-500"
@@ -290,12 +296,14 @@ const Feedback = () => {
           ))}
           <button
             onClick={handleNextClick}
-            className={`px-2 py-1 border rounded ${
-              currentPage === totalPages ? "bg-gray-300 cursor-not-allowed" : "bg-white text-blue-500"
+            className={`rounded border px-2 py-1 ${
+              currentPage === totalPages
+                ? "cursor-not-allowed bg-gray-300"
+                : "bg-white text-blue-500"
             }`}
             disabled={currentPage === totalPages}
           >
-            <FaChevronRight className="h-6"/>
+            <FaChevronRight className="h-6" />
           </button>
         </div>
       </div>
@@ -311,7 +319,7 @@ const Feedback = () => {
                 <img
                   src={currentFeedback.product.imgUrl}
                   alt={currentFeedback.product.product_name}
-                  className="w-32 h-32 object-cover mx-auto"
+                  className="mx-auto h-32 w-32 object-cover"
                 />
               </div>
               <div>
@@ -321,7 +329,7 @@ const Feedback = () => {
                 <input
                   type="text"
                   value={currentFeedback.product.product_name}
-                  className="mt-1 p-2 border rounded w-full"
+                  className="mt-1 w-full rounded border p-2"
                   readOnly
                 />
               </div>
@@ -331,14 +339,14 @@ const Feedback = () => {
                 </label>
                 <textarea
                   name="description"
-                  className="mt-1 p-2 border rounded w-full"
+                  className="mt-1 w-full rounded border p-2"
                   rows="5"
                   value={currentFeedback.description}
                   onChange={handleFeedbackChange}
                 />
               </div>
               <div className="flex items-center">
-                <label className="block text-xl font-medium text-gray-700 dark:text-gray-200 mr-4">
+                <label className="mr-4 block text-xl font-medium text-gray-700 dark:text-gray-200">
                   Đánh giá:
                 </label>
                 <RenderRating
@@ -350,10 +358,10 @@ const Feedback = () => {
           </Modal.Body>
           <Modal.Footer>
             <Button color="blue" size={"md"} onClick={submitFeedback}>
-              <RxUpdate className="text-lg mr-1" /> Cập nhật
+              <RxUpdate className="mr-1 text-lg" /> Cập nhật
             </Button>
             <Button color="failure" size={"md"} onClick={openDeleteModal}>
-              <AiOutlineDelete className="text-lg mr-1" /> Xóa
+              <AiOutlineDelete className="mr-1 text-lg" /> Xóa
             </Button>
           </Modal.Footer>
         </Modal>

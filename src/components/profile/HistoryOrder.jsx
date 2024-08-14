@@ -64,32 +64,33 @@ const HistoryOrder = () => {
 
     if (filters.orderId) {
       updatedOrders = updatedOrders.filter((item) =>
-        item.order._id.includes(filters.orderId)
+        item.order._id.includes(filters.orderId),
       );
     }
 
     if (filters.minPrice) {
       updatedOrders = updatedOrders.filter(
-        (item) => item.order.total_price >= Number(filters.minPrice)
+        (item) => item.order.total_price >= Number(filters.minPrice),
       );
     }
 
     if (filters.maxPrice) {
       updatedOrders = updatedOrders.filter(
-        (item) => item.order.total_price <= Number(filters.maxPrice)
+        (item) => item.order.total_price <= Number(filters.maxPrice),
       );
     }
 
     if (filters.fromDate) {
       updatedOrders = updatedOrders.filter(
         (item) =>
-          new Date(item.order.required_date) >= new Date(filters.fromDate)
+          new Date(item.order.required_date) >= new Date(filters.fromDate),
       );
     }
 
     if (filters.toDate) {
       updatedOrders = updatedOrders.filter(
-        (item) => new Date(item.order.required_date) <= new Date(filters.toDate)
+        (item) =>
+          new Date(item.order.required_date) <= new Date(filters.toDate),
       );
     }
 
@@ -142,7 +143,7 @@ const HistoryOrder = () => {
             name="orderId"
             value={filters.orderId}
             onChange={handleFilterChange}
-            className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-1/6"
+            className="w-1/6 rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <input
             type="number"
@@ -150,7 +151,7 @@ const HistoryOrder = () => {
             name="minPrice"
             value={filters.minPrice}
             onChange={handleFilterChange}
-            className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-1/6"
+            className="w-1/6 rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <input
             type="number"
@@ -158,7 +159,7 @@ const HistoryOrder = () => {
             name="maxPrice"
             value={filters.maxPrice}
             onChange={handleFilterChange}
-            className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-1/6"
+            className="w-1/6 rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <input
             type="date"
@@ -166,7 +167,7 @@ const HistoryOrder = () => {
             name="fromDate"
             value={filters.fromDate}
             onChange={handleFilterChange}
-            className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-1/6"
+            className="w-1/6 rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <input
             type="date"
@@ -174,10 +175,10 @@ const HistoryOrder = () => {
             name="toDate"
             value={filters.toDate}
             onChange={handleFilterChange}
-            className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-1/6"
+            className="w-1/6 rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button
-            className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 flex items-center"
+            className="flex items-center rounded-md bg-blue-500 p-2 text-white hover:bg-blue-600"
             onClick={handleFilter}
           >
             <FaFilter className="mr-2" />
@@ -209,16 +210,16 @@ const HistoryOrder = () => {
             <Table.Body className="divide-y">
               {currentItems.length > 0 ? (
                 currentItems.map((item) => (
-                  <Table.Row key={item.order._id} className="bg-white  border">
-                    <Table.Cell className="whitespace-nowrap font-medium text-gray-900 border">
+                  <Table.Row key={item.order._id} className="border bg-white">
+                    <Table.Cell className="whitespace-nowrap border font-medium text-gray-900">
                       {formatDate(item.order.required_date)}
                     </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap font-medium text-gray-900 border">
+                    <Table.Cell className="whitespace-nowrap border font-medium text-gray-900">
                       {item.order._id}
                     </Table.Cell>
                     <Table.Cell className="border">
                       {item.order_detail.map((detail) => (
-                        <p className="text-gray-900 mb-3" key={detail._id}>
+                        <p className="mb-3 text-gray-900" key={detail._id}>
                           {getProductName(detail.product_id)}
                         </p>
                       ))}
@@ -261,21 +262,23 @@ const HistoryOrder = () => {
             </Table.Body>
           </Table>
         </div>
-        <div className="flex justify-end items-center mt-6 mx-4 space-x-1">
+        <div className="mx-4 mt-6 flex items-center justify-end space-x-1">
           <button
             onClick={handlePrevClick}
-            className={`px-2 py-1 border rounded ${
-              currentPage === 1 ? "bg-gray-300 cursor-not-allowed" : "bg-white text-blue-500"
+            className={`rounded border px-2 py-1 ${
+              currentPage === 1
+                ? "cursor-not-allowed bg-gray-300"
+                : "bg-white text-blue-500"
             }`}
             disabled={currentPage === 1}
           >
-            <FaChevronLeft className="h-6"/>
+            <FaChevronLeft className="h-6" />
           </button>
           {Array.from({ length: totalPages }, (_, index) => (
             <button
               key={index + 1}
               onClick={() => handleClick(index + 1)}
-              className={`px-3 py-1 border rounded ${
+              className={`rounded border px-3 py-1 ${
                 index + 1 === currentPage
                   ? "bg-blue-500 text-white"
                   : "bg-white text-blue-500"
@@ -286,12 +289,14 @@ const HistoryOrder = () => {
           ))}
           <button
             onClick={handleNextClick}
-            className={`px-2 py-1 border rounded ${
-              currentPage === totalPages ? "bg-gray-300 cursor-not-allowed" : "bg-white text-blue-500"
+            className={`rounded border px-2 py-1 ${
+              currentPage === totalPages
+                ? "cursor-not-allowed bg-gray-300"
+                : "bg-white text-blue-500"
             }`}
             disabled={currentPage === totalPages}
           >
-            <FaChevronRight className="h-6"/>
+            <FaChevronRight className="h-6" />
           </button>
         </div>
       </div>
