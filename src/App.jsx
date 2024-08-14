@@ -81,8 +81,8 @@ const App = () => {
                     <Dashboard isAuthenticatedStaff={isAuthenticatedStaff} />
                   }
                 />
-                <Route path="/products" element ={<ProductManagement />} />
-                <Route path="/add-product" element ={<AddProduct />} />
+                <Route path="/products" element={<ProductManagement />} />
+                <Route path="/add-product" element={<AddProduct />} />
               </Routes>
             </div>
             <AdminFooter />
