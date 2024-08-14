@@ -23,6 +23,7 @@ export const fetchCategories = async () => {
   return await axios.get(`${HOSTNAME}/categories`);
 };
 
+
 //get all brand api
 export const fetchBrands = async () => {
   return await axios.get(`${HOSTNAME}/brands`);
