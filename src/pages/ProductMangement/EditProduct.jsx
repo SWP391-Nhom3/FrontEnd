@@ -57,7 +57,7 @@ const EditProduct = () => {
                     setDescription(productdata.description);
                     setSelectedCategoryId(productdata.category.id);
                     setSelectedBrandId(productdata.brand.id);
-                    setImg(productdata.coverImageUrl);
+                    setProduct_img_url(productdata.coverImageUrl);
                     setActive(productdata.active);
                     if (productdata.coverImageUrl) {
                         setFileList([
@@ -122,15 +122,28 @@ const EditProduct = () => {
 
         console.log("token:", token);
 
-        const product = {
-            name: product_name,
-            description: description,
-            price: price,
-            brand: selectedBrandId,
-            category: selectedCategoryId,
-            files: img,
-            // active: active
-        };
+        let product;
+        console.log("img:", img);
+
+        if(img === null){
+            product = {
+                name: product_name,
+                description: description,
+                price: price,
+                brand: selectedBrandId,
+                category: selectedCategoryId,
+                coverImageUrl: product_img_url,
+            };
+        }else{
+            product = {
+                name: product_name,
+                description: description,
+                price: price,
+                brand: selectedBrandId,
+                category: selectedCategoryId,
+                files: img,
+            };
+        }
         try {
             await fetchUpdateProduct(product, token, id);
             notification.success({
@@ -160,7 +173,7 @@ const EditProduct = () => {
                         <Col span={18}>
                             <Upload
                                 listType="picture-card"
-                                value={img}
+                                value={product_img_url}
                                 fileList={fileList}
                                 onChange={handleChange}
                                 beforeUpload={() => false}
