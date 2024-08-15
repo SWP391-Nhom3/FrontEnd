@@ -7,10 +7,6 @@
 .navbar {
   z-index: 10000;
 }
-body,
-html {
-  overflow-x: hidden;
-}
 @media screen and (max-width: 800px) {
   .sidebar {
     z-index: 10000000;

@@ -1,8 +1,17 @@
 import { useEffect, useState } from "react";
 import { fetchAddProductBatch, fetchProducts } from "../../data/api";
 import { Button } from "flowbite-react";
-import { Col, InputNumber, Row, Table, DatePicker, Card, notification, message } from 'antd';
-import moment from 'moment';
+import {
+  Col,
+  InputNumber,
+  Row,
+  Table,
+  DatePicker,
+  Card,
+  notification,
+  message,
+} from "antd";
+import moment from "moment";
 import { Navigate } from "react-router-dom";
 import Loading from "../../components/Loading";
 import { toast, Toaster } from "react-hot-toast";
@@ -40,39 +49,40 @@ const AddProductBatch = () => {
       .catch((error) => console.error("Error fetching product:", error));
   }, []);
 
-  console.log("pro ne:", products)
+  console.log("pro ne:", products);
 
   const productTable = [
     {
-      title: 'Hình Ảnh',
-      dataIndex: 'coverImageUrl',
-      key: 'coverImageUrl',
+      title: "Hình Ảnh",
+      dataIndex: "coverImageUrl",
+      key: "coverImageUrl",
       render: (imgUrl) => (
-        <img src={imgUrl} alt="product" className="w-auto h-8" />
+        <img src={imgUrl} alt="product" className="h-8 w-auto" />
       ),
     },
     {
-      title: 'Sản Phẩm',
-      dataIndex: 'name',
-      key: 'name',
+      title: "Sản Phẩm",
+      dataIndex: "name",
+      key: "name",
     },
     {
-      title: 'Số Lượng',
-      dataIndex: 'stockQuantity',
-      key: 'stockQuantity',
+      title: "Số Lượng",
+      dataIndex: "stockQuantity",
+      key: "stockQuantity",
       sorter: (a, b) => a.amount - b.amount,
-      sortOrder: sorter.columnKey === 'amount' && sorter.order,
+      sortOrder: sorter.columnKey === "amount" && sorter.order,
     },
     {
-      title: 'Giá Tiền',
-      dataIndex: 'price',
-      key: 'price',
-      render: (price) => Number(price).toLocaleString("vi-VN", {
-        style: "currency",
-        currency: "VND",
-      }),
+      title: "Giá Tiền",
+      dataIndex: "price",
+      key: "price",
+      render: (price) =>
+        Number(price).toLocaleString("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        }),
       sorter: (a, b) => a.price - b.price,
-      sortOrder: sorter.columnKey === 'price' && sorter.order,
+      sortOrder: sorter.columnKey === "price" && sorter.order,
     },
   ];
 
@@ -88,28 +98,32 @@ const AddProductBatch = () => {
 
   const batchTable = [
     {
-      title: 'Tên Sản Phẩm',
-      dataIndex: ['product', 'name'],
-      key: 'product_id',
+      title: "Tên Sản Phẩm",
+      dataIndex: ["product", "name"],
+      key: "product_id",
     },
     {
-      title: 'Số Lượng',
-      dataIndex: 'quantity',
-      key: 'quantity',
+      title: "Số Lượng",
+      dataIndex: "quantity",
+      key: "quantity",
       render: (text, record, index) => (
-        <InputNumber min={1} value={text} onChange={(value) => handleQuantityChange(value, index)} />
+        <InputNumber
+          min={1}
+          value={text}
+          onChange={(value) => handleQuantityChange(value, index)}
+        />
       ),
     },
     {
-      title: 'Hành Động',
-      key: 'delete',
+      title: "Hành Động",
+      key: "delete",
       render: (text, record) => (
         <Button type="link" onClick={(e) => handleDeleteFromBill(e, record)}>
           Xóa
         </Button>
       ),
     },
-  ]
+  ];
 
   const handleQuantityChange = (value, index) => {
     const newBatchBill = batchBill.map((batch, i) => {
@@ -134,8 +148,8 @@ const AddProductBatch = () => {
   const handleAddBatch = () => {
     const newBatchBill = [...batchBill];
     const newExpandedRowKeys = [...expandedRowKeys];
-    selectedProducts.forEach(product => {
-      if (!newBatchBill.some(item => item.product.id === product.id)) {
+    selectedProducts.forEach((product) => {
+      if (!newBatchBill.some((item) => item.product.id === product.id)) {
         const newBatch = {
           manufactureDate: null,
           expiryDate: null,
@@ -143,8 +157,8 @@ const AddProductBatch = () => {
           product: {
             id: product.id,
             name: product.name,
-            coverImageUrl: product.coverImageUrl
-          }
+            coverImageUrl: product.coverImageUrl,
+          },
         };
         newBatchBill.push(newBatch);
       }
@@ -156,21 +170,23 @@ const AddProductBatch = () => {
   };
 
   const handleDeleteFromBill = (e, record) => {
-    const newBatchBill = batchBill.filter(batch => batch.product.id !== record.product.id);
+    const newBatchBill = batchBill.filter(
+      (batch) => batch.product.id !== record.product.id,
+    );
     setBatchBill(newBatchBill);
     // setExpandedRowKeys(expandedRowKeys.filter(key => key !== record.product.id));
     notification.success({
-      message: 'Đã xóa 1 lô sản phẩm',
-      placement: 'top',
-    })
+      message: "Đã xóa 1 lô sản phẩm",
+      placement: "top",
+    });
   };
 
   const validateBillProducts = () => {
     for (const product of batchBill) {
       if (!product.manufactureDate || !product.expiryDate) {
         notification.error({
-          message: 'Ngày sản xuất và hạn sử dụng không được để trống',
-          placement: 'top',
+          message: "Ngày sản xuất và hạn sử dụng không được để trống",
+          placement: "top",
         });
         return false;
       }
@@ -179,18 +195,18 @@ const AddProductBatch = () => {
       const expirationDate = moment(product.expiryDate);
       const currentDate = moment();
 
-      if (expirationDate.isBefore(productionDate.add(1, 'months'))) {
+      if (expirationDate.isBefore(productionDate.add(1, "months"))) {
         notification.error({
-          message: 'Hạn sử dụng phải lớn hơn ngày sản xuất ít nhất 1 tháng',
-          placement: 'top',
+          message: "Hạn sử dụng phải lớn hơn ngày sản xuất ít nhất 1 tháng",
+          placement: "top",
         });
         return false;
       }
 
-      if (expirationDate.isBefore(currentDate.add(1, 'months'))) {
+      if (expirationDate.isBefore(currentDate.add(1, "months"))) {
         notification.error({
-          message: 'Hạn sử dụng phải lớn hơn ngày hiện tại ít nhất 1 tháng',
-          placement: 'top',
+          message: "Hạn sử dụng phải lớn hơn ngày hiện tại ít nhất 1 tháng",
+          placement: "top",
         });
         return false;
       }
@@ -215,46 +231,59 @@ const AddProductBatch = () => {
           expiryDate: batch.expiryDate,
           quantity: batch.quantity,
           product: {
-            id: batch.product.id
-          }
+            id: batch.product.id,
+          },
         };
 
         console.log("batchData ne", batchData);
-  
+
         await fetchAddProductBatch(batchData, token);
       }
-  
+
       notification.success({
-        message: 'Nhập các lô sản phẩm thành công',
-        placement: 'top',
-      })
-  
-      setBatchBill([]);  // Reset batchBill sau khi thành công
+        message: "Nhập các lô sản phẩm thành công",
+        placement: "top",
+      });
+
+      setBatchBill([]); // Reset batchBill sau khi thành công
       setFormState({});
     } catch (error) {
       notification.error({
-        message: 'Lỗi nhập sản phẩm',
-        placement: 'top',
-      })
+        message: "Lỗi nhập sản phẩm",
+        placement: "top",
+      });
     }
   };
 
   if (loading) {
-    return <Loading />
+    return <Loading />;
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
+    <div style={{ display: "flex", flexDirection: "column" }}>
       <Toaster />
       <Row justify="space-between" style={{ flexGrow: 1 }}>
         <Col span={13}>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <div style={{ display: "flex", justifyContent: "center" }}>
             <Card
               title="Chọn sản phẩm"
-              style={{ width: '90%', marginTop: '50px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
+              style={{
+                width: "90%",
+                marginTop: "50px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+              }}
             >
-              <div style={{ marginBottom: 16, textAlign: 'right' }}>
-                <Button type="primary" style={{ backgroundColor: '#46B5C1' }} disabled={selectedRowKeys.length === 0} onClick={handleAddBatch}>Nhập Hàng</Button>
+              <div style={{ marginBottom: 16, textAlign: "right" }}>
+                <Button
+                  type="primary"
+                  style={{ backgroundColor: "#46B5C1" }}
+                  disabled={selectedRowKeys.length === 0}
+                  onClick={handleAddBatch}
+                >
+                  Nhập Hàng
+                </Button>
               </div>
               <div style={{ flexGrow: 1 }}>
                 <Table
@@ -265,10 +294,10 @@ const AddProductBatch = () => {
                     pageSize: pageSize,
                     total: products.length,
                   }}
-                  scroll={{ x: '100%' }}
+                  scroll={{ x: "100%" }}
                   onChange={handleTableChange}
                   rowKey="id"
-                  locale={{ emptyText: 'Không tìm thấy sản phẩm' }}
+                  locale={{ emptyText: "Không tìm thấy sản phẩm" }}
                   rowSelection={rowSelection}
                 />
               </div>
@@ -276,12 +305,22 @@ const AddProductBatch = () => {
           </div>
         </Col>
         <Col span={11}>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Card title="Lô nhập hàng sản phẩm" style={{ width: '90%', marginTop: '50px' }}>
-              <div style={{ marginBottom: 16, textAlign: 'right' }}>
-                <Button type="primary" style={{ backgroundColor: '#46B5C1' }} disabled={batchBill.length === 0} onClick={handleSubmit}>Tạo</Button>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <Card
+              title="Lô nhập hàng sản phẩm"
+              style={{ width: "90%", marginTop: "50px" }}
+            >
+              <div style={{ marginBottom: 16, textAlign: "right" }}>
+                <Button
+                  type="primary"
+                  style={{ backgroundColor: "#46B5C1" }}
+                  disabled={batchBill.length === 0}
+                  onClick={handleSubmit}
+                >
+                  Tạo
+                </Button>
               </div>
-              <div style={{ flexGrow: 1, overflowY: 'auto' }}>
+              <div style={{ flexGrow: 1, overflowY: "auto" }}>
                 <Table
                   columns={batchTable}
                   dataSource={batchBill}
@@ -291,24 +330,47 @@ const AddProductBatch = () => {
                   expandable={{
                     expandedRowRender: (record) => (
                       <div style={{ margin: 0 }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                          }}
+                        >
                           <span>Ngày Sản Xuất:</span>
                           <DatePicker
                             locale={locale}
-                            value={record.manufactureDate ? moment(record.manufactureDate) : null}
-                            onChange={(date) => handleDateChange(date, record, 'manufactureDate')}
+                            value={
+                              record.manufactureDate
+                                ? moment(record.manufactureDate)
+                                : null
+                            }
+                            onChange={(date) =>
+                              handleDateChange(date, record, "manufactureDate")
+                            }
                             format="DD/MM/YYYY"
                             size="large"
                             placeholder="Nhập NSX"
                             onClick={(e) => e.stopPropagation()} // Ngăn chặn mở rộng khi nhấp vào DatePicker
                           />
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 8 }}>
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            marginTop: 8,
+                          }}
+                        >
                           <span>Hạn Sử Dụng:</span>
                           <DatePicker
                             locale={locale}
-                            value={record.expiryDate ? moment(record.expiryDate) : null}
-                            onChange={(date) => handleDateChange(date, record, 'expiryDate')}
+                            value={
+                              record.expiryDate
+                                ? moment(record.expiryDate)
+                                : null
+                            }
+                            onChange={(date) =>
+                              handleDateChange(date, record, "expiryDate")
+                            }
                             format="DD/MM/YYYY"
                             size="large"
                             placeholder="Nhập HSD"
@@ -322,18 +384,23 @@ const AddProductBatch = () => {
                   }}
                 />
               </div>
-              <div style={{ marginTop: 16, textAlign: 'right' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <div style={{ marginTop: 16, textAlign: "right" }}>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
                   <p>Tổng sản phẩm: </p>
-                  <strong>
-                    {batchBill.length}
-                  </strong>
+                  <strong>{batchBill.length}</strong>
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
                   <p>Tổng số lượng</p>
                   <strong>
-                    {batchBill.reduce((total, batch) => total + batch.quantity, 0)}
+                    {batchBill.reduce(
+                      (total, batch) => total + batch.quantity,
+                      0,
+                    )}
                   </strong>
                 </div>
               </div>
@@ -343,6 +410,6 @@ const AddProductBatch = () => {
       </Row>
     </div>
   );
-}
+};
 
-export default AddProductBatch
+export default AddProductBatch;

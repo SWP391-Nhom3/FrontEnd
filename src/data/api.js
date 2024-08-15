@@ -69,7 +69,7 @@ export const fetchAddProductBatch = async (batch, token) => {
       Authorization: `Bearer ${token}`,
     },
   });
-}
+};
 
 //get all product batch api
 export const fetchProductBatches = async () => {
@@ -472,15 +472,15 @@ export const fetchAddBrand = async (brand, token) => {
 
 // //voucher:
 // //getall:
-// export const fetchGetVoucher = async () => {
-//   try {
-//     const res = await axios.get(`${SCHEMA_HOSTNAME}/vouchers/all-vouchers`);
-//     return res.data.result;
-//   } catch (error) {
-//     console.error("Error fetching vouchers:", error);
-//     throw error;
-//   }
-// };
+export const fetchGetVoucher = async () => {
+  try {
+    const res = await axios.get(`${HOSTNAME}/vouchers`);
+    return res.data.data;
+  } catch (error) {
+    console.error("Error fetching vouchers:", error);
+    throw error;
+  }
+};
 // //update:
 // export const fetchUpdateVoucher = async (voucher, token, id) => {
 //   return await axios.post(

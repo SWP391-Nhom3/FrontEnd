@@ -10,6 +10,10 @@ const UserBtn = () => {
   const handleLogout = async () => {
     navigate("/login");
     localStorage.removeItem("user");
+    localStorage.removeItem("result");
+    localStorage.removeItem("role");
+    localStorage.removeItem("isMember");
+    localStorage.removeItem("accessToken");
   };
   const result = JSON.parse(localStorage.getItem("result")) || null;
   // const verify = user?.verify;
