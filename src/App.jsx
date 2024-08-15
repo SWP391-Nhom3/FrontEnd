@@ -27,6 +27,10 @@ import Header from "./pages/Header";
 import "./App.css";
 import ProductManagement from "./pages/ProductMangement";
 import AddProduct from "./pages/ProductMangement/AddProduct";
+import Brands from "./pages/Brand/Brands";
+import AddBrands from "./pages/Brand/AddBrands";
+import Categories from "./pages/Category/Categories";
+import AddCategory from "./pages/Category/AddCategory";
 
 const App = () => {
   const { currentMode, activeMenu, themeSettings } = useStateContext();
@@ -83,6 +87,10 @@ const App = () => {
                 />
                 <Route path="/products" element={<ProductManagement />} />
                 <Route path="/add-product" element={<AddProduct />} />
+                <Route path="/brands" element={<Brands />} />
+                <Route path="/add-brand" element={<AddBrands />} />
+                <Route path="/categories" element={<Categories />} />
+                <Route path="/add-category" element={<AddCategory />} />
               </Routes>
             </div>
             <AdminFooter />
