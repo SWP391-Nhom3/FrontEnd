@@ -79,7 +79,7 @@ const ListProduct = () => {
                     alt={product.product_name}
                     className="h-44 w-44 object-cover"
                   />
-                  {product.amount === 0 && (
+                  {product.stockQuantity === 0 && (
                     <div className="absolute inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50">
                       <span className="text-xl font-bold text-white">
                         Hết hàng
@@ -96,7 +96,7 @@ const ListProduct = () => {
                       WebkitBoxOrient: "vertical",
                     }}
                   >
-                    {product.product_name}
+                    {product.name}
                   </h3>
                 </div>
               </Link>
@@ -127,9 +127,9 @@ const ListProduct = () => {
                 </div>
                 <button
                   onClick={() => addCartItem(product)}
-                  disabled={product.amount === 0}
+                  disabled={product.stockQuantity === 0}
                   className={
-                    product.amount === 0
+                    product.stockQuantity === 0
                       ? "flex cursor-not-allowed items-center justify-center rounded-lg bg-gray-500 px-4 py-2 text-white"
                       : "flex items-center justify-center rounded-lg bg-green-500 px-4 py-2 text-white"
                   }

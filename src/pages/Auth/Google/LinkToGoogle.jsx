@@ -3,7 +3,10 @@ import { Link } from "react-router-dom";
 
 const LinkToGoogle = ({ headline }) => {
   const getGoogleAuthUrl = () => {
-    const { VITE_GOOGLE_CLIENT_ID, VITE_GOOGLE_REDIRECT_URI } = import.meta.env;
+    const VITE_GOOGLE_CLIENT_ID =
+      "229203659707-kpvju7vl0mpc0j4gnd2s5eiclnuoaf6q.apps.googleusercontent.com";
+    const VITE_GOOGLE_REDIRECT_URI =
+      "http://localhost:8081/login/oauth2/code/google";
     const url = "https://accounts.google.com/o/oauth2/v2/auth";
     const query = {
       client_id: VITE_GOOGLE_CLIENT_ID,

@@ -93,11 +93,11 @@ const ProductDetail = () => {
         <div className="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
           <div className="relative mx-auto max-w-md shrink-0 lg:max-w-lg">
             <img
-              className={`w-56 ${product.amount === 0 ? "grayscale" : ""}`}
+              className={`w-56 ${product.stockQuantity === 0 ? "grayscale" : ""}`}
               src={product.coverImageUrl}
               alt={product.name}
             />
-            {product.amount === 0 && (
+            {product.stockQuantity === 0 && (
               <div className="absolute inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 text-lg font-bold text-white">
                 Hết hàng
               </div>
@@ -105,7 +105,7 @@ const ProductDetail = () => {
           </div>
           <div className="mt-6 sm:mt-8 lg:mt-0">
             <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl">
-              {product.product_name}
+              {product.name}
             </h1>
             <div className="mt-4 sm:flex sm:items-center sm:gap-4">
               {product.discount > 0 ? (
@@ -122,9 +122,9 @@ const ProductDetail = () => {
                       currency: "VND",
                     })}
                   </p>
-                  <p className="text-lg font-medium text-green-500 sm:text-xl">
+                  {/* <p className="text-lg font-medium text-green-500 sm:text-xl">
                     Giảm {product.discount}%
-                  </p>
+                  </p> */}
                 </div>
               ) : (
                 <p className="text-2xl font-extrabold text-gray-900 sm:text-3xl">
@@ -149,19 +149,19 @@ const ProductDetail = () => {
             </div>
 
             <div className="mt-6 sm:mt-8 sm:flex sm:items-center sm:gap-4">
-              {/* {product.amount > 0 ? ( */}
-              <button
-                className="mt-4 flex items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 sm:mt-0"
-                onClick={() => addCartItem(product)}
-              >
-                <FaCartPlus className="-ms-2 me-2 h-5 w-5" />
-                Thêm Vào Giỏ Hàng
-              </button>
-              {/* ) : (
+              {product.amount > 0 ? (
+                <button
+                  className="mt-4 flex items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 sm:mt-0"
+                  onClick={() => addCartItem(product)}
+                >
+                  <FaCartPlus className="-ms-2 me-2 h-5 w-5" />
+                  Thêm Vào Giỏ Hàng
+                </button>
+              ) : (
                 <span className="mt-4 flex items-center justify-center rounded-lg bg-gray-400 px-5 py-2.5 text-sm font-medium text-white sm:mt-0">
                   Hết Hàng
                 </span>
-              )} */}
+              )}
             </div>
           </div>
         </div>

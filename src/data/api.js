@@ -10,6 +10,17 @@ export const fetchLogin = async (email, password) => {
   });
 };
 
+export const fetchRefreshToken = async (token) => {
+  try {
+    const response = await axios.post(`${HOSTNAME}/auth/refresh`, {
+      token: token,
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 //register api
 export const fetchRegister = async ({ email, password }) => {
   return await axios.post(`${HOSTNAME}/users/register`, {

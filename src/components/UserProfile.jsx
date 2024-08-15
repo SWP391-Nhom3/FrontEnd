@@ -19,6 +19,7 @@ const UserProfile = ({ isAdmin }) => {
     localStorage.removeItem("result");
     localStorage.removeItem("isAdmin");
     localStorage.removeItem("isStaff");
+    localStorage.removeItem("accessToken");
     window.location.reload();
   };
   const handleLogout = async () => {
