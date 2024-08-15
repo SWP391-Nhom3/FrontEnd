@@ -15,7 +15,6 @@ const Categories = () => {
       try {
         const res = await fetchCategories();
         setCategories(res.data.data);
-        console.log("brands", res.data.data);
       } catch (error) {
         console.error("Error fetching cates:", error);
         notification.error({

@@ -26,10 +26,7 @@ const AddCategory = () => {
       name: categoryName,
     };
 
-    console.log("category nè: ", category);
-
     const res = await fetchAddCategory(category, token);
-    console.log("category up: ", res.data);
     notification.success({
       message: "Tạo phân loại mới thành công",
       placement: "top",

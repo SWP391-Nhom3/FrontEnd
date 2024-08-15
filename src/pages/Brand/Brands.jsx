@@ -18,7 +18,6 @@ const Brands = () => {
       try {
         const res = await fetchBrands();
         setBrands(res.data.data);
-        console.log("brands", res.data.data);
       } catch (error) {
         console.error("Error fetching brands:", error);
         notification.error({

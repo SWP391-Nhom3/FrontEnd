@@ -26,7 +26,6 @@ const Sidebar = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
 
   const toggleSubmenu = (name) => {
     setActiveSubmenu(activeSubmenu === name ? null : name);
-    console.log("toggleSubmenu triggered for:", name);
   };
 
   const sidebarRef = useRef(null);
