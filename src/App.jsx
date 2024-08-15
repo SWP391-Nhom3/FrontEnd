@@ -26,8 +26,6 @@ import Sidebar from "./components/Sidebar";
 import AdminFooter from "./components/Footer/AdminFooter";
 import AdminNavbar from "./components/header/AdminNavbar";
 import Header from "./pages/Header";
-
-import "./App.css";
 import ProductManagement from "./pages/ProductMangement";
 import AddProduct from "./pages/ProductMangement/AddProduct";
 import Brands from "./pages/Brand/Brands";
@@ -37,26 +35,25 @@ import AddCategory from "./pages/Category/AddCategory";
 import AddProductBatch from "./pages/ProductMangement/AddProductBatch";
 import ViewProductBatch from "./pages/ProductMangement/ViewProductBatch";
 import EditProduct from "./pages/ProductMangement/EditProduct";
+import { fetchRefreshToken } from "./data/api";
+
+import "./App.css";
 
 const App = () => {
   const { currentMode, activeMenu, themeSettings } = useStateContext();
 
-  const result = JSON.parse(localStorage.getItem("result")) || null;
+  const accessToken = localStorage.getItem("accessToken") || null;
+
   useEffect(() => {
     const checkToken = async () => {
-      // if (result !== null) {
-      //   await fetchRefreshToken(result)
-      //     .then((res) => {
-      //       localStorage.setItem("result", JSON.stringify(res.data.result));
-      //     })
-      //     .catch((error) => {
-      //       localStorage.clear();
-      //       window.location.reload();
-      //     });
-      // }
+      if (accessToken !== null) {
+        await fetchRefreshToken(accessToken).then((res) => {
+          localStorage.setItem("accessToken", res.data.accessToken);
+        });
+      }
     };
     checkToken();
-  }, []);
+  }, [accessToken]);
 
   const isAuthenticatedAdmin = localStorage.getItem("isAdmin") === "true";
   const isAuthenticatedStaff = localStorage.getItem("isStaff") === "true";
@@ -148,7 +145,7 @@ const App = () => {
             <AdminFooter />
           </>
         ) : (
-          <>
+          <div className="container mx-auto px-2 py-4">
             <Header />
             <Routes>
               <Route path="/" element={<Home />} />
@@ -167,7 +164,7 @@ const App = () => {
               <Route path="/exchange_policy" element={<ExchangePolicy />} />
               <Route path="/privacy_policy" element={<PrivacyPolicy />} />
             </Routes>
-          </>
+          </div>
         )}
       </BrowserRouter>
     </div>
