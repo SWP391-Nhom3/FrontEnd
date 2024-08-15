@@ -24,7 +24,8 @@ export const CartContextProvider = ({ children }) => {
   );
 
   const totalPrice = cartItems.reduce((total, item) => {
-    const itemTotal = item.price * item.quantity;
+    const discount = parseFloat(item.discount) / 100;
+    const itemTotal = item.price * item.quantity * (1 - discount);
     return total + itemTotal;
   }, 0);
 
@@ -45,7 +46,7 @@ export const CartContextProvider = ({ children }) => {
         (cartItem) => cartItem.id === product.id,
       );
       if (currentCart) {
-        if (currentCart.quantity >= product.amount) {
+        if (currentCart.quantity >= product.stockQuantity) {
           toast.error("Số lượng mua vượt quá số lượng trong kho", {
             position: "top-right",
             duration: 1000,
@@ -85,8 +86,8 @@ export const CartContextProvider = ({ children }) => {
         );
 
         if (currentCart) {
-          if (currentCart.quantity >= product.amount) {
-            exceededQuantityProducts.push(product.product_name);
+          if (currentCart.quantity >= product.stockQuantity) {
+            exceededQuantityProducts.push(product.name);
           } else {
             updatedCartItems = updatedCartItems.map((cartItem) =>
               cartItem.id === product.id
@@ -122,38 +123,21 @@ export const CartContextProvider = ({ children }) => {
     setCartItems([]);
   };
 
-  // const increaseAmount = (product) => {
-  //   setCartItems((prevItems) =>
-  //     prevItems.map((item) =>
-  //       item.id === product.id && item.quantity < product.quantity
-  //         ? { ...item, quantity: item.quantity + 1 }
-  //         : item,
-  //     ),
-  //   );
-
-  //   const currentCart = cartItems.find((item) => item.id === product.id);
-  //   if (currentCart && currentCart.quantity >= product.amount) {
-  //     toast.error(`Số lượng mua vượt quá số lượng trong kho`, {
-  //       position: "top-right",
-  //       duration: 1000,
-  //     });
-  //   }
-  // };
-
-  const increaseAmount = (id) => {
-    setCartItems((prevItems) => {
-      const currentCart = prevItems.find((item) => item.id === id);
-      if (currentCart) {
-        if (currentCart.quantity > 1) {
-          return prevItems.map((item) =>
-            item.id === id ? { ...item, quantity: item.quantity + 1 } : item,
-          );
-        } else {
-          return prevItems.filter((item) => item.id !== id);
-        }
-      }
-      return prevItems;
-    });
+  const increaseAmount = (product) => {
+    setCartItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === product.id && item.quantity < product.stockQuantity
+          ? { ...item, quantity: item.quantity + 1 }
+          : item,
+      ),
+    );
+    const currentCart = cartItems.find((item) => item.id === product.id);
+    if (currentCart && currentCart.quantity >= product.stockQuantity) {
+      toast.error(`Số lượng mua vượt quá số lượng trong kho`, {
+        position: "top-right",
+        duration: 1000,
+      });
+    }
   };
 
   const decreaseAmount = (id) => {

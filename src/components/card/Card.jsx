@@ -50,8 +50,8 @@ const ProductCard = ({ products, headline }) => {
     );
   }
 
-  const formatCurrency = (quantity) => {
-    return Number(quantity).toLocaleString("vi-VN", {
+  const formatCurrency = (stockQuantity) => {
+    return Number(stockQuantity).toLocaleString("vi-VN", {
       style: "currency",
       currency: "VND",
     });
@@ -76,7 +76,7 @@ const ProductCard = ({ products, headline }) => {
             const discountedPrice =
               product.price - (product.price * product.discount) / 100;
             return (
-              <div key={product._id} className="p-1">
+              <div key={product.id} className="p-1">
                 <Card className="product-card relative m-1 flex h-full max-w-xs flex-col justify-between">
                   <Link
                     to="/product"
@@ -89,7 +89,7 @@ const ProductCard = ({ products, headline }) => {
                         src={product.coverImageUrl}
                         alt={product.name}
                       />
-                      {product.quantity === 0 && (
+                      {product.stockQuantity === 0 && (
                         <div className="out-of-stock-overlay">
                           <span className="text-xl font-bold text-white">
                             Hết hàng
@@ -136,7 +136,7 @@ const ProductCard = ({ products, headline }) => {
                     </div>
                     <button
                       onClick={() => addCartItem(product)}
-                      disabled={product.quantity === 0}
+                      disabled={product.stockQuantity === 0}
                       className="flex items-center justify-center rounded-lg bg-primary-500 p-3 text-center text-base font-medium text-white hover:bg-primary-600 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-500 dark:focus:ring-primary-600"
                     >
                       <span className="mr-1">Thêm</span>
