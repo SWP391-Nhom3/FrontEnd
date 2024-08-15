@@ -26,7 +26,7 @@ const ListProduct = () => {
 
   useEffect(() => {
     const productActive = async () => {
-      setProductsList(products.filter((product) => product.isActive));
+      setProductsList(products.filter((product) => product.active));
     };
     productActive();
   }, [products]);

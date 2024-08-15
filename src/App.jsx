@@ -106,17 +106,9 @@ const App = () => {
                   <Route path="/add-brand" element={<AddBrands />} />
                   <Route path="/categories" element={<Categories />} />
                   <Route path="/add-category" element={<AddCategory />} />
+                  <Route path="/product" element={<EditProduct />} />
                 </Routes>
               </div>
-                <Route path="/products" element={<ProductManagement />} />
-                <Route path="/add-product" element={<AddProduct />} />
-                <Route path="/add-product-batch" element={<AddProductBatch />} />
-                <Route path="/product-batch" element={<ViewProductBatch />} />
-                <Route path="/brands" element={<Brands />} />
-                <Route path="/add-brand" element={<AddBrands />} />
-                <Route path="/categories" element={<Categories />} />
-                <Route path="/add-category" element={<AddCategory />} />
-                <Route path="/product" element ={<EditProduct />} />
             </div>
             <AdminFooter />
           </>

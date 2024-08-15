@@ -24,8 +24,7 @@ export const CartContextProvider = ({ children }) => {
   );
 
   const totalPrice = cartItems.reduce((total, item) => {
-    const discount = parseFloat(item.discount) / 100;
-    const itemTotal = item.price * item.quantity * (1 - discount);
+    const itemTotal = item.price * item.quantity;
     return total + itemTotal;
   }, 0);
 
