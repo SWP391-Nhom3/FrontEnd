@@ -4,7 +4,6 @@ import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "./layouts/main/index";
 import SiginIn from "./pages/Auth/Login";
 import Home from "./pages/Home";
-import Product from "./pages/Product";
 import GuestGuard from "./guards/GuestGuard";
 import AuthGuard from "./guards/AuthGuard";
 import DashboardLayout from "./layouts/dashboard/index";
@@ -13,14 +12,23 @@ import Products from "./pages/dashboard/Product/ProductManagementPage";
 import CreateProductForm from "./pages/dashboard/Product/CreateProductForm";
 import CreateBatchForm from "./pages/dashboard/Batch/CreateBatchForm";
 import Cart from "./pages/Cart/index";
+import CheackoutPage from "./components/cart/CheckoutPage";
+import SuccessPage from "./components/cart/SuccessPage";
+import CancelPage from "./components/cart/CancelPage";
 import OrderInfor from "./components/order/OrderInfor";
+import Product from "./pages/Product/index";
 
 import "./App.css";
+import { element } from "prop-types";
 
 const router = createBrowserRouter([
   {
     path: "/dashboard",
-    element: <DashboardLayout />,
+    element: (
+      <AuthGuard>
+        <DashboardLayout />
+      </AuthGuard>
+    ),
     children: [
       { element: <Products />, index: true },
       { path: "/dashboard/products", element: <Products /> },
@@ -47,6 +55,14 @@ const router = createBrowserRouter([
         element: <Cart />,
       },
       {
+        path: "/checkout",
+        element: (
+          <AuthGuard>
+            <CheackoutPage />
+          </AuthGuard>
+        ),
+      },
+      {
         path: "/order",
         element: (
           <AuthGuard>
@@ -54,10 +70,16 @@ const router = createBrowserRouter([
           </AuthGuard>
         ),
       },
+      { path: "/product", element: <Product /> },
       {
         path: "/authenticate",
         element: <Authenticate />,
       },
+      {
+        path: "/success",
+        element: <SuccessPage />,
+      },
+      { path: "/cancel", element: <CancelPage /> },
     ],
   },
 ]);

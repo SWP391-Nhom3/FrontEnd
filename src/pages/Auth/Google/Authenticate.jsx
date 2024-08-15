@@ -25,9 +25,9 @@ export default function Authenticate() {
           return response.json();
         })
         .then((data) => {
-          console.log(data);
+          console.log("ssssssssswwwwwwww", data);
 
-          setToken(data.result?.token);
+          setToken(data.data?.accessToken);
           setIsLoggedin(true);
         });
     }

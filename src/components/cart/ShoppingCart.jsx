@@ -1,482 +1,84 @@
-import { MdDeleteForever } from "react-icons/md";
-import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { FaHeart, FaRegHeart } from "react-icons/fa6";
-
-import cartEmptyImg from "../../assets/images/background/cart_empty.png";
+import React from "react";
 import { useCartContext } from "../../context/CartContext";
-import { Button } from "flowbite-react";
-import { ImGift } from "react-icons/im";
-const ShoppingCart = () => {
-  const user = JSON.parse(localStorage.getItem("user")) || null;
-  const verify = user === null ? 0 : user.verify;
+import Card from "./Card";
+import { useNavigate } from "react-router-dom";
+
+const CartPage = () => {
   const {
     cartItems,
-    totalPrice,
-    removeCartItem,
     increaseAmount,
     decreaseAmount,
-    cartAmount,
+    removeCartItem,
+    totalPrice,
   } = useCartContext();
-  const [voucherCode, setVoucherCode] = useState("");
-  const [discount, setDiscount] = useState(0);
-  const [ship, setShip] = useState(0);
-  const [errorList, setErrorList] = useState([]);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [voucherList, setVoucherList] = useState([]);
-  const token = JSON.parse(localStorage.getItem("result"));
 
-  const handleRadioChange = (event) => {
-    const selectedValue = event.target.value;
-    document.getElementById("voucherCode").value = selectedValue;
-    setVoucherCode(selectedValue);
-  };
+  const navigate = useNavigate();
 
-  const handChangeVoucherCode = (e) => {
-    setVoucherCode(e.target.value);
-  };
-
-  const calculateShip = (cartAmount) => {
-    if (cartAmount > 20) {
-      return 0;
-    } else if (cartAmount > 10) {
-      return 30000;
-    } else {
-      return 50000;
+  const handleCheckout = () => {
+    if (cartItems.length === 0) {
+      alert("Giỏ hàng của bạn đang trống.");
+      return;
     }
+    navigate("/checkout");
   };
-
-  useEffect(() => {
-    setShip(calculateShip(cartAmount));
-  }, [cartAmount]);
-
-  const total = totalPrice - discount > 0 ? totalPrice - discount : 0;
 
   return (
-    <>
-      <ol className="flex w-full items-center justify-center px-24 text-center text-sm font-medium text-gray-500 sm:text-base">
-        <li className="after:border-1 flex items-center text-primary-700 after:mx-6 after:hidden after:h-1 after:w-full after:border-b after:border-[#6b7280] sm:after:inline-block sm:after:content-[''] md:w-full xl:after:mx-10">
-          <span className="flex w-full items-center after:mx-2 after:text-gray-200 after:content-['/'] sm:after:hidden">
-            <svg
-              className="me-2 h-4 w-4 sm:h-5 sm:w-5"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              width={24}
-              height={24}
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-              />
-            </svg>
-            Giỏ Hàng
-          </span>
-        </li>
-        <li className="after:border-1 flex items-center after:mx-6 after:hidden after:h-1 after:w-full after:border-b after:border-[#6b7280] sm:after:inline-block sm:after:content-[''] md:w-full xl:after:mx-10">
-          <span className="flex w-full items-center after:mx-2 after:text-gray-200 after:content-['/'] sm:after:hidden">
-            <svg
-              className="me-2 h-4 w-4 sm:h-5 sm:w-5"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              width={24}
-              height={24}
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-              />
-            </svg>
-            Thông Tin
-          </span>
-        </li>
-        <li className="after:border-1 flex items-center after:mx-6 after:hidden after:h-1 after:w-full after:border-b after:border-[#6b7280] sm:after:inline-block sm:after:content-[''] md:w-full xl:after:mx-10">
-          <span className="flex w-full items-center after:mx-2 after:text-gray-200 after:content-['/'] sm:after:hidden">
-            <svg
-              className="me-2 h-4 w-4 sm:h-5 sm:w-5"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              width={24}
-              height={24}
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-              />
-            </svg>
-            Thanh Toán
-          </span>
-        </li>
-        <li className="flex shrink-0 items-center">
-          <svg
-            className="me-2 h-4 w-4 sm:h-5 sm:w-5"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            width={24}
-            height={24}
-            fill="none"
-            viewBox="0 0 24 24"
+    <div className="container mx-auto p-6">
+      <h1 className="mb-6 text-center text-2xl font-bold">Giỏ hàng của bạn</h1>
+      {cartItems.length === 0 ? (
+        <div className="flex h-64 flex-col items-center justify-center">
+          <p className="mb-4 text-lg text-gray-500">
+            Giỏ hàng của bạn đang trống.
+          </p>
+          <button
+            onClick={() => navigate("/shop")}
+            className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
           >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-            />
-          </svg>
-          Hoàn Thành
-        </li>
-      </ol>
-
-      <section className="bg-white py-8 antialiased md:py-16">
-        <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
-          <h2 className="text-xl font-semibold text-gray-900 sm:text-2xl">
-            Giỏ hàng
-            {cartAmount > 0 ? (
-              <span className="text-base">({cartAmount} sản phẩm)</span>
-            ) : (
-              ""
-            )}
-          </h2>
-          {cartAmount > 0 ? (
-            <div className="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8">
-              <div className="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-4xl">
-                <div className="space-y-6">
-                  {cartItems.map((product) => (
-                    // cart Item
-                    <div
-                      key={product.id}
-                      className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm md:p-6"
-                    >
-                      <div className="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
-                        <img
-                          className="h-20 w-20"
-                          src={product.coverImageUrl}
-                        />
-                        <img
-                          className="hidden h-20 w-20"
-                          src={product.coverImageUrl}
-                        />
-                        <div className="flex items-center justify-between md:order-3 md:justify-end">
-                          <div className="flex items-center">
-                            <button
-                              type="button"
-                              onClick={() => decreaseAmount(product.id)}
-                              className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100"
-                            >
-                              <svg
-                                className="h-2.5 w-2.5 text-gray-900"
-                                aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 18 2"
-                              >
-                                <path
-                                  stroke="currentColor"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth="2"
-                                  d="M1 1h16"
-                                />
-                              </svg>
-                            </button>
-                            <input
-                              type="text"
-                              className="w-10 shrink-0 border-0 bg-transparent text-center text-sm font-medium text-gray-900 focus:outline-none focus:ring-0"
-                              value={product.quantity}
-                              readOnly
-                            />
-                            <button
-                              type="button"
-                              onClick={() => increaseAmount(product)}
-                              className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100"
-                            >
-                              <svg
-                                className="h-2.5 w-2.5 text-gray-900"
-                                aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 18 18"
-                              >
-                                <path
-                                  stroke="currentColor"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth="2"
-                                  d="M9 1v16M1 9h16"
-                                />
-                              </svg>
-                            </button>
-                          </div>
-                          <div className="text-end md:order-4 md:w-32">
-                            <p className="text-base font-bold text-gray-900">
-                              {Number(product.price).toLocaleString("vi-VN", {
-                                style: "currency",
-                                currency: "VND",
-                              })}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
-                          <Link
-                            to={"/product"}
-                            state={{ product: product }}
-                            className="text-base font-medium text-gray-900 hover:underline"
-                          >
-                            {product.name}
-                          </Link>
-                          <div className="flex items-center gap-4">
-                            <button
-                              type="button"
-                              onClick={() => removeCartItem(product._id)}
-                              className="inline-flex items-center text-sm font-medium text-red-600 hover:underline"
-                            >
-                              <MdDeleteForever className="me-1.5 h-5 w-5" />
-                              Xóa Khỏi Giỏ Hàng
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              {/* Order summary */}
-              <div className="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full">
-                <div className="space-y-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
-                  <p className="text-xl font-semibold text-gray-900">
-                    Tóm Tắt Đơn Hàng
-                  </p>
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <dl className="flex items-center justify-between gap-4">
-                        <dt className="text-base font-normal text-gray-500">
-                          Giá gốc
-                        </dt>
-                        <dd className="text-base font-medium text-gray-900">
-                          {Number(totalPrice).toLocaleString("vi-VN", {
-                            style: "currency",
-                            currency: "VND",
-                          })}
-                        </dd>
-                      </dl>
-
-                      <dl className="flex items-center justify-between gap-4">
-                        <dt className="text-base font-normal text-gray-500">
-                          Mã giảm giá
-                        </dt>
-                        <dd className="text-base font-medium text-gray-900">
-                          -
-                          {Number(discount).toLocaleString("vi-VN", {
-                            style: "currency",
-                            currency: "VND",
-                          })}
-                        </dd>
-                      </dl>
-                    </div>
-                    <dl className="flex items-center justify-between gap-4 border-t border-gray-200 pt-2">
-                      <dt className="text-base font-bold text-gray-900">
-                        Tổng Cộng
-                      </dt>
-                      <dd className="text-base font-bold text-gray-900">
-                        {Number(total).toLocaleString("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
-                        })}
-                      </dd>
-                    </dl>
-                  </div>
-                  <Link
-                    to={"/order"}
-                    state={{
-                      discount: discount,
-                      ship: ship,
-                      voucherCode: voucherCode,
-                    }}
-                    className="flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-500 focus:outline-none focus:ring-4 focus:ring-[#93c5fd]"
-                  >
-                    Thanh Toán Ngay
-                  </Link>
-                  <div className="flex items-center justify-center gap-2">
-                    <span className="text-sm font-normal text-gray-500">
-                      {" "}
-                      Hoặc{" "}
-                    </span>
-                    <a
-                      href="/filter"
-                      className="inline-flex items-center gap-2 text-sm font-medium text-primary-700 underline hover:no-underline"
-                    >
-                      Tiếp Tục Mua Hàng
-                      <svg
-                        className="h-5 w-5"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M19 12H5m14 0-4 4m4-4-4-4"
-                        />
-                      </svg>
-                    </a>
-                  </div>
-                </div>
-                <div className="space-y-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
-                  <form
-                    className="space-y-4"
-                    onSubmit={
-                      {}
-                      // handClickVoucher
-                    }
-                  >
-                    <label
-                      htmlFor="voucher"
-                      className="mb-2 block text-sm font-medium text-gray-900"
-                    >
-                      Bạn có voucher hoặc thẻ quà tặng không?
-                    </label>
-                    <div className="flex w-full items-center justify-between gap-2">
-                      <div className="w-3/4">
-                        <input
-                          type="text"
-                          id="voucherCode"
-                          name="voucherCode"
-                          value={voucherCode}
-                          onChange={handChangeVoucherCode}
-                          className="block h-full w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500"
-                          placeholder=""
-                          required
-                        />
-                      </div>
-                      <div className="w-1/4">
-                        <Button color="blue" size="xs" type="submit">
-                          Áp Dụng
-                        </Button>
-                      </div>
-                    </div>
-                    <div className="w-full">
-                      {verify === 1 && (
-                        <div>
-                          <button
-                            id="dropdownRadioHelperButton"
-                            data-dropdown-toggle="dropdownRadioHelper"
-                            className="mb-2 me-2 inline-flex w-full items-center justify-center rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100"
-                            type="button"
-                            onClick={() => setDropdownOpen(!dropdownOpen)}
-                          >
-                            Kho Voucher
-                          </button>
-                          {/* Dropdown menu */}
-                          {dropdownOpen &&
-                            (voucherList.length > 0 ? (
-                              <div
-                                id="dropdownRadioHelper"
-                                className="z-10 w-full divide-y divide-gray-100 rounded-lg bg-white shadow"
-                              >
-                                <ul
-                                  className="space-y-1 p-3 text-sm text-gray-700"
-                                  aria-labelledby="dropdownRadioHelperButton"
-                                >
-                                  {voucherList.map((voucher) => (
-                                    <li key={voucher._id}>
-                                      <div className="flex rounded p-2 hover:bg-gray-100">
-                                        <div className="flex h-5 items-center">
-                                          <input
-                                            id="helper-radio-4"
-                                            name="helper-radio"
-                                            type="radio"
-                                            value={voucher._id}
-                                            className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-blue-500"
-                                            onChange={handleRadioChange}
-                                          />
-                                        </div>
-                                        <div className="ms-2 text-sm">
-                                          <label
-                                            htmlFor="helper-radio-4"
-                                            className="font-medium text-gray-900"
-                                          >
-                                            <div>
-                                              Voucher giảm{" "}
-                                              {Number(
-                                                voucher.discount,
-                                              ).toLocaleString("vi-VN", {
-                                                style: "currency",
-                                                currency: "VND",
-                                              })}
-                                            </div>
-                                            <p
-                                              id="helper-radio-text-4"
-                                              className="text-xs font-normal text-gray-500"
-                                            >
-                                              Voucher chỉ còn {voucher.amount}{" "}
-                                              lượt
-                                            </p>
-                                          </label>
-                                        </div>
-                                      </div>
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            ) : (
-                              <p className="text-md text-center font-normal text-red-600">
-                                Điểm tích lũy không đủ!
-                              </p>
-                            ))}
-                          <div className="my-2 flex items-center justify-center gap-2">
-                            <a
-                              href="/profile/accumulated-points"
-                              className="inline-flex items-center gap-2 text-sm font-medium text-black underline hover:no-underline"
-                            >
-                              <ImGift className="h-5 w-5" /> Tìm hiểu thêm về
-                              quà tặng?
-                            </a>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                    {errorList.length > 0 && (
-                      <div className="error-list mb-3 mt-3">
-                        {errorList.map((error, index) => (
-                          <p key={index} className="text-red-600">
-                            {error}
-                          </p>
-                        ))}
-                      </div>
-                    )}
-                  </form>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="mx-8 my-8 flex min-h-60 w-full flex-col items-center justify-center rounded-xl border-2 border-[rgba(0,0,0,0.1)] p-4 outline-none">
-              <h1 className="text-2xl font-semibold">Giỏ hàng trống</h1>
-              <img src={cartEmptyImg} className="min-h-[400px]" />
-            </div>
-          )}
+            Tiếp tục mua sắm
+          </button>
         </div>
-      </section>
-    </>
+      ) : (
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+          <div className="space-y-4 md:col-span-2">
+            {cartItems.map((product) => (
+              <Card
+                key={product.id}
+                product={product}
+                onIncrease={increaseAmount}
+                onDecrease={decreaseAmount}
+                onRemove={removeCartItem}
+              />
+            ))}
+          </div>
+          <div className="space-y-4">
+            <div className="rounded-lg border p-4 shadow-md">
+              <h2 className="text-lg font-semibold">Tóm tắt đơn hàng</h2>
+              <div className="mt-2 flex justify-between">
+                <span>Số lượng sản phẩm:</span>
+                <span>{cartItems.length}</span>
+              </div>
+              <div className="mt-2 flex justify-between">
+                <span>Tổng cộng:</span>
+                <span>{totalPrice} VND</span>
+              </div>
+              <button
+                onClick={handleCheckout}
+                className="mt-4 w-full rounded-md bg-green-500 px-4 py-2 text-white hover:bg-green-600"
+              >
+                Tiến hành thanh toán
+              </button>
+            </div>
+            <button
+              onClick={() => navigate("/shop")}
+              className="w-full rounded-md bg-gray-200 px-4 py-2 text-gray-700 hover:bg-gray-300"
+            >
+              Tiếp tục mua sắm
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
-export default ShoppingCart;
+export default CartPage;

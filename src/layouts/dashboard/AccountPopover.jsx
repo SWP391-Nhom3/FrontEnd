@@ -1,8 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
+import useAuth from "../../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 export default function AccountPopover() {
   const [isOpen, setIsOpen] = useState(false);
   const popoverRef = useRef(null);
+  const { user, logout } = useAuth();
 
   const handleClickOutside = (event) => {
     if (popoverRef.current && !popoverRef.current.contains(event.target)) {
@@ -22,13 +25,22 @@ export default function AccountPopover() {
     };
   }, [isOpen]);
 
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate("/", { replace: true });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="relative" ref={popoverRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center space-x-2 text-gray-700 hover:text-blue-500 focus:outline-none"
       >
-        <span>hauhau</span>
+        <span>{user?.firstName}</span>
         <img
           src="/path-to-avatar.jpg"
           alt="Avatar"
@@ -51,7 +63,7 @@ export default function AccountPopover() {
             Cài đặt
           </a>
           <a
-            href="/logout"
+            onClick={handleLogout}
             className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
           >
             Đăng xuất
