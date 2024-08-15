@@ -23,7 +23,6 @@ import VouchersBatch from "./pages/Voucher/VouchersBatch";
 import Vouchers from "./pages/Voucher/Vouchers";
 import { useStateContext } from "./context/ContextProvider";
 import Sidebar from "./components/Sidebar";
-import AdminFooter from "./components/Footer/AdminFooter";
 import AdminNavbar from "./components/header/AdminNavbar";
 import Header from "./pages/Header";
 import ProductManagement from "./pages/ProductMangement";
@@ -107,7 +106,6 @@ const App = () => {
                 </Routes>
               </div>
             </div>
-            <AdminFooter />
           </>
         ) : isAuthenticatedAdmin ? (
           <>
@@ -142,7 +140,6 @@ const App = () => {
                 </Routes>
               </div>
             </div>
-            <AdminFooter />
           </>
         ) : (
           <div className="container mx-auto px-2 py-4">
