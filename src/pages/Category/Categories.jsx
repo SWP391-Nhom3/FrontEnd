@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card } from "primereact/card";
+import { Card } from "antd";
 import { Button, Switch, Table, notification } from "antd";
 import { useNavigate } from "react-router-dom";
 import { fetchCategories } from "../../data/api";

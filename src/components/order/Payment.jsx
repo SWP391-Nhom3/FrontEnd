@@ -8,6 +8,7 @@ import { useCartContext } from "../../context/CartContext";
 //   fetchCreateOrder,
 // } from "../../data/api";
 import toast, { Toaster } from "react-hot-toast";
+import { fetchCreateOrder, fetchProductBatches, fetchProducts } from "../../data/api";
 
 const Payment = () => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -18,6 +19,8 @@ const Payment = () => {
   const [paymentMethod, setPaymentMethod] = useState("");
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [products, setProducts] = useState([]);
+  const [batches, setBatches] = useState([]);
   const [showQR, setShowQR] = useState(false);
   const [QR, setQR] = useState(``);
   const [countdown, setCountdown] = useState(null);
@@ -25,6 +28,37 @@ const Payment = () => {
   const discount = location.state?.discount;
   const voucher_code = location.state?.voucherCode;
   const callTime = 300000; // 5 minutes
+
+  useEffect(() => {
+    const fetchProductsData = async () => {
+      try {
+        const productResponse = await fetchProducts();
+        const batchResponse = await fetchProductBatches();
+
+        const products = productResponse.data.data;
+        const batches = batchResponse.data.data;
+
+        // Kết hợp dữ liệu từ products và batches
+        const combinedData = products.map((product) => {
+          // Tìm tất cả các batches liên quan đến sản phẩm này
+          const relatedBatches = batches.filter(
+            (batch) => batch.product.id === product.id,
+          );
+          return {
+            ...product,
+            batch: relatedBatches,
+          };
+        });
+
+        console.log("Combined product data:", combinedData);
+        setProducts(combinedData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchProductsData();
+  }, []);
 
   const handlePaymentChange = (e) => {
     setPaymentMethod(e.target.value);
@@ -48,93 +82,34 @@ const Payment = () => {
     }
 
     const order_infor = {
-      customer_infor: customer_infor,
-      cart_list: cartItems,
-      user: user,
-      total_price:
-        totalPrice + ship - discount > 0 ? totalPrice + ship - discount : 0,
-      payment_method: paymentMethod,
-      ship_fee: ship,
-      voucher_code: voucher_code,
-      voucher_fee: discount,
+      fullName: customer_infor.full_name,
+      email: customer_infor.email,
+      phone: customer_infor.phone,
+      address: customer_infor.address,
+      paymentMethod: paymentMethod,
+      requiredDate: new Date().toISOString().split('T')[0],
+      orderDetails: cartItems.map(item => ({
+        productId: item.id,
+        quantity: item.quantity,
+      })),
+      shipFee: ship,
+      totalPrice: totalPrice + ship - discount > 0 ? totalPrice + ship - discount : 0,
+      voucherCode: voucher_code,
     };
 
-    clearCart();
-    // toast.success("Đặt Hàng Thành Công");
-    // if (user) {
-    //   if (membership !== undefined) {
-    //     user.member_ship = membership;
-    //     localStorage.setItem("user", JSON.stringify(user));
-    //   }
-    // }
-    navigate("/thanks", {
-      state: {
-        isCheck: true,
-        // order_id: content,
-      },
-    });
-    // await fetchCreateOrder(order_infor)
-    //   .then((res) => {
-    //     const membership = res.data.point;
-    //     const content = res.data.order.insertedId;
-    //     if (paymentMethod === "Online") {
-    //       const price = totalPrice + ship - discount;
-    //       setShowQR(true);
-    //       setQR(
-    //         `https://img.vietqr.io/image/970422-0834564869-compact2.png?amount=${price}&addInfo=${content}&accountName=LE QUANG HUY`
-    //       );
-    //       let ischeck = false;
-    //       const checkPaymetSucc = setInterval(async () => {
-    //         const result = await checkQRPaymet(content, price);
-    //         if (result && !ischeck) {
-    //           clearInterval(checkPaymetSucc);
-    //           ischeck = true;
-    //           clearCart();
-    //           toast.success("Thanh Toán Thành Công");
-    //           if (membership !== undefined) {
-    //             user.member_ship = membership;
-    //             localStorage.setItem("user", JSON.stringify(user));
-    //           }
-    //           navigate("/thanks", {
-    //             state: { order_id: content, isCheck: true },
-    //           });
-    //         }
-    //       }, 1000);
-    //       setTimeout(() => {
-    //         clearInterval(checkPaymetSucc);
-    //         if (!ischeck) {
-    //           toast.error("Thanh Toán Thất Bại");
-    //           deleteOrder(content);
-    //           navigate("/thanks", {
-    //             state: {
-    //               isCheck: false,
-    //               order_id: content,
-    //             },
-    //           });
-    //         }
-    //       }, callTime);
+    console.log("dsfasdfa",order_infor);
 
-    //       setCountdown(callTime / 1000);
-    //     } else {
-    //       clearCart();
-    //       toast.success("Đặt Hàng Thành Công");
-    //       if(user){
-    //         if (membership !== undefined) {
-    //           user.member_ship = membership;
-    //           localStorage.setItem("user", JSON.stringify(user));
-    //         }
-    //       }
-    //       navigate("/thanks", {
-    //         state: {
-    //           isCheck: true,
-    //           order_id: content,
-    //         },
-    //       });
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     toast.error(err.response.data.errors.message)
-    //   });
+    try {
+      const response = await fetchCreateOrder(order_infor); // Assuming fetchCreateOrder is implemented
+      console.log("Order created successfully:", response.data);
+
+      clearCart(); // Clear cart after order is placed
+      navigate("/thanks", { state: { isCheck: true } }); // Redirect to thank you page
+
+    } catch (error) {
+      console.error("Error creating order:", error);
+      setErrorMessage("Có lỗi xảy ra khi đặt hàng. Vui lòng thử lại sau.");
+    }
   };
 
   useEffect(() => {
@@ -151,6 +126,7 @@ const Payment = () => {
 
   const total =
     totalPrice + ship - discount > 0 ? totalPrice + ship - discount : 0;
+
   return (
     <>
       <Breadcrumbs headline="Thanh toán" />
