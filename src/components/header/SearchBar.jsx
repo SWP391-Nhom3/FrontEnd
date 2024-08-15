@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-// import { fetchCategories } from "../../data/api.jsx";
-// import { useProductContext } from "../../context/ProductContext.jsx";
+import { fetchCategories } from "../../data/api";
+import { useProductContext } from "../../context/ProductContext.jsx";
 
 const SearchBar = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -11,21 +11,21 @@ const SearchBar = () => {
   const [suggestions, setSuggestions] = useState([]);
 
   const navigate = useNavigate();
-  // const { products } = useProductContext();
+  const { products } = useProductContext();
   const searchBarRef = useRef(null);
 
-  // let sampleProducts = [];
-  // if (selectedCategory === "Tất Cả Sản Phẩm") {
-  //   products.forEach((item) => {
-  //     if (item.isActive) sampleProducts.push(item.product_name);
-  //   });
-  // } else {
-  //   products.forEach((item) => {
-  //     if (item.category_name === selectedCategory) {
-  //       if (item.isActive) sampleProducts.push(item.product_name);
-  //     }
-  //   });
-  // }
+  let sampleProducts = [];
+  if (selectedCategory === "Tất Cả Sản Phẩm") {
+    products.forEach((item) => {
+      if (item.active) sampleProducts.push(item.category.name);
+    });
+  } else {
+    products.forEach((item) => {
+      if (item.name === selectedCategory) {
+        if (item.active) sampleProducts.push(item.product_name);
+      }
+    });
+  }
 
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
@@ -36,18 +36,15 @@ const SearchBar = () => {
     setDropdownVisible(false);
   };
 
-  // const getCategory = async () => {
-  //   try {
-  //     const res = await fetchCategories();
-  //     const categories = [
-  //       { category_name: "Tất Cả Sản Phẩm" },
-  //       ...res.data.result,
-  //     ];
-  //     setCategories(categories);
-  //   } catch (error) {
-  //     console.error("Error fetching categories:", error);
-  //   }
-  // };
+  const getCategory = async () => {
+    try {
+      const res = await fetchCategories();
+      const categories = [{ name: "Tất Cả Sản Phẩm" }, ...res.data.data];
+      setCategories(categories);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
 
   const getSuggestions = (query) => {
     if (query.length < 0) {
@@ -81,9 +78,9 @@ const SearchBar = () => {
     }
   };
 
-  // useEffect(() => {
-  //   getCategory();
-  // }, []);
+  useEffect(() => {
+    getCategory();
+  }, []);
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
@@ -144,12 +141,10 @@ const SearchBar = () => {
                   <li key={category._id}>
                     <button
                       type="button"
-                      onClick={() =>
-                        handleCategorySelect(category.category_name)
-                      }
+                      onClick={() => handleCategorySelect(category.name)}
                       className="inline-flex w-full border-solid px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                     >
-                      {category.category_name}
+                      {category.name}
                     </button>
                   </li>
                 ))}
