@@ -23,6 +23,13 @@ import Sidebar from "./components/Sidebar";
 import AdminFooter from "./components/Footer/AdminFooter";
 import AdminNavbar from "./components/header/AdminNavbar";
 import Header from "./pages/Header";
+import AdminOrder from '../src/pages/Order/AdminOrders';
+import ApprovedOrder from '../src/pages/Order/ApprovedOrder';
+import AwaitOrderDetail from '../src/pages/Order/AwaitOrderDetail';
+import OrderDetail from '../src/pages/Order/OrderDetail';
+import AwaitOrder from '../src/pages/Order/AwaitOrder';
+import CancelOrder from '../src/pages/Order/CancelOrder';
+import CompleteOrder from '../src/pages/Order/CompleteOrder';
 
 import "./App.css";
 import ProductManagement from "./pages/ProductMangement";
@@ -75,14 +82,22 @@ const App = () => {
                 <AdminNavbar isAuthenticatedStaff={isAuthenticatedStaff} />
               </div>
               <Routes>
+                <Route path="/" element={(<AwaitOrder />)} />
                 <Route
                   path="/dashboard"
                   element={
                     <Dashboard isAuthenticatedStaff={isAuthenticatedStaff} />
                   }
                 />
+                <Route path="/await-order" element={(<AwaitOrder />)} />
                 <Route path="/products" element={<ProductManagement />} />
                 <Route path="/add-product" element={<AddProduct />} />
+                <Route path="/orders" element={(<AdminOrder />)} />
+                <Route path="/approved-order" element={(<ApprovedOrder />)} />
+                <Route path="/await-orderDetail" element={(<AwaitOrderDetail />)} />
+                <Route path="/cancel-order" element={(<CancelOrder />)} />
+                <Route path="/complete-order" element={(<CompleteOrder />)} />
+                <Route path="/order-detail" element={(<OrderDetail />)} />
               </Routes>
             </div>
             <AdminFooter />
@@ -115,6 +130,9 @@ const App = () => {
                     <Dashboard isAuthenticatedAdmin={isAuthenticatedAdmin} />
                   }
                 />
+                <Route path="/orders" element={(<AdminOrder />)} />
+                <Route path="/await-orderDetail" element={(<AwaitOrderDetail />)} />
+                <Route path="/order-detail" element={(<OrderDetail />)} />
               </Routes>
             </div>
             <AdminFooter />
