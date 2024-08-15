@@ -265,7 +265,7 @@ const ShoppingCart = () => {
                             />
                             <button
                               type="button"
-                              onClick={() => increaseAmount(product)}
+                              onClick={() => increaseAmount(product.id)}
                               className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100"
                             >
                               <svg
@@ -300,12 +300,12 @@ const ShoppingCart = () => {
                             state={{ product: product }}
                             className="text-base font-medium text-gray-900 hover:underline"
                           >
-                            {product.product_name}
+                            {product.name}
                           </Link>
                           <div className="flex items-center gap-4">
                             <button
                               type="button"
-                              onClick={() => removeCartItem(product._id)}
+                              onClick={() => removeCartItem(product.id)}
                               className="inline-flex items-center text-sm font-medium text-red-600 hover:underline"
                             >
                               <MdDeleteForever className="me-1.5 h-5 w-5" />

@@ -105,7 +105,7 @@ const ProductDetail = () => {
           </div>
           <div className="mt-6 sm:mt-8 lg:mt-0">
             <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl">
-              {product.product_name}
+              {product.name}
             </h1>
             <div className="mt-4 sm:flex sm:items-center sm:gap-4">
               {product.discount > 0 ? (
@@ -122,9 +122,9 @@ const ProductDetail = () => {
                       currency: "VND",
                     })}
                   </p>
-                  <p className="text-lg font-medium text-green-500 sm:text-xl">
+                  {/* <p className="text-lg font-medium text-green-500 sm:text-xl">
                     Giảm {product.discount}%
-                  </p>
+                  </p> */}
                 </div>
               ) : (
                 <p className="text-2xl font-extrabold text-gray-900 sm:text-3xl">
