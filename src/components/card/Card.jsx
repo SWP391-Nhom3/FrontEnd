@@ -73,7 +73,7 @@ const ProductCard = ({ products, headline }) => {
       </div>
       <Slider {...settings}>
         {productsToShow.map((product) => {
-          if (product.isActive) {
+          if (product.active) {
             const discountedPrice =
               product.price - (product.price * product.discount) / 100;
             return (
@@ -87,8 +87,8 @@ const ProductCard = ({ products, headline }) => {
                     <div className="product-image-container relative">
                       <img
                         className="product-image mx-auto"
-                        src={product.imgUrl}
-                        alt={product.product_name}
+                        src={product.coverImageUrl}
+                        alt={product.name}
                       />
                       {product.amount === 0 && (
                         <div className="out-of-stock-overlay">
@@ -106,14 +106,14 @@ const ProductCard = ({ products, headline }) => {
                         WebkitBoxOrient: "vertical",
                       }}
                     >
-                      {product.product_name}
+                      {product.name}
                     </h5>
                   </Link>
                   <div className="mb-2 mt-1 flex items-center">
                     {/* <RenderRating rating={product.rating} /> */}
-                    <span className="ml-2 mr-1 rounded bg-primary-100 px-2 py-0.5 text-xs font-semibold text-primary-800 dark:bg-primary-200 dark:text-primary-800">
+                    {/* <span className="ml-2 mr-1 rounded bg-primary-100 px-2 py-0.5 text-xs font-semibold text-primary-800 dark:bg-primary-200 dark:text-primary-800">
                       {product.rating.toFixed(1)}
-                    </span>
+                    </span> */}
                   </div>
                   <div className="flex h-20 w-full items-end justify-between">
                     <div className="flex flex-col justify-between">

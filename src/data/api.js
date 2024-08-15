@@ -57,9 +57,38 @@ export const fetchProducts = async () => {
   return await axios.get(`${HOSTNAME}/products`);
 };
 
+//get product by id api
+export const fetchProductsById = async (id) => {
+  return await axios.get(`${HOSTNAME}/products/${id}`);
+};
+
 //change status product api
 export const fetchChangeProductStatus = async (id) => {
   return await axios.patch(`${HOSTNAME}/products/${id}/status`);
+};
+
+//update product api
+export const fetchUpdateProduct = async (product, token, id) => {
+  const formData = new FormData();
+  Object.keys(product).forEach((key) => {
+    if (key === "files" && Array.isArray(product[key])) {
+      product[key].forEach((file) => {
+        formData.append("files", file);
+      });
+    } else {
+      formData.append(key, product[key]);
+    }
+  });
+  try {
+    return await axios.put(`${HOSTNAME}/products/${id}`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  } catch (error) {
+    console.error("Error uploading product:", error);
+    throw error;
+  }
 };
 
 //create product batch api
@@ -532,6 +561,7 @@ class Http {
     }
   }
 }
+// class Storage()
 class Store {
   constructor() {
     this.http = new Http();
@@ -540,7 +570,6 @@ class Store {
   async getProvince() {
     try {
       const provinces = await this.http.get(`${baseUrl}/provinces?&size=64`);
-
       return provinces.data;
     } catch (error) {
       console.log(error);
@@ -551,7 +580,7 @@ class Store {
   async getDistrictByProvinceCode(provinceCode = 1) {
     try {
       const districts = await this.http.get(
-        `${baseUrl}/districts?provinceId=${provinceCode}&size=705 `,
+        `${baseUrl}/districts?page=0&provinceId=${provinceCode}&size=100`,
       );
       return districts.data;
     } catch (error) {
@@ -562,7 +591,7 @@ class Store {
   async getWardByDistrictCode(districtCode = 271) {
     try {
       const wards = await this.http.get(
-        `${baseUrl}/wards?districtId=${districtCode}&size=10603`,
+        `${baseUrl}/wards?page=0&districtId=${districtCode}&size=100`,
       );
 
       return wards.data;

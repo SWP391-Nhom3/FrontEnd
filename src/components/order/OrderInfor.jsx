@@ -14,6 +14,7 @@ const OrderInfor = ({ discount, ship, voucherCode }) => {
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [wards, setWards] = useState([]);
+
   const [selectedProvince, setSelectedProvince] = useState({
     id: "",
     name: "",

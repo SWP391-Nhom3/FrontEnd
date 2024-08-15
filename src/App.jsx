@@ -36,6 +36,7 @@ import Categories from "./pages/Category/Categories";
 import AddCategory from "./pages/Category/AddCategory";
 import AddProductBatch from "./pages/ProductMangement/AddProductBatch";
 import ViewProductBatch from "./pages/ProductMangement/ViewProductBatch";
+import EditProduct from "./pages/ProductMangement/EditProduct";
 
 const App = () => {
   const { currentMode, activeMenu, themeSettings } = useStateContext();
@@ -105,6 +106,7 @@ const App = () => {
                   <Route path="/add-brand" element={<AddBrands />} />
                   <Route path="/categories" element={<Categories />} />
                   <Route path="/add-category" element={<AddCategory />} />
+                  <Route path="/product" element={<EditProduct />} />
                 </Routes>
               </div>
             </div>

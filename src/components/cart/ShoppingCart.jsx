@@ -112,8 +112,7 @@ const ShoppingCart = () => {
     setShip(calculateShip(cartAmount));
   }, [cartAmount]);
 
-  const total =
-    totalPrice + ship - discount > 0 ? totalPrice + ship - discount : 0;
+  const total = totalPrice + ship > 0 ? totalPrice + ship : 0;
 
   return (
     <>
@@ -223,20 +222,23 @@ const ShoppingCart = () => {
                   {cartItems.map((product) => (
                     // cart Item
                     <div
-                      key={product._id}
+                      key={product.id}
                       className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm md:p-6"
                     >
                       <div className="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
-                        <img className="h-20 w-20" src={product.imgUrl} />
+                        <img
+                          className="h-20 w-20"
+                          src={product.coverImageUrl}
+                        />
                         <img
                           className="hidden h-20 w-20"
-                          src={product.imgUrl}
+                          src={product.coverImageUrl}
                         />
                         <div className="flex items-center justify-between md:order-3 md:justify-end">
                           <div className="flex items-center">
                             <button
                               type="button"
-                              onClick={() => decreaseAmount(product._id)}
+                              onClick={() => decreaseAmount(product.id)}
                               className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100"
                             >
                               <svg
@@ -285,10 +287,7 @@ const ShoppingCart = () => {
                           </div>
                           <div className="text-end md:order-4 md:w-32">
                             <p className="text-base font-bold text-gray-900">
-                              {Number(
-                                product.price -
-                                  (product.price * product.discount) / 100,
-                              ).toLocaleString("vi-VN", {
+                              {Number(product.price).toLocaleString("vi-VN", {
                                 style: "currency",
                                 currency: "VND",
                               })}

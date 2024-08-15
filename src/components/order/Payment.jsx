@@ -293,13 +293,13 @@ const Payment = () => {
                             <div className="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
                               <img
                                 className="h-20 w-20 dark:hidden"
-                                src={product.imgUrl}
-                                alt={product.product_name}
+                                src={product.coverImageUrl}
+                                alt={product.name}
                               />
                               <img
                                 className="hidden h-20 w-20 dark:block"
-                                src={product.imgUrl}
-                                alt={product.product_name}
+                                src={product.coverImageUrl}
+                                alt={product.name}
                               />
                               <div className="flex items-center justify-between md:order-3 md:justify-end">
                                 <div className="text-end md:order-4 md:w-32">
@@ -321,7 +321,7 @@ const Payment = () => {
                                   onClick={() => window.scrollTo(0, 0)}
                                   className="text-base font-medium text-gray-900 hover:underline dark:text-white"
                                 >
-                                  {product.product_name}
+                                  {product.name}
                                 </Link>
                                 <div className="flex items-center gap-4">
                                   x{product.quantity} sản phẩm
