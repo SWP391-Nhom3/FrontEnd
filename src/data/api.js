@@ -71,6 +71,11 @@ export const fetchAddProductBatch = async (batch, token) => {
   });
 }
 
+//get all product batch api
+export const fetchProductBatches = async () => {
+  return await axios.get(`${HOSTNAME}/batches`);
+};
+
 // // eslint-disable-next-line no-undef
 // const SCHEMA_HOSTNAME = process.env.REACT_APP_SCHEMA_HOSTNAME;
 
