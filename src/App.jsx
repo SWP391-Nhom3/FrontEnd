@@ -20,7 +20,6 @@ import ListProduct from "./components/product/ListProduct";
 import Dashboard from "./pages/Dashboard";
 import { useStateContext } from "./context/ContextProvider";
 import Sidebar from "./components/Sidebar";
-import AdminFooter from "./components/Footer/AdminFooter";
 import AdminNavbar from "./components/header/AdminNavbar";
 import Header from "./pages/Header";
 
@@ -60,7 +59,8 @@ const App = () => {
     <div>
       <BrowserRouter>
         {isAuthenticatedStaff ? (
-          <>
+          <div className="flex relative dark:bg-main-dark-bg">
+
             {activeMenu ? (
               <div className="sidebar dark:bg-secondary-dark-bg fixed w-72 bg-white">
                 <Sidebar isAuthenticatedStaff={isAuthenticatedStaff} />
@@ -97,10 +97,9 @@ const App = () => {
                 <Route path="/add-category" element={<AddCategory />} />
               </Routes>
             </div>
-            <AdminFooter />
-          </>
+          </div>
         ) : isAuthenticatedAdmin ? (
-          <>
+          <div className="flex relative dark:bg-main-dark-bg">
             {activeMenu ? (
               <div className="sidebar dark:bg-secondary-dark-bg fixed w-72 bg-white">
                 <Sidebar isAuthenticatedAdmin={isAuthenticatedAdmin} />
@@ -129,8 +128,8 @@ const App = () => {
                 />
               </Routes>
             </div>
-            <AdminFooter />
-          </>
+          </div>
+
         ) : (
           <>
             <Header />
