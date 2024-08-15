@@ -18,6 +18,9 @@ import PrivacyPolicy from "./pages/InformationPage/PrivacyPolicy";
 import Contact from "./pages/InformationPage/Contact";
 import ListProduct from "./components/product/ListProduct";
 import Dashboard from "./pages/Dashboard";
+import AddVoucher from "./pages/Voucher/AddVoucher";
+import VouchersBatch from "./pages/Voucher/VouchersBatch";
+import Vouchers from "./pages/Voucher/Vouchers";
 import { useStateContext } from "./context/ContextProvider";
 import Sidebar from "./components/Sidebar";
 import AdminFooter from "./components/Footer/AdminFooter";
@@ -61,73 +64,84 @@ const App = () => {
       <BrowserRouter>
         {isAuthenticatedStaff ? (
           <>
-            {activeMenu ? (
-              <div className="sidebar dark:bg-secondary-dark-bg fixed w-72 bg-white">
-                <Sidebar isAuthenticatedStaff={isAuthenticatedStaff} />
+            <div className="dark:bg-main-dark-bg relative flex">
+              {activeMenu ? (
+                <div className="sidebar dark:bg-secondary-dark-bg fixed w-72 bg-white">
+                  <Sidebar isAuthenticatedStaff={isAuthenticatedStaff} />
+                </div>
+              ) : (
+                <div className="dark:bg-secondary-dark-bg w-0">
+                  <Sidebar isAuthenticatedStaff={isAuthenticatedStaff} />
+                </div>
+              )}
+              <div
+                className={
+                  activeMenu
+                    ? "dark:bg-main-dark-bg bg-main-bg min-h-screen w-full md:ml-72"
+                    : "bg-main-bg dark:bg-main-dark-bg flex-2 min-h-screen w-full"
+                }
+              >
+                <div className="bg-main-bg dark:bg-main-dark-bg navbar fixed w-full md:static">
+                  <AdminNavbar isAuthenticatedStaff={isAuthenticatedStaff} />
+                </div>
+                <Routes>
+                  <Route
+                    path="/dashboard"
+                    element={
+                      <Dashboard isAuthenticatedStaff={isAuthenticatedStaff} />
+                    }
+                  />
+                  <Route path="/products" element={<ProductManagement />} />
+                  <Route path="/add-product" element={<AddProduct />} />
+                  <Route path="/voucher-batch" element={<VouchersBatch />} />
+                  <Route path="/add-voucher" element={<AddVoucher />} />
+                  <Route path="/voucher-batch/:id" element={<Vouchers />} />
+                  <Route
+                    path="/add-product-batch"
+                    element={<AddProductBatch />}
+                  />
+                  <Route path="/product-batch" element={<ViewProductBatch />} />
+                  <Route path="/brands" element={<Brands />} />
+                  <Route path="/add-brand" element={<AddBrands />} />
+                  <Route path="/categories" element={<Categories />} />
+                  <Route path="/add-category" element={<AddCategory />} />
+                </Routes>
               </div>
-            ) : (
-              <div className="dark:bg-secondary-dark-bg w-0">
-                <Sidebar isAuthenticatedStaff={isAuthenticatedStaff} />
-              </div>
-            )}
-            <div
-              className={
-                activeMenu
-                  ? "dark:bg-main-dark-bg bg-main-bg min-h-screen w-full md:ml-72"
-                  : "bg-main-bg dark:bg-main-dark-bg flex-2 min-h-screen w-full"
-              }
-            >
-              <div className="bg-main-bg dark:bg-main-dark-bg navbar fixed w-full md:static">
-                <AdminNavbar isAuthenticatedStaff={isAuthenticatedStaff} />
-              </div>
-              <Routes>
-                <Route
-                  path="/dashboard"
-                  element={
-                    <Dashboard isAuthenticatedStaff={isAuthenticatedStaff} />
-                  }
-                />
-                <Route path="/products" element={<ProductManagement />} />
-                <Route path="/add-product" element={<AddProduct />} />
-                <Route path="/add-product-batch" element={<AddProductBatch />} />
-                <Route path="/product-batch" element={<ViewProductBatch />} />
-                <Route path="/brands" element={<Brands />} />
-                <Route path="/add-brand" element={<AddBrands />} />
-                <Route path="/categories" element={<Categories />} />
-                <Route path="/add-category" element={<AddCategory />} />
-              </Routes>
             </div>
             <AdminFooter />
           </>
         ) : isAuthenticatedAdmin ? (
           <>
-            {activeMenu ? (
-              <div className="sidebar dark:bg-secondary-dark-bg fixed w-72 bg-white">
-                <Sidebar isAuthenticatedAdmin={isAuthenticatedAdmin} />
+            <div className="dark:bg-main-dark-bg relative flex">
+              {activeMenu ? (
+                <div className="sidebar dark:bg-secondary-dark-bg fixed w-72 bg-white">
+                  <Sidebar isAuthenticatedAdmin={isAuthenticatedAdmin} />
+                </div>
+              ) : (
+                <div className="dark:bg-secondary-dark-bg w-0">
+                  <Sidebar isAuthenticatedAdmin={isAuthenticatedAdmin} />
+                </div>
+              )}
+              <div
+                className={
+                  activeMenu
+                    ? "dark:bg-main-dark-bg bg-main-bg min-h-screen w-full md:ml-72"
+                    : "bg-main-bg dark:bg-main-dark-bg flex-2 min-h-screen w-full"
+                }
+              >
+                <div className="bg-main-bg dark:bg-main-dark-bg navbar fixed w-full md:static">
+                  <AdminNavbar isAuthenticatedAdmin={isAuthenticatedAdmin} />
+                </div>
+
+                <Routes>
+                  <Route
+                    path="/dashboard"
+                    element={
+                      <Dashboard isAuthenticatedAdmin={isAuthenticatedAdmin} />
+                    }
+                  />
+                </Routes>
               </div>
-            ) : (
-              <div className="dark:bg-secondary-dark-bg w-0">
-                <Sidebar isAuthenticatedAdmin={isAuthenticatedAdmin} />
-              </div>
-            )}
-            <div
-              className={
-                activeMenu
-                  ? "dark:bg-main-dark-bg bg-main-bg min-h-screen w-full md:ml-72"
-                  : "bg-main-bg dark:bg-main-dark-bg flex-2 min-h-screen w-full"
-              }
-            >
-              <div className="bg-main-bg dark:bg-main-dark-bg navbar fixed w-full md:static">
-                <AdminNavbar isAuthenticatedAdmin={isAuthenticatedAdmin} />
-              </div>
-              <Routes>
-                <Route
-                  path="/dashboard"
-                  element={
-                    <Dashboard isAuthenticatedAdmin={isAuthenticatedAdmin} />
-                  }
-                />
-              </Routes>
             </div>
             <AdminFooter />
           </>

@@ -563,9 +563,12 @@ export const stafflinks = [
         subLinks: [
           { name: "allProduct", path: "products", label: "Tất cả sản phẩm" },
           { name: "addProduct", path: "add-product", label: "Thêm sản phẩm" },
-          { name: "addProductBatch", path: "add-product-batch", label: "Nhập hàng sản phẩm" },
+          {
+            name: "addProductBatch",
+            path: "add-product-batch",
+            label: "Nhập hàng sản phẩm",
+          },
           { name: "", path: "product-batch", label: "Sản phẩm trong kho" },
-
         ],
       },
       // {
@@ -590,17 +593,16 @@ export const stafflinks = [
         name: "Quản lý mã giảm giá",
         icon: <RiPriceTag3Line />,
         type: "sub",
-        // path: '',
         subLinks: [
           {
             name: "allVoucher",
-            path: "all-voucher",
-            label: "Tất cả mã giảm giá",
+            path: "voucher-batch",
+            label: "Tất cả lô mã giảm giá",
           },
           {
             name: "addVoucher",
             path: "add-voucher",
-            label: "Thêm mã giảm giá",
+            label: "Thêm lô mã giảm giá",
           },
         ],
       },

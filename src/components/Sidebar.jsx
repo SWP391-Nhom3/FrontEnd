@@ -84,7 +84,7 @@ const Sidebar = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
         <>
           <div className="flex items-center justify-between">
             <Link
-              to="/"
+              to="/dashboard"
               onClick={handleCloseSideBar}
               className="ml-3 mt-4 flex items-center gap-3 text-xl font-extrabold tracking-tight text-slate-900 dark:text-white"
             >
