@@ -62,6 +62,20 @@ export const fetchChangeProductStatus = async (id) => {
   return await axios.patch(`${HOSTNAME}/products/${id}/status`);
 };
 
+//create product batch api
+export const fetchAddProductBatch = async (batch, token) => {
+  return await axios.post(`${HOSTNAME}/batches`, batch, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
+
+//get all product batch api
+export const fetchProductBatches = async () => {
+  return await axios.get(`${HOSTNAME}/batches`);
+};
+
 // // eslint-disable-next-line no-undef
 // const SCHEMA_HOSTNAME = process.env.REACT_APP_SCHEMA_HOSTNAME;
 

@@ -563,26 +563,29 @@ export const stafflinks = [
         subLinks: [
           { name: "allProduct", path: "products", label: "Tất cả sản phẩm" },
           { name: "addProduct", path: "add-product", label: "Thêm sản phẩm" },
+          { name: "addProductBatch", path: "add-product-batch", label: "Nhập hàng sản phẩm" },
+          { name: "", path: "product-batch", label: "Sản phẩm trong kho" },
+
         ],
       },
-      {
-        name: "Quản lý đánh giá",
-        icon: <FaRegStar />,
-        type: "sub",
-        // path: 'products',
-        subLinks: [
-          {
-            name: "allFeedback",
-            path: "all-feedback",
-            label: "Tất cả đánh giá",
-          },
-          {
-            name: "badFeedback",
-            path: "bad-feedback",
-            label: "Đánh giá tiêu cực",
-          },
-        ],
-      },
+      // {
+      //   name: "Quản lý đánh giá",
+      //   icon: <FaRegStar />,
+      //   type: "sub",
+      //   // path: 'products',
+      //   subLinks: [
+      //     {
+      //       name: "allFeedback",
+      //       path: "all-feedback",
+      //       label: "Tất cả đánh giá",
+      //     },
+      //     {
+      //       name: "badFeedback",
+      //       path: "bad-feedback",
+      //       label: "Đánh giá tiêu cực",
+      //     },
+      //   ],
+      // },
       {
         name: "Quản lý mã giảm giá",
         icon: <RiPriceTag3Line />,
@@ -598,34 +601,6 @@ export const stafflinks = [
             name: "addVoucher",
             path: "add-voucher",
             label: "Thêm mã giảm giá",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    title: "Kho",
-    links: [
-      {
-        name: "Quản lý kho",
-        icon: <BsBoxSeam />,
-        type: "sub",
-        // path: '',
-        subLinks: [
-          {
-            name: "ProductInWarehouse",
-            path: "products-warehouse",
-            label: "Sản phẩm trong kho",
-          },
-          {
-            name: "allBill",
-            path: "input-bills",
-            label: "Tất cả đơn nhập hàng",
-          },
-          {
-            name: "addBill",
-            path: "add-inputbill",
-            label: "Tạo đơn nhập hàng",
           },
         ],
       },
@@ -664,33 +639,33 @@ export const stafflinks = [
       },
     ],
   },
-  {
-    title: "Khách hàng",
-    links: [
-      {
-        name: "Quản lý khách hàng",
-        icon: <FiUsers />,
-        type: "sub",
-        // path: '',
-        subLinks: [{ name: "customers", path: "", label: "Tất cả khách hàng" }],
-      },
-    ],
-  },
-  {
-    title: "Tin tức",
-    links: [
-      {
-        name: "Quản lý bài viết",
-        icon: <BsNewspaper />,
-        type: "sub",
-        // path: '',
-        subLinks: [
-          { name: "allBlog", path: "all-blog", label: "Tất cả bài viết" },
-          { name: "addBlog", path: "add-news", label: "Thêm bài viết" },
-        ],
-      },
-    ],
-  },
+  // {
+  //   title: "Khách hàng",
+  //   links: [
+  //     {
+  //       name: "Quản lý khách hàng",
+  //       icon: <FiUsers />,
+  //       type: "sub",
+  //       // path: '',
+  //       subLinks: [{ name: "customers", path: "", label: "Tất cả khách hàng" }],
+  //     },
+  //   ],
+  // },
+  // {
+  //   title: "Tin tức",
+  //   links: [
+  //     {
+  //       name: "Quản lý bài viết",
+  //       icon: <BsNewspaper />,
+  //       type: "sub",
+  //       // path: '',
+  //       subLinks: [
+  //         { name: "allBlog", path: "all-blog", label: "Tất cả bài viết" },
+  //         { name: "addBlog", path: "add-news", label: "Thêm bài viết" },
+  //       ],
+  //     },
+  //   ],
+  // },
 ];
 
 export const adminlinks = [
