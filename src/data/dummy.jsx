@@ -563,6 +563,7 @@ export const stafflinks = [
         subLinks: [
           { name: "allProduct", path: "products", label: "Tất cả sản phẩm" },
           { name: "addProduct", path: "add-product", label: "Thêm sản phẩm" },
+          { name: "addProductBatch", path: "add-product-batch", label: "Nhập hàng sản phẩm" },
         ],
       },
       {
