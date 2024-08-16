@@ -34,20 +34,21 @@ import AddCategory from "./pages/Category/AddCategory";
 import AddProductBatch from "./pages/ProductMangement/AddProductBatch";
 import ViewProductBatch from "./pages/ProductMangement/ViewProductBatch";
 import EditProduct from "./pages/ProductMangement/EditProduct";
-import { fetchRefreshToken } from "./data/api";
 import AwaitOrder from "./pages/OrderManagement/AwaitOrder";
 import AwaitOrderDetail from "./pages/OrderManagement/AwaitOrderDetail";
 import Orders from "./pages/OrderManagement/Order";
 import OrderDetail from "./pages/OrderManagement/OrderDetail";
 import CancelOrder from "./pages/OrderManagement/CancelOrder";
 import CompleteOrder from "./pages/OrderManagement/CompleteOrder";
-
-import "./App.css";
 import ShippingOrder from "./pages/OrderManagement/ShippingOrder";
 import ShippingOrderDetail from "./pages/OrderManagement/ShippingOrderDetail";
 import CancelShippingOrder from "./pages/OrderManagement/CancelShippingOrder";
 import PreOrder from "./pages/OrderManagement/PreOrder";
+import Users from "./pages/User/Users";
+import AddStaff from "./pages/User/AddStaff";
+import { fetchRefreshToken } from "./data/api";
 
+import "./App.css";
 
 const App = () => {
   const { currentMode, activeMenu, themeSettings } = useStateContext();
@@ -159,6 +160,8 @@ const App = () => {
                       <Dashboard isAuthenticatedAdmin={isAuthenticatedAdmin} />
                     }
                   />
+                  <Route path="/users" element={<Users />} />
+                  <Route path="/add-staff" element={<AddStaff />} />
                 </Routes>
               </div>
             </div>

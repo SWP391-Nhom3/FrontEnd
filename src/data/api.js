@@ -11,6 +11,7 @@ export const fetchLogin = async (email, password) => {
 };
 
 export const fetchRefreshToken = async (token) => {
+  // eslint-disable-next-line no-useless-catch
   try {
     const response = await axios.post(`${HOSTNAME}/auth/refresh`, {
       token: token,
@@ -351,14 +352,14 @@ export const fetchUpdateCategory = async (category, token, id) => {
 //   return await axios.get(`${SCHEMA_HOSTNAME}/warehouse/all-warehouse`);
 // };
 
-// //get-all-user
-// export const fetchAllUsers = async (result) => {
-//   return await axios.get(`${SCHEMA_HOSTNAME}/users/get-all-user`, {
-//     headers: {
-//       Authorization: `Bearer ${result.access_token}`,
-//     },
-//   });
-// };
+//get-all-user
+export const fetchAllUsers = async (result) => {
+  return await axios.get(`${HOSTNAME}/api/users`, {
+    headers: {
+      Authorization: `Bearer ${result}`,
+    },
+  });
+};
 
 // //get-user-by-id
 // export const fetchUserById = async (id, token) => {
