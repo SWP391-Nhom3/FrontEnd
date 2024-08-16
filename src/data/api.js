@@ -117,6 +117,27 @@ export const fetchProductBatches = async () => {
   return await axios.get(`${HOSTNAME}/batches`);
 };
 
+//create order api
+export const fetchCreateOrder = async (order) => {
+  return await axios.post(`${HOSTNAME}/orders`, order, {
+  });
+};
+
+//get all order api
+export const fetchOrders = async () => {
+  return await axios.get(`${HOSTNAME}/orders`);
+};
+
+//cancel order api
+export const fetchCancelOrder = async (id) => {
+  return await axios.put(`${HOSTNAME}/orders/cancel/${id}`);
+};
+
+//confirm order api
+export const fetchConfirmOrder = async (id) => {
+  return await axios.put(`${HOSTNAME}/orders/confirm/${id}`);
+};
+
 // // eslint-disable-next-line no-undef
 // const SCHEMA_HOSTNAME = process.env.REACT_APP_SCHEMA_HOSTNAME;
 

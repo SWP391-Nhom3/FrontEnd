@@ -73,8 +73,8 @@ const ProductCard = ({ products, headline }) => {
       <Slider {...settings}>
         {productsToShow.map((product) => {
           if (product.active) {
-            const discountedPrice =
-              product.price - (product.price * product.discount) / 100;
+            // const discountedPrice =
+            //   product.price - (product.price * product.discount) / 100;
             return (
               <div key={product.id} className="p-1">
                 <Card className="product-card relative m-1 flex h-full max-w-xs flex-col justify-between">
@@ -115,8 +115,8 @@ const ProductCard = ({ products, headline }) => {
                     </span> */}
                   </div>
                   <div className="flex h-20 w-full items-end justify-between">
-                    <div className="flex flex-col justify-between">
-                      {product.discount > 0 ? (
+                    {/* <div className="flex flex-col justify-between">
+                      pro{duct.discount > 0 ? (
                         <>
                           <span className="text-xl font-bold text-gray-900 dark:text-white">
                             {formatCurrency(discountedPrice)}
@@ -133,7 +133,10 @@ const ProductCard = ({ products, headline }) => {
                           {formatCurrency(product.price)}
                         </span>
                       )}
-                    </div>
+                    </div> */}
+                    <span className="mt-auto text-xl font-bold text-gray-900 dark:text-white">
+                      {formatCurrency(product.price)}
+                    </span>
                     <button
                       onClick={() => addCartItem(product)}
                       disabled={product.stockQuantity === 0}

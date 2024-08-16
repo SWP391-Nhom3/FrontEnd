@@ -120,9 +120,9 @@ const Thanks = () => {
                 <br />
                 Hóa đơn sẽ được gửi đến mail của bạn
                 <br />
-                Mã Hóa đơn: {order_id}
+                {/* Mã Hóa đơn: {order_id} */}
                 <br />
-                Liên hệ: 083 456 4869 - pass10diemswp391@gmail.com
+                {/* Liên hệ: 083 456 4869 - pass10diemswp391@gmail.com */}
               </p>
             </div>
           </div>

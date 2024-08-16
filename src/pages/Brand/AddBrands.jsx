@@ -1,5 +1,5 @@
 import { Label } from "flowbite-react";
-import { Card } from "primereact/card";
+import { Card } from "antd";
 import { InputText } from "primereact/inputtext";
 import React, { useState } from "react";
 import { Button, Col, Divider, Row, notification } from "antd";
