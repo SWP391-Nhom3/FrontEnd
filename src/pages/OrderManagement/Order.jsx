@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchOrders } from "../../data/api";
-import { Card } from "primereact/card";
+import { Card } from "antd";
 import Column from "antd/es/table/Column";
 import { Table, Tag } from "antd";
 import { CheckCircleOutlined, SyncOutlined, SmileOutlined , CloseCircleOutlined } from '@ant-design/icons';

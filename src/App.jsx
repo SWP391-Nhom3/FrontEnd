@@ -37,7 +37,11 @@ import EditProduct from "./pages/ProductMangement/EditProduct";
 import { fetchRefreshToken } from "./data/api";
 import AwaitOrder from "./pages/OrderManagement/AwaitOrder";
 import AwaitOrderDetail from "./pages/OrderManagement/AwaitOrderDetail";
-import Orders from "./pages/OrderManagement/AwaitOrderDetail";
+import Orders from "./pages/OrderManagement/Order";
+import OrderDetail from "./pages/OrderManagement/OrderDetail";
+import ApprovedOrder from "./pages/OrderManagement/ApprovedOrder";
+import CancelOrder from "./pages/OrderManagement/CancelOrder";
+import CompleteOrder from "./pages/OrderManagement/CompleteOrder";
 
 import "./App.css";
 
@@ -110,10 +114,10 @@ const App = () => {
                   <Route path="/product" element={<EditProduct />} />
                   <Route path="/await-order" element={(<AwaitOrder />)} />
                   <Route path="/await-orderDetail" element={(<AwaitOrderDetail />)} />
-                  {/* <Route path="/approved-order" element={(<ApprovedOrder />)} />
+                  <Route path="/approved-order" element={(<ApprovedOrder />)} />
                   <Route path="/cancel-order" element={(<CancelOrder />)} />
                   <Route path="/complete-order" element={(<CompleteOrder />)} />
-                  <Route path="/order-detail" element={(<OrderDetail />)} /> */}
+                  <Route path="/order-detail" element={(<OrderDetail />)} />
                   <Route path="/orders" element={(<Orders />)} /> 
                 </Routes>
               </div>
