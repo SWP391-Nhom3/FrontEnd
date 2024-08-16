@@ -1,6 +1,6 @@
 import { Button, Modal, Switch, Table, notification } from "antd";
 import axios from "axios";
-import { Card } from "primereact/card";
+import { Card } from "antd";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchBrands } from "../../data/api";

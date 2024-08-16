@@ -1,5 +1,5 @@
 import { Button, Col, Row, notification } from "antd";
-import { Card } from "primereact/card";
+import { Card } from "antd";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import React, { useState } from "react";

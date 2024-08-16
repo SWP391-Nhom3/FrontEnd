@@ -133,13 +133,16 @@ const OrderInfor = ({ discount, ship, voucherCode }) => {
       address: useSavedInfo
         ? formValues.address
         : formValues.address +
-          ", " +
-          selectedWard.name +
-          ", " +
-          selectedDistrict.name +
-          ", " +
-          selectedProvince.name,
+        ", " +
+        selectedWard.name +
+        ", " +
+        selectedDistrict.name +
+        ", " +
+        selectedProvince.name,
     };
+
+    // Save customer information to localStorage
+    localStorage.setItem("customer_infor", JSON.stringify(customer_infor));
 
     navigate("/payment", {
       state: { customer_infor, discount, ship, voucherCode },
@@ -185,7 +188,7 @@ const OrderInfor = ({ discount, ship, voucherCode }) => {
       setSelectedDistrict({ id: "", name: "" });
       setSelectedWard({ id: "", name: "" });
     }
-  };
+  }
 
   return (
     <>
