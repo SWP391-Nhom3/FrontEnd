@@ -37,6 +37,8 @@ import EditProduct from "./pages/ProductMangement/EditProduct";
 import { fetchRefreshToken } from "./data/api";
 
 import "./App.css";
+import Users from "./pages/User/Users";
+import AddStaff from "./pages/User/AddStaff";
 
 const App = () => {
   const { currentMode, activeMenu, themeSettings } = useStateContext();
@@ -137,6 +139,8 @@ const App = () => {
                       <Dashboard isAuthenticatedAdmin={isAuthenticatedAdmin} />
                     }
                   />
+                  <Route path="/users" element={<Users />} />
+                  <Route path="/add-staff" element={<AddStaff />} />
                 </Routes>
               </div>
             </div>
