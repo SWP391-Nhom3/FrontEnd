@@ -412,8 +412,8 @@ const ShoppingCart = () => {
                     </a>
                   </div>
                 </div>
-                {/* <div className="space-y-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm sm:p-6"> */}
-                  {/* <form
+                <div className="space-y-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
+                  <form
                     className="space-y-4"
                     onSubmit={
                       {}
@@ -458,7 +458,7 @@ const ShoppingCart = () => {
                             Kho Voucher
                           </button>
                           {/* Dropdown menu */}
-                          {/* {dropdownOpen &&
+                          {dropdownOpen &&
                             (voucherList.length > 0 ? (
                               <div
                                 id="dropdownRadioHelper"
@@ -524,8 +524,8 @@ const ShoppingCart = () => {
                             </a>
                           </div>
                         </div>
-                      )} */}
-                    {/* </div>
+                      )}
+                    </div>
                     {errorList.length > 0 && (
                       <div className="error-list mb-3 mt-3">
                         {errorList.map((error, index) => (
@@ -534,9 +534,9 @@ const ShoppingCart = () => {
                           </p>
                         ))}
                       </div>
-                    )} */}
-                  {/* </form> */}
-                {/* </div> */}
+                    )}
+                  </form>
+                </div>
               </div>
             </div>
           ) : (
