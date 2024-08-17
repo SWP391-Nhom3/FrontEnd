@@ -133,12 +133,12 @@ const OrderInfor = ({ discount, ship, voucherCode }) => {
       address: useSavedInfo
         ? formValues.address
         : formValues.address +
-        ", " +
-        selectedWard.name +
-        ", " +
-        selectedDistrict.name +
-        ", " +
-        selectedProvince.name,
+          ", " +
+          selectedWard.name +
+          ", " +
+          selectedDistrict.name +
+          ", " +
+          selectedProvince.name,
     };
 
     // Save customer information to localStorage
@@ -188,7 +188,7 @@ const OrderInfor = ({ discount, ship, voucherCode }) => {
       setSelectedDistrict({ id: "", name: "" });
       setSelectedWard({ id: "", name: "" });
     }
-  }
+  };
 
   return (
     <>
