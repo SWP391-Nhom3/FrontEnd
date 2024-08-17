@@ -95,6 +95,7 @@ const Payment = () => {
       shipFee: ship,
       totalPrice: totalPrice + ship - discount > 0 ? totalPrice + ship - discount : 0,
       voucherCode: voucher_code,
+      userId: user && user.id ? user.id : null,
     };
 
     console.log("dsfasdfa",order_infor);

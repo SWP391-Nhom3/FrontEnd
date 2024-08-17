@@ -39,11 +39,14 @@ import AwaitOrder from "./pages/OrderManagement/AwaitOrder";
 import AwaitOrderDetail from "./pages/OrderManagement/AwaitOrderDetail";
 import Orders from "./pages/OrderManagement/Order";
 import OrderDetail from "./pages/OrderManagement/OrderDetail";
-import ApprovedOrder from "./pages/OrderManagement/ApprovedOrder";
 import CancelOrder from "./pages/OrderManagement/CancelOrder";
 import CompleteOrder from "./pages/OrderManagement/CompleteOrder";
 
 import "./App.css";
+import ShippingOrder from "./pages/OrderManagement/ShippingOrder";
+import ShippingOrderDetail from "./pages/OrderManagement/ShippingOrderDetail";
+import CancelShippingOrder from "./pages/OrderManagement/CancelShippingOrder";
+import PreOrder from "./pages/OrderManagement/PreOrder";
 
 
 const App = () => {
@@ -113,8 +116,11 @@ const App = () => {
                   <Route path="/add-category" element={<AddCategory />} />
                   <Route path="/product" element={<EditProduct />} />
                   <Route path="/await-order" element={(<AwaitOrder />)} />
+                  <Route path="/shipping-order" element={(<ShippingOrder />)} />
+                  <Route path="/shipping-orderDetail" element={(< ShippingOrderDetail/>)} />
+                  <Route path="/cancel-shipping-order" element={(< CancelShippingOrder/>)} />
+                  <Route path="/preorder" element={(< PreOrder/>)} />
                   <Route path="/await-orderDetail" element={(<AwaitOrderDetail />)} />
-                  <Route path="/approved-order" element={(<ApprovedOrder />)} />
                   <Route path="/cancel-order" element={(<CancelOrder />)} />
                   <Route path="/complete-order" element={(<CompleteOrder />)} />
                   <Route path="/order-detail" element={(<OrderDetail />)} />
