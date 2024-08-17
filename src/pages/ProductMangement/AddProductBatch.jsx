@@ -118,7 +118,11 @@ const AddProductBatch = () => {
       title: "Hành Động",
       key: "delete",
       render: (text, record) => (
-        <Button type="link" onClick={(e) => handleDeleteFromBill(e, record)}>
+        <Button
+          style={{ backgroundColor: "#f43f5e" }}
+          type="link"
+          onClick={(e) => handleDeleteFromBill(e, record)}
+        >
           Xóa
         </Button>
       ),
@@ -278,7 +282,7 @@ const AddProductBatch = () => {
               <div style={{ marginBottom: 16, textAlign: "right" }}>
                 <Button
                   type="primary"
-                  style={{ backgroundColor: "#46B5C1" }}
+                  style={{ backgroundColor: "#f43f5e" }}
                   disabled={selectedRowKeys.length === 0}
                   onClick={handleAddBatch}
                 >
@@ -313,7 +317,7 @@ const AddProductBatch = () => {
               <div style={{ marginBottom: 16, textAlign: "right" }}>
                 <Button
                   type="primary"
-                  style={{ backgroundColor: "#46B5C1" }}
+                  style={{ backgroundColor: "#f43f5e" }}
                   disabled={batchBill.length === 0}
                   onClick={handleSubmit}
                 >

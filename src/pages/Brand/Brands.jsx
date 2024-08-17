@@ -71,7 +71,7 @@ const Brands = () => {
         <Button
           type="primary"
           style={{
-            backgroundColor: "#46B5C1",
+            backgroundColor: "#f43f5e",
             marginBottom: "20px",
             marginLeft: "auto",
             display: "block",

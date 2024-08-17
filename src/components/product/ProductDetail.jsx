@@ -18,6 +18,7 @@ import ProductCard from "../card/Card";
 const ProductDetail = () => {
   const location = useLocation();
   const product = location.state?.product || null;
+  console.log(product);
   const { addCartItem } = useCartContext();
   const [reviews, setReviews] = useState([]);
   const [showFullDescription, setShowFullDescription] = useState(false);
@@ -149,7 +150,7 @@ const ProductDetail = () => {
             </div>
 
             <div className="mt-6 sm:mt-8 sm:flex sm:items-center sm:gap-4">
-              {product.amount > 0 ? (
+              {product.stockQuantity > 0 ? (
                 <button
                   className="mt-4 flex items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 sm:mt-0"
                   onClick={() => addCartItem(product)}

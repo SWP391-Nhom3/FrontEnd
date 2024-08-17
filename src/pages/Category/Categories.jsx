@@ -51,7 +51,7 @@ const Categories = () => {
             <Button
               type="primary"
               size="large"
-              style={{ backgroundColor: "#46B5C1", height: "100%" }}
+              style={{ backgroundColor: "#f43f5e", height: "100%" }}
               onClick={() => navigate("/add-category")}
             >
               Thêm phân loại mới

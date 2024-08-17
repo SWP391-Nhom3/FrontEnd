@@ -16,7 +16,6 @@ const EditProduct = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get("id").toString();
-  console.log("id: ", id);
   const [product_id, setProduct_id] = useState({});
   const [product_name, setProduct_name] = useState("123");
   const [categories, setCategories] = useState([]);
@@ -52,7 +51,6 @@ const EditProduct = () => {
 
     fetchProductsById(id)
       .then((data) => {
-        console.log("data ne:", data.data.data);
         const result = data.data.success;
         const productdata = data.data.data;
         if (result) {
@@ -123,10 +121,7 @@ const EditProduct = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    console.log("token:", token);
-
     let product;
-    console.log("img:", img);
 
     if (img === null) {
       product = {
