@@ -27,9 +27,6 @@ import avatar4 from "./avatar4.jpg";
 import { VscVerified } from "react-icons/vsc";
 import { FaRegStar } from "react-icons/fa";
 
-
-
-
 export const stafflinks = [
   // {
   //   title: 'Trang chủ',
@@ -55,7 +52,11 @@ export const stafflinks = [
           { name: "shipping-order", path: "", label: "Đơn đang vận chuyển" },
           { name: "complete-order", path: "", label: "Đơn đã hoàn thành" },
           { name: "cancel-order", path: "", label: "Đơn đã hủy" },
-          { name: "cancel-shipping-order", path: "", label: "Đơn vận chuyển không thành công" },
+          {
+            name: "cancel-shipping-order",
+            path: "",
+            label: "Đơn vận chuyển không thành công",
+          },
           { name: "preorder", path: "", label: "Đơn đặt trước" },
         ],
       },
@@ -268,4 +269,3 @@ export const staffProfileData = [
 ];
 
 export const adminProfileData = [];
-

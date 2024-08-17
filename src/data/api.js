@@ -10,16 +10,17 @@ export const fetchLogin = async (email, password) => {
   });
 };
 
-export const fetchRefreshToken = async (token) => {
-  try {
-    const response = await axios.post(`${HOSTNAME}/auth/refresh`, {
-      token: token,
-    });
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-};
+// export const fetchRefreshToken = async (token) => {
+//   // eslint-disable-next-line no-useless-catch
+//   try {
+//     const response = await axios.post(`${HOSTNAME}/auth/refresh`, {
+//       token: token,
+//     });
+//     return response.data;
+//   } catch (error) {
+//     throw error;
+//   }
+// };
 
 //register api
 export const fetchRegister = async ({ email, password }) => {
@@ -118,8 +119,7 @@ export const fetchProductBatches = async () => {
 
 //create order api
 export const fetchCreateOrder = async (order) => {
-  return await axios.post(`${HOSTNAME}/orders`, order, {
-  });
+  return await axios.post(`${HOSTNAME}/orders`, order, {});
 };
 
 //get all order api
@@ -351,15 +351,26 @@ export const fetchUpdateCategory = async (category, token, id) => {
 //   return await axios.get(`${SCHEMA_HOSTNAME}/warehouse/all-warehouse`);
 // };
 
-// //get-all-user
-// export const fetchAllUsers = async (result) => {
-//   return await axios.get(`${SCHEMA_HOSTNAME}/users/get-all-user`, {
-//     headers: {
-//       Authorization: `Bearer ${result.access_token}`,
-//     },
-//   });
-// };
-
+//get-all-user
+export const fetchAllUsers = async (result) => {
+  return await axios.get(`${HOSTNAME}/users`, {
+    headers: {
+      Authorization: `Bearer ${result}`,
+    },
+  });
+};
+//get role
+export const fetchRole = async () => {
+  return await axios.get(`${HOSTNAME}/roles`);
+};
+//get-all-user
+export const fetchCreateStaff = async (token, userData) => {
+  return await axios.post(`${HOSTNAME}/users/create-staff`, userData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
 // //get-user-by-id
 // export const fetchUserById = async (id, token) => {
 //   return await axios.get(`${SCHEMA_HOSTNAME}/users/user/${id}`, {
