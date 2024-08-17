@@ -71,7 +71,7 @@ const CompleteOrder = () => {
               <Column
                 title="Trạng Thái"
                 key="status"
-                render={() => <Tag bordered={false} icon={<SmileOutlined  />} color="green">Đã Hoàn Thành</Tag>}
+                render={() => <Tag bordered={false} icon={<SmileOutlined />} color="green">Đã Hoàn Thành</Tag>}
               />
               <Column
                 title="Chi Tiết Đơn Hàng"

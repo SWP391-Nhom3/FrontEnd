@@ -137,6 +137,16 @@ export const fetchConfirmOrder = async (id) => {
   return await axios.put(`${HOSTNAME}/orders/confirm/${id}`);
 };
 
+//shipping status order api
+export const fetchShippingOrder = async (id) => {
+  return await axios.put(`${HOSTNAME}/orders/shipping/${id}`);
+};
+
+//cancel shipping status order api
+export const fetchCancelShippingOrder = async (id) => {
+  return await axios.put(`${HOSTNAME}/orders/cancel-shipping/${id}`);
+};
+
 // // eslint-disable-next-line no-undef
 // const SCHEMA_HOSTNAME = process.env.REACT_APP_SCHEMA_HOSTNAME;
 

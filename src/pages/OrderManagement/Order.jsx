@@ -4,7 +4,7 @@ import { fetchOrders } from "../../data/api";
 import { Card } from "antd";
 import Column from "antd/es/table/Column";
 import { Table, Tag } from "antd";
-import { CheckCircleOutlined, SyncOutlined, SmileOutlined , CloseCircleOutlined } from '@ant-design/icons';
+import { CheckCircleOutlined, SyncOutlined, SmileOutlined, CloseCircleOutlined, TruckOutlined, CalendarOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import Loading from "../../components/Loading";
 
 const Orders = () => {
@@ -18,7 +18,7 @@ const Orders = () => {
       try {
         const orderData = await fetchOrders();
         setOrders(orderData.data);
-        console.log("order neeee",orderData.data);
+        console.log("order neeee", orderData.data);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching orders:", error);
@@ -32,22 +32,26 @@ const Orders = () => {
   const getStatusTag = (status) => {
     switch (status) {
       case "Chờ xác nhận":
-        return <Tag bordered={false} icon={<SyncOutlined spin />} color="orange">Đang Xác Nhận</Tag>;
-      case "Đã xác nhận":
-        return <Tag bordered={false} icon={<CheckCircleOutlined />} color="processing">Đã Xác Nhận</Tag>;
+        return <Tag bordered={false} icon={<SyncOutlined spin />} color="warning">Đang Xác Nhận</Tag>;
+      case "Đang giao hàng":
+        return <Tag bordered={false} icon={<TruckOutlined />} color="processing">Đang giao hàng</Tag>;
       case "Hoàn thành":
-        return <Tag bordered={false} icon={<SmileOutlined  />} color="green">Đã Hoàn Thành</Tag>;
+        return <Tag bordered={false} icon={<SmileOutlined />} color="green">Đã Hoàn Thành</Tag>;
+      case "Đặt trước":
+        return <Tag bordered={false} icon={<CalendarOutlined />} color="magenta">Đặt trước</Tag>;
       case "Đã hủy":
-        return <Tag bordered={false} icon={<CloseCircleOutlined />} color="red">Đã Hủy</Tag>;
+        return <Tag bordered={false} icon={<CloseCircleOutlined />} color="error">Đã Hủy</Tag>;
+      case "Giao hàng không thành công":
+        return <Tag bordered={false} icon={<ExclamationCircleOutlined  />} color="gray">Giao hàng không thành công</Tag>;
       default:
         return <Tag></Tag>;
     }
   };
 
   if (loading) {
-    return <Loading/>
+    return <Loading />
   }
- 
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, '0');
@@ -57,7 +61,7 @@ const Orders = () => {
     const minutes = String(date.getMinutes()).padStart(2, '0');
     const seconds = String(date.getSeconds()).padStart(2, '0');
     return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
-    };
+  };
   return (
     <div style={{ display: 'flex', justifyContent: 'center', height: '80vh' }}>
       <Card title="Tất cả đơn hàng" style={{ width: '90%', marginTop: '50px', height: 'full' }}>
@@ -89,13 +93,13 @@ const Orders = () => {
               title="Trạng Thái"
               key="status"
               render={(text, record) => getStatusTag(record.orderStatus.name)}
-              />
+            />
             <Column
               title="Chi Tiết Đơn Hàng"
               key="detail"
               render={(text, item) => (
                 <Link
-                to={item.orderStatus.name === "Chờ xác nhận" ? "/await-orderDetail" : "/order-detail"}
+                  to={item.orderStatus.name === "Chờ xác nhận" ? "/await-orderDetail" : "/order-detail"}
                   state={{ order: item }}
                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                 >

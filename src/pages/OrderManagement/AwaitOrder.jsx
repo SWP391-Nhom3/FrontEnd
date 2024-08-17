@@ -74,7 +74,7 @@ const AwaitOrder = () => {
             <Column
               title="Trạng Thái"
               key="status"
-              render={() => <Tag icon={<SyncOutlined spin />} bordered={false} color="orange">Chờ Xác Nhận</Tag>}
+              render={() => <Tag bordered={false} icon={<SyncOutlined spin />} color="warning">Đang Xác Nhận</Tag>}
             />
             <Column
               title="Chi Tiết Đơn Hàng"

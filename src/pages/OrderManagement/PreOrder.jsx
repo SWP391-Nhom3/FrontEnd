@@ -3,10 +3,9 @@ import { fetchOrders } from '../../data/api';
 import Loading from '../../components/Loading';
 import { Card, Table, Tag } from 'antd';
 import Column from 'antd/es/table/Column';
-import { CheckCircleOutlined, SyncOutlined } from '@ant-design/icons';
+import { CalendarOutlined, CheckCircleOutlined, SyncOutlined, TruckOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
-
-const ApprovedOrder = () => {
+const PreOrder = () => {
     const [loading, setLoading] = useState(true);
     const [orders, setOrders] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -45,16 +44,16 @@ const ApprovedOrder = () => {
   
     return (
       <div style={{ display: 'flex', justifyContent: 'center', height: '80vh' }}>
-        <Card title="Đơn đã xác nhận" style={{ width: '90%', marginTop: '50px', height: '75vh' }}>
+        <Card title="Đơn đang vận chuyển" style={{ width: '90%', marginTop: '50px', height: '75vh' }}>
           <div>
   
             <Table
-              dataSource={orders.filter(item => item.orderStatus.name === "Đã xác nhận")}
+              dataSource={orders.filter(item => item.orderStatus.name === "Đặt trước")}
               rowKey={item => item.id}
               pagination={{
                 current: currentPage,
                 pageSize: pageSize,
-                total: orders.filter(item => item.orderStatus.name === "Đã xác nhận").length,
+                total: orders.filter(item => item.orderStatus.name === "Đặt trước").length,
                 onChange: (page, pageSize) => {
                   setCurrentPage(page);
                   setPageSize(pageSize);
@@ -73,14 +72,14 @@ const ApprovedOrder = () => {
               <Column
                 title="Trạng Thái"
                 key="status"
-                render={() => <Tag bordered={false} icon={<CheckCircleOutlined />} color="processing">Đã Xác Nhận</Tag>}
+                render={() => <Tag bordered={false} icon={<CalendarOutlined />} color="magenta">Đặt trước</Tag>}
               />
               <Column
                 title="Chi Tiết Đơn Hàng"
                 key="detail"
                 render={(text, item) => (
                   <Link
-                    to="/await-orderDetail"
+                    to="/shipping-orderDetail"
                     state={{ order: item }}
                     className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                   >
@@ -95,4 +94,4 @@ const ApprovedOrder = () => {
     );
 }
 
-export default ApprovedOrder
+export default PreOrder
