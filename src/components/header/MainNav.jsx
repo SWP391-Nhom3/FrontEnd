@@ -1,10 +1,10 @@
 import { Navbar } from "flowbite-react";
 import { Link } from "react-router-dom";
-// import { useProductContext } from "../../context/ProductContext";
+import { useProductContext } from "../../context/ProductContext";
 
 export function MainNav() {
-  // const { products } = useProductContext();
-  // const bestSellers = products.sort((a, b) => b.sales - a.sales);
+  const { products } = useProductContext();
+  const bestSellers = products.sort((a, b) => b.sales - a.sales);
   return (
     <Navbar fluid rounded>
       <div className="mr-3 h-6 sm:h-9"></div>
@@ -31,7 +31,7 @@ export function MainNav() {
         <Navbar.Link className="text-lg">
           <Link
             to="/list-products"
-            // state={{ products: bestSellers, headline: "Sản Phẩm Bán Chạy" }}
+            state={{ products: bestSellers, headline: "Sản Phẩm Bán Chạy" }}
             onClick={() => window.scrollTo(0, 0)}
           >
             Sản Phẩm Bán Chạy
