@@ -47,6 +47,12 @@ import Users from "./pages/User/Users";
 import AddStaff from "./pages/User/AddStaff";
 import MainFooter from "../src/components/Footer/index";
 import { useStateContext } from "./context/ContextProvider";
+import Profile from "./pages/Profile";
+import EditProfile from "./components/profile/EditProfile";
+import ChangePassword from "./components/profile/ChangePassword";
+import HistoryOrder from "./components/profile/HistoryOrder";
+import Feedback from "./components/profile/Feedback";
+import Accumulate from "./components/profile/Accumulate";
 
 import "./App.css";
 
@@ -194,6 +200,13 @@ const App = () => {
               <Route path="/contact" element={<Contact />} />
               <Route path="/exchange_policy" element={<ExchangePolicy />} />
               <Route path="/privacy_policy" element={<PrivacyPolicy />} />
+              <Route path="/profile" element={<Profile />}>
+                <Route path="" element={<EditProfile />} />
+                <Route path="change-password" element={<ChangePassword />} />
+                <Route path="history-order" element={<HistoryOrder />} />
+                <Route path="my-feedback" element={<Feedback />} />
+                <Route path="accumulated-points" element={<Accumulate />} />
+              </Route>
             </Routes>
             <MainFooter />
           </div>
