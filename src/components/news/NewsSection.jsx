@@ -36,10 +36,10 @@ const NewsSection = () => {
     const seconds = String(date.getSeconds()).padStart(2, "0");
     return `${hours}:${minutes}:${seconds} - ${day}/${month}/${year} `;
   };
-  const news = posts.slice(-3).reverse()
+  const news = posts.slice(-3).reverse();
   return (
     <div className="p-4">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 mt-12">
+      <div className="mb-4 mt-12 flex flex-col items-start justify-between md:flex-row md:items-center">
         <h2 className="text-2xl font-bold">Tin tức</h2>
         <Link
           to="/news"
@@ -49,33 +49,33 @@ const NewsSection = () => {
           Xem tất cả
         </Link>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {news.map((item) => (
           <div
             key={item._id}
-            className="bg-white shadow-md rounded-lg overflow-hidden"
+            className="overflow-hidden rounded-lg bg-white shadow-md"
           >
             <div className="relative">
               <img
                 src={item.img_url}
                 alt={item.news_name}
-                className="w-full h-48 object-cover"
+                className="h-48 w-full object-cover"
               />
-              <div className="absolute top-2 left-2 bg-orange-500 text-white px-2 py-1 rounded-lg">
+              <div className="absolute left-2 top-2 rounded-lg bg-orange-500 px-2 py-1 text-white">
                 <span className="block text-sm">
                   {formatDate(item.created_at)}
                 </span>
               </div>
             </div>
             <div className="p-4">
-              <h3 className="text-lg font-bold mb-2">{item.news_name}</h3>
+              <h3 className="mb-2 text-lg font-bold">{item.news_name}</h3>
               <div
                 className="text-gray-500"
                 style={truncateStyle}
                 dangerouslySetInnerHTML={{ __html: item.description }}
               />
-              <div className="flex justify-between items-center">
-                <div className="text-orange-500 flex items-center">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center text-orange-500">
                   <span>{item.comments} Bình luận</span>
                   <span className="ml-2">{item.author}</span>
                 </div>

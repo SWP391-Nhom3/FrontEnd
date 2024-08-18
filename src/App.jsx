@@ -57,17 +57,15 @@ import Feedback from "./components/profile/Feedback";
 import Accumulate from "./components/profile/Accumulate";
 import Authenticate from "./pages/Auth/Google/Authenticate";
 import ProductsWarehouse from "./pages/Warehouse/ProductsWarehouse";
-import BillDetail from "./pages/Warehouse/BillDetail";
-import InputBills from "./pages/Warehouse/InputBills";
 import News from "./pages/News";
 import NewsDetail from "./pages/News/NewsDetail";
 import OrderTracking from "./components/order/OrderTracking";
-import AllFeedback from './pages/Feedback/AllFeedback';
-import BadFeedback from './pages/Feedback/BadFeedback';
-import Customers from './pages/Customer/Customers';
-import AddNews from './pages/News/AddNews';
-import EditNews from './pages/News/EditNews';
-import AllNews from './pages/News/AllNews';
+import AllFeedback from "./pages/Feedback/AllFeedback";
+import BadFeedback from "./pages/Feedback/BadFeedback";
+import Customers from "./pages/Customer/Customers";
+import AddNews from "./pages/News/AddNews";
+import EditNews from "./pages/News/EditNews";
+import AllNews from "./pages/News/AllNews";
 import "./App.css";
 
 const App = () => {
@@ -197,8 +195,6 @@ const App = () => {
                   <Route path="/users" element={<Users />} />
                   <Route path="/add-staff" element={<AddStaff />} />
                   <Route path="/products" element={<ProductManagement />} />
-                  <Route path="/input-bills" element={<InputBills />} />
-                  <Route path="/bill-detail" element={<BillDetail />} />
                   <Route
                     path="/products-warehouse"
                     element={<ProductsWarehouse />}
