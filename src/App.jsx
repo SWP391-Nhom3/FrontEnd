@@ -53,6 +53,9 @@ import ChangePassword from "./components/profile/ChangePassword";
 import HistoryOrder from "./components/profile/HistoryOrder";
 import Feedback from "./components/profile/Feedback";
 import Accumulate from "./components/profile/Accumulate";
+import ProductsWarehouse from './pages/Warehouse/ProductsWarehouse';
+import BillDetail from './pages/Warehouse/BillDetail';
+import InputBills from './pages/Warehouse/InputBills';
 
 import "./App.css";
 
@@ -177,6 +180,9 @@ const App = () => {
                   <Route path="/users" element={<Users />} />
                   <Route path="/add-staff" element={<AddStaff />} />
                   <Route path="/products" element={<ProductManagement />} />
+                  <Route path="/input-bills" element={<InputBills/>} />
+                  <Route path="/bill-detail" element={<BillDetail />} />
+                  <Route path="/products-warehouse" element={<ProductsWarehouse/>} />
                 </Routes>
               </div>
             </div>
