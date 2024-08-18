@@ -1,19 +1,23 @@
 import { Dropdown } from "flowbite-react";
 import { HiCog, HiViewGrid, HiLogout } from "react-icons/hi";
 import { FaUser } from "react-icons/fa";
-// import { fetchLogout } from "../../data/api.jsx";
 import { Link, useNavigate } from "react-router-dom";
+
 import { FaHistory } from "react-icons/fa";
+import { useCartContext } from "../../context/CartContext";
 
 const UserBtn = () => {
   const navigate = useNavigate();
+  const { clearCart } = useCartContext();
   const handleLogout = async () => {
-    navigate("/login");
+    clearCart();
     localStorage.removeItem("user");
     localStorage.removeItem("result");
     localStorage.removeItem("role");
     localStorage.removeItem("isMember");
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("cartItems");
+    navigate("/login");
   };
   const result = JSON.parse(localStorage.getItem("result")) || null;
   // const verify = user?.verify;
