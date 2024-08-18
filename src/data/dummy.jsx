@@ -81,24 +81,24 @@ export const stafflinks = [
           { name: "", path: "product-batch", label: "Sản phẩm trong kho" },
         ],
       },
-      // {
-      //   name: "Quản lý đánh giá",
-      //   icon: <FaRegStar />,
-      //   type: "sub",
-      //   // path: 'products',
-      //   subLinks: [
-      //     {
-      //       name: "allFeedback",
-      //       path: "all-feedback",
-      //       label: "Tất cả đánh giá",
-      //     },
-      //     {
-      //       name: "badFeedback",
-      //       path: "bad-feedback",
-      //       label: "Đánh giá tiêu cực",
-      //     },
-      //   ],
-      // },
+      {
+        name: "Quản lý đánh giá",
+        icon: <FaRegStar />,
+        type: "sub",
+        // path: 'products',
+        subLinks: [
+          {
+            name: "allFeedback",
+            path: "all-feedback",
+            label: "Tất cả đánh giá",
+          },
+          {
+            name: "badFeedback",
+            path: "bad-feedback",
+            label: "Đánh giá tiêu cực",
+          },
+        ],
+      },
       {
         name: "Quản lý mã giảm giá",
         icon: <RiPriceTag3Line />,
@@ -151,18 +151,18 @@ export const stafflinks = [
       },
     ],
   },
-  // {
-  //   title: "Khách hàng",
-  //   links: [
-  //     {
-  //       name: "Quản lý khách hàng",
-  //       icon: <FiUsers />,
-  //       type: "sub",
-  //       // path: '',
-  //       subLinks: [{ name: "customers", path: "", label: "Tất cả khách hàng" }],
-  //     },
-  //   ],
-  // },
+  {
+    title: "Khách hàng",
+    links: [
+      {
+        name: "Quản lý khách hàng",
+        icon: <FiUsers />,
+        type: "sub",
+        // path: '',
+        subLinks: [{ name: "customers", path: "", label: "Tất cả khách hàng" }],
+      },
+    ],
+  },
   // {
   //   title: "Tin tức",
   //   links: [

@@ -62,6 +62,7 @@ import NewsDetail from "./pages/News/NewsDetail";
 import OrderTracking from "./components/order/OrderTracking";
 import AllFeedback from './pages/Feedback/AllFeedback';
 import BadFeedback from './pages/Feedback/BadFeedback';
+import Customers from './pages/Customer/Customers';
 
 import "./App.css";
 
@@ -151,6 +152,7 @@ const App = () => {
                   <Route path="/orders" element={<Orders />} />
                   <Route path="/all-feedback" element={<AllFeedback />} />
                   <Route path="/bad-feedback" element={<BadFeedback />} />
+                  <Route path="/customers" element={<Customers />} />
                 </Routes>
               </div>
             </div>
