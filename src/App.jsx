@@ -60,7 +60,12 @@ import InputBills from "./pages/Warehouse/InputBills";
 import News from "./pages/News";
 import NewsDetail from "./pages/News/NewsDetail";
 import OrderTracking from "./components/order/OrderTracking";
-
+import AllFeedback from './pages/Feedback/AllFeedback';
+import BadFeedback from './pages/Feedback/BadFeedback';
+import Customers from './pages/Customer/Customers';
+import AddNews from './pages/News/AddNews';
+import EditNews from './pages/News/EditNews';
+import AllNews from './pages/News/AllNews';
 import "./App.css";
 
 const App = () => {
@@ -147,6 +152,12 @@ const App = () => {
                   <Route path="/complete-order" element={<CompleteOrder />} />
                   <Route path="/order-detail" element={<OrderDetail />} />
                   <Route path="/orders" element={<Orders />} />
+                  <Route path="/all-feedback" element={<AllFeedback />} />
+                  <Route path="/bad-feedback" element={<BadFeedback />} />
+                  <Route path="/customers" element={<Customers />} />
+                  <Route path="/all-blog" element={<AllNews />} />
+                  <Route path="/add-news" element={<AddNews />} />
+                  <Route path="/edit-news" element={<EditNews />} />
                 </Routes>
               </div>
             </div>
