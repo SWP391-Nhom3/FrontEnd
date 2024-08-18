@@ -6,6 +6,7 @@ import ProductCard from "../../components/card/Card";
 import HeroAtLast from "../../components/hero/HeroAtLast";
 import { useProductContext } from "../../context/ProductContext";
 import Loader from "../../assets/loading.gif";
+import NewsSection from "../../components/news/NewsSection";
 
 const Home = () => {
   const { products, loading } = useProductContext();
@@ -69,6 +70,7 @@ const Home = () => {
       <ProductCard products={formulaMilk} headline={"Sữa công thức"} />
       <ProductCard products={foodSupplements} headline={"Thực phẩm bổ sung"} />
       <ProductCard products={freshMilk} headline={"Sữa tươi"} />
+      <NewsSection />
     </div>
   );
 };
