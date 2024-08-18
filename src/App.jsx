@@ -60,6 +60,8 @@ import InputBills from "./pages/Warehouse/InputBills";
 import News from "./pages/News";
 import NewsDetail from "./pages/News/NewsDetail";
 import OrderTracking from "./components/order/OrderTracking";
+import AllFeedback from './pages/Feedback/AllFeedback';
+import BadFeedback from './pages/Feedback/BadFeedback';
 
 import "./App.css";
 
@@ -147,6 +149,8 @@ const App = () => {
                   <Route path="/complete-order" element={<CompleteOrder />} />
                   <Route path="/order-detail" element={<OrderDetail />} />
                   <Route path="/orders" element={<Orders />} />
+                  <Route path="/all-feedback" element={<AllFeedback />} />
+                  <Route path="/bad-feedback" element={<BadFeedback />} />
                 </Routes>
               </div>
             </div>
