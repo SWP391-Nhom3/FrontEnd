@@ -10,19 +10,20 @@ import { useEffect, useState } from "react";
 // } from "../../data/api";
 import { useLocation } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
+import { fetchMyProfile, fetchUpdateProfile, getDistricts, getProvinces, getWards } from "../../data/api";
 
 const EditProfile = () => {
   const location = useLocation();
   const newAccount = location.state?.newAccount || false;
-  const token = JSON.parse(localStorage.getItem("result"));
+  const token = localStorage.getItem("accessToken");
   const [isEditing, setIsEditing] = useState(newAccount);
   const [errorList, setErrorList] = useState([]);
   const [profile, setProfile] = useState({
-    username: "",
-    name: "",
+    firstname: "",
+    lastname: "",
     email: "",
     phone: "",
-    gender: "",
+    point: "",
     address: "",
   });
   const date = new Date();
@@ -31,6 +32,28 @@ const EditProfile = () => {
   const [wards, setWards] = useState([]);
   const [addressInput, setAddressInput] = useState("");
   const [dateInput, setDateInput] = useState(date);
+
+  const getMeProfile = async () => {
+    await fetchMyProfile(token)
+      .then((res) => {
+        console.log(res.data.result);
+        setProfile({
+          firstName: res.data.data.firstName || "",
+          lastName: res.data.data.lastName || "",
+          dob: res.data.data.dob || null,
+          address: res.data.data.address || "",
+          phone: res.data.data.phone || "",
+        });
+        if (res.data.data.dob !== null) {
+          setDateInput(new Date(res.data.data.dob));
+        }
+      })
+      .catch(async (error) => {
+        console.log(error);
+      });
+  };
+
+  console.log("sdfasdfasdfdasfsd",profile);
   // const getMeProfile = async () => {
   //   await fetchGetMe(token)
   //     .then((res) => {
@@ -69,44 +92,52 @@ const EditProfile = () => {
   //   getMeProfile();
   // }, []);
 
-  // useEffect(() => {
-  //   const getProvince = async () => {
-  //     try {
-  //       const provinceList = await getProvinces();
-  //       setProvinces(provinceList);
-  //     } catch (error) {
-  //       console.error("Error fetching products:", error);
-  //     }
-  //   };
+  const formatDate = (dateObject) => {
+    if (dateObject !== null) {
+      const date = new Date(dateObject);
+      return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+    }
+    return "Chưa có ngày sinh";
+  };
 
-  //   getProvince();
-  // }, []);
+  useEffect(() => {
+    const getProvince = async () => {
+      try {
+        const provinceList = await getProvinces();
+        setProvinces(provinceList);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
 
-  // useEffect(() => {
-  //   const getDistrict = async (id) => {
-  //     try {
-  //       const districtList = await getDistricts(id);
-  //       setDistricts(districtList);
-  //     } catch (error) {
-  //       console.error("Error fetching products:", error);
-  //     }
-  //   };
+    getProvince();
+  }, []);
 
-  //   getDistrict();
-  // }, []);
+  useEffect(() => {
+    const getDistrict = async (id) => {
+      try {
+        const districtList = await getDistricts(id);
+        setDistricts(districtList);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
 
-  // useEffect(() => {
-  //   const getWard = async () => {
-  //     try {
-  //       const wardList = await getWards();
-  //       setWards(wardList);
-  //     } catch (error) {
-  //       console.error("Error fetching products:", error);
-  //     }
-  //   };
+    getDistrict();
+  }, []);
 
-  //   getWard();
-  // }, []);
+  useEffect(() => {
+    const getWard = async () => {
+      try {
+        const wardList = await getWards();
+        setWards(wardList);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    getWard();
+  }, []);
 
   const handlerChangeAddressInput = (event) => {
     setAddressInput(event.target.value);
@@ -126,7 +157,7 @@ const EditProfile = () => {
     const name = item.target.options[item.target.selectedIndex].text;
     setSelectedProvince({ id, name });
 
-    // setDistricts(await getDistricts(Number(id)));
+    setDistricts(await getDistricts(Number(id)));
   };
 
   const handleDistrictSelect = async (item) => {
@@ -134,7 +165,7 @@ const EditProfile = () => {
     const name = item.target.options[item.target.selectedIndex].text;
 
     setSelectedDistrict({ id, name });
-    // setWards(await getWards(Number(id)));
+    setWards(await getWards(Number(id)));
   };
 
   const handleWardSelect = async (item) => {
@@ -170,36 +201,28 @@ const EditProfile = () => {
     }
 
     const data = {
-      username: profile.username,
-      full_name: profile.name,
-      phone: profile.phone,
-      country: "Việt Nam",
-      province: selectedProvince.name,
-      district: selectedDistrict.name,
-      ward: selectedWard.name,
-      address: `${addressInput}, ${selectedWard.name}, ${selectedDistrict.name}, ${selectedProvince.name}`,
-      date_of_birth: date_input.toISOString(),
+      firstName: profile.firstName,
+      lastName: profile.lastName,
+      dob: date_input.toISOString(),
+      address: profile.address,
+      phone: profile.phone
     };
 
-    await fetchUpdateMe(token, data)
+    await fetchUpdateProfile(data, token)
       .then(() => {
         toast.success("Cập nhật thành công", {
           position: "top-center",
         });
         setIsEditing(false);
-        // getMeProfile();
+        getMeProfile();
         const user = JSON.parse(localStorage.getItem("user")) || {};
         const updatedUser = {
           ...user,
-          username: data.username,
-          full_name: data.full_name,
-          phone: data.phone,
-          country: "Việt Nam",
-          province: data.province,
-          district: data.district,
-          ward: data.ward,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          dob: data.dob,
           address: data.address,
-          date_of_birth: data.date_of_birth,
+          phone: data.phone
         };
         localStorage.setItem("user", JSON.stringify(updatedUser));
       })
@@ -211,7 +234,7 @@ const EditProfile = () => {
           setErrorList(errorList);
         }
       });
-   };
+  };
 
   return (
     <>
@@ -225,26 +248,26 @@ const EditProfile = () => {
             <form className="my-4 space-y-4 px-8" onSubmit={handleSubmit}>
               <div className="mx-auto flex w-full gap-10">
                 <div className="w-1/3">
-                  <label className="block text-gray-700">Tên đăng nhập: </label>
+                  <label className="block text-gray-700">Họ: </label>
                   <input
                     type="text"
-                    name="username"
+                    name="lastname"
                     className="w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required
-                    placeholder="Nhập tên đăng nhập..."
-                    value={profile.username}
+                    placeholder="Nhập họ..."
+                    value={profile.lastname}
                     onChange={handleChange}
                   />
                 </div>
                 <div className="w-1/3">
-                  <label className="block text-gray-700">Họ và Tên: </label>
+                  <label className="block text-gray-700">Tên: </label>
                   <input
                     type="text"
-                    name="name"
+                    name="firstname"
                     className="w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required
-                    placeholder="Nhập họ và tên..."
-                    value={profile.name}
+                    placeholder="Nhập tên..."
+                    value={profile.firstname}
                     onChange={handleChange}
                   />
                 </div>
@@ -353,6 +376,15 @@ const EditProfile = () => {
                     onChange={handlerChangeAddressInput}
                     required
                   />
+                  <div className="w-1/2">
+                    <label className="block text-gray-700">Ngày sinh: </label>
+                    <Datepicker
+                      language="vi"
+                      defaultDate={dateInput}
+                      onSelectedDateChanged={(date) => setDateInput(date)}
+                      required
+                    />
+                  </div>
                 </div>
               </div>
               {/* {errorList.length > 0 && (
@@ -388,16 +420,16 @@ const EditProfile = () => {
           <div className="mx-auto w-full">
             <div className="grid w-full grid-cols-4">
               <div>
-                <p className="text-lg">Tên đăng nhập</p>
-                <p className="text-lg font-semibold">{profile.username}</p>
+                <p className="text-lg">Họ</p>
+                <p className="text-lg font-semibold">{profile.firstname}</p>
               </div>
               <div>
                 <p className="text-lg">Email</p>
                 <p className="text-lg font-semibold">{profile.email}</p>
               </div>
               <div>
-                <p className="text-lg">Họ và tên</p>
-                <p className="text-lg font-semibold">{profile.name}</p>
+                <p className="text-lg">Tên</p>
+                <p className="text-lg font-semibold">{profile.lastname}</p>
               </div>
               <div>
                 <p className="text-lg">Nhóm khách hàng</p>
@@ -410,6 +442,12 @@ const EditProfile = () => {
                     style: "currency",
                     currency: "VND",
                   })}
+                </p>
+              </div>
+              <div>
+                <p className="text-lg">Ngày sinh</p>
+                <p className="text-lg font-semibold">
+                  {formatDate(profile.dob)}
                 </p>
               </div>
               <div className="col-span-2">

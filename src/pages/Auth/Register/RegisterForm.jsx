@@ -24,33 +24,38 @@ const RegisterForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
+
     const { email, password, confirm_password } = formValues;
-  
+
     if (password !== confirm_password) {
       toast.error("Mật khẩu và mật khẩu xác nhận không khớp.");
       return;
     }
-  
+
     navigate("/profile", {
-      state: { email},
+      state: { email },
     });
 
-    // await fetchRegister({
-    //   email,
-    //   password,
-    // })
-    //   .then((res) => {
-    //     toast.success(`Đăng kí thành công`);
-    //     localStorage.setItem("user", JSON.stringify(res.data.user));
-    //     localStorage.setItem("result", JSON.stringify(res.data.result));
-        
-    //   })
-    //   .catch((error) => {
-    //     toast.error("Có lỗi xảy ra khi đăng ký.");
-    //   });
+    await fetchRegister({
+      email,
+      password,
+    })
+      .then((res) => {
+        console.log(res);
+        localStorage.setItem("result", JSON.stringify(res.data.data));
+        localStorage.setItem("accessToken", res.data.data.accessToken);
+        localStorage.setItem("user", JSON.stringify(res.data.data.user));
+        localStorage.setItem("role", JSON.stringify(res.data.data.user.roles));
+        window.location.reload();
+        toast.success(`Đăng kí thành công`);
+
+
+      })
+      .catch((error) => {
+        toast.error("Có lỗi xảy ra khi đăng ký.");
+      });
   };
-  
+
   return (
     <div className="w-full rounded-3xl border-2 border-solid border-[rgba(0,0,0,0.1)] px-10 py-12 shadow-2xl">
       <h1 className="text-5xl font-semibold">Welcome</h1>
@@ -59,16 +64,16 @@ const RegisterForm = () => {
       </p>
       <form className="mt-8" onSubmit={handleSubmit}>
         <div className="mt-4 flex flex-col">
-            <label className="text-lg font-medium">Địa Chỉ Email</label>
-            <input
-              className="mt-1 w-full rounded-xl border-2 border-[rgba(0,0,0,0.2)] bg-transparent p-4"
-              placeholder="Nhập email..."
-              id="email"
-              name="email"
-              value={formValues.email}
-              onChange={handleChange}
-            />
-          </div>
+          <label className="text-lg font-medium">Địa Chỉ Email</label>
+          <input
+            className="mt-1 w-full rounded-xl border-2 border-[rgba(0,0,0,0.2)] bg-transparent p-4"
+            placeholder="Nhập email..."
+            id="email"
+            name="email"
+            value={formValues.email}
+            onChange={handleChange}
+          />
+        </div>
         <div className="mt-4 flex flex-col">
           <label className="text-lg font-medium">Mật Khẩu</label>
           <input
