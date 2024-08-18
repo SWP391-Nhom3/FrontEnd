@@ -54,6 +54,11 @@ import HistoryOrder from "./components/profile/HistoryOrder";
 import Feedback from "./components/profile/Feedback";
 import Accumulate from "./components/profile/Accumulate";
 import Authenticate from "./pages/Auth/Google/Authenticate";
+import ProductsWarehouse from "./pages/Warehouse/ProductsWarehouse";
+import BillDetail from "./pages/Warehouse/BillDetail";
+import InputBills from "./pages/Warehouse/InputBills";
+import News from "./pages/News";
+import NewsDetail from "./pages/News/NewsDetail";
 
 import "./App.css";
 
@@ -178,6 +183,12 @@ const App = () => {
                   <Route path="/users" element={<Users />} />
                   <Route path="/add-staff" element={<AddStaff />} />
                   <Route path="/products" element={<ProductManagement />} />
+                  <Route path="/input-bills" element={<InputBills />} />
+                  <Route path="/bill-detail" element={<BillDetail />} />
+                  <Route
+                    path="/products-warehouse"
+                    element={<ProductsWarehouse />}
+                  />
                 </Routes>
               </div>
             </div>
@@ -209,6 +220,8 @@ const App = () => {
                 <Route path="my-feedback" element={<Feedback />} />
                 <Route path="accumulated-points" element={<Accumulate />} />
               </Route>
+              <Route path="/news" element={<News />} />
+              <Route path="/news-detail" element={<NewsDetail />} />
             </Routes>
             <MainFooter />
           </div>
