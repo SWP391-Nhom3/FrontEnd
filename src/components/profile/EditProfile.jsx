@@ -151,67 +151,67 @@ const EditProfile = () => {
     });
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   const date_input = new Date(dateInput);
-  //   const today = new Date();
-  //   const age = today.getFullYear() - date_input.getFullYear();
-  //   const monthDifference = today.getMonth() - date_input.getMonth();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const date_input = new Date(dateInput);
+    const today = new Date();
+    const age = today.getFullYear() - date_input.getFullYear();
+    const monthDifference = today.getMonth() - date_input.getMonth();
 
-  //   if (
-  //     age < 13 ||
-  //     (age === 13 && monthDifference < 0) ||
-  //     (age === 13 &&
-  //       monthDifference === 0 &&
-  //       today.getDate() < date_input.getDate())
-  //   ) {
-  //     setErrorList(["Tuổi không hợp lệ"]);
-  //     return;
-  //   }
+    if (
+      age < 13 ||
+      (age === 13 && monthDifference < 0) ||
+      (age === 13 &&
+        monthDifference === 0 &&
+        today.getDate() < date_input.getDate())
+    ) {
+      setErrorList(["Tuổi không hợp lệ"]);
+      return;
+    }
 
-  //   const data = {
-  //     username: profile.username,
-  //     full_name: profile.name,
-  //     phone: profile.phone,
-  //     country: "Việt Nam",
-  //     province: selectedProvince.name,
-  //     district: selectedDistrict.name,
-  //     ward: selectedWard.name,
-  //     address: `${addressInput}, ${selectedWard.name}, ${selectedDistrict.name}, ${selectedProvince.name}`,
-  //     date_of_birth: date_input.toISOString(),
-  //   };
+    const data = {
+      username: profile.username,
+      full_name: profile.name,
+      phone: profile.phone,
+      country: "Việt Nam",
+      province: selectedProvince.name,
+      district: selectedDistrict.name,
+      ward: selectedWard.name,
+      address: `${addressInput}, ${selectedWard.name}, ${selectedDistrict.name}, ${selectedProvince.name}`,
+      date_of_birth: date_input.toISOString(),
+    };
 
-  //   await fetchUpdateMe(token, data)
-  //     .then(() => {
-  //       toast.success("Cập nhật thành công", {
-  //         position: "top-center",
-  //       });
-  //       setIsEditing(false);
-  //       getMeProfile();
-  //       const user = JSON.parse(localStorage.getItem("user")) || {};
-  //       const updatedUser = {
-  //         ...user,
-  //         username: data.username,
-  //         full_name: data.full_name,
-  //         phone: data.phone,
-  //         country: "Việt Nam",
-  //         province: data.province,
-  //         district: data.district,
-  //         ward: data.ward,
-  //         address: data.address,
-  //         date_of_birth: data.date_of_birth,
-  //       };
-  //       localStorage.setItem("user", JSON.stringify(updatedUser));
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       let errorList = [];
-  //       for (let value of Object.values(error.response.data.errors)) {
-  //         errorList.push(value);
-  //         setErrorList(errorList);
-  //       }
-  //     });
-  //  };
+    await fetchUpdateMe(token, data)
+      .then(() => {
+        toast.success("Cập nhật thành công", {
+          position: "top-center",
+        });
+        setIsEditing(false);
+        // getMeProfile();
+        const user = JSON.parse(localStorage.getItem("user")) || {};
+        const updatedUser = {
+          ...user,
+          username: data.username,
+          full_name: data.full_name,
+          phone: data.phone,
+          country: "Việt Nam",
+          province: data.province,
+          district: data.district,
+          ward: data.ward,
+          address: data.address,
+          date_of_birth: data.date_of_birth,
+        };
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+      })
+      .catch((error) => {
+        console.log(error);
+        let errorList = [];
+        for (let value of Object.values(error.response.data.errors)) {
+          errorList.push(value);
+          setErrorList(errorList);
+        }
+      });
+   };
 
   return (
     <>
@@ -355,7 +355,7 @@ const EditProfile = () => {
                   />
                 </div>
               </div>
-              {errorList.length > 0 && (
+              {/* {errorList.length > 0 && (
                 <div className="error-list mb-3 mt-3">
                   {errorList.map((error, index) => (
                     <p key={index} className="text-red-600">
@@ -363,7 +363,7 @@ const EditProfile = () => {
                     </p>
                   ))}
                 </div>
-              )}
+              )} */}
               <div className="flex gap-4">
                 <button
                   onClick={() => setIsEditing(false)}

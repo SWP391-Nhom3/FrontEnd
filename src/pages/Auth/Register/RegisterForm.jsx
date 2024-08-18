@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LinkToGoogle from "../Google/LinkToGoogle";
-// import { fetchRegister } from "../../../data/api.jsx";
+import { fetchRegister } from "../../../data/api";
 import { toast } from "react-hot-toast";
 
 const RegisterForm = () => {
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
-    username: "",
     email: "",
     password: "",
     confirm_password: "",
@@ -25,32 +24,33 @@ const RegisterForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+  
+    const { email, password, confirm_password } = formValues;
+  
+    if (password !== confirm_password) {
+      toast.error("Mật khẩu và mật khẩu xác nhận không khớp.");
+      return;
+    }
+  
+    navigate("/profile", {
+      state: { email},
+    });
 
-    const { username, email, password, confirm_password } = formValues;
     // await fetchRegister({
-    //   username,
     //   email,
     //   password,
-    //   confirm_password,
     // })
     //   .then((res) => {
-    //     toast.success(`${res.data.message}`);
+    //     toast.success(`Đăng kí thành công`);
     //     localStorage.setItem("user", JSON.stringify(res.data.user));
     //     localStorage.setItem("result", JSON.stringify(res.data.result));
-    //     navigate("/otp", {
-    //       state: { navigateTo: "/profile", email, user_id: res.data.user._id },
-    //     });
+        
     //   })
     //   .catch((error) => {
     //     toast.error("Có lỗi xảy ra khi đăng ký.");
-    //     let errorList = [];
-    //     for (let value of Object.values(error.response.data.errors)) {
-    //       errorList.push(value);
-    //       setErrorList(errorList);
-    //     }
     //   });
   };
-
+  
   return (
     <div className="w-full rounded-3xl border-2 border-solid border-[rgba(0,0,0,0.1)] px-10 py-12 shadow-2xl">
       <h1 className="text-5xl font-semibold">Welcome</h1>
@@ -58,19 +58,7 @@ const RegisterForm = () => {
         Vui lòng điền thông tin của bạn!
       </p>
       <form className="mt-8" onSubmit={handleSubmit}>
-        <div className="flex w-full gap-3">
-          <div className="flex w-1/3 flex-col">
-            <label className="text-lg font-medium">Tên Tài Khoản</label>
-            <input
-              className="mt-1 w-full rounded-xl border-2 border-[rgba(0,0,0,0.2)] bg-transparent p-4"
-              placeholder="Nhập tên tài khoản..."
-              id="username"
-              name="username"
-              value={formValues.username}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="flex w-2/3 flex-col">
+        <div className="mt-4 flex flex-col">
             <label className="text-lg font-medium">Địa Chỉ Email</label>
             <input
               className="mt-1 w-full rounded-xl border-2 border-[rgba(0,0,0,0.2)] bg-transparent p-4"
@@ -81,7 +69,6 @@ const RegisterForm = () => {
               onChange={handleChange}
             />
           </div>
-        </div>
         <div className="mt-4 flex flex-col">
           <label className="text-lg font-medium">Mật Khẩu</label>
           <input
@@ -106,16 +93,6 @@ const RegisterForm = () => {
             type="password"
           />
         </div>
-        {/* hien loi */}
-        {errorList.length > 0 && (
-          <div className="error-list mt-3">
-            {errorList.map((error, index) => (
-              <p key={index} className="text-danger">
-                {error}
-              </p>
-            ))}
-          </div>
-        )}
         <div className="mt-8 flex flex-col gap-y-4">
           <button
             type="submit"
