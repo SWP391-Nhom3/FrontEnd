@@ -54,7 +54,6 @@ const Users = () => {
     setCurrentPage(pagination.current);
     setPageSize(pagination.pageSize);
   };
-
   const columns = [
     {
       title: "Email",
@@ -115,6 +114,22 @@ const Users = () => {
       ellipsis: true,
       width: "10%",
       render: (roles) => <span>{roles}</span>,
+    },
+    {
+      title: "Status",
+      dataIndex: "active",
+      key: "active",
+      render: (text, record) => (
+        <Switch
+          checked={record.active}
+          style={{
+            backgroundColor: record.active ? "#f43f5e" : "#898989",
+          }}
+          onChange={(checked) => {}}
+        />
+      ),
+      width: "10%",
+      sorter: (a, b) => a.isActive - b.isActive,
     },
   ];
 
