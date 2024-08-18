@@ -1,32 +1,28 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 const LinkToGoogle = ({ headline }) => {
   const getGoogleAuthUrl = () => {
-    const VITE_GOOGLE_CLIENT_ID =
+    const callbackUrl = "http://localhost:5173/authenticate";
+    const authUrl = "https://accounts.google.com/o/oauth2/auth";
+    const googleClientId =
       "229203659707-kpvju7vl0mpc0j4gnd2s5eiclnuoaf6q.apps.googleusercontent.com";
-    const VITE_GOOGLE_REDIRECT_URI =
-      "http://localhost:8081/login/oauth2/code/google";
-    const url = "https://accounts.google.com/o/oauth2/v2/auth";
-    const query = {
-      client_id: VITE_GOOGLE_CLIENT_ID,
-      redirect_uri: VITE_GOOGLE_REDIRECT_URI,
-      response_type: "code",
-      scope: [
-        "https://www.googleapis.com/auth/userinfo.email",
-        "https://www.googleapis.com/auth/userinfo.profile",
-      ].join(" "),
-      prompt: "consent",
-      access_type: "offline",
-    };
-    return `${url}?${new URLSearchParams(query)}`;
+
+    const targetUrl = `${authUrl}?redirect_uri=${encodeURIComponent(
+      callbackUrl,
+    )}&response_type=code&client_id=${googleClientId}&scope=openid%20email%20profile`;
+
+    return targetUrl;
   };
 
-  const googleAuthUrl = getGoogleAuthUrl();
+  const handleGoogleLogin = () => {
+    const googleAuthUrl = getGoogleAuthUrl();
+    window.location.href = googleAuthUrl;
+  };
+
   return (
     <>
-      <Link
-        to={googleAuthUrl}
+      <button
+        onClick={handleGoogleLogin}
         className="flex transform items-center justify-center gap-2 rounded-xl border-2 border-[rgba(0,0,0,0.2)] py-4 text-lg font-semibold text-gray-700 transition-all ease-in-out hover:scale-[1.01] active:scale-[.98] active:duration-75"
       >
         <svg
@@ -54,7 +50,7 @@ const LinkToGoogle = ({ headline }) => {
           />
         </svg>
         {headline}
-      </Link>
+      </button>
     </>
   );
 };

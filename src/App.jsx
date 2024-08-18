@@ -53,6 +53,7 @@ import ChangePassword from "./components/profile/ChangePassword";
 import HistoryOrder from "./components/profile/HistoryOrder";
 import Feedback from "./components/profile/Feedback";
 import Accumulate from "./components/profile/Accumulate";
+import Authenticate from "./pages/Auth/Google/Authenticate";
 
 import "./App.css";
 
@@ -200,6 +201,7 @@ const App = () => {
               <Route path="/contact" element={<Contact />} />
               <Route path="/exchange_policy" element={<ExchangePolicy />} />
               <Route path="/privacy_policy" element={<PrivacyPolicy />} />
+              <Route path="/authenticate" element={<Authenticate />} />
               <Route path="/profile" element={<Profile />}>
                 <Route path="" element={<EditProfile />} />
                 <Route path="change-password" element={<ChangePassword />} />
