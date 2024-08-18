@@ -50,10 +50,14 @@ const AddStaff = () => {
     event.preventDefault();
     const email = event.target.email.value;
     const password = event.target.password.value;
-
+    const active = true;
     if (validateInput(email, password)) {
       try {
-        const response = await fetchCreateStaff(token, { email, password });
+        const response = await fetchCreateStaff(token, {
+          email,
+          password,
+          active,
+        });
         if (response.status === 200) {
           alert("Tạo Staff thành công!");
           navigate("/users");
