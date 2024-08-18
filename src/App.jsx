@@ -56,6 +56,8 @@ import Accumulate from "./components/profile/Accumulate";
 import ProductsWarehouse from './pages/Warehouse/ProductsWarehouse';
 import BillDetail from './pages/Warehouse/BillDetail';
 import InputBills from './pages/Warehouse/InputBills';
+import News from "./pages/News";
+import NewsDetail from "./pages/News/NewsDetail";
 
 import "./App.css";
 
@@ -213,6 +215,8 @@ const App = () => {
                 <Route path="my-feedback" element={<Feedback />} />
                 <Route path="accumulated-points" element={<Accumulate />} />
               </Route>
+              <Route path="/news" element={<News />} />
+              <Route path="/news-detail" element={<NewsDetail />} />
             </Routes>
             <MainFooter />
           </div>
