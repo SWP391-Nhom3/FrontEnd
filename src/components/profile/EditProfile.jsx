@@ -462,6 +462,12 @@ const EditProfile = () => {
                   {formatDate(profile.dob)}
                 </p>
               </div>
+              <div>
+                <p className="text-lg">Ngày sinh</p>
+                <p className="text-lg font-semibold">
+                  {formatDate(profile.dob)}
+                </p>
+              </div>
               <div className="col-span-2">
                 <p className="text-lg">Địa chỉ: </p>
                 <p className="text-lg font-semibold">{profile.address}</p>
