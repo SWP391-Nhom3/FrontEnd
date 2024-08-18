@@ -36,6 +36,8 @@ import EditProduct from "./pages/ProductMangement/EditProduct";
 import AwaitOrder from "./pages/OrderManagement/AwaitOrder";
 import AwaitOrderDetail from "./pages/OrderManagement/AwaitOrderDetail";
 import Orders from "./pages/OrderManagement/Order";
+import PreOrderPage from "./pages/PreOrder";
+import PreOrderPayment from "./components/order/PreOrderPayment";
 import OrderDetail from "./pages/OrderManagement/OrderDetail";
 import CancelOrder from "./pages/OrderManagement/CancelOrder";
 import CompleteOrder from "./pages/OrderManagement/CompleteOrder";
@@ -217,7 +219,9 @@ const App = () => {
               <Route path="/list-products" element={<ListProduct />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/order" element={<Order />} />
+              <Route path="/pre-order" element={<PreOrderPage />} />
               <Route path="/payment" element={<Payment />} />
+              <Route path="/pre-order-payment" element={<PreOrderPayment />} />
               <Route path="/thanks" element={<Thanks />} />
               <Route path="/filter" element={<Filter />} />
               <Route path="/about_us" element={<AboutUs />} />
