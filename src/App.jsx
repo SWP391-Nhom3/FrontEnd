@@ -59,6 +59,7 @@ import BillDetail from "./pages/Warehouse/BillDetail";
 import InputBills from "./pages/Warehouse/InputBills";
 import News from "./pages/News";
 import NewsDetail from "./pages/News/NewsDetail";
+import OrderTracking from "./components/order/OrderTracking";
 
 import "./App.css";
 
@@ -222,6 +223,7 @@ const App = () => {
               </Route>
               <Route path="/news" element={<News />} />
               <Route path="/news-detail" element={<NewsDetail />} />
+              <Route path="/order-tracking" element={<OrderTracking />} />
             </Routes>
             <MainFooter />
           </div>
