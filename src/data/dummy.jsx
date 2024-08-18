@@ -163,21 +163,21 @@ export const stafflinks = [
       },
     ],
   },
-  // {
-  //   title: "Tin tức",
-  //   links: [
-  //     {
-  //       name: "Quản lý bài viết",
-  //       icon: <BsNewspaper />,
-  //       type: "sub",
-  //       // path: '',
-  //       subLinks: [
-  //         { name: "allBlog", path: "all-blog", label: "Tất cả bài viết" },
-  //         { name: "addBlog", path: "add-news", label: "Thêm bài viết" },
-  //       ],
-  //     },
-  //   ],
-  // },
+  {
+    title: "Tin tức",
+    links: [
+      {
+        name: "Quản lý bài viết",
+        icon: <BsNewspaper />,
+        type: "sub",
+        // path: '',
+        subLinks: [
+          { name: "allBlog", path: "all-blog", label: "Tất cả bài viết" },
+          { name: "addBlog", path: "add-news", label: "Thêm bài viết" },
+        ],
+      },
+    ],
+  },
 ];
 
 export const adminlinks = [
