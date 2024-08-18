@@ -24,8 +24,17 @@ const RegisterForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     const { email, password, confirm_password } = formValues;
+  
+    if (password !== confirm_password) {
+      toast.error("Mật khẩu và mật khẩu xác nhận không khớp.");
+      return;
+    }
+  
+    navigate("/profile", {
+      state: { email},
+    });
 
     if (password !== confirm_password) {
       toast.error("Mật khẩu và mật khẩu xác nhận không khớp.");
@@ -51,7 +60,7 @@ const RegisterForm = () => {
         toast.error("Có lỗi xảy ra khi đăng ký.");
       });
   };
-
+  
   return (
     <div className="w-full rounded-3xl border-2 border-solid border-[rgba(0,0,0,0.1)] px-10 py-12 shadow-2xl">
       <h1 className="text-5xl font-semibold">Welcome</h1>
@@ -60,7 +69,7 @@ const RegisterForm = () => {
       </p>
       <form className="mt-8" onSubmit={handleSubmit}>
         <div className="mt-4 flex flex-col">
-          <label className="text-lg font-medium">Địa Chỉ Email</label>
+        <label className="text-lg font-medium">Địa Chỉ Email</label>
           <input
             className="mt-1 w-full rounded-xl border-2 border-[rgba(0,0,0,0.2)] bg-transparent p-4"
             placeholder="Nhập email..."
