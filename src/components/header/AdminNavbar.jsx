@@ -90,7 +90,7 @@ const Navbar = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
             <p>
               <span className="text-14 text-gray-400">Xin chào,</span>
               <span className="text-14 ml-1 font-bold text-gray-400">
-                {user?.firstName}
+                {user?.email}
               </span>
             </p>
             <MdKeyboardArrowDown className="text-14 text-gray-400" />

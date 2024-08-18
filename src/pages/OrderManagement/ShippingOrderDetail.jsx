@@ -12,11 +12,13 @@ import {
 } from "@ant-design/icons";
 import {
   fetchCancelOrder,
+  fetchCancelShippingOrder,
   fetchConfirmOrder,
   fetchProducts,
+  fetchShippingOrder,
 } from "../../data/api";
 
-const AwaitOrderDetail = () => {
+const ShippingOrderDetail = () => {
   const location = useLocation();
   const order = location.state?.order;
   const navigate = useNavigate();
@@ -48,33 +50,11 @@ const AwaitOrderDetail = () => {
     getProducts();
 
     return () => {
-      // Cleanup function
-      isMounted = false; // Đặt lại cờ khi component unmount
+      isMounted = false;
     };
   }, []); // Mảng phụ thuộc rỗng để chỉ chạy khi component mount
 
   console.log("order ne", order);
-
-  //   useEffect(() => {
-  //     const findProductById = (product_id) => {
-  //       return products.find((product) => product.id === product.id);
-  //     };
-
-  //     if (products.length > 0 && order) {
-  //       const updateOrderDetails = async () => {
-  //         const details = await Promise.all(
-  //           order.orderDetails.map(async (item) => {
-  //             const product = findProductById(item.product.id);
-  //             return { ...item, product };
-  //           })
-  //         );
-  //         setOrderDetails(details);
-  //         console.log("detail ne", details);
-  //       };
-
-  //       updateOrderDetails();
-  //     }
-  //   }, [products, order]);
 
   if (loading) {
     return <Loading />;
@@ -83,11 +63,8 @@ const AwaitOrderDetail = () => {
   const handleCancelOrder = async () => {
     const order_id = order.id;
     try {
-      await fetchCancelOrder(order_id, token);
-      // Lưu trạng thái vào sessionStorage
+      await fetchCancelShippingOrder(order_id, token);
       sessionStorage.setItem("orderCancelled", "true");
-
-      // Tải lại trang
       window.location.reload();
     } catch (error) {
       notification.error({
@@ -126,12 +103,10 @@ const AwaitOrderDetail = () => {
 
   const handleConfirmOrder = async () => {
     const order_id = order.id;
-    await fetchConfirmOrder(order_id, token)
+    await fetchShippingOrder(order_id, token)
       .then((res) => {
-        // Lưu trạng thái vào sessionStorage
         sessionStorage.setItem("orderConfirmed", "true");
         console.log(res.data);
-        // Tải lại trang
         window.location.reload();
       })
       .catch((error) => {
@@ -589,7 +564,7 @@ const AwaitOrderDetail = () => {
                         fontSize: "15px",
                       }}
                     >
-                      Hủy đơn hàng
+                      Giao hàng thất bại
                     </Button>
                     <Button
                       type="default"
@@ -599,7 +574,7 @@ const AwaitOrderDetail = () => {
                         fontSize: "15px",
                       }}
                     >
-                      Xác nhận đơn hàng
+                      Xác nhận giao hàng thành công
                     </Button>
                   </div>
                 )}
@@ -612,4 +587,4 @@ const AwaitOrderDetail = () => {
   );
 };
 
-export default AwaitOrderDetail;
+export default ShippingOrderDetail;

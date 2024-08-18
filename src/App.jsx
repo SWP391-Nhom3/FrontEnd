@@ -21,7 +21,6 @@ import Dashboard from "./pages/Dashboard";
 import AddVoucher from "./pages/Voucher/AddVoucher";
 import VouchersBatch from "./pages/Voucher/VouchersBatch";
 import Vouchers from "./pages/Voucher/Vouchers";
-import { useStateContext } from "./context/ContextProvider";
 import Sidebar from "./components/Sidebar";
 import AdminNavbar from "./components/header/AdminNavbar";
 import Header from "./pages/Header";
@@ -34,35 +33,44 @@ import AddCategory from "./pages/Category/AddCategory";
 import AddProductBatch from "./pages/ProductMangement/AddProductBatch";
 import ViewProductBatch from "./pages/ProductMangement/ViewProductBatch";
 import EditProduct from "./pages/ProductMangement/EditProduct";
-import { fetchRefreshToken } from "./data/api";
 import AwaitOrder from "./pages/OrderManagement/AwaitOrder";
 import AwaitOrderDetail from "./pages/OrderManagement/AwaitOrderDetail";
 import Orders from "./pages/OrderManagement/Order";
 import OrderDetail from "./pages/OrderManagement/OrderDetail";
-import ApprovedOrder from "./pages/OrderManagement/ApprovedOrder";
 import CancelOrder from "./pages/OrderManagement/CancelOrder";
 import CompleteOrder from "./pages/OrderManagement/CompleteOrder";
-
-import "./App.css";
+import ShippingOrder from "./pages/OrderManagement/ShippingOrder";
+import ShippingOrderDetail from "./pages/OrderManagement/ShippingOrderDetail";
+import CancelShippingOrder from "./pages/OrderManagement/CancelShippingOrder";
+import PreOrder from "./pages/OrderManagement/PreOrder";
 import Users from "./pages/User/Users";
 import AddStaff from "./pages/User/AddStaff";
+import MainFooter from "../src/components/Footer/index";
+import { useStateContext } from "./context/ContextProvider";
+import Profile from "./pages/Profile";
+import EditProfile from "./components/profile/EditProfile";
+import ChangePassword from "./components/profile/ChangePassword";
+import HistoryOrder from "./components/profile/HistoryOrder";
+import Feedback from "./components/profile/Feedback";
+import Accumulate from "./components/profile/Accumulate";
 
+import "./App.css";
 
 const App = () => {
   const { currentMode, activeMenu, themeSettings } = useStateContext();
 
   const accessToken = localStorage.getItem("accessToken") || null;
 
-  useEffect(() => {
-    const checkToken = async () => {
-      if (accessToken !== null) {
-        await fetchRefreshToken(accessToken).then((res) => {
-          localStorage.setItem("accessToken", res.data.accessToken);
-        });
-      }
-    };
-    checkToken();
-  }, [accessToken]);
+  // useEffect(() => {
+  //   const checkToken = async () => {
+  //     if (accessToken !== null) {
+  //       await fetchRefreshToken(accessToken).then((res) => {
+  //         localStorage.setItem("accessToken", res.data.accessToken);
+  //       });
+  //     }
+  //   };
+  //   checkToken();
+  // }, [accessToken]);
 
   const isAuthenticatedAdmin = localStorage.getItem("isAdmin") === "true";
   const isAuthenticatedStaff = localStorage.getItem("isStaff") === "true";
@@ -103,7 +111,6 @@ const App = () => {
                   <Route path="/voucher-batch" element={<VouchersBatch />} />
                   <Route path="/add-voucher" element={<AddVoucher />} />
                   <Route path="/voucher-batch/:id" element={<Vouchers />} />
-                  
                   <Route
                     path="/add-product-batch"
                     element={<AddProductBatch />}
@@ -114,13 +121,25 @@ const App = () => {
                   <Route path="/categories" element={<Categories />} />
                   <Route path="/add-category" element={<AddCategory />} />
                   <Route path="/product" element={<EditProduct />} />
-                  <Route path="/await-order" element={(<AwaitOrder />)} />
-                  <Route path="/await-orderDetail" element={(<AwaitOrderDetail />)} />
-                  <Route path="/approved-order" element={(<ApprovedOrder />)} />
-                  <Route path="/cancel-order" element={(<CancelOrder />)} />
-                  <Route path="/complete-order" element={(<CompleteOrder />)} />
-                  <Route path="/order-detail" element={(<OrderDetail />)} />
-                  <Route path="/orders" element={(<Orders />)} /> 
+                  <Route path="/await-order" element={<AwaitOrder />} />
+                  <Route path="/shipping-order" element={<ShippingOrder />} />
+                  <Route
+                    path="/shipping-orderDetail"
+                    element={<ShippingOrderDetail />}
+                  />
+                  <Route
+                    path="/cancel-shipping-order"
+                    element={<CancelShippingOrder />}
+                  />
+                  <Route path="/preorder" element={<PreOrder />} />
+                  <Route
+                    path="/await-orderDetail"
+                    element={<AwaitOrderDetail />}
+                  />
+                  <Route path="/cancel-order" element={<CancelOrder />} />
+                  <Route path="/complete-order" element={<CompleteOrder />} />
+                  <Route path="/order-detail" element={<OrderDetail />} />
+                  <Route path="/orders" element={<Orders />} />
                 </Routes>
               </div>
             </div>
@@ -157,6 +176,7 @@ const App = () => {
                   />
                   <Route path="/users" element={<Users />} />
                   <Route path="/add-staff" element={<AddStaff />} />
+                  <Route path="/products" element={<ProductManagement />} />
                 </Routes>
               </div>
             </div>
@@ -180,7 +200,15 @@ const App = () => {
               <Route path="/contact" element={<Contact />} />
               <Route path="/exchange_policy" element={<ExchangePolicy />} />
               <Route path="/privacy_policy" element={<PrivacyPolicy />} />
+              <Route path="/profile" element={<Profile />}>
+                <Route path="" element={<EditProfile />} />
+                <Route path="change-password" element={<ChangePassword />} />
+                <Route path="history-order" element={<HistoryOrder />} />
+                <Route path="my-feedback" element={<Feedback />} />
+                <Route path="accumulated-points" element={<Accumulate />} />
+              </Route>
             </Routes>
+            <MainFooter />
           </div>
         )}
       </BrowserRouter>

@@ -202,7 +202,7 @@ const ViewProductBatch = () => {
             placeholder="Nhập tên sản phẩm"
             allowClear
             enterButton={
-              <Button style={{ backgroundColor: "#55B6C3", color: "white" }}>
+              <Button style={{ backgroundColor: "#f43f5e", color: "white" }}>
                 Tìm kiếm
               </Button>
             }

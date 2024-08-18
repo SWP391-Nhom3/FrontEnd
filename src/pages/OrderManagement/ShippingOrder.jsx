@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
-// import { Table } from "flowbite-react";
-import { Link } from "react-router-dom";
-import { Card } from "antd";
-import { Table, Tag } from "antd";
-import Column from "antd/es/table/Column";
-import { SyncOutlined } from "@ant-design/icons";
-import Loading from "../../components/Loading";
 import { fetchOrders } from "../../data/api";
-const AwaitOrder = () => {
+import Loading from "../../components/Loading";
+import { Card, Table, Tag } from "antd";
+import Column from "antd/es/table/Column";
+import {
+  CheckCircleOutlined,
+  SyncOutlined,
+  TruckOutlined,
+} from "@ant-design/icons";
+import { Link } from "react-router-dom";
+
+const ShippingOrder = () => {
   const [loading, setLoading] = useState(true);
   const [orders, setOrders] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -47,20 +50,20 @@ const AwaitOrder = () => {
   return (
     <div style={{ display: "flex", justifyContent: "center", height: "80vh" }}>
       <Card
-        title="Đơn chờ xác nhận"
+        title="Đơn đang vận chuyển"
         style={{ width: "90%", marginTop: "50px", height: "75vh" }}
       >
         <div>
           <Table
             dataSource={orders.filter(
-              (item) => item.orderStatus.name === "Chờ xác nhận",
+              (item) => item.orderStatus.name === "Đang giao hàng",
             )}
             rowKey={(item) => item.id}
             pagination={{
               current: currentPage,
               pageSize: pageSize,
               total: orders.filter(
-                (item) => item.orderStatus.name === "Chờ xác nhận",
+                (item) => item.orderStatus.name === "Đang giao hàng",
               ).length,
               onChange: (page, pageSize) => {
                 setCurrentPage(page);
@@ -92,10 +95,10 @@ const AwaitOrder = () => {
               render={() => (
                 <Tag
                   bordered={false}
-                  icon={<SyncOutlined spin />}
-                  color="warning"
+                  icon={<TruckOutlined />}
+                  color="processing"
                 >
-                  Đang Xác Nhận
+                  Đang giao hàng
                 </Tag>
               )}
             />
@@ -104,7 +107,7 @@ const AwaitOrder = () => {
               key="detail"
               render={(text, item) => (
                 <Link
-                  to="/await-orderDetail"
+                  to="/shipping-orderDetail"
                   state={{ order: item }}
                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                 >
@@ -119,4 +122,4 @@ const AwaitOrder = () => {
   );
 };
 
-export default AwaitOrder;
+export default ShippingOrder;

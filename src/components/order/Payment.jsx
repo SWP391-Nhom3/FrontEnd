@@ -8,7 +8,11 @@ import { useCartContext } from "../../context/CartContext";
 //   fetchCreateOrder,
 // } from "../../data/api";
 import toast, { Toaster } from "react-hot-toast";
-import { fetchCreateOrder, fetchProductBatches, fetchProducts } from "../../data/api";
+import {
+  fetchCreateOrder,
+  fetchProductBatches,
+  fetchProducts,
+} from "../../data/api";
 
 const Payment = () => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -87,17 +91,19 @@ const Payment = () => {
       phone: customer_infor.phone,
       address: customer_infor.address,
       paymentMethod: paymentMethod,
-      requiredDate: new Date().toISOString().split('T')[0],
-      orderDetails: cartItems.map(item => ({
+      requiredDate: new Date().toISOString().split("T")[0],
+      orderDetails: cartItems.map((item) => ({
         productId: item.id,
         quantity: item.quantity,
       })),
       shipFee: ship,
-      totalPrice: totalPrice + ship - discount > 0 ? totalPrice + ship - discount : 0,
+      totalPrice:
+        totalPrice + ship - discount > 0 ? totalPrice + ship - discount : 0,
       voucherCode: voucher_code,
+      userId: user && user.id ? user.id : null,
     };
 
-    console.log("dsfasdfa",order_infor);
+    console.log("dsfasdfa", order_infor);
 
     try {
       const response = await fetchCreateOrder(order_infor); // Assuming fetchCreateOrder is implemented
@@ -105,7 +111,6 @@ const Payment = () => {
 
       clearCart(); // Clear cart after order is placed
       navigate("/thanks", { state: { isCheck: true } }); // Redirect to thank you page
-
     } catch (error) {
       console.error("Error creating order:", error);
       setErrorMessage("Có lỗi xảy ra khi đặt hàng. Vui lòng thử lại sau.");

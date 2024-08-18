@@ -24,9 +24,10 @@ const UserProfile = ({ isAdmin }) => {
   };
   const handleLogout = async () => {
     Modal.confirm({
+      closable: true,
       title: "Xác nhận đăng xuất",
       content: `Bạn có chắc chắn muốn đăng xuất?`,
-      onConfirm: handleLogoutConfirmation,
+      onOk: handleLogoutConfirmation,
 
       onCancel() {},
       okButtonProps: {
