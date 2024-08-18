@@ -113,8 +113,10 @@ const ProductManagement = () => {
       dataIndex: "rating",
       key: "rating",
       width: "15%",
+      sorter: (a, b) => a.rating - b.rating,
       render: (text) => {
-        const roundedRating = parseFloat(text).toFixed(1);
+        const roundedRating = 4;
+        // parseFloat(text).toFixed(1);
         return (
           <div className="flex items-center">
             <Rate
@@ -153,7 +155,7 @@ const ProductManagement = () => {
       key: "revenue",
       width: 100,
       render: (text, record) => {
-        const revenue = record.sales * record.price;
+        const revenue = record.price;
         return new Intl.NumberFormat("vi-VN", {
           style: "currency",
           currency: "VND",
@@ -172,7 +174,7 @@ const ProductManagement = () => {
                 checked={record.active}
                 onChange={(checked) => handleSwitchChange(checked, record)}
                 style={{
-                  backgroundColor: record.active ? "#4A99FF" : "#898989",
+                  backgroundColor: record.active ? "#f43f5e" : "#898989",
                 }}
               />
             ),
@@ -210,7 +212,7 @@ const ProductManagement = () => {
               placeholder="Nhập tên sản phẩm"
               allowClear
               enterButton={
-                <Button style={{ backgroundColor: "#55B6C3", color: "white" }}>
+                <Button style={{ backgroundColor: "#f43f5e", color: "white" }}>
                   Tìm kiếm
                 </Button>
               }
@@ -218,15 +220,16 @@ const ProductManagement = () => {
               onSearch={onSearch}
               style={{ width: "40%" }}
             />
-            {/* {isAuthenticatedStaff &&
+            {isAuthenticatedStaff && (
               <Button
                 type="primary"
                 size="large"
-                style={{ backgroundColor: "#46B5C1", height: "100%" }}
+                style={{ backgroundColor: "#f43f5e", height: "100%" }}
                 onClick={() => navigate("/add-product")}
               >
                 Thêm sản phẩm mới
-              </Button>} */}
+              </Button>
+            )}
             <div>
               <h5 className="flex justify-between text-sm sm:text-base">
                 <div className="text-gray-500">Tổng sản phẩm: </div>
@@ -239,10 +242,7 @@ const ProductManagement = () => {
                     style: "currency",
                     currency: "VND",
                   }).format(
-                    products.reduce(
-                      (sum, product) => sum + product.sales * product.price,
-                      0,
-                    ),
+                    products.reduce((sum, product) => sum + product.price, 0),
                   )}
                 </div>
               </h5>

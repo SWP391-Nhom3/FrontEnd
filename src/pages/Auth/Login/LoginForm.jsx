@@ -36,14 +36,32 @@ const LoginForm = () => {
 
     try {
       const res = await fetchLogin(email, password);
+      const userRoles = res.data.data.user.roles.map((role) => role.name);
+
+      if (activeTab === "customer") {
+        if (userRoles.includes("ADMIN") || userRoles.includes("STAFF")) {
+          setErrorList([
+            "Tài khoản không có quyền truy cập cho vai trò Customer.",
+          ]);
+          return;
+        }
+      } else if (activeTab === "admin-staff") {
+        if (userRoles.includes("MEMBER")) {
+          setErrorList([
+            "Tài khoản không có quyền truy cập cho vai trò Admin & Staff.",
+          ]);
+          return;
+        }
+      }
+
       localStorage.setItem("result", JSON.stringify(res.data.data));
       localStorage.setItem("accessToken", res.data.data.accessToken);
       localStorage.setItem("user", JSON.stringify(res.data.data.user));
       localStorage.setItem("role", JSON.stringify(res.data.data.user.roles));
-      const checkRole = res.data.data.user.roles.map((role) => role.name);
-      if (checkRole[0] === "MEMBER") {
+
+      if (userRoles.includes("MEMBER")) {
         localStorage.setItem("isMember", "true");
-      } else if (checkRole[0] === "ADMIN") {
+      } else if (userRoles.includes("ADMIN")) {
         localStorage.setItem("isAdmin", "true");
       } else {
         localStorage.setItem("isStaff", "true");
@@ -57,12 +75,15 @@ const LoginForm = () => {
         sessionStorage.removeItem("password");
       }
 
-      localStorage.getItem("isMember") === "true"
-        ? navigate("/")
-        : navigate("/dashboard");
+      if (localStorage.getItem("isMember") === "true") {
+        navigate("/");
+      } else {
+        navigate("/dashboard");
+      }
       window.location.reload();
     } catch (error) {
       console.error(error);
+      setErrorList(["Đăng nhập thất bại. Vui lòng thử lại."]);
     }
   };
 

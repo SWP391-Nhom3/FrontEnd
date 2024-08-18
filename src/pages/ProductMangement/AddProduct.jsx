@@ -29,9 +29,7 @@ const AddProduct = () => {
   useEffect(() => {
     fetchCategories()
       .then((data) => {
-        console.log("data ne:", data.data.data);
         const result = data.data.success;
-        console.log("result ne:", result);
         if (result) {
           setCategories(data.data.data);
         }
@@ -40,9 +38,7 @@ const AddProduct = () => {
 
     fetchBrands()
       .then((data) => {
-        console.log("databrands ne:", data.data.data);
         const result = data.data.success;
-        console.log("result ne:", result);
         if (result) {
           setBrands(data.data.data);
         }
@@ -211,24 +207,6 @@ const AddProduct = () => {
             </Col>
           </Row>
 
-          {/* <Row justify="space-around" align="middle" style={{ marginBottom: '40px', marginTop: '20px' }}>
-            <Col span={4}>
-              <label htmlFor="age" style={{ fontSize: '17px', color: '#1F5070', fontWeight: 'bold' }}>Độ Tuổi Sử Dụng</label>
-            </Col>
-            <Col span={18}>
-              <TextInput
-                id="age"
-                type="text"
-                name="age"
-                placeholder="Độ Tuổi Sử Dụng"
-                onChange={handleChangeAge}
-                className="w-full"
-                style={{ height: '50px', fontSize: '15px', border: '1px solid #6b7280', borderRadius: '0.375rem' }}
-                required
-              />
-            </Col>
-          </Row> */}
-
           <Row
             justify="space-around"
             align="middle"
@@ -353,27 +331,6 @@ const AddProduct = () => {
             </Col>
           </Row>
 
-          {/* <Row justify="space-around" align="middle" style={{ marginBottom: '40px', marginTop: '20px' }}>
-            <Col span={4}>
-              <label htmlFor="discount" style={{ fontSize: '17px', color: '#1F5070', fontWeight: 'bold' }}>Giảm giá(%)</label>
-            </Col>
-            <Col span={18}>
-              <TextInput
-                id="discount"
-                type="number"
-                min={0}
-                max={100}
-                name="discount"
-                className="w-full"
-                style={{ height: '50px', fontSize: '15px', backgroundColor: '#F9F9F6', border: '1px solid #6b7280', borderRadius: '0.375rem' }}
-                placeholder="Mức giảm giá..."
-                defaultValue={0}
-                onChange={handleChangeDiscount}
-                required
-              />
-            </Col>
-          </Row> */}
-
           <Row
             justify="space-around"
             align="middle"
@@ -418,8 +375,8 @@ const AddProduct = () => {
                 type="default"
                 onClick={() => navigate("/products")}
                 style={{
-                  borderColor: "#55B6C3",
-                  color: "#55B6C3",
+                  borderColor: "#f43f5e",
+                  color: "#f43f5e",
                   fontSize: "10px",
                   backgroundColor: "white",
                 }}
@@ -429,7 +386,7 @@ const AddProduct = () => {
               <Button
                 type="submit"
                 style={{
-                  backgroundColor: "#55B6C3",
+                  backgroundColor: "#f43f5e",
                   fontSize: "10px",
                 }}
               >

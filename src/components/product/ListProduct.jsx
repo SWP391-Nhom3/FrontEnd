@@ -64,7 +64,7 @@ const ListProduct = () => {
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {displayedProducts.map((product) => (
             <div
-              key={product._id}
+              key={product.id}
               className="flex flex-col items-center rounded-lg border p-4"
             >
               <Link
@@ -75,7 +75,7 @@ const ListProduct = () => {
               >
                 <div className="relative mb-2 flex justify-center">
                   <img
-                    src={product.imgUrl}
+                    src={product.coverImageUrl}
                     alt={product.product_name}
                     className="h-44 w-44 object-cover"
                   />
@@ -131,7 +131,7 @@ const ListProduct = () => {
                   className={
                     product.stockQuantity === 0
                       ? "flex cursor-not-allowed items-center justify-center rounded-lg bg-gray-500 px-4 py-2 text-white"
-                      : "flex items-center justify-center rounded-lg bg-green-500 px-4 py-2 text-white"
+                      : "flex items-center justify-center rounded-lg bg-primary-500 px-4 py-2 text-white"
                   }
                 >
                   Thêm <FaShoppingCart className="ml-2" />

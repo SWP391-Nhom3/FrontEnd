@@ -50,7 +50,7 @@ const PreOrder = () => {
   return (
     <div style={{ display: "flex", justifyContent: "center", height: "80vh" }}>
       <Card
-        title="Đơn đang vận chuyển"
+        title="Đơn đặt trước"
         style={{ width: "90%", marginTop: "50px", height: "75vh" }}
       >
         <div>

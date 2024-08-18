@@ -21,7 +21,6 @@ import Dashboard from "./pages/Dashboard";
 import AddVoucher from "./pages/Voucher/AddVoucher";
 import VouchersBatch from "./pages/Voucher/VouchersBatch";
 import Vouchers from "./pages/Voucher/Vouchers";
-import { useStateContext } from "./context/ContextProvider";
 import Sidebar from "./components/Sidebar";
 import AdminNavbar from "./components/header/AdminNavbar";
 import Header from "./pages/Header";
@@ -46,6 +45,8 @@ import CancelShippingOrder from "./pages/OrderManagement/CancelShippingOrder";
 import PreOrder from "./pages/OrderManagement/PreOrder";
 import Users from "./pages/User/Users";
 import AddStaff from "./pages/User/AddStaff";
+import MainFooter from "../src/components/Footer/index";
+import { useStateContext } from "./context/ContextProvider";
 
 import "./App.css";
 
@@ -104,7 +105,6 @@ const App = () => {
                   <Route path="/voucher-batch" element={<VouchersBatch />} />
                   <Route path="/add-voucher" element={<AddVoucher />} />
                   <Route path="/voucher-batch/:id" element={<Vouchers />} />
-
                   <Route
                     path="/add-product-batch"
                     element={<AddProductBatch />}
@@ -195,6 +195,7 @@ const App = () => {
               <Route path="/exchange_policy" element={<ExchangePolicy />} />
               <Route path="/privacy_policy" element={<PrivacyPolicy />} />
             </Routes>
+            <MainFooter />
           </div>
         )}
       </BrowserRouter>

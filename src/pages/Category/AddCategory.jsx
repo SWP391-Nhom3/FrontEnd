@@ -90,8 +90,8 @@ const AddCategory = () => {
                 onClick={() => navigate(-1)}
                 style={{
                   borderWidth: "2px",
-                  color: "#46B5C1",
-                  borderColor: "#46B5C1",
+                  color: "#f43f5e",
+                  borderColor: "#f43f5e",
                   height: "40px",
                   fontSize: "15px",
                   marginRight: "10px",
@@ -103,8 +103,8 @@ const AddCategory = () => {
                 type="primary"
                 htmlType="submit"
                 style={{
-                  backgroundColor: "#46B5C1",
-                  borderColor: "#46B5C1",
+                  backgroundColor: "#f43f5e",
+                  borderColor: "#f43f5e",
                   height: "40px",
                   fontSize: "15px",
                 }}

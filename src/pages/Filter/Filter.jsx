@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-// import { useProductContext } from "../../context/ProductContext";
+import { useProductContext } from "../../context/ProductContext";
 import { FaShoppingCart, FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { MdOutlineRestore } from "react-icons/md";
 import Slider from "rc-slider";
@@ -8,134 +8,10 @@ import Loader from "../../assets/loading.gif";
 import Breadcrumbs from "../../components/elements/Breadcrumb";
 import { Link, useLocation } from "react-router-dom";
 import { useCartContext } from "../../context/CartContext";
-// import { fetchCategories } from "../../data/api";
-import not_found from "../../assets/images/background/notFind.png"; // Import hình ảnh
-import Header from "../../pages/Header/index";
+import { fetchCategories } from "../../data/api";
+import not_found from "../../assets/images/background/notFind.png";
 
 const Filter = () => {
-  const mockProducts = [
-    {
-      _id: "1",
-      product_name: "Sữa Bầu Anmum Materna",
-      price: 350000,
-      discount: 10,
-      rating: 4.5,
-      imgUrl: "https://via.placeholder.com/150",
-      amount: 10,
-      isActive: true,
-    },
-    {
-      _id: "2",
-      product_name: "Sữa Bầu Friso Gold Mum",
-      price: 450000,
-      discount: 15,
-      rating: 4.7,
-      imgUrl: "https://via.placeholder.com/150",
-      amount: 20,
-      isActive: true,
-    },
-    {
-      _id: "3",
-      product_name: "Sữa Bầu Meiji Mama",
-      price: 400000,
-      discount: 5,
-      rating: 4.2,
-      imgUrl: "https://via.placeholder.com/150",
-      amount: 15,
-      isActive: true,
-    },
-    {
-      _id: "4",
-      product_name: "Sữa Bầu Morinaga",
-      price: 380000,
-      discount: 20,
-      rating: 4.8,
-      imgUrl: "https://via.placeholder.com/150",
-      amount: 0,
-      isActive: true,
-    },
-    {
-      _id: "5",
-      product_name: "Sữa Bầu XO",
-      price: 420000,
-      discount: 10,
-      rating: 4.3,
-      imgUrl: "https://via.placeholder.com/150",
-      amount: 5,
-      isActive: true,
-    },
-    {
-      _id: "6",
-      product_name: "Sữa Bầu Enfamama",
-      price: 360000,
-      discount: 0,
-      rating: 4.0,
-      imgUrl: "https://via.placeholder.com/150",
-      amount: 8,
-      isActive: true,
-    },
-    {
-      _id: "7",
-      product_name: "Sữa Bầu Abbott Similac Mom",
-      price: 370000,
-      discount: 5,
-      rating: 4.1,
-      imgUrl: "https://via.placeholder.com/150",
-      amount: 3,
-      isActive: true,
-    },
-    {
-      _id: "8",
-      product_name: "Sữa Bầu Matilia",
-      price: 450000,
-      discount: 25,
-      rating: 4.9,
-      imgUrl: "https://via.placeholder.com/150",
-      amount: 12,
-      isActive: true,
-    },
-    {
-      _id: "9",
-      product_name: "Sữa Bầu Dielac Mama",
-      price: 320000,
-      discount: 10,
-      rating: 3.9,
-      imgUrl: "https://via.placeholder.com/150",
-      amount: 6,
-      isActive: true,
-    },
-    {
-      _id: "10",
-      product_name: "Sữa Bầu Nutricare Mom",
-      price: 340000,
-      discount: 0,
-      rating: 4.6,
-      imgUrl: "https://via.placeholder.com/150",
-      amount: 7,
-      isActive: true,
-    },
-    {
-      _id: "11",
-      product_name: "Sữa Bầu Anmum Materna Vanilla",
-      price: 350000,
-      discount: 15,
-      rating: 4.4,
-      imgUrl: "https://via.placeholder.com/150",
-      amount: 11,
-      isActive: true,
-    },
-    {
-      _id: "12",
-      product_name: "Sữa Bầu Friso Gold Mum Hương Cam",
-      price: 450000,
-      discount: 10,
-      rating: 4.8,
-      imgUrl: "https://via.placeholder.com/150",
-      amount: 13,
-      isActive: true,
-    },
-  ];
-
   const location = useLocation();
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -143,32 +19,30 @@ const Filter = () => {
   const [selectedDiscounts, setSelectedDiscounts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [sortOption, setSortOption] = useState("");
-  const { products, loading } = { products: mockProducts, loading: false };
+  const { products, loading } = useProductContext();
   const { addCartItem } = useCartContext();
   const search_name = location.state?.product_name || "";
 
-  //!!FETCH CATEGORIES!!
-  // useEffect(() => {
-  //   const getCategory = async () => {
-  //     try {
-  //     } catch (error) {
-  //       console.error("Error fetching categories:", error);
-  //     }
-  //   };
-  //   getCategory();
-  // }, []);
+  useEffect(() => {
+    fetchCategories()
+      .then((data) => {
+        const result = data.data.success;
+        if (result) {
+          setCategories(data.data.data);
+        }
+      })
+      .catch((error) => console.error("Error fetching categories:", error));
+  }, []);
 
   useEffect(() => {
     const filterProducts = () => {
-      let updatedProducts = products.filter((product) => product.isActive);
-
+      let updatedProducts = products.filter((product) => product.active);
       updatedProducts = updatedProducts.filter((product) =>
-        product.product_name.toLowerCase().includes(search_name.toLowerCase()),
+        product.name.toLowerCase().includes(search_name.toLowerCase()),
       );
-
       if (selectedCategory) {
         updatedProducts = updatedProducts.filter(
-          (product) => product.category_name === selectedCategory,
+          (product) => product.category.name === selectedCategory,
         );
       }
 
@@ -301,7 +175,7 @@ const Filter = () => {
         <img src={Loader} alt="Loading..." />
       </div>
     );
-
+  // console.log(filteredProducts)
   return (
     <>
       <Breadcrumbs headline="Tất cả sản phẩm" />
@@ -311,70 +185,24 @@ const Filter = () => {
           <div className="mb-4">
             <h2 className="mb-2 text-lg font-bold">Bộ lọc sản phẩm</h2>
             <ul className="text-gray-500">
-              {categories.map((category) => (
-                <li key={category._id}>
-                  <input
-                    type="radio"
-                    name="category"
-                    value={category.category_name}
-                    checked={selectedCategory === category.category_name}
-                    onChange={handleCategorySelect}
-                  />{" "}
-                  {category.category_name}
-                </li>
-              ))}
+              {categories.map((category) => {
+                // console.log(category)
+                return (
+                  <li key={category.id}>
+                    <input
+                      type="radio"
+                      name="category"
+                      value={category.name}
+                      checked={selectedCategory === category.name}
+                      onChange={handleCategorySelect}
+                    />
+                    {category.name}
+                  </li>
+                );
+              })}
             </ul>
           </div>
-          <div className="mb-4 mt-4">
-            <h2 className="mb-2 text-lg font-bold">Giảm giá</h2>
-            <ul className="text-gray-500">
-              <li>
-                <input
-                  type="checkbox"
-                  value="0-5"
-                  checked={selectedDiscounts.includes("0-5")}
-                  onChange={handleDiscountSelect}
-                />{" "}
-                0 - 5%
-              </li>
-              <li>
-                <input
-                  type="checkbox"
-                  value="5-10"
-                  checked={selectedDiscounts.includes("5-10")}
-                  onChange={handleDiscountSelect}
-                />{" "}
-                5% - 10%
-              </li>
-              <li>
-                <input
-                  type="checkbox"
-                  value="10-15"
-                  checked={selectedDiscounts.includes("10-15")}
-                  onChange={handleDiscountSelect}
-                />{" "}
-                10% - 15%
-              </li>
-              <li>
-                <input
-                  type="checkbox"
-                  value="15-25"
-                  checked={selectedDiscounts.includes("15-25")}
-                  onChange={handleDiscountSelect}
-                />{" "}
-                15% - 25%
-              </li>
-              <li>
-                <input
-                  type="checkbox"
-                  value="25-"
-                  checked={selectedDiscounts.includes("25-")}
-                  onChange={handleDiscountSelect}
-                />{" "}
-                Hơn 25%
-              </li>
-            </ul>
-          </div>
+          <div className="mb-4 mt-4"></div>
           <div className="mt-4">
             <h2 className="mb-2 text-lg font-bold">Lọc giá</h2>
             <Slider
@@ -397,7 +225,7 @@ const Filter = () => {
             <Link to="/filter" onClick={() => window.scrollTo(0, 0)}>
               <button
                 onClick={handleResetFilters}
-                className="mt-4 flex rounded-lg bg-blue-500 px-4 py-2 text-white"
+                className="mt-4 flex rounded-lg bg-primary-500 px-4 py-2 text-white"
               >
                 <MdOutlineRestore className="my-auto mr-2 h-5 w-5" />
                 Khôi phục bộ lọc
@@ -439,7 +267,7 @@ const Filter = () => {
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {currentProducts.map((product) => (
                   <div
-                    key={product._id}
+                    key={product.id}
                     className="flex flex-col items-center rounded-lg border p-4"
                   >
                     <Link
@@ -450,11 +278,11 @@ const Filter = () => {
                     >
                       <div className="relative mb-2 flex justify-center">
                         <img
-                          src={product.imgUrl}
-                          alt={product.product_name}
+                          src={product.coverImageUrl}
+                          alt={product.name}
                           className="h-44 w-44 object-cover"
                         />
-                        {product.amount === 0 && (
+                        {product.stockQuantity === 0 && (
                           <div className="absolute inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50">
                             <span className="text-xl font-bold text-white">
                               Hết hàng
@@ -471,27 +299,16 @@ const Filter = () => {
                             WebkitBoxOrient: "vertical",
                           }}
                         >
-                          {product.product_name}
+                          {product.name}
                         </h3>
                       </div>
                     </Link>
                     <div className="flex w-full items-center justify-between">
                       <div className="flex flex-col justify-between">
-                        {product.discount > 0 ? (
+                        {product.price > 0 ? (
                           <>
                             <div className="text-xl font-bold text-gray-900">
-                              {formatCurrency(
-                                product.price -
-                                  (product.price * product.discount) / 100,
-                              )}
-                            </div>
-                            <div>
-                              <span className="text-sm text-gray-500 line-through">
-                                {formatCurrency(product.price)}
-                              </span>
-                              <span className="text-md ml-2 font-semibold text-green-500">
-                                Giảm {product.discount}%
-                              </span>
+                              {formatCurrency(product.price)}
                             </div>
                           </>
                         ) : (
@@ -502,9 +319,9 @@ const Filter = () => {
                       </div>
                       <button
                         onClick={() => addCartItem(product)}
-                        disabled={product.amount === 0}
+                        disabled={product.price === 0}
                         className={
-                          product.amount === 0
+                          product.price === 0
                             ? "flex cursor-not-allowed items-center justify-center rounded-lg bg-gray-500 px-4 py-2 text-white"
                             : "flex items-center justify-center rounded-lg bg-pink-500 px-4 py-2 text-white"
                         }
@@ -539,8 +356,7 @@ const Filter = () => {
                 src={not_found}
                 alt="No products found"
                 className="w-128 mb-4 h-64"
-              />{" "}
-              {/* Thêm hình ảnh */}
+              />
               <p className="text-lg font-semibold">
                 Không có sản phẩm phù hợp với tìm kiếm!
               </p>

@@ -4,12 +4,12 @@ import Hero from "../../components/hero/Hero";
 import SecondHero from "../../components/hero/SecondHero";
 import ProductCard from "../../components/card/Card";
 import HeroAtLast from "../../components/hero/HeroAtLast";
-import MainFooter from "../../components/Footer/index";
 import { useProductContext } from "../../context/ProductContext";
 import Loader from "../../assets/loading.gif";
 
 const Home = () => {
   const { products, loading } = useProductContext();
+
   if (loading)
     return (
       <div
@@ -30,8 +30,14 @@ const Home = () => {
   const bestSellers = products.sort((a, b) => b.sales - a.sales);
   const categoryProductsMomToBe = getCategoryProducts("Sữa cho bà bầu");
   const categoryProductsInfantMilk = getCategoryProducts("Sữa bột");
-  const categoryProductsYogurt = getCategoryProducts("Sữa chua");
-  const categoryProductsNut = getCategoryProducts("Sữa hạt");
+  const categoryProductsForBaby = getCategoryProducts("Dinh dưỡng cho bé");
+  const milkForChildren = getCategoryProducts("Sữa dành cho trẻ em");
+  const formulaMilk = getCategoryProducts("Sữa công thức");
+  const foodSupplements = getCategoryProducts("Thực phẩm bổ sung");
+  const freshMilk = getCategoryProducts("Sữa tươi");
+  const nutritionForPregnantWomen = getCategoryProducts(
+    "Dinh dưỡng cho mẹ bầu",
+  );
 
   return (
     <div className="container mx-auto min-h-screen">
@@ -41,16 +47,28 @@ const Home = () => {
       <SecondHero />
       <ProductCard
         products={categoryProductsMomToBe}
-        headline={"Sữa dành cho mẹ bầu"}
+        headline={"Sữa cho bà bầu"}
       />
       <ProductCard
         products={categoryProductsInfantMilk}
         headline={"Sữa dành cho trẻ sơ sinh"}
       />
+      <ProductCard
+        products={categoryProductsForBaby}
+        headline={"Dinh dưỡng cho bé"}
+      />
+      <ProductCard
+        products={nutritionForPregnantWomen}
+        headline={"Dinh dưỡng cho mẹ bầu"}
+      />
       <HeroAtLast />
-      <ProductCard products={categoryProductsYogurt} headline={"Sữa chua"} />
-      <ProductCard products={categoryProductsNut} headline={"Sữa hạt"} />
-      <MainFooter />
+      <ProductCard
+        products={milkForChildren}
+        headline={"Sữa dành cho trẻ em"}
+      />
+      <ProductCard products={formulaMilk} headline={"Sữa công thức"} />
+      <ProductCard products={foodSupplements} headline={"Thực phẩm bổ sung"} />
+      <ProductCard products={freshMilk} headline={"Sữa tươi"} />
     </div>
   );
 };

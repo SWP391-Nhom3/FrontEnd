@@ -17,12 +17,12 @@ const SearchBar = () => {
   let sampleProducts = [];
   if (selectedCategory === "Tất Cả Sản Phẩm") {
     products.forEach((item) => {
-      if (item.active) sampleProducts.push(item.category.name);
+      if (item.active) sampleProducts.push(item.name);
     });
   } else {
     products.forEach((item) => {
       if (item.name === selectedCategory) {
-        if (item.active) sampleProducts.push(item.product_name);
+        if (item.active) sampleProducts.push(item.name);
       }
     });
   }
@@ -66,9 +66,7 @@ const SearchBar = () => {
   const handleSuggestionSelect = (suggestion) => {
     setSearchTerm(suggestion);
     setSuggestions([]);
-    const _product = products.find(
-      (product) => product.product_name === suggestion,
-    );
+    const _product = products.find((product) => product.name === suggestion);
     navigate("/product", { state: { product: _product } });
   };
 
@@ -138,7 +136,7 @@ const SearchBar = () => {
                 aria-labelledby="dropdown-button"
               >
                 {categories.map((category) => (
-                  <li key={category._id}>
+                  <li key={category.id}>
                     <button
                       type="button"
                       onClick={() => handleCategorySelect(category.name)}
