@@ -54,7 +54,6 @@ const Users = () => {
     setCurrentPage(pagination.current);
     setPageSize(pagination.pageSize);
   };
-
   const columns = [
     {
       title: "Email",
@@ -118,13 +117,15 @@ const Users = () => {
     },
     {
       title: "Status",
-      dataIndex: "isActive",
-      key: "isActive",
+      dataIndex: "active",
+      key: "active",
       render: (text, record) => (
         <Switch
-          checked={record.isActive}
-          style={{ backgroundColor: record.isActive ? "#4A99FF" : "#898989" }}
-          onChange={(checked) => handleSwitchChange(checked, record, token)}
+          checked={record.active}
+          style={{
+            backgroundColor: record.active ? "#f43f5e" : "#898989",
+          }}
+          onChange={(checked) => {}}
         />
       ),
       width: "10%",
