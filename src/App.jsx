@@ -53,7 +53,19 @@ import ChangePassword from "./components/profile/ChangePassword";
 import HistoryOrder from "./components/profile/HistoryOrder";
 import Feedback from "./components/profile/Feedback";
 import Accumulate from "./components/profile/Accumulate";
-
+import Authenticate from "./pages/Auth/Google/Authenticate";
+import ProductsWarehouse from "./pages/Warehouse/ProductsWarehouse";
+import BillDetail from "./pages/Warehouse/BillDetail";
+import InputBills from "./pages/Warehouse/InputBills";
+import News from "./pages/News";
+import NewsDetail from "./pages/News/NewsDetail";
+import OrderTracking from "./components/order/OrderTracking";
+import AllFeedback from './pages/Feedback/AllFeedback';
+import BadFeedback from './pages/Feedback/BadFeedback';
+import Customers from './pages/Customer/Customers';
+import AddNews from './pages/News/AddNews';
+import EditNews from './pages/News/EditNews';
+import AllNews from './pages/News/AllNews';
 import "./App.css";
 
 const App = () => {
@@ -140,6 +152,12 @@ const App = () => {
                   <Route path="/complete-order" element={<CompleteOrder />} />
                   <Route path="/order-detail" element={<OrderDetail />} />
                   <Route path="/orders" element={<Orders />} />
+                  <Route path="/all-feedback" element={<AllFeedback />} />
+                  <Route path="/bad-feedback" element={<BadFeedback />} />
+                  <Route path="/customers" element={<Customers />} />
+                  <Route path="/all-blog" element={<AllNews />} />
+                  <Route path="/add-news" element={<AddNews />} />
+                  <Route path="/edit-news" element={<EditNews />} />
                 </Routes>
               </div>
             </div>
@@ -177,6 +195,12 @@ const App = () => {
                   <Route path="/users" element={<Users />} />
                   <Route path="/add-staff" element={<AddStaff />} />
                   <Route path="/products" element={<ProductManagement />} />
+                  <Route path="/input-bills" element={<InputBills />} />
+                  <Route path="/bill-detail" element={<BillDetail />} />
+                  <Route
+                    path="/products-warehouse"
+                    element={<ProductsWarehouse />}
+                  />
                 </Routes>
               </div>
             </div>
@@ -200,6 +224,7 @@ const App = () => {
               <Route path="/contact" element={<Contact />} />
               <Route path="/exchange_policy" element={<ExchangePolicy />} />
               <Route path="/privacy_policy" element={<PrivacyPolicy />} />
+              <Route path="/authenticate" element={<Authenticate />} />
               <Route path="/profile" element={<Profile />}>
                 <Route path="" element={<EditProfile />} />
                 <Route path="change-password" element={<ChangePassword />} />
@@ -207,6 +232,9 @@ const App = () => {
                 <Route path="my-feedback" element={<Feedback />} />
                 <Route path="accumulated-points" element={<Accumulate />} />
               </Route>
+              <Route path="/news" element={<News />} />
+              <Route path="/news-detail" element={<NewsDetail />} />
+              <Route path="/order-tracking" element={<OrderTracking />} />
             </Routes>
             <MainFooter />
           </div>

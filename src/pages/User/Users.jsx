@@ -91,7 +91,6 @@ const Users = () => {
     setCurrentPage(pagination.current);
     setPageSize(pagination.pageSize);
   };
-
   const columns = [
     {
       title: "Email",
