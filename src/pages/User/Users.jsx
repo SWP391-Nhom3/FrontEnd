@@ -116,6 +116,20 @@ const Users = () => {
       width: "10%",
       render: (roles) => <span>{roles}</span>,
     },
+    {
+      title: "Status",
+      dataIndex: "isActive",
+      key: "isActive",
+      render: (text, record) => (
+        <Switch
+          checked={record.isActive}
+          style={{ backgroundColor: record.isActive ? "#4A99FF" : "#898989" }}
+          onChange={(checked) => handleSwitchChange(checked, record, token)}
+        />
+      ),
+      width: "10%",
+      sorter: (a, b) => a.isActive - b.isActive,
+    },
   ];
 
   const onSearch = (value) => {
