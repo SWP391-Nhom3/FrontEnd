@@ -9,12 +9,18 @@ const Order = () => {
   const discount = location.state?.discount;
   const ship = location.state?.ship;
   const voucherCode = location.state?.voucherCode;
+  const paymentType = location.state?.paymentType;
 
   return (
     <>
       <Breadcrumbs headline="Thông tin đơn hàng" />
 
-      <OrderInfor discount={discount} ship={ship} voucherCode={voucherCode} />
+      <OrderInfor
+        discount={discount}
+        ship={ship}
+        voucherCode={voucherCode}
+        paymentType={paymentType}
+      />
     </>
   );
 };

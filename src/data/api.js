@@ -129,7 +129,9 @@ export const fetchAddProductBatch = async (batch, token) => {
     },
   });
 };
-
+export const fetchOrdersByOrderId = async (orderId) => {
+  return await axios.get(`${HOSTNAME}/orders/${orderId}`);
+};
 //get all product batch api
 export const fetchProductBatches = async () => {
   return await axios.get(`${HOSTNAME}/batches`);
@@ -138,6 +140,11 @@ export const fetchProductBatches = async () => {
 //create order api
 export const fetchCreateOrder = async (order) => {
   return await axios.post(`${HOSTNAME}/orders`, order, {});
+};
+
+//create preorder api
+export const fetchCreatePreOrder = async (order) => {
+  return await axios.post(`${HOSTNAME}/orders/pre-order`, order, {});
 };
 
 //get all order api
@@ -389,6 +396,18 @@ export const fetchCreateStaff = async (token, userData) => {
     },
   });
 };
+export const fetchUserStatusById = async (id, token) => {
+  return await axios.put(
+    `http://localhost:8080/api/users/status/${id}`,
+    { id },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+};
+
 // //get-user-by-id
 // export const fetchUserById = async (id, token) => {
 //   return await axios.get(`${SCHEMA_HOSTNAME}/users/user/${id}`, {

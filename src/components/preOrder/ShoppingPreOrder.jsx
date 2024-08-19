@@ -4,21 +4,21 @@ import { useEffect, useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
 
 import cartEmptyImg from "../../assets/images/background/cart_empty.png";
-import { useCartContext } from "../../context/CartContext";
+import { usePreOrderContext } from "../../context/PreOrderContext";
 // import { fetchGetAllVoucher, fetchGetMe, fetchGetVoucher, fetchRefreshToken } from "../../data/api";
 import { Button } from "flowbite-react";
 import { ImGift } from "react-icons/im";
-const ShoppingCart = () => {
+const ShoppingPreOrder = () => {
   const user = JSON.parse(localStorage.getItem("user")) || null;
   const verify = user === null ? 0 : user.verify;
   const {
-    cartItems,
+    preOrderItems,
     totalPrice,
-    removeCartItem,
+    removePreOrderItem,
     increaseAmount,
     decreaseAmount,
-    cartAmount,
-  } = useCartContext();
+    preOrderAmount,
+  } = usePreOrderContext();
   const [voucherCode, setVoucherCode] = useState("");
   const [discount, setDiscount] = useState(0);
   const [ship, setShip] = useState(0);
@@ -98,10 +98,10 @@ const ShoppingCart = () => {
   //     });
   // };
 
-  const calculateShip = (cartAmount) => {
-    if (cartAmount > 20) {
+  const calculateShip = (preOrderAmount) => {
+    if (preOrderAmount > 20) {
       return 0;
-    } else if (cartAmount > 10) {
+    } else if (preOrderAmount > 10) {
       return 30000;
     } else {
       return 50000;
@@ -109,8 +109,8 @@ const ShoppingCart = () => {
   };
 
   useEffect(() => {
-    setShip(calculateShip(cartAmount));
-  }, [cartAmount]);
+    setShip(calculateShip(preOrderAmount));
+  }, [preOrderAmount]);
 
   const total = totalPrice + ship > 0 ? totalPrice + ship : 0;
 
@@ -209,17 +209,17 @@ const ShoppingCart = () => {
         <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
           <h2 className="text-xl font-semibold text-gray-900 sm:text-2xl">
             Giỏ hàng
-            {cartAmount > 0 ? (
-              <span className="text-base">({cartAmount} sản phẩm)</span>
+            {preOrderAmount > 0 ? (
+              <span className="text-base">({preOrderAmount} sản phẩm)</span>
             ) : (
               ""
             )}
           </h2>
-          {cartAmount > 0 ? (
+          {preOrderAmount > 0 ? (
             <div className="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8">
               <div className="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-4xl">
                 <div className="space-y-6">
-                  {cartItems.map((product) => (
+                  {preOrderItems.map((product) => (
                     // cart Item
                     <div
                       key={product.id}
@@ -265,7 +265,7 @@ const ShoppingCart = () => {
                             />
                             <button
                               type="button"
-                              onClick={() => increaseAmount(product)}
+                              onClick={() => increaseAmount(product.id)}
                               className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100"
                             >
                               <svg
@@ -305,7 +305,7 @@ const ShoppingCart = () => {
                           <div className="flex items-center gap-4">
                             <button
                               type="button"
-                              onClick={() => removeCartItem(product.id)}
+                              onClick={() => removePreOrderItem(product.id)}
                               className="inline-flex items-center text-sm font-medium text-red-600 hover:underline"
                             >
                               <MdDeleteForever className="me-1.5 h-5 w-5" />
@@ -379,7 +379,7 @@ const ShoppingCart = () => {
                       discount: discount,
                       ship: ship,
                       voucherCode: voucherCode,
-                      paymentType: "regular",
+                      paymentType: "preOrder",
                     }}
                     className="flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-500 focus:outline-none focus:ring-4 focus:ring-[#93c5fd]"
                   >
@@ -552,4 +552,4 @@ const ShoppingCart = () => {
   );
 };
 
-export default ShoppingCart;
+export default ShoppingPreOrder;

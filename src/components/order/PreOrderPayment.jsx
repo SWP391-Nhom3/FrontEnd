@@ -1,25 +1,23 @@
 import { useState, useEffect } from "react";
 import Breadcrumbs from "../elements/Breadcrumb";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useCartContext } from "../../context/CartContext";
-// import {
-//   checkQRPaymet,
-//   deleteOrder,
-//   fetchCreateOrder,
-// } from "../../data/api";
 import toast, { Toaster } from "react-hot-toast";
+
+import { usePreOrderContext } from "../../context/PreOrderContext";
 import {
   fetchCreateOrder,
+  fetchCreatePreOrder,
   fetchProductBatches,
   fetchProducts,
 } from "../../data/api";
 
-const Payment = () => {
+const PreOrderPayment = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const location = useLocation();
   const navigate = useNavigate();
   const customer_infor = location.state?.customer_infor;
-  const { cartItems, totalPrice, clearCart } = useCartContext();
+  const { preOrderItems, totalPrice, clearPreOrder } = usePreOrderContext();
+
   const [paymentMethod, setPaymentMethod] = useState("");
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -37,26 +35,22 @@ const Payment = () => {
     const fetchProductsData = async () => {
       try {
         const productResponse = await fetchProducts();
-        const batchResponse = await fetchProductBatches();
+        // const batchResponse = await fetchProductBatches();
 
         const products = productResponse.data.data;
-        const batches = batchResponse.data.data;
+        // const batches = batchResponse.data.data;
 
-        const combinedData = products.map((product) => {
-          const relatedBatches = batches.filter(
-            (batch) => batch.product.id === product.id,
-          );
-          return {
-            ...product,
-            batch: relatedBatches,
-          };
-        });
-
-        console.log("Combined product data:", combinedData);
-        setProducts(combinedData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
+        // const combinedData = products.map((product) => {
+        //   const relatedBatches = batches.filter(
+        //     (batch) => batch.product.id === product.id,
+        //   );
+        //   return {
+        //     ...product,
+        //     batch: relatedBatches,
+        //   };
+        // });
+        setProducts(products);
+      } catch (error) {console.error("Error fetching data:", error);}
     };
 
     fetchProductsData();
@@ -90,7 +84,7 @@ const Payment = () => {
       address: customer_infor.address,
       paymentMethod: paymentMethod,
       requiredDate: new Date().toISOString().split("T")[0],
-      orderDetails: cartItems.map((item) => ({
+      orderDetails: preOrderItems.map((item) => ({
         productId: item.id,
         quantity: item.quantity,
       })),
@@ -101,14 +95,11 @@ const Payment = () => {
       userId: user && user.id ? user.id : null,
     };
 
-    console.log("dsfasdfa", order_infor);
-
     try {
-      const response = await fetchCreateOrder(order_infor); // Assuming fetchCreateOrder is implemented
+      const response = await fetchCreatePreOrder(order_infor);
       console.log("Order created successfully:", response.data);
-
-      clearCart(); // Clear cart after order is placed
-      navigate("/thanks", { state: { isCheck: true } }); // Redirect to thank you page
+      clearPreOrder(); // Clear cart after order is placed
+      navigate("/thanks", { state: { isCheck: true } });
     } catch (error) {
       console.error("Error creating order:", error);
       setErrorMessage("Có lỗi xảy ra khi đặt hàng. Vui lòng thử lại sau.");
@@ -132,7 +123,7 @@ const Payment = () => {
 
   return (
     <>
-      <Breadcrumbs headline="Thanh toán" />
+      <Breadcrumbs headline="Thanh toán đơn đặt trước" />
       <Toaster />
       <>
         <ol className="flex w-full items-center justify-center px-24 text-center text-sm font-medium text-gray-500 dark:text-gray-400 sm:text-base">
@@ -264,7 +255,7 @@ const Payment = () => {
                     </h4>
                     <table className="w-full text-left font-medium text-gray-900 dark:text-white md:table-fixed">
                       <tbody className="divide-y divide-gray-200">
-                        {cartItems.map((product) => (
+                        {preOrderItems.map((product) => (
                           <div
                             className="mb-4 rounded-lg border border-[rgba(0,0,0,0.2)] bg-white p-4 shadow-sm md:p-6"
                             key={product.id}
@@ -471,4 +462,4 @@ const Payment = () => {
   );
 };
 
-export default Payment;
+export default PreOrderPayment;

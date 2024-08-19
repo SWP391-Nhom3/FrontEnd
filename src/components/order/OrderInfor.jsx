@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getProvinces, getDistricts, getWards } from "../../data/api";
 import { Link, useNavigate } from "react-router-dom";
 
-const OrderInfor = ({ discount, ship, voucherCode }) => {
+const OrderInfor = ({ paymentType, discount, ship, voucherCode }) => {
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
     name: "",
@@ -144,9 +144,15 @@ const OrderInfor = ({ discount, ship, voucherCode }) => {
     // Save customer information to localStorage
     localStorage.setItem("customer_infor", JSON.stringify(customer_infor));
 
-    navigate("/payment", {
-      state: { customer_infor, discount, ship, voucherCode },
-    });
+    if (paymentType === "regular") {
+      navigate("/payment", {
+        state: { customer_infor, discount, ship, voucherCode },
+      });
+    } else if (paymentType === "preOrder") {
+      navigate("/pre-order-payment", {
+        state: { customer_infor, discount, ship, voucherCode },
+      });
+    }
   };
 
   const handleCheckboxChange = (event) => {

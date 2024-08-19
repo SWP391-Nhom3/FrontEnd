@@ -47,6 +47,20 @@ const Sidebar = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
       }
     };
   }, []);
+  //!! FETCH ALL FEEDBACK !!
+  // useEffect(() => {
+  //   const getFeedbacks = async () => {
+  //     try {
+  //       const feedbackData = await fetchAllFeedback();
+  //       setFeedbacks(feedbackData.data.result);
+  //     } catch (error) {
+  //       console.error("Error fetching feedback:", error);
+  //     }
+  //   };
+
+  //   getFeedbacks();
+  //   console.log(feedbacks);
+  // }, []);
 
   const feedbackCount = feedbacks.filter((fb) => !fb.reply_feedback).length;
   const badFeedbackCount = feedbacks.filter(

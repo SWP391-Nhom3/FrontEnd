@@ -7,11 +7,17 @@ import { Tabs } from "antd";
 import { fetchLogin } from "../../../data/api";
 import { useCartContext } from "../../../context/CartContext";
 
+import { usePreOrderContext } from "../../../context/PreOrderContext";
+
+
 const { TabPane } = Tabs;
 
 const LoginForm = () => {
   const navigate = useNavigate();
   const { clearCart } = useCartContext();
+
+  const { clearPreOrder } = usePreOrderContext();
+
 
   const [formValues, setFormValues] = useState({
     email: sessionStorage.getItem("email") || "",
@@ -40,7 +46,11 @@ const LoginForm = () => {
     try {
       const res = await fetchLogin(email, password);
       const userRoles = res.data.data.user.roles.map((role) => role.name);
-
+      const isActive = res.data.data.user.active;
+      if (!isActive) {
+        setErrorList(["Tài khoản của bạn đã bị chặn."]);
+        return;
+      }
       if (activeTab === "customer") {
         if (userRoles.includes("ADMIN") || userRoles.includes("STAFF")) {
           setErrorList([
@@ -82,6 +92,7 @@ const LoginForm = () => {
         navigate("/");
       } else {
         clearCart();
+        clearPreOrder();
         navigate("/dashboard");
       }
       window.location.reload();

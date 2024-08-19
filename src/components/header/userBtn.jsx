@@ -6,11 +6,16 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaHistory } from "react-icons/fa";
 import { useCartContext } from "../../context/CartContext";
 
+import { usePreOrderContext } from "../../context/PreOrderContext";
+
 const UserBtn = () => {
   const navigate = useNavigate();
   const { clearCart } = useCartContext();
+
+  const { clearPreOrder } = usePreOrderContext();
   const handleLogout = async () => {
     clearCart();
+    clearPreOrder();
     localStorage.removeItem("user");
     localStorage.removeItem("result");
     localStorage.removeItem("role");
