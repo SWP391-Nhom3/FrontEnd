@@ -124,6 +124,11 @@ export const fetchCreateOrder = async (order) => {
   return await axios.post(`${HOSTNAME}/orders`, order, {});
 };
 
+//create preorder api
+export const fetchCreatePreOrder = async (order) => {
+  return await axios.post(`${HOSTNAME}/orders/pre-order`, order, {});
+};
+
 //get all order api
 export const fetchOrders = async () => {
   return await axios.get(`${HOSTNAME}/orders`);
