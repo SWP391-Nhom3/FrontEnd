@@ -1,25 +1,24 @@
 import { useEffect, useState } from "react";
-// import { fetchProducts } from "../../data/api";
+import { fetchProductBatches } from "../../data/api";
 import { List, Spin } from "antd";
 
-// eslint-disable-next-line react/prop-types
 const ProductStock = ({ selectedOption }) => {
   const [products, setProducts] = useState([]);
   const [smallestAmounts, setSmallestAmounts] = useState([]);
   const [largestAmounts, setLargestAmounts] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    // const getProducts = async () => {
-    //   try {
-    //     const data = await fetchProducts();
-    //     setProducts(data);
-    //     setLoading(false);
-    //   } catch (error) {
-    //     console.error("Error fetching product:", error);
-    //     setLoading(false);
-    //   }
-    // };
-    // getProducts();
+    const getProducts = async () => {
+      try {
+        const data = await fetchProductBatches();
+        setProducts(data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching product:", error);
+        setLoading(false);
+      }
+    };
+    getProducts();
   }, []);
 
   useEffect(() => {
