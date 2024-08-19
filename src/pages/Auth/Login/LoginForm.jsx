@@ -45,10 +45,10 @@ const LoginForm = () => {
       const res = await fetchLogin(email, password);
       const userRoles = res.data.data.user.roles.map((role) => role.name);
       const isActive = res.data.data.user.active;
-      if (!isActive) {
-        setErrorList(["Tài khoản của bạn đã bị chặn."]);
-        return;
-      }
+      // if (!isActive) {
+      //   setErrorList(["Tài khoản của bạn đã bị chặn."]);
+      //   return;
+      // }
       if (activeTab === "customer") {
         if (
           userRoles.includes("ADMIN") ||
@@ -73,6 +73,7 @@ const LoginForm = () => {
       localStorage.setItem("accessToken", res.data.data.accessToken);
       localStorage.setItem("user", JSON.stringify(res.data.data.user));
       localStorage.setItem("role", JSON.stringify(res.data.data.user.roles));
+      localStorage.removeItem("customer_infor");
 
       if (userRoles.includes("MEMBER")) {
         localStorage.setItem("isMember", "true");

@@ -2,6 +2,7 @@ import { FaShoppingCart } from "react-icons/fa";
 
 import { Link, useLocation } from "react-router-dom";
 import { useCartContext } from "../../context/CartContext";
+import { usePreOrderContext } from "../../context/PreOrderContext";
 import { Toaster } from "react-hot-toast";
 import { useEffect, useState } from "react";
 
@@ -10,6 +11,7 @@ import Breadcrumbs from "../../components/elements/Breadcrumb";
 
 const ListProduct = () => {
   const { addCartItem } = useCartContext();
+  const { addPreOrderItem } = usePreOrderContext();
   const location = useLocation();
   const products = location.state?.products;
   const [productsList, setProductsList] = useState(products);
@@ -125,17 +127,23 @@ const ListProduct = () => {
                     </span>
                   )}
                 </div>
-                <button
-                  onClick={() => addCartItem(product)}
-                  disabled={product.stockQuantity === 0}
-                  className={
-                    product.stockQuantity === 0
-                      ? "flex cursor-not-allowed items-center justify-center rounded-lg bg-gray-500 px-4 py-2 text-white"
-                      : "flex items-center justify-center rounded-lg bg-primary-500 px-4 py-2 text-white"
-                  }
-                >
-                  Thêm <FaShoppingCart className="ml-2" />
-                </button>
+                {product.stockQuantity === 0 ? (
+                  <button
+                    onClick={() => addPreOrderItem(product)}
+                    className="flex items-center justify-center rounded-lg bg-secondary-600 p-3 text-center text-base font-medium text-white hover:bg-secondary-800 focus:outline-none focus:ring-4 focus:ring-secondary-300 dark:bg-secondary-600 dark:hover:bg-secondary-500 dark:focus:ring-secondary-600"
+                  >
+                    <span className="mr-1">Đặt trước</span>
+                    <FaShoppingCart />
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => addCartItem(product)}
+                    className="flex items-center justify-center rounded-lg bg-primary-500 p-3 text-center text-base font-medium text-white hover:bg-primary-600 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-500 dark:focus:ring-primary-600"
+                  >
+                    <span className="mr-1">Thêm</span>
+                    <FaShoppingCart />
+                  </button>
+                )}
               </div>
             </div>
           ))}

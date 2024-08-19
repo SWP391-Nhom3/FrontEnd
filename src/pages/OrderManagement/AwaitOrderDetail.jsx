@@ -33,7 +33,6 @@ const AwaitOrderDetail = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
-  //   const [orderDetails, setOrderDetails] = useState([]);
   const token = JSON.parse(localStorage.getItem("result"));
   const isAuthenticatedStaff = localStorage.getItem("isStaff") === "true";
   const [shipper, setShipper] = useState([]);
@@ -57,13 +56,10 @@ const AwaitOrderDetail = () => {
     };
 
     getProducts();
-
     return () => {
       isMounted = false;
     };
   }, []);
-
-  console.log("order ne", order);
 
   useEffect(() => {
     fetchAllShipper().then((res) => {
@@ -84,11 +80,12 @@ const AwaitOrderDetail = () => {
     const order_id = order.id;
     try {
       await fetchCancelOrder(order_id, token);
-      // Lưu trạng thái vào sessionStorage
-      sessionStorage.setItem("orderCancelled", "true");
-
-      // Tải lại trang
-      window.location.reload();
+      notification.success({
+        message: "Thành công",
+        description: "Đơn hàng đã được huỷ!",
+        placement: "top",
+      });
+      navigate("/cancel-order");
     } catch (error) {
       notification.error({
         message: "Lỗi",
@@ -98,20 +95,6 @@ const AwaitOrderDetail = () => {
       console.log(error);
     }
   };
-
-  if (sessionStorage.getItem("orderCancelled") === "true") {
-    // Hiển thị thông báo
-    notification.success({
-      message: "Thành công",
-      description: "Đơn hàng đã được huỷ!",
-      placement: "top",
-    });
-
-    // Xóa trạng thái khỏi sessionStorage
-    sessionStorage.removeItem("orderCancelled");
-    // Điều hướng đến trang khác nếu cần thiết
-    navigate("/await-order");
-  }
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -126,40 +109,23 @@ const AwaitOrderDetail = () => {
 
   const handleConfirmOrder = async () => {
     const order_id = order.id;
-    const shipper_id = selectedShipperID;
-    await fetchConfirmOrder(order_id, shipper_id)
-      .then((res) => {
-        sessionStorage.setItem("orderConfirmed", "true");
-        console.log(res.data);
-        window.location.reload();
+    await fetchConfirmOrder(order_id, token)
+      .then(() => {
+        notification.success({
+          message: "Thành công",
+          description: "Đơn hàng đã được xác nhận!",
+          placement: "top",
+        });
+        navigate("/shipping-order");
       })
-      .catch((error) => {
-        console.log(error.response);
+      .catch(() => {
         notification.error({
           message: "Lỗi",
           description: "Đơn hàng không thể xác nhận!",
           placement: "top",
         });
-        console.log(error);
       });
   };
-
-  // Kiểm tra trạng thái sau khi trang tải lại
-  if (sessionStorage.getItem("orderConfirmed") === "true") {
-    // Hiển thị thông báo
-    notification.success({
-      message: "Thành công",
-      description: "Đơn hàng đã được xác nhận!",
-      placement: "top",
-    });
-
-    // Xóa trạng thái khỏi sessionStorage
-    sessionStorage.removeItem("orderConfirmed");
-    // Điều hướng đến trang khác nếu cần thiết
-    navigate("/await-order");
-  }
-
-  console.log("shipper ne", shipper);
 
   const { Text } = Typography;
 

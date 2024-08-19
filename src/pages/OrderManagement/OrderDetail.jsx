@@ -3,13 +3,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { fetchProducts } from "../../data/api";
 import { Button } from "flowbite-react";
 import { Card, Col, Divider, Row, Steps, Typography } from "antd";
-import {
-  CheckCircleOutlined,
-  CloseCircleOutlined,
-  FieldTimeOutlined,
-  SmileOutlined,
-  TruckOutlined,
-} from "@ant-design/icons";
 import Loading from "../../components/Loading";
 
 const OrderDetail = () => {

@@ -36,7 +36,6 @@ const ShippingOrderDetail = () => {
       try {
         const productData = await fetchProducts();
         if (isMounted) {
-          // Chỉ cập nhật state nếu component vẫn còn mounted
           setProducts(productData);
           setLoading(false);
         }
@@ -65,31 +64,21 @@ const ShippingOrderDetail = () => {
     const order_id = order.id;
     try {
       await fetchCancelShippingOrder(order_id, token);
-      sessionStorage.setItem("orderCancelled", "true");
-      window.location.reload();
+      notification.success({
+        message: "Thành công",
+        description: "Đơn hàng đã được huỷ!",
+        placement: "top",
+      });
+      sessionStorage.removeItem("orderCancelled");
+      navigate("/cancel-shipping-order");
     } catch (error) {
       notification.error({
         message: "Lỗi",
         description: "Đơn hàng không thể huỷ!",
         placement: "top",
       });
-      console.log(error);
     }
   };
-
-  if (sessionStorage.getItem("orderCancelled") === "true") {
-    // Hiển thị thông báo
-    notification.success({
-      message: "Thành công",
-      description: "Đơn hàng đã được huỷ!",
-      placement: "top",
-    });
-
-    // Xóa trạng thái khỏi sessionStorage
-    sessionStorage.removeItem("orderCancelled");
-    // Điều hướng đến trang khác nếu cần thiết
-    navigate("/cancel-shipping-order");
-  }
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -105,35 +94,22 @@ const ShippingOrderDetail = () => {
   const handleConfirmOrder = async () => {
     const order_id = order.id;
     await fetchShippingOrder(order_id, token)
-      .then((res) => {
-        sessionStorage.setItem("orderConfirmed", "true");
-        console.log(res.data);
-        window.location.reload();
+      .then(() => {
+        notification.success({
+          message: "Thành công",
+          description: "Đơn hàng đã được xác nhận!",
+          placement: "top",
+        });
+        sessionStorage.removeItem("orderConfirmed");
       })
-      .catch((error) => {
-        console.log(error.response);
+      .catch(() => {
         notification.error({
           message: "Lỗi",
           description: "Đơn hàng không thể xác nhận!",
           placement: "top",
         });
-        console.log(error);
       });
   };
-
-  // Kiểm tra trạng thái sau khi trang tải lại
-  if (sessionStorage.getItem("orderConfirmed") === "true") {
-    // Hiển thị thông báo
-    notification.success({
-      message: "Thành công",
-      description: "Đơn hàng đã được xác nhận!",
-      placement: "top",
-    });
-
-    // Xóa trạng thái khỏi sessionStorage
-    sessionStorage.removeItem("orderConfirmed");
-    navigate("/complete-order");
-  }
 
   const { Text } = Typography;
 

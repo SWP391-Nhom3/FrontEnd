@@ -18,7 +18,6 @@ const AwaitOrder = () => {
       try {
         const orderData = await fetchOrders();
         setOrders(orderData.data);
-        console.log(orderData.data);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching orders:", error);

@@ -8,11 +8,16 @@ import Loader from "../../assets/loading.gif";
 import Breadcrumbs from "../../components/elements/Breadcrumb";
 import { Link, useLocation } from "react-router-dom";
 import { useCartContext } from "../../context/CartContext";
+import { usePreOrderContext } from "../../context/PreOrderContext";
 import { fetchCategories } from "../../data/api";
 import not_found from "../../assets/images/background/notFind.png";
 
 const Filter = () => {
   const location = useLocation();
+  const search_name = location.state?.product_name || "";
+  const { addCartItem } = useCartContext();
+  const { addPreOrderItem } = usePreOrderContext();
+
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [priceRange, setPriceRange] = useState([0, 1000000]);
@@ -20,8 +25,6 @@ const Filter = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [sortOption, setSortOption] = useState("");
   const { products, loading } = useProductContext();
-  const { addCartItem } = useCartContext();
-  const search_name = location.state?.product_name || "";
 
   useEffect(() => {
     fetchCategories()
@@ -317,17 +320,23 @@ const Filter = () => {
                           </span>
                         )}
                       </div>
-                      <button
-                        onClick={() => addCartItem(product)}
-                        disabled={product.price === 0}
-                        className={
-                          product.price === 0
-                            ? "flex cursor-not-allowed items-center justify-center rounded-lg bg-gray-500 px-4 py-2 text-white"
-                            : "flex items-center justify-center rounded-lg bg-pink-500 px-4 py-2 text-white"
-                        }
-                      >
-                        Thêm <FaShoppingCart className="ml-2" />
-                      </button>
+                      {product.stockQuantity === 0 ? (
+                        <button
+                          onClick={() => addPreOrderItem(product)}
+                          className="flex items-center justify-center rounded-lg bg-secondary-600 p-3 text-center text-base font-medium text-white hover:bg-secondary-800 focus:outline-none focus:ring-4 focus:ring-secondary-300 dark:bg-secondary-600 dark:hover:bg-secondary-500 dark:focus:ring-secondary-600"
+                        >
+                          <span className="mr-1">Đặt trước</span>
+                          <FaShoppingCart />
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => addCartItem(product)}
+                          className="flex items-center justify-center rounded-lg bg-primary-500 p-3 text-center text-base font-medium text-white hover:bg-primary-600 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-500 dark:focus:ring-primary-600"
+                        >
+                          <span className="mr-1">Thêm</span>
+                          <FaShoppingCart />
+                        </button>
+                      )}
                     </div>
                   </div>
                 ))}
