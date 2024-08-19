@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BsBoxSeam, BsCurrencyDollar } from "react-icons/bs";
-import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
+// import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 
 import { useStateContext } from "../context/ContextProvider";
 
@@ -22,7 +22,7 @@ import MonthlyOrder from "../components/Dashboard/MonthlyOrder";
 
 const DropDown = ({ currentMode, onSelect }) => (
   <div className="border-1 border-color w-28 rounded-md px-2 py-1">
-    <DropDownListComponent
+    {/* <DropDownListComponent
       id="time"
       fields={{ text: "option", value: "Id" }}
       style={{
@@ -37,7 +37,7 @@ const DropDown = ({ currentMode, onSelect }) => (
       popupHeight="220px"
       popupWidth="120px"
       change={(e) => onSelect(e.itemData.option)}
-    />
+    /> */}
   </div>
 );
 
@@ -559,7 +559,7 @@ const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
                   onSelect={setSelectedOption}
                 />
               </div>
-              <div className="md:w-400 mt-2 w-72">
+              <div className="md:w-400 w-100 mt-2">
                 <ProductStock selectedOption={selectedOption} />
               </div>
             </div>

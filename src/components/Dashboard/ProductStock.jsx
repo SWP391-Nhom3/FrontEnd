@@ -11,7 +11,8 @@ const ProductStock = ({ selectedOption }) => {
     const getProducts = async () => {
       try {
         const data = await fetchProductBatches();
-        setProducts(data);
+        console.log("Product data:", data.data.data);
+        setProducts(data.data.data);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching product:", error);
@@ -45,18 +46,21 @@ const ProductStock = ({ selectedOption }) => {
             <List.Item.Meta
               avatar={
                 <img
-                  src={item.imgUrl}
-                  alt={item.product_name}
+                  src={item.product.coverImageUrl}
+                  alt={item.product.name}
                   style={{ width: "50px", marginRight: "10px" }}
                 />
               }
-              title={item.product_name}
-              description={`Giá: ${Number(item.price).toLocaleString("vi-VN", {
-                style: "currency",
-                currency: "VND",
-              })}`}
+              title={item.product.name}
+              description={`Giá: ${Number(item.product.price).toLocaleString(
+                "vi-VN",
+                {
+                  style: "currency",
+                  currency: "VND",
+                },
+              )}`}
             />
-            <div>Số lượng: {item.amount}</div>
+            <div>Số lượng: {item.quantity}</div>
           </List.Item>
         )}
       />
