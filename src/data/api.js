@@ -24,11 +24,29 @@ export const fetchLogin = async (email, password) => {
 
 //register api
 export const fetchRegister = async ({ email, password }) => {
-  return await axios.post(`${HOSTNAME}/users/register`, {
+  return await axios.post(`${HOSTNAME}/auth/register`, {
     email,
     password,
   });
 };
+
+//get my profile api
+export const fetchMyProfile = async (token) => {
+  return await axios.get(`${HOSTNAME}/users/myInfo`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+//update my profile api
+export const fetchUpdateProfile = async (data, token) => {
+  return await axios.put(`${HOSTNAME}/users`, data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
 
 //get all category api
 export const fetchCategories = async () => {

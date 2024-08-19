@@ -1,15 +1,17 @@
 import { Dropdown } from "flowbite-react";
 import { HiCog, HiViewGrid, HiLogout } from "react-icons/hi";
 import { FaUser } from "react-icons/fa";
-// import { fetchLogout } from "../../data/api.jsx";
 import { Link, useNavigate } from "react-router-dom";
+
 import { FaHistory } from "react-icons/fa";
 import { useCartContext } from "../../context/CartContext";
+
 import { usePreOrderContext } from "../../context/PreOrderContext";
 
 const UserBtn = () => {
   const navigate = useNavigate();
   const { clearCart } = useCartContext();
+
   const { clearPreOrder } = usePreOrderContext();
   const handleLogout = async () => {
     clearCart();
