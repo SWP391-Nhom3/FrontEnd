@@ -31,7 +31,7 @@ const News = () => {
   return (
     <>
       <Breadcrumbs headline="Tin tức" />
-      <div className="container mx-auto p-4 flex flex-wrap md:flex-nowrap">
+      <div className="container mx-auto flex flex-wrap p-4 md:flex-nowrap">
         <SidebarNews posts={posts} />
         <PostListNews posts={posts} />
       </div>

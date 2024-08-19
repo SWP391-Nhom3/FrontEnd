@@ -11,11 +11,11 @@ import { v4 } from "uuid";
 
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import { Col, Input, notification, Row, Select, Upload } from "antd";
-import { Card } from 'primereact/card'
-import { PlusOutlined } from '@ant-design/icons';
-import { HStack } from '@chakra-ui/react';
+import { Card } from "primereact/card";
+import { PlusOutlined } from "@ant-design/icons";
+import { HStack } from "@chakra-ui/react";
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import {
   InlineEditor,
   AccessibilityHelp,
@@ -65,8 +65,8 @@ const AddNews = () => {
   const [isLayoutReady, setIsLayoutReady] = useState(false);
   const [fileList, setFileList] = useState([]);
   const navigate = useNavigate();
-  const [username, setUsername] = useState('');
-  const [currentDateTime, setCurrentDateTime] = useState('');
+  const [username, setUsername] = useState("");
+  const [currentDateTime, setCurrentDateTime] = useState("");
 
   const { Option } = Select;
 
@@ -183,9 +183,7 @@ const AddNews = () => {
 
     const user = JSON.parse(localStorage.getItem("user"));
     setUsername(user.username);
-
   }, []);
-
 
   const handleChangeSelectedProduct = (value) => {
     setSelectedProductId(value);
@@ -253,7 +251,9 @@ const AddNews = () => {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', minHeight: '100vh' }}>
+    <div
+      style={{ display: "flex", justifyContent: "center", minHeight: "100vh" }}
+    >
       <div>
         <link
           rel="stylesheet"
@@ -266,12 +266,30 @@ const AddNews = () => {
       </div>
       <Card
         title={<h2 className="text-2xl font-bold">Thêm bài viết</h2>}
-        style={{ width: '90%', maxWidth: '70wh', margin: '30px auto', minHeight: '70vh' }}
+        style={{
+          width: "90%",
+          maxWidth: "70wh",
+          margin: "30px auto",
+          minHeight: "70vh",
+        }}
       >
         <form onSubmit={handleSubmit}>
-          <Row justify="space-around" align="middle" style={{ marginBottom: '40px', marginTop: '20px' }}>
+          <Row
+            justify="space-around"
+            align="middle"
+            style={{ marginBottom: "40px", marginTop: "20px" }}
+          >
             <Col span={4}>
-              <label htmlFor="img" style={{ fontSize: '17px', color: '#1F5070', fontWeight: 'bold' }}>Hình ảnh</label>
+              <label
+                htmlFor="img"
+                style={{
+                  fontSize: "17px",
+                  color: "#1F5070",
+                  fontWeight: "bold",
+                }}
+              >
+                Hình ảnh
+              </label>
             </Col>
             <Col span={18}>
               <Upload
@@ -290,9 +308,22 @@ const AddNews = () => {
             </Col>
           </Row>
 
-          <Row justify="space-around" align="middle" style={{ marginBottom: '40px', marginTop: '20px' }}>
+          <Row
+            justify="space-around"
+            align="middle"
+            style={{ marginBottom: "40px", marginTop: "20px" }}
+          >
             <Col span={4}>
-              <label htmlFor="img" style={{ fontSize: '17px', color: '#1F5070', fontWeight: 'bold' }}>Tiêu đề</label>
+              <label
+                htmlFor="img"
+                style={{
+                  fontSize: "17px",
+                  color: "#1F5070",
+                  fontWeight: "bold",
+                }}
+              >
+                Tiêu đề
+              </label>
             </Col>
             <Col span={18}>
               <TextInput
@@ -300,63 +331,123 @@ const AddNews = () => {
                 type="text"
                 name="news_name"
                 placeholder="Nhập tiêu đề"
-                style={{ height: '50px', fontSize: '15px', border: '1px solid #6b7280', borderRadius: '0.375rem' }}
+                style={{
+                  height: "50px",
+                  fontSize: "15px",
+                  border: "1px solid #6b7280",
+                  borderRadius: "0.375rem",
+                }}
                 onChange={handleChangeNewsName}
                 required
               />
             </Col>
           </Row>
 
-          <Row justify="space-around" align="middle" style={{ marginBottom: '40px', marginTop: '20px' }}>
+          <Row
+            justify="space-around"
+            align="middle"
+            style={{ marginBottom: "40px", marginTop: "20px" }}
+          >
             <Col span={4}>
-              <label htmlFor="img" style={{ fontSize: '17px', color: '#1F5070', fontWeight: 'bold' }}>Ngày tạo</label>
+              <label
+                htmlFor="img"
+                style={{
+                  fontSize: "17px",
+                  color: "#1F5070",
+                  fontWeight: "bold",
+                }}
+              >
+                Ngày tạo
+              </label>
             </Col>
             <Col span={18}>
               <Input
                 readOnly
                 value={currentDateTime}
                 className="w-full"
-                style={{ height: '50px', fontSize: '15px', border: '1px solid #6b7280', borderRadius: '0.375rem' }}
+                style={{
+                  height: "50px",
+                  fontSize: "15px",
+                  border: "1px solid #6b7280",
+                  borderRadius: "0.375rem",
+                }}
               />
             </Col>
           </Row>
 
-          <Row justify="space-around" align="middle" style={{ marginBottom: '40px', marginTop: '20px' }}>
+          <Row
+            justify="space-around"
+            align="middle"
+            style={{ marginBottom: "40px", marginTop: "20px" }}
+          >
             <Col span={4}>
-              <label htmlFor="img" style={{ fontSize: '17px', color: '#1F5070', fontWeight: 'bold' }}>Nhân viên</label>
+              <label
+                htmlFor="img"
+                style={{
+                  fontSize: "17px",
+                  color: "#1F5070",
+                  fontWeight: "bold",
+                }}
+              >
+                Nhân viên
+              </label>
             </Col>
             <Col span={18}>
               <Input
                 readOnly
                 value={username}
                 className="w-full"
-                style={{ height: '50px', fontSize: '15px', border: '1px solid #6b7280', borderRadius: '0.375rem' }}
+                style={{
+                  height: "50px",
+                  fontSize: "15px",
+                  border: "1px solid #6b7280",
+                  borderRadius: "0.375rem",
+                }}
               />
             </Col>
           </Row>
 
-          <Row justify="space-around" align="middle" style={{ marginBottom: '40px', marginTop: '20px' }}>
+          <Row
+            justify="space-around"
+            align="middle"
+            style={{ marginBottom: "40px", marginTop: "20px" }}
+          >
             <Col span={4}>
-              <label htmlFor="product" style={{ fontSize: '17px', color: '#1F5070', fontWeight: 'bold' }}>Sản phẩm</label>
+              <label
+                htmlFor="product"
+                style={{
+                  fontSize: "17px",
+                  color: "#1F5070",
+                  fontWeight: "bold",
+                }}
+              >
+                Sản phẩm
+              </label>
             </Col>
             <Col span={18}>
               <Select
                 id="product"
                 className="w-full"
                 onChange={handleChangeSelectedProduct}
-                style={{ height: '50px', fontSize: '15px', backgroundColor: '#F9F9F6', border: '1px solid #6b7280', borderRadius: '0.375rem' }}
+                style={{
+                  height: "50px",
+                  fontSize: "15px",
+                  backgroundColor: "#F9F9F6",
+                  border: "1px solid #6b7280",
+                  borderRadius: "0.375rem",
+                }}
                 placeholder="Chọn sản phẩm"
                 required
               >
                 {products.map((option) => (
                   <Option key={option._id} value={option._id}>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div style={{ display: "flex", alignItems: "center" }}>
                       <img
                         src={option.imgUrl}
                         style={{ width: 20, height: 20, marginRight: 10 }}
                         alt={option.product_name}
                       />
-                       {option.product_name}
+                      {option.product_name}
                     </div>
                   </Option>
                 ))}
@@ -364,9 +455,22 @@ const AddNews = () => {
             </Col>
           </Row>
 
-          <Row justify="space-around" align="middle" style={{ marginBottom: '40px', marginTop: '20px' }}>
+          <Row
+            justify="space-around"
+            align="middle"
+            style={{ marginBottom: "40px", marginTop: "20px" }}
+          >
             <Col span={4}>
-              <label htmlFor="" style={{ fontSize: '17px', color: '#1F5070', fontWeight: 'bold' }}>Nội dung bài viết</label>
+              <label
+                htmlFor=""
+                style={{
+                  fontSize: "17px",
+                  color: "#1F5070",
+                  fontWeight: "bold",
+                }}
+              >
+                Nội dung bài viết
+              </label>
             </Col>
             <Col span={18}>
               <div>
@@ -389,9 +493,8 @@ const AddNews = () => {
                     </div>
                     {/* <div dangerouslySetInnerHTML={{ __html: description }} />  */}
                   </div>
+                </div>
               </div>
-            </div>
-
             </Col>
           </Row>
           <br />

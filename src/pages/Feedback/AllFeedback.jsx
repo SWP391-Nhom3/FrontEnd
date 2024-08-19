@@ -68,7 +68,7 @@ const AllFeedback = () => {
               let replyFeedbackWithUsername = null;
               if (fb.reply_feedback) {
                 const replyUser = users.find(
-                  (user) => user._id === fb.reply_feedback.user_id
+                  (user) => user._id === fb.reply_feedback.user_id,
                 );
                 replyFeedbackWithUsername = {
                   ...fb.reply_feedback,
@@ -90,7 +90,7 @@ const AllFeedback = () => {
             }, productFeedback[0]);
 
             const latestFeedbackDate = new Date(
-              latestFeedback.created_at
+              latestFeedback.created_at,
             ).toISOString();
             return {
               ...product,
@@ -105,7 +105,7 @@ const AllFeedback = () => {
 
       setProducts(mergedProducts);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [feedback, users]);
 
   if (loading) {

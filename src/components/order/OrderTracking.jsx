@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import 'tailwindcss/tailwind.css';
-import { FaSearch } from 'react-icons/fa';
-import toast from 'react-hot-toast';
-import Breadcrumbs from '../elements/Breadcrumb';
+import { useState } from "react";
+import "tailwindcss/tailwind.css";
+import { FaSearch } from "react-icons/fa";
+import toast from "react-hot-toast";
+import Breadcrumbs from "../elements/Breadcrumb";
 // import { fetchGetOrderById } from '../../data/api';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 const OrderTracking = () => {
-  const [orderId, setOrderId] = useState('');
+  const [orderId, setOrderId] = useState("");
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -28,30 +28,36 @@ const OrderTracking = () => {
   return (
     <>
       <Breadcrumbs headline="Theo dõi đơn hàng" />
-      <div className="flex flex-col items-center p-4 w-full my-10">
-        <h1 className="text-2xl font-bold mb-4">Theo dõi đơn hàng bằng mã đơn hàng</h1>
+      <div className="my-10 flex w-full flex-col items-center p-4">
+        <h1 className="mb-4 text-2xl font-bold">
+          Theo dõi đơn hàng bằng mã đơn hàng
+        </h1>
         {/* !!Handle submit at * !! */}
-        <form className="flex items-center mb-4 w-full max-w-2xl" onSubmit={"*"}>
+        <form
+          className="mb-4 flex w-full max-w-2xl items-center"
+          onSubmit={"*"}
+        >
           <input
             type="text"
             placeholder="Tìm sản phẩm..."
-            className="border p-3 h-12 rounded-l w-full"
+            className="h-12 w-full rounded-l border p-3"
             required
             value={orderId}
             onChange={handleInputChange}
           />
           <button
             type="submit"
-            className="bg-blue-500 text-white h-12 p-3 rounded-r flex items-center justify-center"
+            className="flex h-12 items-center justify-center rounded-r bg-blue-500 p-3 text-white"
           >
-            <FaSearch className="w-6 h-6" />
+            <FaSearch className="h-6 w-6" />
           </button>
         </form>
-        <h2 className="text-xl font-normal text-gray-500 mb-4">Kiểm tra mã đơn hàng thông qua email mua hàng</h2>
+        <h2 className="mb-4 text-xl font-normal text-gray-500">
+          Kiểm tra mã đơn hàng thông qua email mua hàng
+        </h2>
       </div>
     </>
   );
 };
 
 export default OrderTracking;
-

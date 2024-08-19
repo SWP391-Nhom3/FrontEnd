@@ -2,13 +2,18 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LinkToGoogle from "../Google/LinkToGoogle";
 import { Toaster } from "react-hot-toast";
-import { fetchLogin } from "../../../data/api";
 import { Tabs } from "antd";
+
+import { fetchLogin } from "../../../data/api";
+import { useCartContext } from "../../../context/CartContext";
+import { usePreOrderContext } from "../../../context/PreOrderContext";
 
 const { TabPane } = Tabs;
 
 const LoginForm = () => {
   const navigate = useNavigate();
+  const { clearCart } = useCartContext();
+  const { clearPreOrder } = usePreOrderContext();
 
   const [formValues, setFormValues] = useState({
     email: sessionStorage.getItem("email") || "",
@@ -78,6 +83,8 @@ const LoginForm = () => {
       if (localStorage.getItem("isMember") === "true") {
         navigate("/");
       } else {
+        clearCart();
+        clearPreOrder();
         navigate("/dashboard");
       }
       window.location.reload();
