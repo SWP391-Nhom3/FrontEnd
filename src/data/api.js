@@ -39,14 +39,11 @@ export const fetchMyProfile = async (token) => {
   });
 };
 
-<<<<<<< HEAD
 //get all shipper
 export const fetchAllShipper = async () => {
   return await axios.get(`${HOSTNAME}/users/shippers`);
 };
 
-=======
->>>>>>> 1d25e13 (register 50%)
 //update my profile api
 export const fetchUpdateProfile = async (data, token) => {
   return await axios.put(`${HOSTNAME}/users`, data, {
@@ -54,11 +51,7 @@ export const fetchUpdateProfile = async (data, token) => {
       Authorization: `Bearer ${token}`,
     },
   });
-<<<<<<< HEAD
 };
-=======
-}
->>>>>>> 1d25e13 (register 50%)
 
 //get all category api
 export const fetchCategories = async () => {
