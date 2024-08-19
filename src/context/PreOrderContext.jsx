@@ -50,14 +50,14 @@ export const PreOrderContextProvider = ({ children }) => {
             ? { ...currentPreOrder, quantity: currentPreOrder.quantity + 1 }
             : preOrderItem,
         );
-        toast.success("Sản phẩm đã được thêm vào giỏ hàng", {
+        toast.success("Sản phẩm đã được thêm vào giỏ hàng đặt trước", {
           position: "top-right",
           duration: 1000,
         });
         return updatedPreOrder;
       } else {
         const newPreOrder = [...prevPreOrderItems, { ...product, quantity: 1 }];
-        toast.success("Sản phẩm đã được thêm vào giỏ hàng", {
+        toast.success("Sản phẩm đã được thêm vào giỏ hàng đặt trước", {
           position: "top-right",
           duration: 1000,
         });

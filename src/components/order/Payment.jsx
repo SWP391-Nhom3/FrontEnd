@@ -42,9 +42,7 @@ const Payment = () => {
         const products = productResponse.data.data;
         const batches = batchResponse.data.data;
 
-        // Kết hợp dữ liệu từ products và batches
         const combinedData = products.map((product) => {
-          // Tìm tất cả các batches liên quan đến sản phẩm này
           const relatedBatches = batches.filter(
             (batch) => batch.product.id === product.id,
           );
