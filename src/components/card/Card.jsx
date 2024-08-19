@@ -11,9 +11,11 @@ import "./Swiper.css";
 import RenderRating from "../elements/RenderRating";
 
 import { useCartContext } from "../../context/CartContext";
+import { usePreOrderContext } from "../../context/PreOrderContext";
 
 const ProductCard = ({ products, headline }) => {
   const { addCartItem } = useCartContext();
+  const { addPreOrderItem } = usePreOrderContext();
   const productsToShow = products.slice(0, 12);
   const settings = {
     dots: true,
@@ -115,36 +117,26 @@ const ProductCard = ({ products, headline }) => {
                     </span> */}
                   </div>
                   <div className="flex h-20 w-full items-end justify-between">
-                    {/* <div className="flex flex-col justify-between">
-                      pro{duct.discount > 0 ? (
-                        <>
-                          <span className="text-xl font-bold text-gray-900 dark:text-white">
-                            {formatCurrency(discountedPrice)}
-                          </span>
-                          <span className="text-sm text-gray-500 line-through dark:text-gray-400">
-                            {formatCurrency(product.price)}
-                          </span>
-                          <span className="text-sm text-green-500">
-                            Giảm {product.discount}%
-                          </span>
-                        </>
-                      ) : (
-                        <span className="mt-auto text-xl font-bold text-gray-900 dark:text-white">
-                          {formatCurrency(product.price)}
-                        </span>
-                      )}
-                    </div> */}
                     <span className="mt-auto text-xl font-bold text-gray-900 dark:text-white">
                       {formatCurrency(product.price)}
                     </span>
-                    <button
-                      onClick={() => addCartItem(product)}
-                      disabled={product.stockQuantity === 0}
-                      className="flex items-center justify-center rounded-lg bg-primary-500 p-3 text-center text-base font-medium text-white hover:bg-primary-600 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-500 dark:focus:ring-primary-600"
-                    >
-                      <span className="mr-1">Thêm</span>
-                      <FaShoppingCart />
-                    </button>
+                    {product.stockQuantity === 0 ? (
+                      <button
+                        onClick={() => addPreOrderItem(product)}
+                        className="flex items-center justify-center rounded-lg bg-secondary-600 p-3 text-center text-base font-medium text-white hover:bg-secondary-800 focus:outline-none focus:ring-4 focus:ring-secondary-300 dark:bg-secondary-600 dark:hover:bg-secondary-500 dark:focus:ring-secondary-600"
+                      >
+                        <span className="mr-1">Đặt trước</span>
+                        <FaShoppingCart />
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => addCartItem(product)}
+                        className="flex items-center justify-center rounded-lg bg-primary-500 p-3 text-center text-base font-medium text-white hover:bg-primary-600 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-500 dark:focus:ring-primary-600"
+                      >
+                        <span className="mr-1">Thêm</span>
+                        <FaShoppingCart />
+                      </button>
+                    )}
                   </div>
                 </Card>
               </div>

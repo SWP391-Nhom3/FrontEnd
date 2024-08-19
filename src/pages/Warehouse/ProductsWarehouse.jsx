@@ -7,8 +7,7 @@ const ProductsWarehouse = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expandedRowKeys, setExpandedRowKeys] = useState([]);
-  const [searchText, setSearchText] = useState('');
-
+  const [searchText, setSearchText] = useState("");
 
   const handleExpand = (expanded, record) => {
     const keys = expanded ? [record._id] : [];
@@ -38,11 +37,11 @@ const ProductsWarehouse = () => {
 
   const onSearch = (value) => {
     setSearchText(value);
-};
+  };
 
-const filteredProducts = products.filter(p =>
-    p.product_name.toLowerCase().includes(searchText.toLowerCase())
-);
+  const filteredProducts = products.filter((p) =>
+    p.product_name.toLowerCase().includes(searchText.toLowerCase()),
+  );
 
   const columns = [
     {
@@ -145,15 +144,14 @@ const filteredProducts = products.filter(p =>
     return <div>{renderShipments(record.shipments)}</div>;
   };
 
-
   return (
     <div
       style={{ display: "flex", justifyContent: "center", minHeight: "100vh" }}
     >
       <Card
         title={
-          <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-bold my-4">
+          <div className="flex items-center justify-between">
+            <h2 className="my-4 text-2xl font-bold">
               Tất cả sản phẩm trong kho
             </h2>
             <div className="flex-col gap-2">
@@ -166,14 +164,24 @@ const filteredProducts = products.filter(p =>
           margin: "30px auto",
         }}
       >
-        <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '20px' }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-start",
+            marginBottom: "20px",
+          }}
+        >
           <Search
             placeholder="Nhập tên sản phẩm"
             allowClear
-            enterButton={<Button style={{ backgroundColor: '#55B6C3', color: 'white' }}>Tìm kiếm</Button>}
+            enterButton={
+              <Button style={{ backgroundColor: "#55B6C3", color: "white" }}>
+                Tìm kiếm
+              </Button>
+            }
             size="large"
             onSearch={onSearch}
-            style={{ width: '40%' }}
+            style={{ width: "40%" }}
           />
         </div>
         <Table

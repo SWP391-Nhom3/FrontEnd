@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Button} from "flowbite-react";
+import { Button } from "flowbite-react";
 import { imageDb } from "../../data/firebase.config";
 // import {
 //   deleteObject,
@@ -224,7 +224,7 @@ const EditNews = () => {
   //           },
   //         ]);
   //       }
-  //       staffNews(newsData.staff_id) 
+  //       staffNews(newsData.staff_id)
 
   //     } catch (error) {
   //       console.error("Error fetching news:", error);
@@ -250,28 +250,25 @@ const EditNews = () => {
   //   fetchUsers();
   // }, [token]);
 
-    //!! FETCH USER BY ID!!
-    // const staffNews = async ( staff_id) => {
-    //   await fetchUserById(staff_id, token).then((res) => {
-    //     setUsername(res.data.result.username); 
-    //     setUser_id(res.data.result._id);
-    //   });
-    // }
-    
-    // if (users.length > 0 && news) {
-    //   const staff = users.find((user) => user._id === news.staff_id);
-    //   if (staff) {
-    //     setUsername(staff.username);
-    //     setUser_id(staff._id);
-    //   } else {
-    //     console.warn("No staff found for news:", news);
-    //   }
-    // }
+  //!! FETCH USER BY ID!!
+  // const staffNews = async ( staff_id) => {
+  //   await fetchUserById(staff_id, token).then((res) => {
+  //     setUsername(res.data.result.username);
+  //     setUser_id(res.data.result._id);
+  //   });
+  // }
 
-
+  // if (users.length > 0 && news) {
+  //   const staff = users.find((user) => user._id === news.staff_id);
+  //   if (staff) {
+  //     setUsername(staff.username);
+  //     setUser_id(staff._id);
+  //   } else {
+  //     console.warn("No staff found for news:", news);
+  //   }
+  // }
 
   async function uploadImage(news, id) {
-
     console.log("img: ", img !== null);
     if (fileList[0] !== null) {
       const imgRef = ref(imageDb, `news_img/${v4()}`);
@@ -352,11 +349,14 @@ const EditNews = () => {
       </div>
       <Card
         title={<h2 className="text-2xl font-bold">Thêm bài viết</h2>}
-        style={{ width: '90%', maxWidth: '70wh', margin: '30px auto', minHeight: '70vh' }}
+        style={{
+          width: "90%",
+          maxWidth: "70wh",
+          margin: "30px auto",
+          minHeight: "70vh",
+        }}
       >
-        <form
-          onSubmit={handleSubmit}
-        >
+        <form onSubmit={handleSubmit}>
           <Row
             justify="space-around"
             align="middle"
@@ -487,7 +487,6 @@ const EditNews = () => {
             </Col>
           </Row>
 
-
           <Row
             justify="space-around"
             align="middle"
@@ -519,7 +518,7 @@ const EditNews = () => {
               >
                 {products.map((product) => (
                   <Option key={product._id} value={product._id}>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div style={{ display: "flex", alignItems: "center" }}>
                       <img
                         src={product.imgUrl}
                         style={{ width: 20, height: 20, marginRight: 10 }}

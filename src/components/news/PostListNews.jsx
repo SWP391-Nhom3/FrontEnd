@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const PostListNews = ({ posts }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -34,27 +34,28 @@ const PostListNews = ({ posts }) => {
   const totalPages = Math.ceil(posts.length / postsPerPage);
 
   return (
-    <div className="w-full md:w-3/4 p-4">
+    <div className="w-full p-4 md:w-3/4">
       {selectedPosts.map((item) => (
         <div
           key={item._id}
-          className="mb-8 flex flex-col md:flex-row items-start border rounded-lg p-4"
+          className="mb-8 flex flex-col items-start rounded-lg border p-4 md:flex-row"
         >
           <img
             src={item.img_url}
             alt={item.news_name}
-            className="mb-2 md:mb-0 md:mr-4 w-full md:w-1/3 rounded-lg object-contain"
+            className="mb-2 w-full rounded-lg object-contain md:mb-0 md:mr-4 md:w-1/3"
             style={{ width: "300px", height: "200px" }}
           />
-          <div className="flex-1 min-w-0">
-            <p className="text-sm text-gray-600 mb-2">
+          <div className="min-w-0 flex-1">
+            <p className="mb-2 text-sm text-gray-600">
               {formatDate(item.created_at)}
             </p>
-            <Link 
-            to={"/news-detail"}
-            state={{news: item}}
-            onClick={() => window.scrollTo(0, 0)}
-            className="block text-xl font-bold mb-2 truncate">
+            <Link
+              to={"/news-detail"}
+              state={{ news: item }}
+              onClick={() => window.scrollTo(0, 0)}
+              className="mb-2 block truncate text-xl font-bold"
+            >
               {item.news_name}
             </Link>
             <div
@@ -62,22 +63,23 @@ const PostListNews = ({ posts }) => {
               style={truncateStyle}
               dangerouslySetInnerHTML={{ __html: item.description }}
             />
-            <Link 
-            to={"/news-detail"}
-            state={{news: item}}
-            onClick={() => window.scrollTo(0, 0)}
-            className="text-blue-500 mt-2 inline-block font-semibold">
+            <Link
+              to={"/news-detail"}
+              state={{ news: item }}
+              onClick={() => window.scrollTo(0, 0)}
+              className="mt-2 inline-block font-semibold text-blue-500"
+            >
               Đọc thêm
             </Link>
           </div>
         </div>
       ))}
-      <div className="flex justify-center mt-4">
+      <div className="mt-4 flex justify-center">
         {Array.from({ length: totalPages }, (_, index) => (
           <button
             key={index + 1}
             onClick={() => handleClick(index + 1)}
-            className={`px-4 py-2 mx-1 border rounded ${index + 1 === currentPage ? 'bg-blue-500 text-white' : 'bg-white text-blue-500'}`}
+            className={`mx-1 rounded border px-4 py-2 ${index + 1 === currentPage ? "bg-blue-500 text-white" : "bg-white text-blue-500"}`}
           >
             {index + 1}
           </button>
