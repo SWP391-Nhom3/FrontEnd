@@ -1,7 +1,7 @@
 import { FaFilter, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { Table } from "flowbite-react";
 import { useEffect, useState } from "react";
-// import { fetchOrder } from "../../data/api";
+import { fetchOrdersByOrderId } from "../../data/api";
 import { Link } from "react-router-dom";
 import Loader from "../../assets/loading2.gif";
 
@@ -34,22 +34,21 @@ const HistoryOrder = () => {
     const product = products.find((product) => product._id === productId);
     return product ? product.product_name : "Unknown Product";
   };
-  //!! FETCH ORDER!!
-  // useEffect(() => {
-  //   const getOrders = async () => {
-  //     try {
-  //       const orderData = await fetchOrder(user._id);
-  //       setOrders(orderData);
-  //       setFilteredOrders(orderData);
-  //     } catch (error) {
-  //       console.error("Error fetching orders:", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+  useEffect(() => {
+    const getOrders = async () => {
+      try {
+        const orderData = await fetchOrdersByOrderId(user._id);
+        setOrders(orderData);
+        setFilteredOrders(orderData);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  //   getOrders();
-  // }, [user?._id]);
+    getOrders();
+  }, [user?._id]);
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;

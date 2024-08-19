@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Card } from "primereact/card";
 import { format } from "date-fns";
 import { Button, Table, Switch, Modal, notification, Input } from "antd";
-import { fetchAllUsers } from "../../data/api";
+import { fetchAllUsers, fetchUserStatusById } from "../../data/api";
 import Loading from "../../components/Loading";
 
 const Users = () => {
@@ -13,16 +13,17 @@ const Users = () => {
   const navigate = useNavigate();
   const handleNull = (value) => (value ? value : "Chưa có thông tin");
   const { Search } = Input;
+
   const formatDate = (dateString) => {
     return dateString
       ? format(new Date(dateString), "dd-MM-yyyy")
       : "Chưa có thông tin";
   };
+  const token = localStorage.getItem("accessToken");
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const token = localStorage.getItem("accessToken");
         const res = await fetchAllUsers(token);
         const formattedUsers = res.data.data
           .map((user) => ({
@@ -49,7 +50,43 @@ const Users = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const toggleUserStatus = async (userId) => {
+    try {
+      // Tìm người dùng và đảo ngược trạng thái 'active' của họ
+      const userToUpdate = users.find((user) => user.id === userId);
+      if (!userToUpdate) {
+        console.error("User not found");
+        notification.error({
+          message: "User Not Found",
+          description: "The user you are trying to toggle does not exist.",
+        });
+        return;
+      }
+      const updatedActiveStatus = !userToUpdate.active;
 
+      await fetchUserStatusById(userId, token);
+
+      setUsers(
+        users.map((user) => {
+          if (user.id === userId) {
+            return { ...user, active: updatedActiveStatus };
+          }
+          return user;
+        }),
+      );
+
+      notification.success({
+        message: "User Status Updated",
+        description: "The user status has been successfully changed.",
+      });
+    } catch (error) {
+      console.error("Failed to toggle user status", error);
+      notification.error({
+        message: "Error",
+        description: "Failed to toggle user status. Please try again later.",
+      });
+    }
+  };
   const handleTableChange = (pagination) => {
     setCurrentPage(pagination.current);
     setPageSize(pagination.pageSize);
@@ -66,7 +103,7 @@ const Users = () => {
       dataIndex: "firstName",
       key: "firstName",
       ellipsis: true,
-      width: "15%",
+      width: "10%",
       sorter: (a, b) => a.firstName.localeCompare(b.firstName),
       render: (text) => handleNull(text),
     },
@@ -75,7 +112,7 @@ const Users = () => {
       dataIndex: "lastName",
       key: "lastName",
       ellipsis: true,
-      width: "15%",
+      width: "10%",
       sorter: (a, b) => a.lastName.localeCompare(b.lastName),
       render: (text) => handleNull(text),
     },
@@ -117,19 +154,14 @@ const Users = () => {
     },
     {
       title: "Status",
-      dataIndex: "active",
-      key: "active",
+      key: "status",
+      width: "10%",
       render: (text, record) => (
         <Switch
           checked={record.active}
-          style={{
-            backgroundColor: record.active ? "#f43f5e" : "#898989",
-          }}
-          onChange={(checked) => {}}
+          onChange={(checked) => toggleUserStatus(record.id, checked)}
         />
       ),
-      width: "10%",
-      sorter: (a, b) => a.isActive - b.isActive,
     },
   ];
 
