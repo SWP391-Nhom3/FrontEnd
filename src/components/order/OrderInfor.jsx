@@ -5,7 +5,6 @@ import { Link, useNavigate } from "react-router-dom";
 const OrderInfor = ({ paymentType, discount, ship, voucherCode }) => {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user")) || null;
-  console.log(user);
   const [formValues, setFormValues] = useState({
     name: user.firstName + user.lastName,
     email: user.email,

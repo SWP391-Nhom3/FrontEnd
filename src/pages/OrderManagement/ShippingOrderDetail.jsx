@@ -54,8 +54,6 @@ const ShippingOrderDetail = () => {
     };
   }, []); // Mảng phụ thuộc rỗng để chỉ chạy khi component mount
 
-  console.log("order ne", order);
-
   if (loading) {
     return <Loading />;
   }

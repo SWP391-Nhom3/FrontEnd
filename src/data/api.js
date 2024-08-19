@@ -679,7 +679,7 @@ class Store {
       const provinces = await this.http.get(`${baseUrl}/provinces?&size=64`);
       return provinces.data;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -691,7 +691,7 @@ class Store {
       );
       return districts.data;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
   //lấy danh sách các huyện phường dựa vào districtCode
@@ -703,7 +703,7 @@ class Store {
 
       return wards.data;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 }

@@ -49,8 +49,6 @@ const AddProductBatch = () => {
       .catch((error) => console.error("Error fetching product:", error));
   }, []);
 
-  console.log("pro ne:", products);
-
   const productTable = [
     {
       title: "Hình Ảnh",
@@ -218,9 +216,6 @@ const AddProductBatch = () => {
     return true;
   };
 
-  console.log("batch ne", batch);
-  console.log("batchBill ne", batchBill);
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -238,8 +233,6 @@ const AddProductBatch = () => {
             id: batch.product.id,
           },
         };
-
-        console.log("batchData ne", batchData);
 
         await fetchAddProductBatch(batchData, token);
       }

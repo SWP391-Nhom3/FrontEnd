@@ -45,10 +45,10 @@ const LoginForm = () => {
       const res = await fetchLogin(email, password);
       const userRoles = res.data.data.user.roles.map((role) => role.name);
       const isActive = res.data.data.user.active;
-      // if (!isActive) {
-      //   setErrorList(["Tài khoản của bạn đã bị chặn."]);
-      //   return;
-      // }
+      if (!isActive) {
+        setErrorList(["Tài khoản của bạn đã bị chặn."]);
+        return;
+      }
       if (activeTab === "customer") {
         if (
           userRoles.includes("ADMIN") ||

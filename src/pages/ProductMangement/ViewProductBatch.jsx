@@ -37,8 +37,6 @@ const ViewProductBatch = () => {
             batch: relatedBatches,
           };
         });
-
-        console.log("Combined product data:", combinedData);
         setProducts(combinedData);
         setLoading(false);
       } catch (error) {
