@@ -19,12 +19,13 @@ const EditProfile = () => {
   const [isEditing, setIsEditing] = useState(newAccount);
   const [errorList, setErrorList] = useState([]);
   const [profile, setProfile] = useState({
-    firstname: "",
-    lastname: "",
+    firstName: "",
+    lastName: "",
     email: "",
     phone: "",
-    point: "",
+    point: 2,
     address: "",
+    dob: null,
   });
   const date = new Date();
   const [provinces, setProvinces] = useState([]);
@@ -36,13 +37,15 @@ const EditProfile = () => {
   const getMeProfile = async () => {
     await fetchMyProfile(token)
       .then((res) => {
-        console.log(res.data.result);
+        console.log("rewqrqwerqwe",res.data.data);
         setProfile({
           firstName: res.data.data.firstName || "",
           lastName: res.data.data.lastName || "",
           dob: res.data.data.dob || null,
           address: res.data.data.address || "",
           phone: res.data.data.phone || "",
+          email: res.data.data.email || "",
+          point: res.data.data.point !== undefined && res.data.data.point !== null ? res.data.data.point : 1,
         });
         if (res.data.data.dob !== null) {
           setDateInput(new Date(res.data.data.dob));
@@ -88,9 +91,9 @@ const EditProfile = () => {
   //     });
   // };
 
-  // useEffect(() => {
-  //   getMeProfile();
-  // }, []);
+  useEffect(() => {
+    getMeProfile();
+  }, []);
 
   const formatDate = (dateObject) => {
     if (dateObject !== null) {
@@ -203,9 +206,9 @@ const EditProfile = () => {
     const data = {
       firstName: profile.firstName,
       lastName: profile.lastName,
+      phone: profile.phone,
+      address: `${addressInput}, ${selectedWard.name}, ${selectedDistrict.name}, ${selectedProvince.name}`,
       dob: date_input.toISOString(),
-      address: profile.address,
-      phone: profile.phone
     };
 
     await fetchUpdateProfile(data, token)
@@ -251,11 +254,11 @@ const EditProfile = () => {
                   <label className="block text-gray-700">Họ: </label>
                   <input
                     type="text"
-                    name="lastname"
+                    name="lastName"
                     className="w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required
                     placeholder="Nhập họ..."
-                    value={profile.lastname}
+                    value={profile.lastName}
                     onChange={handleChange}
                   />
                 </div>
@@ -263,11 +266,11 @@ const EditProfile = () => {
                   <label className="block text-gray-700">Tên: </label>
                   <input
                     type="text"
-                    name="firstname"
+                    name="firstName"
                     className="w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required
                     placeholder="Nhập tên..."
-                    value={profile.firstname}
+                    value={profile.firstName}
                     onChange={handleChange}
                   />
                 </div>
@@ -421,7 +424,7 @@ const EditProfile = () => {
             <div className="grid w-full grid-cols-4">
               <div>
                 <p className="text-lg">Họ</p>
-                <p className="text-lg font-semibold">{profile.firstname}</p>
+                <p className="text-lg font-semibold">{profile.firstName}</p>
               </div>
               <div>
                 <p className="text-lg">Email</p>
@@ -429,7 +432,7 @@ const EditProfile = () => {
               </div>
               <div>
                 <p className="text-lg">Tên</p>
-                <p className="text-lg font-semibold">{profile.lastname}</p>
+                <p className="text-lg font-semibold">{profile.lastName}</p>
               </div>
               <div>
                 <p className="text-lg">Nhóm khách hàng</p>
@@ -437,11 +440,11 @@ const EditProfile = () => {
               </div>
               <div>
                 <p className="text-lg">Đã tích lũy</p>
-                <p className="text-lg font-semibold">
-                  {Number(profile.point).toLocaleString("vi-VN", {
+                <p className="text-lg font-semibold"> {profile.point} điểm
+                  {/* {Number(profile.point).toLocaleString("vi-VN", {
                     style: "currency",
                     currency: "VND",
-                  })}
+                  })} */}
                 </p>
               </div>
               <div>
