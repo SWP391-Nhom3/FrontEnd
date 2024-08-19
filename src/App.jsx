@@ -39,6 +39,7 @@ import Orders from "./pages/OrderManagement/Order";
 import PreOrderPage from "./pages/PreOrder";
 import PreOrderPayment from "./components/order/PreOrderPayment";
 import OrderDetail from "./pages/OrderManagement/OrderDetail";
+import OrderDetailCustomer from "./components/order/OrderDetailCustomer";
 import CancelOrder from "./pages/OrderManagement/CancelOrder";
 import CompleteOrder from "./pages/OrderManagement/CompleteOrder";
 import ShippingOrder from "./pages/OrderManagement/ShippingOrder";
@@ -271,6 +272,10 @@ const App = () => {
               <Route path="/contact" element={<Contact />} />
               <Route path="/exchange_policy" element={<ExchangePolicy />} />
               <Route path="/privacy_policy" element={<PrivacyPolicy />} />
+              <Route
+                path="/order-detail-customer"
+                element={<OrderDetailCustomer />}
+              />
               <Route path="/authenticate" element={<Authenticate />} />
               <Route path="/profile" element={<Profile />}>
                 <Route path="" element={<EditProfile />} />

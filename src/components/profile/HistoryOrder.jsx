@@ -243,7 +243,7 @@ const HistoryOrder = () => {
                     </Table.Cell>
                     <Table.Cell>
                       <Link
-                        to="/order-detail"
+                        to="/order-detail-customer"
                         state={{ order: item }}
                         onClick={() => window.scrollTo(0, 0)}
                         className="font-medium text-cyan-600 hover:underline"
