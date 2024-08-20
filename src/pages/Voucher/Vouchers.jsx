@@ -1,34 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Card, Modal, notification, Table } from "antd";
-import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { fetchDeleteVoucher, fetchGetVoucher } from "../../data/api";
 import { Button, Datepicker, Select, TextInput } from "flowbite-react";
-import { HStack } from "@chakra-ui/react";
-
-// import { fetchGetVoucherType, fetchUpdateVoucher,fetchDeleteVoucher, fetchGetVoucher  } from "../../data/api";
-
+import { toast } from "react-hot-toast";
 import Loading from "../../components/Loading";
+import { Card, Modal, notification, Table } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const Vouchers = () => {
-  const voucherDetail = [
-    {
-      _id: "voucher1",
-      code: "SUMMER2024-1",
-      discount: 20000,
-      membership: 50,
-      expire_date: "2024-08-31T23:59:59Z",
-    },
-    {
-      _id: "voucher2",
-      code: "SUMMER2024-2",
-      discount: 15000,
-      membership: 40,
-      expire_date: "2024-08-31T23:59:59Z",
-    },
-  ];
-
   const [vouchers, setVouchers] = useState([]);
-  // const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [voucherTypes, setVoucherTypes] = useState([]);
   const [selectedVoucher, setSelectedVoucher] = useState(null);
@@ -38,17 +18,19 @@ const Vouchers = () => {
   const [pageSize, setPageSize] = useState(10);
 
   useEffect(() => {
-    // const getVouchers = async () => {
-    //   const data = await fetchGetVoucher();
-    //   setVouchers(data);
-    //   setLoading(false);
-    // };
-    // getVouchers();
-    // fetchGetVoucherType().then((res) => {
-    //   if (res && res.data.result) {
-    //     setVoucherTypes(res.data.result);
-    //   }
-    // });
+    const getVouchers = async () => {
+      const data = await fetchGetVoucher();
+      setVouchers(data);
+      setLoading(false);
+    };
+
+    getVouchers();
+
+    fetchGetVoucher().then((res) => {
+      if (res && res.voucherType) {
+        setVoucherTypes(res.voucherType);
+      }
+    });
   }, []);
 
   const toggleModal = (voucher = null) => {
@@ -77,7 +59,9 @@ const Vouchers = () => {
           });
         }
       },
-      onCancel() {},
+      onCancel() {
+        console.log("Cancel");
+      },
       okButtonProps: {
         style: {
           backgroundColor: "#46B5C1",
@@ -118,108 +102,78 @@ const Vouchers = () => {
       discount: Number(selectedVoucher.discount),
       amount: Number(selectedVoucher.amount),
     };
-    // await fetchUpdateVoucher(updatedVoucher, token, selectedVoucher._id)
-    //   .then((res) => {
-    //     sessionStorage.setItem("update", "true");
-    //     setShowModal(false);
-    //     window.location.reload();
-    //   })
-    //   .catch((err) => {
-    //     toast.error("Cập nhật thất bại", {
-    //       position: "top-right",
-    //     });
-    //   });
   };
 
   const handleDelete = async (voucherId) => {
-    // await fetchDeleteVoucher(voucherId, token)
-    //   .then((res) => {
-    //     sessionStorage.setItem("delete", "true");
-    //     window.location.reload();
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     toast.error("Xóa voucher thất bại", {
-    //       position: "top-right",
-    //     });
-    //   });
+    await fetchDeleteVoucher(voucherId)
+      .then((res) => {
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Xóa voucher thất bại", {
+          position: "top-right",
+        });
+      });
   };
 
-  // if (loading) {
-  //   return <Loading />;
-  // }
-
-  if (sessionStorage.getItem("update") === "true") {
-    notification.success({
-      message: "Thành công",
-      description: "Mã giảm giá cập nhật thành công!",
-      placement: "top",
-    });
-    sessionStorage.removeItem("update");
+  if (loading) {
+    return <Loading />;
   }
 
-  if (sessionStorage.getItem("delete") === "true") {
-    notification.success({
-      message: "Thành công",
-      description: "Xóa mã giảm giá thành công!",
-      placement: "top",
-    });
-    sessionStorage.removeItem("delete");
-  }
   const columns = [
     {
       title: "Mã Voucher",
-      dataIndex: "_id",
-      key: "_id",
+      dataIndex: "code",
+      key: "code",
       render: (text) => <div className="text-base font-semibold">{text}</div>,
     },
-    {
-      title: "Mã Lô",
-      dataIndex: "_id",
-      key: "_id",
-      render: (text) => <div className="text-base font-semibold">{text}</div>,
-    },
-    {
-      title: "Mã giảm giá",
-      dataIndex: "_id",
-      key: "_id",
-      render: (text) => <div className="text-base font-semibold">{text}</div>,
-    },
+    // {
+    //   title: "Ngày hết hạn",
+    //   dataIndex: "expire_date",
+    //   key: "expire_date",
+    //   render: (text) => formatDate(text),
+    //   sorter: (a, b) => new Date(a.expire_date) - new Date(b.expire_date),
+    // },
+    // {
+    //   title: "Membership",
+    //   dataIndex: "membership",
+    //   key: "membership",
+    //   render: (value) =>
+    //     new Intl.NumberFormat("vi-VN", {
+    //       style: "currency",
+    //       currency: "VND",
+    //     }).format(value),
+    //   sorter: (a, b) => a.membership - b.membership,
+    // },
     {
       title: "Loại Voucher",
       dataIndex: "voucherType",
       key: "voucherType",
-      render: (text) => (
-        <div className="text-base font-semibold">
-          {text === 0 ? "User" : "Member"}
-        </div>
-      ),
-    },
-    {
-      title: "Giá trị giảm",
-      dataIndex: "total_vouchers",
-      key: "total_vouchers",
       render: (text) => <div className="text-base font-semibold">{text}</div>,
     },
     {
-      title: "Trạng thái",
-      dataIndex: "used_vouchers",
-      key: "used_vouchers",
-      render: (text) => <div className="text-base font-semibold">{text}</div>,
+      title: "Mức giảm giá",
+      dataIndex: "value",
+      key: "value",
+      render: (value, record) => {
+        if (record.voucherType === "FIXED_AMOUNT") {
+          return new Intl.NumberFormat("vi-VN", {
+            style: "currency",
+            currency: "VND",
+          }).format(value);
+        } else if (record.voucherType === "PERCENTAGE") {
+          return `${value}%`;
+        }
+      },
     },
     {
-      title: "Đã dùng bởi",
-      dataIndex: "remaining_vouchers",
-      key: "remaining_vouchers",
-      render: (text) => <div className="text-base font-semibold">{text}</div>,
+      title: "Số lượng",
+      dataIndex: "maxUses",
+      key: "maxUses",
+      sorter: (a, b) => a.amount - b.amount,
     },
-    {
-      title: "Ngày dùng",
-      dataIndex: "create_date",
-      key: "create_date",
-      render: (text) => formatDate(text),
-      sorter: (a, b) => new Date(a.create_date) - new Date(b.create_date),
-    },
+
     {
       title: "Hành động",
       key: "action",
@@ -230,35 +184,22 @@ const Vouchers = () => {
             justifyContent: "space-between",
           }}
         >
-          <Button
-            type="link"
-            onClick={() => showDeleteConfirm(record._id)}
-            style={{
-              backgroundColor: "#55B6C3",
-              fontSize: "5px",
-              margin: "5px",
-            }}
-          >
-            Xem
-          </Button>
-          <Button
+          {/* <Button
             type="link"
             onClick={() => toggleModal(record)}
             style={{
               backgroundColor: "#55B6C3",
               fontSize: "5px",
-              margin: "5px",
             }}
           >
-            Sửa
-          </Button>
+            Chỉnh sửa
+          </Button> */}
           <Button
             type="link"
-            onClick={() => showDeleteConfirm(record._id)}
+            onClick={() => showDeleteConfirm(record.id)}
             style={{
               backgroundColor: "#ff4d4f",
               fontSize: "5px",
-              margin: "5px",
             }}
           >
             Xóa
@@ -289,32 +230,20 @@ const Vouchers = () => {
           <div className="mb-4 flex items-center justify-between">
             <Button
               type="default"
-              onClick={() => navigate("/voucher-batch")}
-              style={{
-                borderColor: "#fb7185",
-                color: "#fb7185",
-                fontSize: "10px",
-                backgroundColor: "white",
-              }}
-            >
-              Quay về trang danh sách
-            </Button>{" "}
-            <Button
-              type="default"
               onClick={() => navigate(`/add-voucher`)}
-              style={{ backgroundColor: "#fb7185", fontSize: "10px" }}
+              style={{ backgroundColor: "#55B6C3", fontSize: "10px" }}
             >
               Thêm voucher
             </Button>
           </div>
           <Table
             columns={columns}
-            dataSource={voucherDetail}
+            dataSource={vouchers}
             rowKey={(record) => record._id}
             pagination={{
               current: currentPage,
               pageSize: pageSize,
-              total: voucherDetail.length,
+              total: vouchers.length,
               onChange: (page, pageSize) => {
                 setCurrentPage(page);
                 setPageSize(pageSize);
@@ -365,7 +294,6 @@ const Vouchers = () => {
                     <span className="sr-only">Close modal</span>
                   </button>
                 </div>
-
                 {/* Modal body */}
                 <div className="space-y-6 p-6">
                   <div className="grid grid-cols-6 gap-6">

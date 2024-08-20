@@ -18,9 +18,6 @@ import PrivacyPolicy from "./pages/InformationPage/PrivacyPolicy";
 import Contact from "./pages/InformationPage/Contact";
 import ListProduct from "./components/product/ListProduct";
 import Dashboard from "./pages/Dashboard";
-import AddVoucher from "./pages/Voucher/AddVoucher";
-import VouchersBatch from "./pages/Voucher/VouchersBatch";
-import Vouchers from "./pages/Voucher/Vouchers";
 import Sidebar from "./components/Sidebar";
 import AdminNavbar from "./components/header/AdminNavbar";
 import Header from "./pages/Header";
@@ -59,6 +56,8 @@ import Accumulate from "./components/profile/Accumulate";
 import Authenticate from "./pages/Auth/Google/Authenticate";
 import ProductsWarehouse from "./pages/Warehouse/ProductsWarehouse";
 import News from "./pages/News";
+import Vouchers from "./pages/Voucher/Vouchers";
+import AddVoucher from "./pages/Voucher/AddVoucher";
 import NewsDetail from "./pages/News/NewsDetail";
 import OrderTracking from "./components/order/OrderTracking";
 import AllFeedback from "./pages/Feedback/AllFeedback";
@@ -128,9 +127,8 @@ const App = () => {
                   <Route path="/" element={<AwaitOrder />} />
                   <Route path="/products" element={<ProductManagement />} />
                   <Route path="/add-product" element={<AddProduct />} />
-                  <Route path="/voucher-batch" element={<VouchersBatch />} />
+                  <Route path="/voucher" element={<Vouchers />} />
                   <Route path="/add-voucher" element={<AddVoucher />} />
-                  <Route path="/voucher-batch/:id" element={<Vouchers />} />
                   <Route
                     path="/add-product-batch"
                     element={<AddProductBatch />}
