@@ -43,7 +43,6 @@ const EditProfile = () => {
   const getMeProfile = async () => {
     await fetchMyProfile(token)
       .then((res) => {
-        console.log("rewqrqwerqwe", res.data.data);
         setProfile({
           firstName: res.data.data.firstName || "",
           lastName: res.data.data.lastName || "",
@@ -65,7 +64,6 @@ const EditProfile = () => {
       });
   };
 
-  console.log("sdfasdfasdfdasfsd", profile);
   // const getMeProfile = async () => {
   //   await fetchGetMe(token)
   //     .then((res) => {

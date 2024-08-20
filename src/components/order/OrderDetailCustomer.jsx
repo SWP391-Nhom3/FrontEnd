@@ -19,7 +19,6 @@ const OrderDetailCustomer = () => {
   const location = useLocation();
   const order = location.state?.order || {};
   const [orderDetails, setOrderDetails] = useState([]);
-  console.log(order);
   const products = JSON.parse(localStorage.getItem("products")) || [];
   const [reviews, setReviews] = useState([]);
   const [loadingReviews, setLoadingReviews] = useState(false);
@@ -261,21 +260,7 @@ const OrderDetailCustomer = () => {
                 </div>
                 <div className="text-center">
                   <div className="mb-1">
-                    {(order.orderStatus === 1 &&
-                      new Date() > addDays(new Date(order.acceptedDate), 1)) ||
-                    order.shippedDate
-                      ? formatDate(addDays(new Date(order.shippedDate), 1.2))
-                      : "-"}
-                  </div>
-                  <div
-                    className={`font-semibold ${getTrackingStageColor(75)} flex items-center gap-2`}
-                  >
-                    <FaTruckFast className="h-5 w-5" /> Đang giao hàng
-                  </div>
-                </div>
-                <div className="text-center">
-                  <div className="mb-1">
-                    {order.orderStatus === "Hoàn thành" ? "-" : "-"}
+                    {order.shippedDate ? formatDate(order.shippedDate) : "-"}
                   </div>
                   <div
                     className={`font-semibold ${getTrackingStageColor(100)} flex items-center gap-2`}
@@ -284,6 +269,7 @@ const OrderDetailCustomer = () => {
                     Hoàn thành
                   </div>
                 </div>
+                <div className="text-center"></div>
               </div>
               <Progress
                 progress={calculateProgress()}
