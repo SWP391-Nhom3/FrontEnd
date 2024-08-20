@@ -153,7 +153,7 @@ const Vouchers = () => {
       render: (text) => <div className="text-base font-semibold">{text}</div>,
     },
     {
-      title: "Mức giảm giá",
+      title: "Khuyến mãi",
       dataIndex: "value",
       key: "value",
       render: (value, record) => {
@@ -171,9 +171,16 @@ const Vouchers = () => {
       title: "Số lượng",
       dataIndex: "maxUses",
       key: "maxUses",
-      sorter: (a, b) => a.amount - b.amount,
     },
-
+    {
+      title: "Ngày hết hạn",
+      dataIndex: "expiryDate",
+      key: "expiryDate",
+      render: (text) => {
+        const localDate = new Date(text).toLocaleDateString();
+        return <span>{localDate}</span>;
+      },
+    },
     {
       title: "Hành động",
       key: "action",
