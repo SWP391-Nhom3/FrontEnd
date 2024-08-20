@@ -17,7 +17,6 @@ const AddVoucher = () => {
   const [amount, setAmount] = useState(0);
   const [selectedVoucherType, setSelectedVoucherType] = useState("");
   const [isType, SetIsType] = useState(false);
-  const token = JSON.parse(localStorage.getItem("result"));
 
   const date = new Date();
   const [dateInput, setDateInput] = useState(date);
@@ -27,7 +26,14 @@ const AddVoucher = () => {
   useEffect(() => {
     fetchGetVoucher().then((res) => {
       if (res && res.length > 0) {
-        const voucherTypes = res.map((voucher) => voucher.voucherType); // Tạo một mảng mới chứa tất cả voucherType
+        const filteredVouchers = res.filter(
+          (voucher) =>
+            voucher.voucherType === "FIXED_AMOUNT" ||
+            voucher.voucherType === "PERCENTAGE",
+        );
+        const voucherTypes = [
+          ...new Set(filteredVouchers.map((voucher) => voucher.voucherType)),
+        ];
         console.log(voucherTypes);
         setVoucherTypes(voucherTypes);
       }
@@ -68,23 +74,38 @@ const AddVoucher = () => {
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const date_input = new Date(dateInput);
-    date_input.setDate(date_input.getDate() + 1);
     let adjustedAmount = Number(amount);
-    if (Number(selectedVoucherType) === "PERCENTAGE") {
-      adjustedAmount = Math.min(adjustedAmount, 100);
+    if (selectedVoucherType === "PERCENTAGE" && adjustedAmount > 100) {
+      notification.error({
+        message: "Giá trị tối đa cho loại voucher PERCENTAGE là 100.",
+        placement: "top",
+      });
+      return;
+    }
+    const currentDatePlusOneMonth = new Date();
+    currentDatePlusOneMonth.setMonth(currentDatePlusOneMonth.getMonth() + 1);
+    currentDatePlusOneMonth.setHours(0, 0, 0, 0);
+    const expiryDateObject = new Date(expiryDate);
+    expiryDateObject.setHours(0, 0, 0, 0); // Đồng bộ hóa thời gian
+
+    if (expiryDateObject <= currentDatePlusOneMonth) {
+      notification.error({
+        message: "Ngày hết hạn phải sau ngày hiện tại ít nhất 1 tháng.",
+        placement: "top",
+      });
+      return;
     }
     const voucher = {
-      voucher_type: Number(selectedVoucherType),
-      membership: Number(memberShip),
-      expire_date: date_input.toISOString(),
-      discount: Number(discount),
-      amount: adjustedAmount,
+      type: selectedVoucherType,
+      value: adjustedAmount,
+      minOrderValue: Number(minOrderValue),
+      maxUses: Number(maxUses),
+      expiryDate: expiryDateObject,
     };
 
     await fetchCreateVoucher(voucher)
       .then((res) => {
-        console.log(res.data);
+        console.log(res);
         notification.success({
           message: "Thêm voucher thành công",
           placement: "top",
