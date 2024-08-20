@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card } from "primereact/card";
+import { Card } from "antd";
 import { format } from "date-fns";
 import { Button, Table, Switch, Modal, notification, Input } from "antd";
 import { fetchAllUsers, fetchUserStatusById } from "../../data/api";
@@ -35,7 +35,7 @@ const Users = () => {
             user.roles
               .split(", ")
               .some(
-                (roleName) => roleName === "MEMBER" || roleName === "STAFF",
+                (roleName) => roleName === "MEMBER" || roleName === "STAFF" || roleName === "SHIPPER",
               ),
           );
 
@@ -50,42 +50,58 @@ const Users = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const toggleUserStatus = async (userId) => {
-    try {
-      // Tìm người dùng và đảo ngược trạng thái 'active' của họ
-      const userToUpdate = users.find((user) => user.id === userId);
-      if (!userToUpdate) {
-        console.error("User not found");
-        notification.error({
-          message: "User Not Found",
-          description: "The user you are trying to toggle does not exist.",
-        });
-        return;
-      }
-      const updatedActiveStatus = !userToUpdate.active;
+  const handleSwitchChange = (checked, user, token) => {
+    Modal.confirm({
+      title: "Xác nhận chặn tài khoản",
+      content: checked
+        ? "Bạn có muốn bỏ chặn tài khoản này?"
+        : "Bạn có muốn chặn tài khoản này?",
+      onOk: async () => {
+        try {
+          console.log(user)
+          user.active = checked;
+          await fetchUserStatusById(  user.id, token);
+          setUsers((prevUsers) => {
+            return prevUsers.map((u) => (u.id === user.id ? user : u));
+          });
 
-      await fetchUserStatusById(userId, token);
-
-      setUsers(
-        users.map((user) => {
-          if (user.id === userId) {
-            return { ...user, active: updatedActiveStatus };
-          }
-          return user;
-        }),
-      );
-
-      notification.success({
-        message: "User Status Updated",
-        description: "The user status has been successfully changed.",
-      });
-    } catch (error) {
-      console.error("Failed to toggle user status", error);
-      notification.error({
-        message: "Error",
-        description: "Failed to toggle user status. Please try again later.",
-      });
-    }
+          notification.success({
+            message: "Thành công",
+            description: `Thay đổi thành công! ${
+              checked
+                ? "Tài khoản đã hoạt động bình thường"
+                : "Tài khoản đã bị chặn"
+            }`,
+            placement: "top",
+          });
+        } catch (error) {
+          console.log(error);
+          notification.error({
+            message: "Lỗi",
+            description: "Có lỗi xảy ra khi thay đổi trạng thái tài khoản",
+            placement: "top",
+          });
+        }
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+      okButtonProps: {
+        style: {
+          backgroundColor: "#46B5C1",
+          borderColor: "#46B5C1",
+        },
+      },
+      cancelButtonProps: {
+        style: {
+          backgroundColor: "#FF4D4F",
+          borderColor: "#FF4D4F",
+          color: "#FFFFFF",
+        },
+      },
+      cancelText: "Đóng",
+      okText: "Đồng ý",
+    });
   };
   const handleTableChange = (pagination) => {
     setCurrentPage(pagination.current);
@@ -159,7 +175,8 @@ const Users = () => {
       render: (text, record) => (
         <Switch
           checked={record.active}
-          onChange={(checked) => toggleUserStatus(record.id, checked)}
+          style={{ backgroundColor: record.active ? "#4A99FF" : "#898989" }}
+          onChange={(checked) => handleSwitchChange(checked, record, token)}
         />
       ),
     },

@@ -67,6 +67,7 @@ import AddNews from "./pages/News/AddNews";
 import EditNews from "./pages/News/EditNews";
 import AllNews from "./pages/News/AllNews";
 import "./App.css";
+import AddShipper from "./pages/User/AddShipper";
 
 const App = () => {
   const { currentMode, activeMenu, themeSettings } = useStateContext();
@@ -197,6 +198,7 @@ const App = () => {
                   <Route path="/dashboard" element={<Dashboard isAuthenticatedAdmin={isAuthenticatedAdmin} />} />
                   <Route path="/users" element={<Users />} />
                   <Route path="/add-staff" element={<AddStaff />} />
+                  <Route path="/add-shipper" element={<AddShipper />} />
                   <Route path="/products" element={<ProductManagement />} />
                   <Route
                     path="/products-warehouse"

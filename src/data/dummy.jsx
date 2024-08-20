@@ -208,6 +208,8 @@ export const adminlinks = [
         subLinks: [
           { name: "allUser", path: "users", label: "Tất cả người dùng" },
           { name: "addStaff", path: "add-staff", label: "Thêm nhân viên" },
+          { name: "", path: "add-shipper", label: "Thêm nhân viên giao hàng" },
+
         ],
       },
     ],
@@ -281,7 +283,7 @@ export const shipperLinks = [
         path: "complete-order",
       },
       {
-        name: "Đơn giao hành không thành công",
+        name: "Đơn giao hàng không thành công",
         icon: <BsXCircle />,
         type: "path",
         path: "cancel-shipping-order",

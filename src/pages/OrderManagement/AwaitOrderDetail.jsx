@@ -28,7 +28,7 @@ const AwaitOrderDetail = () => {
   const token = JSON.parse(localStorage.getItem("result"));
   const isAuthenticatedStaff = localStorage.getItem("isStaff") === "true";
   const [shipper, setShipper] = useState([]);
-  const [selectedShipperID, setSelectedShipperID] = useState("");
+  const [selectedShipperID, setSelectedShipperID] = useState(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -590,6 +590,7 @@ const AwaitOrderDetail = () => {
                       <Button
                         type="default"
                         onClick={handleCancelOrder}
+                        disabled={selectedShipperID === null}
                         style={{
                           backgroundColor: "#ff4d4f",
                           fontSize: "15px",
@@ -600,6 +601,7 @@ const AwaitOrderDetail = () => {
                       <Button
                         type="default"
                         onClick={handleConfirmOrder}
+                        disabled={selectedShipperID === null}
                         style={{
                           backgroundColor: "#55B6C3",
                           fontSize: "15px",

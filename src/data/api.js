@@ -395,7 +395,7 @@ export const fetchAllUsers = async (result) => {
 export const fetchRole = async () => {
   return await axios.get(`${HOSTNAME}/roles`);
 };
-//get-all-user
+//create staff api
 export const fetchCreateStaff = async (token, userData) => {
   return await axios.post(`${HOSTNAME}/users/create-staff`, userData, {
     headers: {
@@ -403,6 +403,16 @@ export const fetchCreateStaff = async (token, userData) => {
     },
   });
 };
+
+//create shipper api
+export const fetchCreateShipper = async (token, userData) => {
+  return await axios.post(`${HOSTNAME}/users/create-shipper`, userData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
 export const fetchUserStatusById = async (id, token) => {
   return await axios.put(
     `http://localhost:8080/api/users/status/${id}`,
