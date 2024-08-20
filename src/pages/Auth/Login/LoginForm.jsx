@@ -9,7 +9,6 @@ import { useCartContext } from "../../../context/CartContext";
 
 import { usePreOrderContext } from "../../../context/PreOrderContext";
 
-
 const { TabPane } = Tabs;
 
 const LoginForm = () => {
@@ -17,7 +16,6 @@ const LoginForm = () => {
   const { clearCart } = useCartContext();
 
   const { clearPreOrder } = usePreOrderContext();
-
 
   const [formValues, setFormValues] = useState({
     email: sessionStorage.getItem("email") || "",
@@ -52,7 +50,11 @@ const LoginForm = () => {
         return;
       }
       if (activeTab === "customer") {
-        if (userRoles.includes("ADMIN") || userRoles.includes("STAFF")) {
+        if (
+          userRoles.includes("ADMIN") ||
+          userRoles.includes("STAFF") ||
+          userRoles.includes("SHIPPER")
+        ) {
           setErrorList([
             "Tài khoản không có quyền truy cập cho vai trò Customer.",
           ]);
@@ -76,6 +78,8 @@ const LoginForm = () => {
         localStorage.setItem("isMember", "true");
       } else if (userRoles.includes("ADMIN")) {
         localStorage.setItem("isAdmin", "true");
+      } else if (userRoles.includes("SHIPPER")) {
+        localStorage.setItem("isShipper", "true");
       } else {
         localStorage.setItem("isStaff", "true");
       }
@@ -93,7 +97,7 @@ const LoginForm = () => {
       } else {
         clearCart();
         clearPreOrder();
-        navigate("/dashboard");
+        navigate("/");
       }
       window.location.reload();
     } catch (error) {

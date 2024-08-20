@@ -2,7 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { Button } from "flowbite-react";
-import { Card, Col, Divider, Row, Steps, Typography, notification } from "antd";
+import {
+  Card,
+  Col,
+  Divider,
+  Row,
+  Select,
+  Steps,
+  Typography,
+  notification,
+} from "antd";
 import Loading from "../../components/Loading";
 import {
   CheckCircleOutlined,
@@ -11,10 +20,12 @@ import {
   TruckOutlined,
 } from "@ant-design/icons";
 import {
+  fetchAllShipper,
   fetchCancelOrder,
   fetchConfirmOrder,
   fetchProducts,
 } from "../../data/api";
+import { Option } from "antd/es/mentions";
 
 const AwaitOrderDetail = () => {
   const location = useLocation();
@@ -25,15 +36,15 @@ const AwaitOrderDetail = () => {
   //   const [orderDetails, setOrderDetails] = useState([]);
   const token = JSON.parse(localStorage.getItem("result"));
   const isAuthenticatedStaff = localStorage.getItem("isStaff") === "true";
+  const [shipper, setShipper] = useState([]);
+  const [selectedShipperID, setSelectedShipperID] = useState(null);
 
   useEffect(() => {
-    let isMounted = true; // Cờ để kiểm tra xem component có còn mounted không
-
+    let isMounted = true;
     const getProducts = async () => {
       try {
         const productData = await fetchProducts();
         if (isMounted) {
-          // Chỉ cập nhật state nếu component vẫn còn mounted
           setProducts(productData);
           setLoading(false);
         }
@@ -48,33 +59,22 @@ const AwaitOrderDetail = () => {
     getProducts();
 
     return () => {
-      // Cleanup function
-      isMounted = false; // Đặt lại cờ khi component unmount
+      isMounted = false;
     };
-  }, []); // Mảng phụ thuộc rỗng để chỉ chạy khi component mount
+  }, []);
 
   console.log("order ne", order);
 
-  //   useEffect(() => {
-  //     const findProductById = (product_id) => {
-  //       return products.find((product) => product.id === product.id);
-  //     };
+  useEffect(() => {
+    fetchAllShipper().then((res) => {
+      setShipper(res.data.data);
+    });
+  }, []);
 
-  //     if (products.length > 0 && order) {
-  //       const updateOrderDetails = async () => {
-  //         const details = await Promise.all(
-  //           order.orderDetails.map(async (item) => {
-  //             const product = findProductById(item.product.id);
-  //             return { ...item, product };
-  //           })
-  //         );
-  //         setOrderDetails(details);
-  //         console.log("detail ne", details);
-  //       };
-
-  //       updateOrderDetails();
-  //     }
-  //   }, [products, order]);
+  const handleShipperChange = (value) => {
+    setSelectedShipperID(value);
+    console.log(selectedShipperID);
+  };
 
   if (loading) {
     return <Loading />;
@@ -126,12 +126,11 @@ const AwaitOrderDetail = () => {
 
   const handleConfirmOrder = async () => {
     const order_id = order.id;
-    await fetchConfirmOrder(order_id, token)
+    const shipper_id = selectedShipperID;
+    await fetchConfirmOrder(order_id, shipper_id)
       .then((res) => {
-        // Lưu trạng thái vào sessionStorage
         sessionStorage.setItem("orderConfirmed", "true");
         console.log(res.data);
-        // Tải lại trang
         window.location.reload();
       })
       .catch((error) => {
@@ -159,6 +158,8 @@ const AwaitOrderDetail = () => {
     // Điều hướng đến trang khác nếu cần thiết
     navigate("/await-order");
   }
+
+  console.log("shipper ne", shipper);
 
   const { Text } = Typography;
 
@@ -309,7 +310,12 @@ const AwaitOrderDetail = () => {
                 title={
                   <h1 className="text-2xl font-bold">Thông tin đơn hàng:</h1>
                 }
-                style={{ width: "90%", marginTop: "50px", height: "auto" }}
+                style={{
+                  width: "90%",
+                  marginTop: "50px",
+                  height: "auto",
+                  minHeight: "350px",
+                }}
               >
                 <div>
                   <div
@@ -573,34 +579,50 @@ const AwaitOrderDetail = () => {
                 </div>
 
                 {isAuthenticatedStaff && (
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      width: "100%",
-                      marginTop: "5vh",
-                    }}
-                  >
-                    <Button
-                      type="default"
-                      onClick={handleCancelOrder}
+                  <div>
+                    <Select
+                      style={{ width: 200, marginTop: "2vh" }}
+                      placeholder="Chọn shipper"
+                      onChange={handleShipperChange}
+                    >
+                      {shipper.map((shipper) => (
+                        <Option key={shipper.id} value={shipper.id}>
+                          {shipper.firstName
+                            ? shipper.firstName
+                            : shipper.email}
+                        </Option>
+                      ))}
+                    </Select>
+                    <div
                       style={{
-                        backgroundColor: "#ff4d4f",
-                        fontSize: "15px",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        width: "100%",
+                        marginTop: "1vh",
                       }}
                     >
-                      Hủy đơn hàng
-                    </Button>
-                    <Button
-                      type="default"
-                      onClick={handleConfirmOrder}
-                      style={{
-                        backgroundColor: "#55B6C3",
-                        fontSize: "15px",
-                      }}
-                    >
-                      Xác nhận đơn hàng
-                    </Button>
+                      <Button
+                        type="default"
+                        onClick={handleCancelOrder}
+                        style={{
+                          backgroundColor: "#ff4d4f",
+                          fontSize: "15px",
+                        }}
+                      >
+                        Hủy đơn hàng
+                      </Button>
+                      <Button
+                        type="default"
+                        onClick={handleConfirmOrder}
+                        disabled={selectedShipperID === null}
+                        style={{
+                          backgroundColor: "#55B6C3",
+                          fontSize: "15px",
+                        }}
+                      >
+                        Xác nhận đơn hàng
+                      </Button>
+                    </div>
                   </div>
                 )}
               </Card>

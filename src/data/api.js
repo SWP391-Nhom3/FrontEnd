@@ -39,6 +39,11 @@ export const fetchMyProfile = async (token) => {
   });
 };
 
+//get all shipper
+export const fetchAllShipper = async () => {
+  return await axios.get(`${HOSTNAME}/users/shippers`);
+};
+
 //update my profile api
 export const fetchUpdateProfile = async (data, token) => {
   return await axios.put(`${HOSTNAME}/users`, data, {
@@ -46,7 +51,7 @@ export const fetchUpdateProfile = async (data, token) => {
       Authorization: `Bearer ${token}`,
     },
   });
-}
+};
 
 //get all category api
 export const fetchCategories = async () => {
@@ -158,8 +163,10 @@ export const fetchCancelOrder = async (id) => {
 };
 
 //confirm order api
-export const fetchConfirmOrder = async (id) => {
-  return await axios.put(`${HOSTNAME}/orders/confirm/${id}`);
+export const fetchConfirmOrder = async (id, shipperid) => {
+  return await axios.put(`${HOSTNAME}/orders/confirm/${id}`, {
+    shipperId: shipperid,
+  });
 };
 
 //shipping status order api
@@ -388,7 +395,7 @@ export const fetchAllUsers = async (result) => {
 export const fetchRole = async () => {
   return await axios.get(`${HOSTNAME}/roles`);
 };
-//get-all-user
+//create staff api
 export const fetchCreateStaff = async (token, userData) => {
   return await axios.post(`${HOSTNAME}/users/create-staff`, userData, {
     headers: {
@@ -396,6 +403,16 @@ export const fetchCreateStaff = async (token, userData) => {
     },
   });
 };
+
+//create shipper api
+export const fetchCreateShipper = async (token, userData) => {
+  return await axios.post(`${HOSTNAME}/users/create-shipper`, userData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
 export const fetchUserStatusById = async (id, token) => {
   return await axios.put(
     `http://localhost:8080/api/users/status/${id}`,

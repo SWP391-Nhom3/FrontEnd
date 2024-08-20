@@ -27,7 +27,11 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
 
 const user = JSON.parse(localStorage.getItem("user"));
 
-const Navbar = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
+const Navbar = ({
+  isAuthenticatedAdmin,
+  isAuthenticatedStaff,
+  isAuthenticatedShipper,
+}) => {
   const {
     currentColor,
     activeMenu,
@@ -103,7 +107,10 @@ const Navbar = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
           <UserProfile isAdmin={true} />
         )}
         {isAuthenticatedStaff && isClicked.userProfile && (
-          <UserProfile isAdmin={false} />
+          <UserProfile isStaff={true} />
+        )}
+        {isAuthenticatedShipper && isClicked.userProfile && (
+          <UserProfile isShipper={true} />
         )}
       </div>
     </div>

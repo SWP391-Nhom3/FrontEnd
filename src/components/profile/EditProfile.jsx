@@ -10,7 +10,13 @@ import { useEffect, useState } from "react";
 // } from "../../data/api";
 import { useLocation } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
-import { fetchMyProfile, fetchUpdateProfile, getDistricts, getProvinces, getWards } from "../../data/api";
+import {
+  fetchMyProfile,
+  fetchUpdateProfile,
+  getDistricts,
+  getProvinces,
+  getWards,
+} from "../../data/api";
 
 const EditProfile = () => {
   const location = useLocation();
@@ -37,7 +43,7 @@ const EditProfile = () => {
   const getMeProfile = async () => {
     await fetchMyProfile(token)
       .then((res) => {
-        console.log("rewqrqwerqwe",res.data.data);
+        console.log("rewqrqwerqwe", res.data.data);
         setProfile({
           firstName: res.data.data.firstName || "",
           lastName: res.data.data.lastName || "",
@@ -45,7 +51,10 @@ const EditProfile = () => {
           address: res.data.data.address || "",
           phone: res.data.data.phone || "",
           email: res.data.data.email || "",
-          point: res.data.data.point !== undefined && res.data.data.point !== null ? res.data.data.point : 1,
+          point:
+            res.data.data.point !== undefined && res.data.data.point !== null
+              ? res.data.data.point
+              : 1,
         });
         if (res.data.data.dob !== null) {
           setDateInput(new Date(res.data.data.dob));
@@ -56,7 +65,7 @@ const EditProfile = () => {
       });
   };
 
-  console.log("sdfasdfasdfdasfsd",profile);
+  console.log("sdfasdfasdfdasfsd", profile);
   // const getMeProfile = async () => {
   //   await fetchGetMe(token)
   //     .then((res) => {
@@ -225,7 +234,7 @@ const EditProfile = () => {
           lastName: data.lastName,
           dob: data.dob,
           address: data.address,
-          phone: data.phone
+          phone: data.phone,
         };
         localStorage.setItem("user", JSON.stringify(updatedUser));
       })
@@ -440,7 +449,9 @@ const EditProfile = () => {
               </div>
               <div>
                 <p className="text-lg">Đã tích lũy</p>
-                <p className="text-lg font-semibold"> {profile.point} điểm
+                <p className="text-lg font-semibold">
+                  {" "}
+                  {profile.point} điểm
                   {/* {Number(profile.point).toLocaleString("vi-VN", {
                     style: "currency",
                     currency: "VND",

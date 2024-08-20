@@ -16,6 +16,9 @@ const CancelShippingOrder = () => {
   const [orders, setOrders] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(7);
+  const isShipper = localStorage.getItem("isShipper") === "true";
+  const user = JSON.parse(localStorage.getItem("user"));
+  const shipperId = user.id;
 
   useEffect(() => {
     const getOrders = async () => {
@@ -49,77 +52,161 @@ const CancelShippingOrder = () => {
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", height: "80vh" }}>
-      <Card
-        title="Đơn vận chuyển không thành công"
-        style={{ width: "90%", marginTop: "50px", height: "75vh" }}
-      >
-        <div>
-          <Table
-            dataSource={orders.filter(
-              (item) => item.orderStatus.name === "Giao hàng không thành công",
-            )}
-            rowKey={(item) => item.id}
-            pagination={{
-              current: currentPage,
-              pageSize: pageSize,
-              total: orders.filter(
-                (item) =>
-                  item.orderStatus.name === "Giao hàng không thành công",
-              ).length,
-              onChange: (page, pageSize) => {
-                setCurrentPage(page);
-                setPageSize(pageSize);
-              },
-            }}
-            bordered
+    <div>
+      {isShipper ? (
+        <div
+          style={{ display: "flex", justifyContent: "center", height: "80vh" }}
+        >
+          <Card
+            title="Đơn vận chuyển không thành công"
+            style={{ width: "90%", marginTop: "50px", height: "75vh" }}
           >
-            <Column title="Mã Đơn Hàng" dataIndex={"id"} key="id" />
-            <Column
-              title="Ngày Đặt"
-              dataIndex={"requiredDate"}
-              render={(required_date) => formatDate(required_date)}
-              sorter={(a, b) =>
-                new Date(a.order.required_date) -
-                new Date(b.order.required_date)
-              }
-              key="required_date"
-            />
-            <Column
-              title="Phương Thức Thanh Toán"
-              dataIndex={"paymentMethod"}
-              key="payment_method"
-              render={(paymentMethod) => `Thanh toán - ${paymentMethod}`}
-            />
-            <Column
-              title="Trạng Thái"
-              key="status"
-              render={() => (
-                <Tag
-                  bordered={false}
-                  icon={<ExclamationCircleOutlined />}
-                  color="gray"
-                >
-                  Giao hàng không thành công
-                </Tag>
-              )}
-            />
-            <Column
-              title="Chi Tiết Đơn Hàng"
-              key="detail"
-              render={(text, item) => (
-                <Link
-                  to="/shipping-orderDetail"
-                  state={{ order: item }}
-                  className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                >
-                  Chi Tiết
-                </Link>
-              )}
-            />
-          </Table>
+            <div>
+              <Table
+                dataSource={orders.filter(
+                  (item) =>
+                    item.orderStatus.name === "Giao hàng không thành công" &&
+                    item.shipper.id === shipperId,
+                )}
+                rowKey={(item) => item.id}
+                pagination={{
+                  current: currentPage,
+                  pageSize: pageSize,
+                  total: orders.filter(
+                    (item) =>
+                      item.orderStatus.name === "Giao hàng không thành công",
+                  ).length,
+                  onChange: (page, pageSize) => {
+                    setCurrentPage(page);
+                    setPageSize(pageSize);
+                  },
+                }}
+                bordered
+              >
+                <Column title="Mã Đơn Hàng" dataIndex={"id"} key="id" />
+                <Column
+                  title="Ngày Đặt"
+                  dataIndex={"requiredDate"}
+                  render={(required_date) => formatDate(required_date)}
+                  sorter={(a, b) =>
+                    new Date(a.order.required_date) -
+                    new Date(b.order.required_date)
+                  }
+                  key="required_date"
+                />
+                <Column
+                  title="Phương Thức Thanh Toán"
+                  dataIndex={"paymentMethod"}
+                  key="payment_method"
+                  render={(paymentMethod) => `Thanh toán - ${paymentMethod}`}
+                />
+                <Column
+                  title="Trạng Thái"
+                  key="status"
+                  render={() => (
+                    <Tag
+                      bordered={false}
+                      icon={<ExclamationCircleOutlined />}
+                      color="gray"
+                    >
+                      Giao hàng không thành công
+                    </Tag>
+                  )}
+                />
+                <Column
+                  title="Chi Tiết Đơn Hàng"
+                  key="detail"
+                  render={(text, item) => (
+                    <Link
+                      to="/order-detail"
+                      state={{ order: item }}
+                      className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+                    >
+                      Chi Tiết
+                    </Link>
+                  )}
+                />
+              </Table>
+            </div>
+          </Card>
         </div>
-      </Card>
+      ) : (
+        <div
+          style={{ display: "flex", justifyContent: "center", height: "80vh" }}
+        >
+          <Card
+            title="Đơn vận chuyển không thành công"
+            style={{ width: "90%", marginTop: "50px", height: "75vh" }}
+          >
+            <div>
+              <Table
+                dataSource={orders.filter(
+                  (item) =>
+                    item.orderStatus.name === "Giao hàng không thành công",
+                )}
+                rowKey={(item) => item.id}
+                pagination={{
+                  current: currentPage,
+                  pageSize: pageSize,
+                  total: orders.filter(
+                    (item) =>
+                      item.orderStatus.name === "Giao hàng không thành công",
+                  ).length,
+                  onChange: (page, pageSize) => {
+                    setCurrentPage(page);
+                    setPageSize(pageSize);
+                  },
+                }}
+                bordered
+              >
+                <Column title="Mã Đơn Hàng" dataIndex={"id"} key="id" />
+                <Column
+                  title="Ngày Đặt"
+                  dataIndex={"requiredDate"}
+                  render={(required_date) => formatDate(required_date)}
+                  sorter={(a, b) =>
+                    new Date(a.order.required_date) -
+                    new Date(b.order.required_date)
+                  }
+                  key="required_date"
+                />
+                <Column
+                  title="Phương Thức Thanh Toán"
+                  dataIndex={"paymentMethod"}
+                  key="payment_method"
+                  render={(paymentMethod) => `Thanh toán - ${paymentMethod}`}
+                />
+                <Column
+                  title="Trạng Thái"
+                  key="status"
+                  render={() => (
+                    <Tag
+                      bordered={false}
+                      icon={<ExclamationCircleOutlined />}
+                      color="gray"
+                    >
+                      Giao hàng không thành công
+                    </Tag>
+                  )}
+                />
+                <Column
+                  title="Chi Tiết Đơn Hàng"
+                  key="detail"
+                  render={(text, item) => (
+                    <Link
+                      to="/shipping-orderDetail"
+                      state={{ order: item }}
+                      className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+                    >
+                      Chi Tiết
+                    </Link>
+                  )}
+                />
+              </Table>
+            </div>
+          </Card>
+        </div>
+      )}
     </div>
   );
 };
