@@ -8,7 +8,7 @@ import Button from "./Button";
 import { adminProfileData, staffProfileData } from "../data/dummy";
 // import { fetchLogout, fetchRefreshToken } from "../data/api";
 
-const UserProfile = ({ isAdmin }) => {
+const UserProfile = ({ isStaff, isAdmin, isShipper }) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
 
@@ -19,6 +19,7 @@ const UserProfile = ({ isAdmin }) => {
     localStorage.removeItem("result");
     localStorage.removeItem("isAdmin");
     localStorage.removeItem("isStaff");
+    localStorage.removeItem("isShipper");
     localStorage.removeItem("accessToken");
     window.location.reload();
   };
@@ -55,7 +56,7 @@ const UserProfile = ({ isAdmin }) => {
             {user.firstName} {user.lastName}
           </p>
           <p className="text-lg font-semibold text-gray-500 dark:text-gray-400">
-            {isAdmin ? "Quản trị viên" : "Nhân viên"}
+            {isAdmin ? "Quản trị viên" : isStaff ? "Nhân viên" : "Nhân viên giao hàng"}
           </p>
           <p className="text-sm font-semibold text-gray-500 dark:text-gray-400">
             {user.email}

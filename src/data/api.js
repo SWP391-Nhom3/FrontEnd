@@ -39,6 +39,11 @@ export const fetchMyProfile = async (token) => {
   });
 };
 
+//get all shipper
+export const fetchAllShipper = async () => {
+  return await axios.get(`${HOSTNAME}/users/shippers`);
+}
+
 //update my profile api
 export const fetchUpdateProfile = async (data, token) => {
   return await axios.put(`${HOSTNAME}/users`, data, {
@@ -158,8 +163,10 @@ export const fetchCancelOrder = async (id) => {
 };
 
 //confirm order api
-export const fetchConfirmOrder = async (id) => {
-  return await axios.put(`${HOSTNAME}/orders/confirm/${id}`);
+export const fetchConfirmOrder = async (id, shipperid) => {
+  return await axios.put(`${HOSTNAME}/orders/confirm/${id}`, {
+    shipperId: shipperid,
+  });
 };
 
 //shipping status order api

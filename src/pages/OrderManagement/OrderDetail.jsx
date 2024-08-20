@@ -530,6 +530,26 @@ const OrderDetail = () => {
                     })}
                   </Text>
                 </div>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <Text
+                    style={{
+                      fontSize: "17px",
+                      display: "inline-block",
+                      marginRight: "10px",
+                    }}
+                  >
+                    Nhân viên giao hàng:
+                  </Text>
+                  <Text
+                    strong
+                    style={{ fontSize: "17px", display: "inline-block" }}
+                  >
+                    {order.shipper.firstName ? order.shipper.firstName : order.shipper.email}
+                  </Text>
+                  
+                </div>
               </Card>
             </div>
           </Col>

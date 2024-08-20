@@ -27,6 +27,8 @@ const ShippingOrderDetail = () => {
   //   const [orderDetails, setOrderDetails] = useState([]);
   const token = JSON.parse(localStorage.getItem("result"));
   const isAuthenticatedStaff = localStorage.getItem("isStaff") === "true";
+  const isAuthenticatedShipper = localStorage.getItem("isShipper") === "true";
+
 
   useEffect(() => {
     let isMounted = true; // Cờ để kiểm tra xem component có còn mounted không
@@ -87,7 +89,7 @@ const ShippingOrderDetail = () => {
     // Xóa trạng thái khỏi sessionStorage
     sessionStorage.removeItem("orderCancelled");
     // Điều hướng đến trang khác nếu cần thiết
-    navigate("/await-order");
+    navigate("/cancel-shipping-order");
   }
 
   const formatDate = (dateString) => {
@@ -131,8 +133,7 @@ const ShippingOrderDetail = () => {
 
     // Xóa trạng thái khỏi sessionStorage
     sessionStorage.removeItem("orderConfirmed");
-    // Điều hướng đến trang khác nếu cần thiết
-    navigate("/await-order");
+    navigate("/complete-order");
   }
 
   const { Text } = Typography;
@@ -284,7 +285,7 @@ const ShippingOrderDetail = () => {
                 title={
                   <h1 className="text-2xl font-bold">Thông tin đơn hàng:</h1>
                 }
-                style={{ width: "90%", marginTop: "50px", height: "auto" }}
+                style={{ width: "90%", marginTop: "50px", height: "auto", minHeight: "350px" }}
               >
                 <div>
                   <div
@@ -545,15 +546,36 @@ const ShippingOrderDetail = () => {
                       currency: "VND",
                     })}
                   </Text>
+                  
+                </div>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <Text
+                    style={{
+                      fontSize: "17px",
+                      display: "inline-block",
+                      marginRight: "10px",
+                    }}
+                  >
+                    Nhân viên giao hàng:
+                  </Text>
+                  <Text
+                    strong
+                    style={{ fontSize: "17px", display: "inline-block" }}
+                  >
+                    {order.shipper.firstName ? order.shipper.firstName : order.shipper.email}
+                  </Text>
+                  
                 </div>
 
-                {isAuthenticatedStaff && (
+                {isAuthenticatedShipper && (
                   <div
                     style={{
                       display: "flex",
                       justifyContent: "space-between",
                       width: "100%",
-                      marginTop: "5vh",
+                      marginTop: "1vh",
                     }}
                   >
                     <Button
