@@ -223,17 +223,17 @@ export const fetchCancelShippingOrder = async (id) => {
 // };
 
 // //fetchUploadFeedback
-// export const fetchUploadFeedback = async (feedback, token) => {
-//   return await axios.post(
-//     `${SCHEMA_HOSTNAME}/feedbacks/reply/upload`,
-//     { ...feedback },
-//     {
-//       headers: {
-//         Authorization: `Bearer ${token.access_token}`,
-//       },
-//     },
-//   );
-// };
+export const fetchUploadFeedback = async (feedback, token) => {
+  return await axios.post(
+    `${SCHEMA_HOSTNAME}/feedbacks/reply/upload`,
+    { ...feedback },
+    {
+      headers: {
+        Authorization: `Bearer ${token.access_token}`,
+      },
+    },
+  );
+};
 
 // //fetchRefreshToken
 // export const fetchRefreshToken = async (token) => {

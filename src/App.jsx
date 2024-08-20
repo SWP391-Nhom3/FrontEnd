@@ -144,7 +144,7 @@ const App = () => {
                   />
                   <Route path="/preorder" element={<PreOrder />} />
                   <Route
-                    path="/await-orderDetail"
+                    path="/await-order-detail"
                     element={<AwaitOrderDetail />}
                   />
                   <Route path="/cancel-order" element={<CancelOrder />} />

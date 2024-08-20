@@ -3,9 +3,10 @@ import Breadcrumbs from "../elements/Breadcrumb";
 import { Button, Modal, Progress } from "flowbite-react";
 import { FaCartPlus } from "react-icons/fa6";
 import { FcFeedback } from "react-icons/fc";
+import { MdReport } from "react-icons/md";
 import { useState, useEffect } from "react";
 import RenderRating from "../elements/RenderRating";
-// import { fetchGetFeedbackByUser, fetchUploadFeedback } from "../../data/api";
+import { fetchUploadFeedback } from "../../data/api";
 import toast from "react-hot-toast";
 import { useCartContext } from "../../context/CartContext";
 import Loader from "../../assets/loading2.gif";
@@ -22,11 +23,15 @@ const OrderDetailCustomer = () => {
   const products = JSON.parse(localStorage.getItem("products")) || [];
   const [reviews, setReviews] = useState([]);
   const [loadingReviews, setLoadingReviews] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [report, setReport] = useState({
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [feedback, setFeedback] = useState({
     rating: 0,
     description: "",
     product_id: null,
+  });
+  const [report, setReport] = useState({
+    description: "",
   });
   const token = JSON.parse(localStorage.getItem("result"));
   const user = JSON.parse(localStorage.getItem("user"));
@@ -70,7 +75,7 @@ const OrderDetailCustomer = () => {
     // }
   }, []);
 
-  const checReported = (product_id) => {
+  const checkFeedback = (product_id) => {
     return reviews.includes(product_id);
   };
 
@@ -89,23 +94,38 @@ const OrderDetailCustomer = () => {
     return new Date(date.getTime() + days * 86400000);
   };
 
-  const openReportModal = (product_id) => {
-    setReport({ ...report, product_id });
-    setShowModal(true);
+  const openFeedbackModal = (product_id) => {
+    setFeedback({ ...feedback, product_id });
+    setShowFeedbackModal(true);
+  };
+
+  const closeFeedbackModal = () => {
+    setShowFeedbackModal(false);
+    setFeedback({ rating: 0, description: "", product_id: null });
+  };
+
+  const openReportModal = (orderId) => {
+    setReport({ ...feedback, orderId });
+    setShowReportModal(true);
   };
 
   const closeReportModal = () => {
-    setShowModal(false);
-    setReport({ rating: 0, description: "", product_id: null });
+    setShowReportModal(false);
+    setFeedback({ description: "" });
+  };
+
+  const handleFeedbackChange = (e) => {
+    const { name, value } = e.target;
+    setFeedback({ ...feedback, [name]: value });
   };
 
   const handleReportChange = (e) => {
     const { name, value } = e.target;
-    setReport({ ...report, [name]: value });
+    setFeedback({ ...feedback, [name]: value });
   };
 
   const handleRatingChange = (rating) => {
-    setReport({ ...report, rating });
+    setFeedback({ ...feedback, rating });
   };
 
   const handleBuyBack = async () => {
@@ -113,10 +133,10 @@ const OrderDetailCustomer = () => {
     let outOfStockProducts = [];
 
     for (const item of orderDetails) {
-      if (item.product.amount > 0) {
+      if (item.product.stockQuantity > 0) {
         productsToAdd.push(item.product);
       } else {
-        outOfStockProducts.push(item.product.product_name);
+        outOfStockProducts.push(item.product.name);
       }
     }
 
@@ -135,7 +155,7 @@ const OrderDetailCustomer = () => {
     }
   };
 
-  const submitReport = async () => {
+  const submitFeedback = async () => {
     // if (feedback.rating === 0 || feedback.description.trim() === "") {
     //   toast.error("Vui lòng nhập đủ thông tin đánh giá và mô tả sản phẩm.");
     //   return;
@@ -149,8 +169,10 @@ const OrderDetailCustomer = () => {
     //     console.log(err);
     //     toast.error("Đánh giá cho sản phẩm thất bại!");
     //   });
-    // closeReportModal();
+    // closeFeedbackModal();
   };
+
+  const submitReport = async () => {};
 
   const calculateProgress = () => {
     const status = order.orderStatus.name;
@@ -178,7 +200,10 @@ const OrderDetailCustomer = () => {
   };
 
   const statusColor = () => {
-    return order.orderStatus === 3 ? "red" : "primary";
+    return order.orderStatus.name === "Đã hủy"
+      ? //  || order.orderStatus.name === "Giao hàng không thành công")
+        "red"
+      : "secondary";
   };
 
   const getTrackingStageColor = (stage) => {
@@ -216,10 +241,19 @@ const OrderDetailCustomer = () => {
               <Button
                 color="light"
                 size={"xl"}
-                className="text-primary-600"
+                className="mb-2 text-primary-600"
                 onClick={handleBuyBack}
               >
                 <FaCartPlus className="mx-2 mt-0.5 text-xl" /> Mua lại sản phẩm
+              </Button>
+
+              <Button
+                color="light"
+                size={"xl"}
+                className="text-primary-600"
+                onClick={() => openReportModal(order.id)}
+              >
+                <MdReport className="mx-2 mt-0.5 text-xl" /> Khiếu nại đơn hàng
               </Button>
             </div>
           </div>
@@ -242,12 +276,12 @@ const OrderDetailCustomer = () => {
                   </div>
                   <div
                     className={`font-semibold ${
-                      order.orderStatus === "Đã hủy"
+                      order.orderStatus.name === "Đã hủy"
                         ? "text-red-500"
                         : getTrackingStageColor(50)
                     }`}
                   >
-                    {order.orderStatus === "Đã hủy" ? (
+                    {order.orderStatus.name === "Đã hủy" ? (
                       <div className="flex items-center gap-2">
                         <IoIosCloseCircle className="h-6 w-6" /> Hủy đơn
                       </div>
@@ -333,7 +367,7 @@ const OrderDetailCustomer = () => {
             </div>
           </div>
           <div className="w-full">
-            {loadingReviews ? ( // Display loading state while fetching reviews
+            {loadingReviews ? (
               <div className="my-10 flex items-center justify-center">
                 <img src={Loader} alt="loading" />
               </div>
@@ -357,7 +391,7 @@ const OrderDetailCustomer = () => {
                           onClick={() => window.scrollTo(0, 0)}
                           className="text-base font-medium text-gray-900 hover:underline dark:text-white"
                         >
-                          {item.product.product_name}
+                          {item.product.name}
                         </Link>
                         <input
                           type="text"
@@ -373,25 +407,15 @@ const OrderDetailCustomer = () => {
                         })}
                       </p>
                     </div>
-                    {checkMember ? (
+                    {checkMember && order.orderStatus.name === "Hoàn thành" && (
                       <Button
                         color="light"
                         size={"xl"}
                         className="ml-auto mt-4 text-primary-600 md:mt-0"
-                        onClick={() => openReportModal(item.product_id)}
+                        onClick={() => openFeedbackModal(item.product.id)}
                       >
                         <FcFeedback className="mx-2 mt-0.5 text-xl" /> Đánh giá
                         sản phẩm
-                      </Button>
-                    ) : (
-                      <Button
-                        color="light"
-                        size={"xl"}
-                        className="text-screen-500 ml-auto mt-4 md:mt-0"
-                        disabled
-                      >
-                        <FcFeedback className="mx-2 mt-0.5 text-xl" /> Đã đánh
-                        giá sản phẩm
                       </Button>
                     )}
                   </div>
@@ -401,7 +425,9 @@ const OrderDetailCustomer = () => {
           </div>
         </div>
       </div>
-      <Modal show={showModal} onClose={closeReportModal}>
+
+      {/* feedback */}
+      <Modal show={showFeedbackModal} onClose={closeFeedbackModal}>
         <Modal.Header className="text-xl font-semibold">
           Đánh giá sản phẩm:
         </Modal.Header>
@@ -412,13 +438,45 @@ const OrderDetailCustomer = () => {
                 Đánh giá:
               </label>
               <RenderRating
-                rating={report.rating}
+                rating={feedback.rating}
                 onRatingChange={handleRatingChange}
               />
             </div>
             <div>
               <label className="block text-xl font-medium text-gray-700 dark:text-gray-200">
                 Mô tả sản phẩm:
+              </label>
+              <textarea
+                name="description"
+                className="mt-1 w-full rounded border p-2"
+                rows="5"
+                value={feedback.description}
+                onChange={handleFeedbackChange}
+                required
+              />
+            </div>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button color="primary" onClick={submitFeedback}>
+            Gửi đánh giá
+          </Button>
+          <Button color="gray" onClick={closeFeedbackModal}>
+            Hủy bỏ
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* report */}
+      <Modal show={showReportModal} onClose={closeReportModal}>
+        <Modal.Header className="text-xl font-semibold">
+          Khiếu nại đơn hàng:
+        </Modal.Header>
+        <Modal.Body>
+          <div className="space-y-6">
+            <div>
+              <label className="block text-xl font-medium text-gray-700 dark:text-gray-200">
+                Lí do khiếu nại:
               </label>
               <textarea
                 name="description"
@@ -433,7 +491,7 @@ const OrderDetailCustomer = () => {
         </Modal.Body>
         <Modal.Footer>
           <Button color="primary" onClick={submitReport}>
-            Gửi đánh giá
+            Gửi khiếu nại
           </Button>
           <Button color="gray" onClick={closeReportModal}>
             Hủy bỏ

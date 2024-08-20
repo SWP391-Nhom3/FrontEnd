@@ -197,6 +197,14 @@ const AddProductBatch = () => {
       const expirationDate = moment(product.expiryDate);
       const currentDate = moment();
 
+      if (productionDate.isAfter(currentDate.add(0, "days"))) {
+        notification.error({
+          message: "Ngày sản xuất phải nhỏ hơn ngày hiện tại",
+          placement: "top",
+        });
+        return false;
+      }
+
       if (expirationDate.isBefore(productionDate.add(1, "months"))) {
         notification.error({
           message: "Hạn sử dụng phải lớn hơn ngày sản xuất ít nhất 1 tháng",

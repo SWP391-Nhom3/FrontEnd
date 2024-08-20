@@ -109,14 +109,12 @@ const AwaitOrderDetail = () => {
 
   const handleConfirmOrder = async () => {
     const order_id = order.id;
-    await fetchConfirmOrder(order_id, token)
-      .then(() => {
-        notification.success({
-          message: "Thành công",
-          description: "Đơn hàng đã được xác nhận!",
-          placement: "top",
-        });
-        navigate("/shipping-order");
+    const shipper_id = selectedShipperID;
+    await fetchConfirmOrder(order_id, shipper_id)
+      .then((res) => {
+        sessionStorage.setItem("orderConfirmed", "true");
+        console.log(res.data);
+        window.location.reload();
       })
       .catch(() => {
         notification.error({
@@ -126,6 +124,23 @@ const AwaitOrderDetail = () => {
         });
       });
   };
+
+  // Kiểm tra trạng thái sau khi trang tải lại
+  if (sessionStorage.getItem("orderConfirmed") === "true") {
+    // Hiển thị thông báo
+    notification.success({
+      message: "Thành công",
+      description: "Đơn hàng đã được xác nhận!",
+      placement: "top",
+    });
+
+    // Xóa trạng thái khỏi sessionStorage
+    sessionStorage.removeItem("orderConfirmed");
+    // Điều hướng đến trang khác nếu cần thiết
+    navigate("/await-order");
+  }
+
+  console.log("shipper ne", shipper);
 
   const { Text } = Typography;
 

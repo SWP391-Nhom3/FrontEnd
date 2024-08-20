@@ -148,7 +148,7 @@ const Orders = () => {
                 <Link
                   to={
                     item.orderStatus.name === "Chờ xác nhận"
-                      ? "/await-orderDetail"
+                      ? "/await-order-detail"
                       : "/order-detail"
                   }
                   state={{ order: item }}
