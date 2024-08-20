@@ -77,7 +77,7 @@ const Payment = () => {
   //   fetchVoucher();
   // });
 
-  console.log(totalAmount);
+  console.log(selectedVoucher, totalAmount);
   const handlePaymentChange = (e) => {
     setPaymentMethod(e.target.value);
   };
@@ -262,6 +262,8 @@ const Payment = () => {
                       ship: ship,
                       discount: discount,
                       voucherCode: voucher_code,
+                      selectedVoucher: selectedVoucher,
+                      totalAmount: totalAmount,
                     }}
                     data-modal-target="billingInformationModal"
                     data-modal-toggle="billingInformationModal"
@@ -378,10 +380,10 @@ const Payment = () => {
                       Tổng Giá Trị
                     </dt>
                     <dd className="text-lg font-bold text-gray-900 dark:text-white">
-                      {/* {Number(totalAmount).toLocaleString("vi-VN", {
+                      {Number(totalAmount).toLocaleString("vi-VN", {
                         style: "currency",
                         currency: "VND",
-                      })} */}
+                      })}
                     </dd>
                   </dl>
                 </div>
