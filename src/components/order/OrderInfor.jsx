@@ -2,7 +2,14 @@ import { useEffect, useState } from "react";
 import { getProvinces, getDistricts, getWards } from "../../data/api";
 import { Link, useNavigate } from "react-router-dom";
 
-const OrderInfor = ({ paymentType, discount, ship, voucherCode }) => {
+const OrderInfor = ({
+  paymentType,
+  discount,
+  ship,
+  voucherCode,
+  selectedVoucher,
+  totalAmount,
+}) => {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user")) || null;
   const [formValues, setFormValues] = useState({
@@ -146,7 +153,14 @@ const OrderInfor = ({ paymentType, discount, ship, voucherCode }) => {
 
     if (paymentType === "regular") {
       navigate("/payment", {
-        state: { customer_infor, discount, ship, voucherCode },
+        state: {
+          customer_infor,
+          discount,
+          ship,
+          voucherCode,
+          selectedVoucher,
+          totalAmount,
+        },
       });
     } else if (paymentType === "preOrder") {
       navigate("/pre-order-payment", {

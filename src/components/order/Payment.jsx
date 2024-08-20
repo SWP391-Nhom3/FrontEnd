@@ -12,11 +12,13 @@ import {
   fetchCreateOrder,
   fetchProductBatches,
   fetchProducts,
+  fetchCreateVoucher,
 } from "../../data/api";
 
 const Payment = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const location = useLocation();
+
   const navigate = useNavigate();
   const customer_infor = location.state?.customer_infor;
   const { cartItems, totalPrice, clearCart } = useCartContext();
@@ -29,8 +31,11 @@ const Payment = () => {
   const [QR, setQR] = useState(``);
   const [countdown, setCountdown] = useState(null);
   const ship = location.state?.ship;
+  const selectedVoucher = location.state?.selectedVoucher;
+  const totalAmount = location.state?.totalAmount;
   const discount = location.state?.discount;
   const voucher_code = location.state?.voucherCode;
+  // const [totalAmount, setTotalAmount] = useState(totalPrice);
   const callTime = 300000; // 5 minutes
 
   useEffect(() => {
@@ -59,7 +64,20 @@ const Payment = () => {
 
     fetchProductsData();
   }, []);
+  // useEffect(() => {
+  //   const fetchVoucher = async () => {
+  //     try {
+  //       const response = await fetchCreateVoucher();
+  //       setSelectedVoucher(response);
+  //     } catch (error) {
+  //       console.error("Error creating voucher:", error);
+  //     }
+  //   };
 
+  //   fetchVoucher();
+  // });
+
+  console.log(totalAmount);
   const handlePaymentChange = (e) => {
     setPaymentMethod(e.target.value);
   };
@@ -343,10 +361,15 @@ const Payment = () => {
                       </dt>
                       <dd className="text-base font-medium text-gray-900 dark:text-white">
                         -
-                        {Number(discount).toLocaleString("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
-                        })}
+                        {/* {selectedVoucher.voucherType === "FIXED_AMOUNT"
+                          ? Number(selectedVoucher.value).toLocaleString(
+                              "vi-VN",
+                              {
+                                style: "currency",
+                                currency: "VND",
+                              },
+                            )
+                          : `${Number(selectedVoucher.value)}%`} */}
                       </dd>
                     </dl>
                   </div>
@@ -355,10 +378,10 @@ const Payment = () => {
                       Tổng Giá Trị
                     </dt>
                     <dd className="text-lg font-bold text-gray-900 dark:text-white">
-                      {Number(total).toLocaleString("vi-VN", {
+                      {/* {Number(totalAmount).toLocaleString("vi-VN", {
                         style: "currency",
                         currency: "VND",
-                      })}
+                      })} */}
                     </dd>
                   </dl>
                 </div>

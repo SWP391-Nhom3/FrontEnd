@@ -1,11 +1,11 @@
 import { MdDeleteForever } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
 
 import cartEmptyImg from "../../assets/images/background/cart_empty.png";
 import { useCartContext } from "../../context/CartContext";
-// import { fetchGetAllVoucher, fetchGetMe, fetchGetVoucher, fetchRefreshToken } from "../../data/api";
+import { fetchGetVoucher } from "../../data/api";
 import { Button } from "flowbite-react";
 import { ImGift } from "react-icons/im";
 const ShoppingCart = () => {
@@ -20,56 +20,52 @@ const ShoppingCart = () => {
     cartAmount,
   } = useCartContext();
   const [voucherCode, setVoucherCode] = useState("");
+  const [selectedVoucher, setSelectedVoucher] = useState({});
   const [discount, setDiscount] = useState(0);
   const [ship, setShip] = useState(0);
   const [errorList, setErrorList] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [voucherList, setVoucherList] = useState([]);
   const token = JSON.parse(localStorage.getItem("result"));
-  // const getMeProfile = async () => {
-  //   await fetchGetMe(token)
-  //     .then((res) => {
-  //       const point = res.data.result.member_ship;
-  //       user.member_ship = point
-  //       localStorage.setItem("user", JSON.stringify(user));
-  //     })
-  //     .catch(async (error) => {
-  //       if (error.response.status === 401) {
-  //         await fetchRefreshToken(token)
-  //           .then(async (res) => {
-  //             localStorage.setItem("result", JSON.stringify(res.data.result));
-  //             await getMeProfile();
-  //           })
-  //           .catch((error) => {
-  //             if (error.response.status === 401) {
-  //               localStorage.removeItem("user");
-  //               localStorage.removeItem("result");
-  //             }
-  //           });
-  //       }
-  //     });
-  // };
+  const [totalAmount, setTotalAmount] = useState(totalPrice); // initialTotalAmount là tổng số tiền ban đầu của giỏ hàng
 
-  // useEffect(() => {
-  //   if(user) getMeProfile();
-  // }, []);
+  const handleChangeVoucherCode = (event) => {
+    const selectedVoucherCode = event.target.value;
+    const selectedVoucher = voucherList.find(
+      (voucher) => voucher.code === selectedVoucherCode,
+    );
+    setVoucherCode(selectedVoucherCode);
+    if (selectedVoucher) {
+      applyDiscount(selectedVoucher);
+    } else {
+      setDiscount(0);
+    }
+  };
+  const total = totalPrice + ship > 0 ? totalPrice + ship : 0;
 
-  // useEffect(() => {
-  //   const getVouchers = async () => {
-  //     try {
-  //       const data = await fetchGetAllVoucher();
-  //       const currentDate = new Date();
-  //       const sortedVouchers = data.data.result
-  //         .filter((voucher) => voucher.voucher_type === 1)
-  //         .filter((voucher) => new Date(voucher.expire_date) > currentDate)
-  //         .filter((voucher) => voucher.membership <= user.member_ship);
-  //       setVoucherList(sortedVouchers);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   getVouchers();
-  // }, [user]);
+  const applyDiscount = (voucher) => {
+    let newTotalAmount = total;
+
+    if (voucher.voucherType === "FIXED_AMOUNT") {
+      newTotalAmount -= voucher.value; // Giảm giá trực tiếp bằng số tiền cố định
+    } else if (voucher.voucherType === "PERCENTAGE") {
+      newTotalAmount -= (newTotalAmount * voucher.value) / 100; // Giảm giá theo phần trăm
+    }
+
+    setTotalAmount(newTotalAmount); // Cập nhật tổng số tiền sau khi áp dụng giảm giá
+  };
+  useEffect(() => {
+    const getVouchers = async () => {
+      try {
+        const data = await fetchGetVoucher();
+        console.log(data);
+        setVoucherList(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getVouchers();
+  }, [user]);
 
   const handleRadioChange = (event) => {
     const selectedValue = event.target.value;
@@ -81,23 +77,33 @@ const ShoppingCart = () => {
     setVoucherCode(e.target.value);
   };
 
-  // const handClickVoucher = async (event) => {
-  //   event.preventDefault();
-  //   await fetchGetVoucher(voucherCode)
-  //     .then((res) => {
-  //       setDiscount(Number(res.data.discount));
-  //     })
-  //     .catch((error) => {
-  //       let errorList = [];
-  //       setDiscount(0);
-  //       setVoucherCode("");
-  //       for (let [key, value] of Object.entries(error.response.data.errors)) {
-  //         errorList.push(value);
-  //         setErrorList(errorList);
-  //       }
-  //     });
-  // };
+  const handClickVoucher = async (event) => {
+    event.preventDefault();
 
+    await fetchGetVoucher()
+      .then((res) => {
+        const allVouchers = res;
+        let selectedVoucher = allVouchers.find(
+          (voucher) => voucher.code === voucherCode,
+        ); // Tìm voucher đã chọn dựa trên mã.
+
+        if (selectedVoucher) {
+          selectedVoucher = {
+            ...selectedVoucher,
+            maxUses: selectedVoucher.maxUses - 1,
+          };
+
+          setDiscount(Number(selectedVoucher.value));
+          setSelectedVoucher(selectedVoucher);
+        } else {
+          console.log("Voucher không tồn tại hoặc đã hết hạn.");
+        }
+      })
+      .catch((error) => {
+        // Xử lý lỗi nếu có
+        console.error("Lỗi khi lấy dữ liệu voucher:", error);
+      });
+  };
   const calculateShip = (cartAmount) => {
     if (cartAmount > 20) {
       return 0;
@@ -111,9 +117,6 @@ const ShoppingCart = () => {
   useEffect(() => {
     setShip(calculateShip(cartAmount));
   }, [cartAmount]);
-
-  const total = totalPrice + ship > 0 ? totalPrice + ship : 0;
-
   return (
     <>
       <ol className="flex w-full items-center justify-center px-24 text-center text-sm font-medium text-gray-500 sm:text-base">
@@ -353,11 +356,15 @@ const ShoppingCart = () => {
                           Mã giảm giá
                         </dt>
                         <dd className="text-base font-medium text-gray-900">
-                          -
-                          {Number(discount).toLocaleString("vi-VN", {
-                            style: "currency",
-                            currency: "VND",
-                          })}
+                          {selectedVoucher.voucherType === "FIXED_AMOUNT"
+                            ? Number(selectedVoucher.value).toLocaleString(
+                                "vi-VN",
+                                {
+                                  style: "currency",
+                                  currency: "VND",
+                                },
+                              )
+                            : `${Number(selectedVoucher.value)}%`}
                         </dd>
                       </dl>
                     </div>
@@ -366,10 +373,13 @@ const ShoppingCart = () => {
                         Tổng Cộng
                       </dt>
                       <dd className="text-base font-bold text-gray-900">
-                        {Number(total).toLocaleString("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
-                        })}
+                        {Number(Math.max(totalAmount, 0)).toLocaleString(
+                          "vi-VN",
+                          {
+                            style: "currency",
+                            currency: "VND",
+                          },
+                        )}
                       </dd>
                     </dl>
                   </div>
@@ -379,6 +389,8 @@ const ShoppingCart = () => {
                       discount: discount,
                       ship: ship,
                       voucherCode: voucherCode,
+                      selectedVoucher: selectedVoucher,
+                      totalAmount: totalAmount,
                       paymentType: "regular",
                     }}
                     className="flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-500 focus:outline-none focus:ring-4 focus:ring-[#93c5fd]"
@@ -414,13 +426,7 @@ const ShoppingCart = () => {
                   </div>
                 </div>
                 <div className="space-y-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
-                  <form
-                    className="space-y-4"
-                    onSubmit={
-                      {}
-                      // handClickVoucher
-                    }
-                  >
+                  <form className="space-y-4" onSubmit={handClickVoucher}>
                     <label
                       htmlFor="voucher"
                       className="mb-2 block text-sm font-medium text-gray-900"
@@ -428,18 +434,18 @@ const ShoppingCart = () => {
                       Bạn có voucher hoặc thẻ quà tặng không?
                     </label>
                     <div className="flex w-full items-center justify-between gap-2">
-                      <div className="w-3/4">
-                        <input
-                          type="text"
-                          id="voucherCode"
-                          name="voucherCode"
-                          value={voucherCode}
-                          onChange={handChangeVoucherCode}
-                          className="block h-full w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500"
-                          placeholder=""
-                          required
-                        />
-                      </div>
+                      <select
+                        id="voucherCode"
+                        name="voucherCode"
+                        value={voucherCode} // Đảm bảo rằng giá trị này được cập nhật đúng cách
+                        onChange={handleChangeVoucherCode}
+                      >
+                        {voucherList.map((voucher) => (
+                          <option key={voucher.code} value={voucher.code}>
+                            {voucher.code}
+                          </option>
+                        ))}
+                      </select>
                       <div className="w-1/4">
                         <Button color="blue" size="xs" type="submit">
                           Áp Dụng
