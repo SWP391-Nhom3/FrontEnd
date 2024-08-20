@@ -29,7 +29,6 @@ const ShippingOrderDetail = () => {
   const isAuthenticatedStaff = localStorage.getItem("isStaff") === "true";
   const isAuthenticatedShipper = localStorage.getItem("isShipper") === "true";
 
-
   useEffect(() => {
     let isMounted = true; // Cờ để kiểm tra xem component có còn mounted không
 
@@ -285,7 +284,12 @@ const ShippingOrderDetail = () => {
                 title={
                   <h1 className="text-2xl font-bold">Thông tin đơn hàng:</h1>
                 }
-                style={{ width: "90%", marginTop: "50px", height: "auto", minHeight: "350px" }}
+                style={{
+                  width: "90%",
+                  marginTop: "50px",
+                  height: "auto",
+                  minHeight: "350px",
+                }}
               >
                 <div>
                   <div
@@ -546,7 +550,6 @@ const ShippingOrderDetail = () => {
                       currency: "VND",
                     })}
                   </Text>
-                  
                 </div>
                 <div
                   style={{ display: "flex", justifyContent: "space-between" }}
@@ -564,9 +567,10 @@ const ShippingOrderDetail = () => {
                     strong
                     style={{ fontSize: "17px", display: "inline-block" }}
                   >
-                    {order.shipper.firstName ? order.shipper.firstName : order.shipper.email}
+                    {order.shipper.firstName
+                      ? order.shipper.firstName
+                      : order.shipper.email}
                   </Text>
-                  
                 </div>
 
                 {isAuthenticatedShipper && (

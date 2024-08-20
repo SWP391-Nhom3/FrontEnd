@@ -52,7 +52,9 @@ const CompleteOrder = () => {
   return (
     <div>
       {isShipper ? (
-        <div style={{ display: "flex", justifyContent: "center", height: "80vh" }}>
+        <div
+          style={{ display: "flex", justifyContent: "center", height: "80vh" }}
+        >
           <Card
             title="Đơn hoàn thành"
             style={{ width: "90%", marginTop: "50px", height: "75vh" }}
@@ -60,7 +62,9 @@ const CompleteOrder = () => {
             <div>
               <Table
                 dataSource={orders.filter(
-                  (item) => item.orderStatus.name === "Hoàn thành" && item.shipper.id === shipperId,
+                  (item) =>
+                    item.orderStatus.name === "Hoàn thành" &&
+                    item.shipper.id === shipperId,
                 )}
                 rowKey={(item) => item.id}
                 pagination={{
@@ -97,7 +101,11 @@ const CompleteOrder = () => {
                   title="Trạng Thái"
                   key="status"
                   render={() => (
-                    <Tag bordered={false} icon={<SmileOutlined />} color="green">
+                    <Tag
+                      bordered={false}
+                      icon={<SmileOutlined />}
+                      color="green"
+                    >
                       Đã Hoàn Thành
                     </Tag>
                   )}
@@ -120,7 +128,9 @@ const CompleteOrder = () => {
           </Card>
         </div>
       ) : (
-        <div style={{ display: "flex", justifyContent: "center", height: "80vh" }}>
+        <div
+          style={{ display: "flex", justifyContent: "center", height: "80vh" }}
+        >
           <Card
             title="Đơn hoàn thành"
             style={{ width: "90%", marginTop: "50px", height: "75vh" }}
@@ -165,7 +175,11 @@ const CompleteOrder = () => {
                   title="Trạng Thái"
                   key="status"
                   render={() => (
-                    <Tag bordered={false} icon={<SmileOutlined />} color="green">
+                    <Tag
+                      bordered={false}
+                      icon={<SmileOutlined />}
+                      color="green"
+                    >
                       Đã Hoàn Thành
                     </Tag>
                   )}

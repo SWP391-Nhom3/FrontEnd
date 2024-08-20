@@ -16,9 +16,9 @@ const ShippingOrder = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(7);
   const isShipper = localStorage.getItem("isShipper") === "true";
-  const user =JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem("user"));
   const shipperId = user.id;
-  console.log("dfasdf",user.id);
+  console.log("dfasdf", user.id);
   useEffect(() => {
     const getOrders = async () => {
       try {
@@ -50,12 +50,12 @@ const ShippingOrder = () => {
     return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
   };
 
-
-
   return (
     <div>
       {isShipper ? (
-        <div style={{ display: "flex", justifyContent: "center", height: "80vh" }}>
+        <div
+          style={{ display: "flex", justifyContent: "center", height: "80vh" }}
+        >
           <Card
             title="Đơn đang vận chuyển"
             style={{ width: "90%", marginTop: "50px", height: "75vh" }}
@@ -63,7 +63,9 @@ const ShippingOrder = () => {
             <div>
               <Table
                 dataSource={orders.filter(
-                  (item) => item.orderStatus.name === "Đang giao hàng" && item.shipper.id === shipperId,
+                  (item) =>
+                    item.orderStatus.name === "Đang giao hàng" &&
+                    item.shipper.id === shipperId,
                 )}
                 rowKey={(item) => item.id}
                 pagination={{
@@ -127,7 +129,9 @@ const ShippingOrder = () => {
           </Card>
         </div>
       ) : (
-        <div style={{ display: "flex", justifyContent: "center", height: "80vh" }}>
+        <div
+          style={{ display: "flex", justifyContent: "center", height: "80vh" }}
+        >
           <Card
             title="Đơn đang vận chuyển"
             style={{ width: "90%", marginTop: "50px", height: "75vh" }}
@@ -201,6 +205,6 @@ const ShippingOrder = () => {
       )}
     </div>
   );
-}
+};
 
 export default ShippingOrder;

@@ -35,7 +35,10 @@ const Users = () => {
             user.roles
               .split(", ")
               .some(
-                (roleName) => roleName === "MEMBER" || roleName === "STAFF" || roleName === "SHIPPER",
+                (roleName) =>
+                  roleName === "MEMBER" ||
+                  roleName === "STAFF" ||
+                  roleName === "SHIPPER",
               ),
           );
 
@@ -58,9 +61,9 @@ const Users = () => {
         : "Bạn có muốn chặn tài khoản này?",
       onOk: async () => {
         try {
-          console.log(user)
+          console.log(user);
           user.active = checked;
-          await fetchUserStatusById(  user.id, token);
+          await fetchUserStatusById(user.id, token);
           setUsers((prevUsers) => {
             return prevUsers.map((u) => (u.id === user.id ? user : u));
           });

@@ -209,7 +209,6 @@ export const adminlinks = [
           { name: "allUser", path: "users", label: "Tất cả người dùng" },
           { name: "addStaff", path: "add-staff", label: "Thêm nhân viên" },
           { name: "", path: "add-shipper", label: "Thêm nhân viên giao hàng" },
-
         ],
       },
     ],
@@ -266,7 +265,6 @@ export const adminlinks = [
 ];
 
 export const shipperLinks = [
-  
   {
     title: "Đơn hàng",
     links: [
@@ -289,9 +287,8 @@ export const shipperLinks = [
         path: "cancel-shipping-order",
       },
     ],
-  }
+  },
 ];
-
 
 export const staffProfileData = [
   // {

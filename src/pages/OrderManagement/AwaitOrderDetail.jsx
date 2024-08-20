@@ -2,7 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { Button } from "flowbite-react";
-import { Card, Col, Divider, Row, Select, Steps, Typography, notification } from "antd";
+import {
+  Card,
+  Col,
+  Divider,
+  Row,
+  Select,
+  Steps,
+  Typography,
+  notification,
+} from "antd";
 import Loading from "../../components/Loading";
 import {
   CheckCircleOutlined,
@@ -57,11 +66,10 @@ const AwaitOrderDetail = () => {
   console.log("order ne", order);
 
   useEffect(() => {
-    fetchAllShipper()
-      .then((res) => {
-        setShipper(res.data.data)
-      })
-  }, [])
+    fetchAllShipper().then((res) => {
+      setShipper(res.data.data);
+    });
+  }, []);
 
   const handleShipperChange = (value) => {
     setSelectedShipperID(value);
@@ -302,7 +310,12 @@ const AwaitOrderDetail = () => {
                 title={
                   <h1 className="text-2xl font-bold">Thông tin đơn hàng:</h1>
                 }
-                style={{ width: "90%", marginTop: "50px", height: "auto", minHeight: "350px" }}
+                style={{
+                  width: "90%",
+                  marginTop: "50px",
+                  height: "auto",
+                  minHeight: "350px",
+                }}
               >
                 <div>
                   <div
@@ -568,14 +581,15 @@ const AwaitOrderDetail = () => {
                 {isAuthenticatedStaff && (
                   <div>
                     <Select
-
                       style={{ width: 200, marginTop: "2vh" }}
                       placeholder="Chọn shipper"
                       onChange={handleShipperChange}
                     >
                       {shipper.map((shipper) => (
                         <Option key={shipper.id} value={shipper.id}>
-                          {shipper.firstName ? shipper.firstName : shipper.email}
+                          {shipper.firstName
+                            ? shipper.firstName
+                            : shipper.email}
                         </Option>
                       ))}
                     </Select>
@@ -590,7 +604,6 @@ const AwaitOrderDetail = () => {
                       <Button
                         type="default"
                         onClick={handleCancelOrder}
-                        disabled={selectedShipperID === null}
                         style={{
                           backgroundColor: "#ff4d4f",
                           fontSize: "15px",
@@ -611,7 +624,6 @@ const AwaitOrderDetail = () => {
                       </Button>
                     </div>
                   </div>
-
                 )}
               </Card>
             </div>

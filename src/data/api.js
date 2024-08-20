@@ -42,7 +42,7 @@ export const fetchMyProfile = async (token) => {
 //get all shipper
 export const fetchAllShipper = async () => {
   return await axios.get(`${HOSTNAME}/users/shippers`);
-}
+};
 
 //update my profile api
 export const fetchUpdateProfile = async (data, token) => {
@@ -51,7 +51,7 @@ export const fetchUpdateProfile = async (data, token) => {
       Authorization: `Bearer ${token}`,
     },
   });
-}
+};
 
 //get all category api
 export const fetchCategories = async () => {

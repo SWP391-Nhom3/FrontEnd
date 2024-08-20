@@ -56,7 +56,11 @@ const UserProfile = ({ isStaff, isAdmin, isShipper }) => {
             {user.firstName} {user.lastName}
           </p>
           <p className="text-lg font-semibold text-gray-500 dark:text-gray-400">
-            {isAdmin ? "Quản trị viên" : isStaff ? "Nhân viên" : "Nhân viên giao hàng"}
+            {isAdmin
+              ? "Quản trị viên"
+              : isStaff
+                ? "Nhân viên"
+                : "Nhân viên giao hàng"}
           </p>
           <p className="text-sm font-semibold text-gray-500 dark:text-gray-400">
             {user.email}

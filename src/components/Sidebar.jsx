@@ -11,7 +11,11 @@ import { useStateContext } from "../context/ContextProvider";
 import logoImg from "../assets/images/logo/Logo.png";
 import { Badge } from "antd";
 
-const Sidebar = ({ isAuthenticatedAdmin, isAuthenticatedStaff, isAuthenticatedShipper }) => {
+const Sidebar = ({
+  isAuthenticatedAdmin,
+  isAuthenticatedStaff,
+  isAuthenticatedShipper,
+}) => {
   const { currentColor, activeMenu, setActiveMenu, screenSize } =
     useStateContext();
   const [activeSubmenu, setActiveSubmenu] = useState(null);
@@ -78,8 +82,9 @@ const Sidebar = ({ isAuthenticatedAdmin, isAuthenticatedStaff, isAuthenticatedSh
   return (
     <div
       ref={sidebarRef}
-      className={`ml-3 h-screen overflow-auto pb-10 md:overflow-hidden md:hover:overflow-auto ${activeMenu ? "" : "hidden"
-        }`}
+      className={`ml-3 h-screen overflow-auto pb-10 md:overflow-hidden md:hover:overflow-auto ${
+        activeMenu ? "" : "hidden"
+      }`}
       style={{
         overflow: "auto",
         msOverflowStyle: "none" /* Internet Explorer 10+ */,
@@ -134,9 +139,9 @@ const Sidebar = ({ isAuthenticatedAdmin, isAuthenticatedStaff, isAuthenticatedSh
                         onClick={
                           link.type === "sub"
                             ? (e) => {
-                              e.preventDefault();
-                              toggleSubmenu(link.name);
-                            }
+                                e.preventDefault();
+                                toggleSubmenu(link.name);
+                              }
                             : handleCloseSideBar
                         }
                         style={({ isActive }) => ({
@@ -206,9 +211,9 @@ const Sidebar = ({ isAuthenticatedAdmin, isAuthenticatedStaff, isAuthenticatedSh
                         onClick={
                           link.type === "sub"
                             ? (e) => {
-                              e.preventDefault();
-                              toggleSubmenu(link.name);
-                            }
+                                e.preventDefault();
+                                toggleSubmenu(link.name);
+                              }
                             : handleCloseSideBar
                         }
                         style={({ isActive }) => ({
@@ -220,8 +225,8 @@ const Sidebar = ({ isAuthenticatedAdmin, isAuthenticatedStaff, isAuthenticatedSh
                       >
                         {(link.name === "Quản lý đơn hàng" &&
                           awaitOrderCount > 0) ||
-                          (link.name === "Quản lý đánh giá" &&
-                            feedbackCount > 0) ? (
+                        (link.name === "Quản lý đánh giá" &&
+                          feedbackCount > 0) ? (
                           <Badge dot>{link.icon}</Badge>
                         ) : (
                           link.icon
@@ -256,8 +261,8 @@ const Sidebar = ({ isAuthenticatedAdmin, isAuthenticatedStaff, isAuthenticatedSh
                               }
                             >
                               {subLink.name === "await-order" ||
-                                subLink.name === "allFeedback" ||
-                                subLink.name === "badFeedback" ? (
+                              subLink.name === "allFeedback" ||
+                              subLink.name === "badFeedback" ? (
                                 <div
                                   style={{
                                     display: "flex",
