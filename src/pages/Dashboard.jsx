@@ -4,12 +4,12 @@ import { BsBoxSeam, BsCurrencyDollar } from "react-icons/bs";
 
 import { useStateContext } from "../context/ContextProvider";
 
-// import {
-//   fetchAllUsers,
-//   fetchOrder,
-//   fetchProducts,
-//   fetchRevenue,
-// } from "../data/api";
+import {
+  fetchAllUsers,
+  fetchProducts,
+  fetchProductBatches,
+  fetchOrders,
+} from "../data/api";
 import { MdOutlineSupervisorAccount } from "react-icons/md";
 import { FiBarChart } from "react-icons/fi";
 import { Col, Row, Select } from "antd";
@@ -21,35 +21,17 @@ import ProductStock from "../components/Dashboard/ProductStock";
 import MonthlyOrder from "../components/Dashboard/MonthlyOrder";
 
 const DropDown = ({ currentMode, onSelect }) => (
-  <div className="border-1 border-color w-28 rounded-md px-2 py-1">
-    {/* <DropDownListComponent
-      id="time"
-      fields={{ text: "option", value: "Id" }}
-      style={{
-        border: "none",
-        color: currentMode === "Dark" ? "white" : "black",
-      }}
-      value="1"
-      dataSource={[
-        { Id: "1", option: "Sắp hết" },
-        { Id: "2", option: "Nhiều nhất" },
-      ]}
-      popupHeight="220px"
-      popupWidth="120px"
-      change={(e) => onSelect(e.itemData.option)}
-    /> */}
-  </div>
+  <div className="border-1 border-color w-28 rounded-md px-2 py-1"></div>
 );
 
 const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
   const { currentColor, currentMode } = useStateContext();
-
   const [loading, setLoading] = useState(true);
   const [revenues, setRevenues] = useState([]);
   // const [profit, setProfit] = useState([]);
   const [customers, setCustomers] = useState([]);
   const [products, setProducts] = useState([]);
-
+  const [totalStaff, setTotalStaff] = useState(0);
   const [totalRevenue, setTotalRevenue] = useState(0);
   const [totalProfit, setTotalProfit] = useState(0);
   const [totalCustomer, setTotalCustomer] = useState(0);
@@ -62,75 +44,92 @@ const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
   const [salesTimeRange, setSalesTimeRange] = useState("thisWeek");
   const [order, setOrder] = useState([]);
   const { Option } = Select;
-  //fetch revenue
-  useEffect(() => {
-    // const getRevenue = async () => {
-    //   try {
-    //     const data = await fetchRevenue();
-    //     setRevenues(data);
-    //     calculateTotalRevenue(data, revenueTimeRange);
-    //     calculateTotalProfit(data, profitTimeRange);
-    //     setLoading(false);
-    //   } catch (error) {
-    //     console.log("Error fetching revenue:", error);
-    //     setLoading(false);
-    //   }
-    // };
-    // getRevenue();
-  }, [revenueTimeRange, profitTimeRange]);
+
   useEffect(() => {
     document.title = "Administrator Dashboard";
   }, []);
   //fetch customer
   useEffect(() => {
-    // const getCustomer = async () => {
-    //   try {
-    //     const result = JSON.parse(localStorage.getItem("result"));
-    //     const response = await fetchAllUsers(result);
-    //     const data = response.data.users;
-    //     setCustomers(data);
-    //     calculateCustomer(data);
-    //     setLoading(false);
-    //   } catch (error) {
-    //     console.error("Error fetching customers:", error);
-    //     setLoading(false);
-    //   }
-    // };
-    // getCustomer();
+    const getCustomer = async () => {
+      try {
+        const result = localStorage.getItem("accessToken");
+        const response = await fetchAllUsers(result);
+        const data = response.data.data;
+        setCustomers(data);
+        calculateCustomer(data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching customers:", error);
+        setLoading(false);
+      }
+    };
+    getCustomer();
   }, []);
-
+  //fetch staff
+  useEffect(() => {
+    const getCustomer = async () => {
+      try {
+        const result = localStorage.getItem("accessToken");
+        const response = await fetchAllUsers(result);
+        const data = response.data.data;
+        setCustomers(data);
+        calculateStaff(data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching customers:", error);
+        setLoading(false);
+      }
+    };
+    getCustomer();
+  }, []);
   //fetch product
   useEffect(() => {
-    // const getProducts = async () => {
-    //   try {
-    //     const data = await fetchProducts();
-    //     setProducts(data);
-    //     calculateProduct(data);
-    //     setLoading(false);
-    //   } catch (error) {
-    //     console.error("Error fetching product:", error);
-    //     setLoading(false);
-    //   }
-    // };
-    // getProducts();
+    const getProducts = async () => {
+      try {
+        const data = await fetchProducts();
+        setProducts(data.data.data);
+        calculateProduct(data.data.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching product:", error);
+        setLoading(false);
+      }
+    };
+    getProducts();
   }, []);
 
   //fetch order
   useEffect(() => {
-    // const getOrders = async () => {
-    //   try {
-    //     const orderData = await fetchOrder();
-    //     setOrder(orderData);
-    //     calculateTotalSales(orderData, salesTimeRange);
-    //     setLoading(false);
-    //   } catch (error) {
-    //     console.error("Error fetching orders:", error);
-    //     setLoading(false);
-    //   }
-    // };
-    // getOrders();
-  }, [salesTimeRange]);
-
+    const getOrders = async () => {
+      try {
+        const orderData = await fetchProductBatches();
+        setOrder(orderData.data.data);
+        const orderDatas = orderData.data.data;
+        calculateSold(orderDatas);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+        setLoading(false);
+      }
+    };
+    getOrders();
+  }, []);
+  //fetch revenue
+  useEffect(() => {
+    const getOrders = async () => {
+      try {
+        const orderData = await fetchOrders();
+        const orderDatas = orderData.data;
+        setOrder(orderDatas);
+        calculateRevenue(orderDatas);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+        setLoading(false);
+      }
+    };
+    getOrders();
+  }, []);
   //time in Vietnam
   const timezoneOffset = 7 * 60; // GMT+7 in minutes
   const convertToVietnamTime = (date) => {
@@ -138,154 +137,24 @@ const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
     const vietnamDate = new Date(utcDate.getTime() + timezoneOffset * 60000);
     return vietnamDate;
   };
-
-  const calculateTotalProfit = (data, timeRange) => {
-    const now = new Date();
-    let filteredData = [];
-
-    const startOfToday = convertToVietnamTime(
-      new Date(now.setHours(0, 0, 0, 0)),
-    );
-
-    if (timeRange === "today") {
-      filteredData = data.filter((item) => {
-        const completedDate = convertToVietnamTime(
-          new Date(item.completed_date),
-        );
-        return completedDate >= startOfToday;
-      });
-    } else if (timeRange === "thisWeek") {
-      const startOfWeek = convertToVietnamTime(
-        new Date(now.setDate(now.getDate() - ((now.getDay() + 6) % 7))),
-      );
-      startOfWeek.setHours(0, 0, 0, 0);
-      const endOfWeek = new Date(startOfWeek);
-      endOfWeek.setDate(startOfWeek.getDate() + 6);
-      endOfWeek.setHours(23, 59, 59, 999);
-
-      filteredData = data.filter((item) => {
-        const completedDate = convertToVietnamTime(
-          new Date(item.completed_date),
-        );
-        return completedDate >= startOfWeek && completedDate <= endOfWeek;
-      });
-    } else if (timeRange === "thisMonth") {
-      const startOfMonth = convertToVietnamTime(
-        new Date(now.getFullYear(), now.getMonth(), 1),
-      );
-      startOfMonth.setHours(0, 0, 0, 0);
-
-      filteredData = data.filter((item) => {
-        const completedDate = convertToVietnamTime(
-          new Date(item.completed_date),
-        );
-        return completedDate >= startOfMonth;
-      });
-    } else if (timeRange === "thisYear") {
-      const startOfYear = convertToVietnamTime(
-        new Date(now.getFullYear(), 0, 1),
-      );
-      startOfYear.setHours(0, 0, 0, 0);
-
-      filteredData = data.filter((item) => {
-        const completedDate = convertToVietnamTime(
-          new Date(item.completed_date),
-        );
-        return completedDate >= startOfYear;
-      });
-    } else if (timeRange === "all") {
-      filteredData = data;
-    }
-
-    let total = 0;
-    filteredData.forEach((item) => {
-      if (item.type === 1) {
-        total += item.total;
-      } else {
-        total -= item.total;
-      }
-    });
-    setTotalProfit(total);
-  };
-
-  //tinh doanh thu
-  const calculateTotalRevenue = (data, timeRange) => {
-    const now = new Date();
-    let filteredData = [];
-
-    const startOfToday = convertToVietnamTime(
-      new Date(now.setHours(0, 0, 0, 0)),
-    );
-
-    if (timeRange === "today") {
-      filteredData = data.filter((item) => {
-        const completedDate = convertToVietnamTime(
-          new Date(item.completed_date),
-        );
-        return completedDate >= startOfToday;
-      });
-    } else if (timeRange === "thisWeek") {
-      const startOfWeek = convertToVietnamTime(
-        new Date(now.setDate(now.getDate() - ((now.getDay() + 6) % 7))),
-      );
-      startOfWeek.setHours(0, 0, 0, 0);
-      const endOfWeek = new Date(startOfWeek);
-      endOfWeek.setDate(startOfWeek.getDate() + 6);
-      endOfWeek.setHours(23, 59, 59, 999);
-
-      filteredData = data.filter((item) => {
-        const completedDate = convertToVietnamTime(
-          new Date(item.completed_date),
-        );
-        return completedDate >= startOfWeek && completedDate <= endOfWeek;
-      });
-    } else if (timeRange === "thisMonth") {
-      const startOfMonth = convertToVietnamTime(
-        new Date(now.getFullYear(), now.getMonth(), 1),
-      );
-      startOfMonth.setHours(0, 0, 0, 0);
-
-      filteredData = data.filter((item) => {
-        const completedDate = convertToVietnamTime(
-          new Date(item.completed_date),
-        );
-        return completedDate >= startOfMonth;
-      });
-    } else if (timeRange === "thisYear") {
-      const startOfYear = convertToVietnamTime(
-        new Date(now.getFullYear(), 0, 1),
-      );
-      startOfYear.setHours(0, 0, 0, 0);
-
-      filteredData = data.filter((item) => {
-        const completedDate = convertToVietnamTime(
-          new Date(item.completed_date),
-        );
-        return completedDate >= startOfYear;
-      });
-    } else if (timeRange === "all") {
-      filteredData = data;
-    }
-
-    let total = 0;
-    filteredData.forEach((item) => {
-      if (item.type === 1) {
-        total += item.total;
-      }
-    });
-    setTotalRevenue(total);
-  };
-
   const calculateCustomer = (data) => {
     let total = 0;
     data.forEach((item) => {
-      if (item.role_name === "Member") {
+      if (item.roles[0].name === "MEMBER") {
         total++;
       }
     });
     setTotalCustomer(total);
   };
-
+  const calculateStaff = (data) => {
+    let total = 0;
+    data.forEach((item) => {
+      if (item.roles[0].name === "STAFF") {
+        total++;
+      }
+    });
+    setTotalStaff(total);
+  };
   const calculateProduct = (data) => {
     let total = 0;
     data.forEach((item) => {
@@ -293,76 +162,16 @@ const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
     });
     setTotalProduct(total);
   };
-
-  const calculateTotalSales = (data, timeRange) => {
-    const now = new Date();
-    const startOfToday = convertToVietnamTime(
-      new Date(now.setHours(0, 0, 0, 0)),
-    );
-
-    let filteredData = [];
-
-    if (timeRange === "today") {
-      filteredData = data.filter((item) => {
-        const completedDate = convertToVietnamTime(
-          new Date(item.order.shipped_date),
-        );
-        return completedDate >= startOfToday && item.order.status === 2;
-      });
-    } else if (timeRange === "thisWeek") {
-      filteredData = data.filter((item) => {
-        const completedDate = convertToVietnamTime(
-          new Date(item.order.shipped_date),
-        );
-        const startOfWeek = convertToVietnamTime(
-          new Date(now.setDate(now.getDate() - ((now.getDay() + 6) % 7))),
-        );
-        startOfWeek.setHours(0, 0, 0, 0);
-        const endOfWeek = new Date(startOfWeek);
-        endOfWeek.setDate(startOfWeek.getDate() + 6);
-        endOfWeek.setHours(23, 59, 59, 999);
-
-        return (
-          completedDate >= startOfWeek &&
-          completedDate <= endOfWeek &&
-          item.order.status === 2
-        );
-      });
-    } else if (timeRange === "thisMonth") {
-      filteredData = data.filter((item) => {
-        const completedDate = convertToVietnamTime(
-          new Date(item.order.shipped_date),
-        );
-        const startOfMonth = convertToVietnamTime(
-          new Date(now.getFullYear(), now.getMonth(), 1),
-        );
-        startOfMonth.setHours(0, 0, 0, 0);
-
-        return completedDate >= startOfMonth && item.order.status === 2;
-      });
-    } else if (timeRange === "thisYear") {
-      filteredData = data.filter((item) => {
-        const completedDate = convertToVietnamTime(
-          new Date(item.order.shipped_date),
-        );
-        const startOfYear = convertToVietnamTime(
-          new Date(now.getFullYear(), 0, 1),
-        );
-        startOfYear.setHours(0, 0, 0, 0);
-
-        return completedDate >= startOfYear && item.order.status === 2;
-      });
-    } else if (timeRange === "all") {
-      filteredData = data;
-    }
-
-    let total = 0;
-    filteredData.forEach((order) => {
-      total += order.order_detail.reduce((acc, item) => acc + item.amount, 0);
-    });
-    setTotalSales(total);
+  const calculateSold = (data) => {
+    const totalSold = data.length;
+    setTotalSales(totalSold);
   };
-
+  const calculateRevenue = (data) => {
+    const totalPrice = data.reduce((total, order) => {
+      return total + order.totalPrice;
+    }, 0);
+    setTotalRevenue(totalPrice);
+  };
   const earningData = [
     {
       icon: <BsCurrencyDollar />,
@@ -370,7 +179,6 @@ const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
         style: "currency",
         currency: "VND",
       }).format(totalRevenue),
-      // percentage: '-4%',
       title: "Tổng doanh thu",
       iconColor: "rgb(0, 194, 146)",
       iconBg: "rgb(235, 250, 242)",
@@ -391,33 +199,15 @@ const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
     },
     {
       icon: <BsCurrencyDollar />,
-      amount: new Intl.NumberFormat("vi-VN", {
-        style: "currency",
-        currency: "VND",
-      }).format(totalProfit),
-      // percentage: '-4%',
-      title: "Tổng lợi nhuận",
+      amount: totalStaff,
+      title: "Tổng nhân viên",
       iconColor: "#03C9D7",
       iconBg: "#E5FAFB",
       pcColor: "red-600",
-      dropdown: (
-        <Select
-          defaultValue="thisWeek"
-          style={{ width: "110px" }}
-          onChange={(value) => setProfitTimeRange(value)}
-        >
-          <Option value="today">Hôm nay</Option>
-          <Option value="thisWeek">Tuần này</Option>
-          <Option value="thisMonth">Tháng này</Option>
-          <Option value="thisYear">Năm nay</Option>
-          <Option value="all">Tất cả</Option>
-        </Select>
-      ),
     },
     {
       icon: <MdOutlineSupervisorAccount />,
       amount: totalCustomer,
-      // percentage: '-4%',
       title: "Tổng khách hàng",
       iconColor: "#03C9D7",
       iconBg: "#E5FAFB",
@@ -426,7 +216,6 @@ const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
     {
       icon: <BsBoxSeam />,
       amount: totalProduct,
-      // percentage: '+23%',
       title: "Tổng sản phẩm",
       iconColor: "rgb(255, 244, 229)",
       iconBg: "rgb(254, 201, 15)",
@@ -435,31 +224,17 @@ const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
     {
       icon: <FiBarChart />,
       amount: totalSales,
-      // percentage: '+38%',
       title: "Tổng lượt bán",
       iconColor: "rgb(228, 106, 118)",
       iconBg: "rgb(255, 244, 229)",
 
       pcColor: "green-600",
-      dropdown: (
-        <Select
-          defaultValue="thisWeek"
-          style={{ width: "110px" }}
-          onChange={(value) => setSalesTimeRange(value)}
-        >
-          <Option value="today">Hôm nay</Option>
-          <Option value="thisWeek">Tuần này</Option>
-          <Option value="thisMonth">Tháng này</Option>
-          <Option value="thisYear">Năm nay</Option>
-          <Option value="all">Tất cả</Option>
-        </Select>
-      ),
     },
   ];
 
-  // if (loading) {
-  //   return <div className="mx-6 h-full w-full py-6">Loading...</div>;
-  // }
+  if (loading) {
+    return <div className="mx-6 h-full w-full py-6">Loading...</div>;
+  }
   return (
     <div className="mt-24">
       {isAuthenticatedAdmin && (
@@ -509,7 +284,7 @@ const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
 
           {/*Row 2*/}
           <div className="flex flex-wrap justify-center gap-10">
-            <div className="dark:bg-secondary-dark-bg md:w-780 m-3 rounded-2xl bg-white p-4 dark:text-gray-200">
+            {/* <div className="dark:bg-secondary-dark-bg md:w-780 m-3 rounded-2xl bg-white p-4 dark:text-gray-200">
               <div className="flex justify-between">
                 <p className="text-xl font-semibold">
                   Bảng tương quan giữa doanh thu và vốn
@@ -518,9 +293,9 @@ const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
               <div>
                 <RevenueMixCost />
               </div>
-            </div>
+            </div> */}
             <div>
-              <div
+              {/* <div
                 className="md:w-400 m-3 rounded-2xl p-4"
                 style={{ backgroundColor: currentColor }}
               >
@@ -533,7 +308,7 @@ const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
                 <div className="mt-0">
                   <MonthlyProfit />
                 </div>
-              </div>
+              </div> */}
 
               <div className="dark:bg-secondary-dark-bg md:w-400 m-3 flex items-center justify-center gap-10 rounded-2xl bg-white p-8 dark:text-gray-200">
                 <div>

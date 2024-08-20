@@ -51,8 +51,6 @@ const Payment = () => {
             batch: relatedBatches,
           };
         });
-
-        console.log("Combined product data:", combinedData);
         setProducts(combinedData);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -101,11 +99,8 @@ const Payment = () => {
       userId: user && user.id ? user.id : null,
     };
 
-    console.log("dsfasdfa", order_infor);
-
     try {
       const response = await fetchCreateOrder(order_infor); // Assuming fetchCreateOrder is implemented
-      console.log("Order created successfully:", response.data);
 
       clearCart(); // Clear cart after order is placed
       navigate("/thanks", { state: { isCheck: true } }); // Redirect to thank you page

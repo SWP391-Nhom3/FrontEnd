@@ -116,7 +116,6 @@ const MonthlyProfit = () => {
       revenues.map((item) => new Date(item.completed_date).getFullYear()),
     ),
   ];
-  console.log(availableYears);
 
   return (
     <div>

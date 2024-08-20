@@ -1,25 +1,24 @@
 import { useEffect, useState } from "react";
-// import { fetchProducts } from "../../data/api";
+import { fetchProductBatches } from "../../data/api";
 import { List, Spin } from "antd";
 
-// eslint-disable-next-line react/prop-types
 const ProductStock = ({ selectedOption }) => {
   const [products, setProducts] = useState([]);
   const [smallestAmounts, setSmallestAmounts] = useState([]);
   const [largestAmounts, setLargestAmounts] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    // const getProducts = async () => {
-    //   try {
-    //     const data = await fetchProducts();
-    //     setProducts(data);
-    //     setLoading(false);
-    //   } catch (error) {
-    //     console.error("Error fetching product:", error);
-    //     setLoading(false);
-    //   }
-    // };
-    // getProducts();
+    const getProducts = async () => {
+      try {
+        const data = await fetchProductBatches();
+        setProducts(data.data.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching product:", error);
+        setLoading(false);
+      }
+    };
+    getProducts();
   }, []);
 
   useEffect(() => {
@@ -46,18 +45,21 @@ const ProductStock = ({ selectedOption }) => {
             <List.Item.Meta
               avatar={
                 <img
-                  src={item.imgUrl}
-                  alt={item.product_name}
+                  src={item.product.coverImageUrl}
+                  alt={item.product.name}
                   style={{ width: "50px", marginRight: "10px" }}
                 />
               }
-              title={item.product_name}
-              description={`Giá: ${Number(item.price).toLocaleString("vi-VN", {
-                style: "currency",
-                currency: "VND",
-              })}`}
+              title={item.product.name}
+              description={`Giá: ${Number(item.product.price).toLocaleString(
+                "vi-VN",
+                {
+                  style: "currency",
+                  currency: "VND",
+                },
+              )}`}
             />
-            <div>Số lượng: {item.amount}</div>
+            <div>Số lượng: {item.quantity}</div>
           </List.Item>
         )}
       />

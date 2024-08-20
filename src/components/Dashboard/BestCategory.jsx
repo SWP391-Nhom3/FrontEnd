@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-// import { fetchCategories, fetchProducts } from "../../data/api";
+import { fetchCategories, fetchProducts } from "../../data/api";
 import { Pie } from "react-chartjs-2";
 import "chart.js/auto";
 import { Spin } from "antd";
@@ -10,45 +10,45 @@ const BestCategory = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // const getProducts = async () => {
-    //   try {
-    //     const data = await fetchProducts();
-    //     setProducts(data);
-    //     setLoading(false);
-    //   } catch (error) {
-    //     console.error("Error fetching product:", error);
-    //     setLoading(false);
-    //   }
-    // };
-    // getProducts();
+    const getProducts = async () => {
+      try {
+        const data = await fetchProducts();
+        setProducts(data.data.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching product:", error);
+        setLoading(false);
+      }
+    };
+    getProducts();
   }, []);
 
   useEffect(() => {
-    // fetchCategories()
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     if (data && data.result) {
-    //       setCategories(data.result);
-    //     }
-    //   })
-    //   .catch((error) => console.error("Error fetching categories:", error));
+    const getCategories = async () => {
+      try {
+        const data = await fetchCategories();
+        setCategories(data.data.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching product:", error);
+        setLoading(false);
+      }
+    };
+    getCategories();
   }, []);
 
   const processData = (products, categories) => {
     const result = {};
 
     products.forEach((product) => {
-      const category = categories.find(
-        (cat) => cat._id === product.category_id,
-      );
+      const category = categories.find((cat) => cat.id === product.category.id);
       if (category) {
-        if (!result[category.category_name]) {
-          result[category.category_name] = 0;
+        if (!result[category.name]) {
+          result[category.name] = 0;
         }
-        result[category.category_name] += product.sales;
+        result[category.name] += 10;
       }
     });
-
     return Object.keys(result).map((categoryName) => ({
       categoryName,
       sales: result[categoryName],
@@ -63,25 +63,30 @@ const BestCategory = () => {
 
   const processedData = processData(products, categories);
 
-  const chartData = {
+  const data = {
     labels: processedData.map((item) => item.categoryName),
     datasets: [
       {
-        data: processedData.map((item) => item.sales),
+        data: processedData.map((sale) => sale.sales),
         backgroundColor: [
-          "rgba(255, 99, 132, 0.6)", // Red
-          "rgba(54, 162, 235, 0.6)", // Blue
-          "rgba(255, 206, 86, 0.6)", // Yellow
-          "rgba(75, 192, 192, 0.6)", // Green
-          "rgba(153, 102, 255, 0.6)", // Purple
-          "rgba(255, 159, 64, 0.6)", // Orange
-          "rgba(199, 199, 199, 0.6)", // Grey
-          "rgba(144, 238, 144, 0.6)", // Light Green
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56",
+          "#C9CBFF",
+          "#FDB45C",
+          "#949FB1",
+        ],
+        hoverBackgroundColor: [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56",
+          "#C9CBFF",
+          "#FDB45C",
+          "#949FB1",
         ],
       },
     ],
   };
-
   const chartOptions = {
     responsive: true,
     plugins: {
@@ -95,7 +100,7 @@ const BestCategory = () => {
   }
   return (
     <div>
-      <Pie data={chartData} options={chartOptions} />
+      <Pie data={data} options={chartOptions} />
     </div>
   );
 };

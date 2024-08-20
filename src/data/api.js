@@ -46,7 +46,7 @@ export const fetchUpdateProfile = async (data, token) => {
       Authorization: `Bearer ${token}`,
     },
   });
-}
+};
 
 //get all category api
 export const fetchCategories = async () => {

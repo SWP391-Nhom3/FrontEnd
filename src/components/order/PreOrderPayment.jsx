@@ -50,7 +50,9 @@ const PreOrderPayment = () => {
         //   };
         // });
         setProducts(products);
-      } catch (error) {console.error("Error fetching data:", error);}
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
 
     fetchProductsData();
@@ -97,7 +99,6 @@ const PreOrderPayment = () => {
 
     try {
       const response = await fetchCreatePreOrder(order_infor);
-      console.log("Order created successfully:", response.data);
       clearPreOrder(); // Clear cart after order is placed
       navigate("/thanks", { state: { isCheck: true } });
     } catch (error) {

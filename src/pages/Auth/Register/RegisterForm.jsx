@@ -48,8 +48,6 @@ const RegisterForm = () => {
         localStorage.setItem("role", JSON.stringify(res.data.data.user.roles));
         window.location.reload();
         toast.success(`Đăng kí thành công`);
-
-
       })
       .catch((error) => {
         toast.error("Có lỗi xảy ra khi đăng ký.");

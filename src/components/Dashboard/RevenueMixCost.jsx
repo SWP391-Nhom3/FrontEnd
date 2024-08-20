@@ -1,28 +1,28 @@
 import { useEffect, useState } from "react";
-// import { fetchRevenue } from "../../data/api";
+import { fetchOrders } from "../../data/api";
 import { Bar } from "react-chartjs-2";
 import { Select } from "antd";
 
 const { Option } = Select;
 const RevenueMixCost = () => {
   const [revenues, setRevenues] = useState([]);
-  // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState("month");
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
   useEffect(() => {
-    // const getRevenue = async () => {
-    //   try {
-    //     const data = await fetchRevenue();
-    //     setRevenues(data);
-    //     setLoading(false);
-    //   } catch (error) {
-    //     console.log("Error fetching revenue:", error);
-    //     setLoading(false);
-    //   }
-    // };
-    // getRevenue();
+    const getOrders = async () => {
+      try {
+        const orderData = await fetchOrders();
+        const orderDatas = orderData.data;
+        setRevenues(orderDatas);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+        setLoading(false);
+      }
+    };
+    getOrders();
   }, []);
 
   const processData = (data, timeRange, selectedYear) => {
