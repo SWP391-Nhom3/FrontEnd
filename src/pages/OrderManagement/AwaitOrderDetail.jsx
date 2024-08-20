@@ -139,6 +139,8 @@ const AwaitOrderDetail = () => {
     navigate("/await-order");
   }
 
+  console.log("shipper ne", shipper);
+
   const { Text } = Typography;
 
   return (
