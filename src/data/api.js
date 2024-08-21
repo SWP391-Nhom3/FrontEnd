@@ -24,9 +24,32 @@ export const fetchLogin = async (email, password) => {
 
 //register api
 export const fetchRegister = async ({ email, password }) => {
-  return await axios.post(`${HOSTNAME}/users/register`, {
+  return await axios.post(`${HOSTNAME}/auth/register`, {
     email,
     password,
+  });
+};
+
+//get my profile api
+export const fetchMyProfile = async (token) => {
+  return await axios.get(`${HOSTNAME}/users/myInfo`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+//get all shipper
+export const fetchAllShipper = async () => {
+  return await axios.get(`${HOSTNAME}/users/shippers`);
+};
+
+//update my profile api
+export const fetchUpdateProfile = async (data, token) => {
+  return await axios.put(`${HOSTNAME}/users`, data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
 };
 
@@ -124,6 +147,11 @@ export const fetchCreateOrder = async (order) => {
   return await axios.post(`${HOSTNAME}/orders`, order, {});
 };
 
+//create preorder api
+export const fetchCreatePreOrder = async (order) => {
+  return await axios.post(`${HOSTNAME}/orders/pre-order`, order, {});
+};
+
 //get all order api
 export const fetchOrders = async () => {
   return await axios.get(`${HOSTNAME}/orders`);
@@ -135,8 +163,10 @@ export const fetchCancelOrder = async (id) => {
 };
 
 //confirm order api
-export const fetchConfirmOrder = async (id) => {
-  return await axios.put(`${HOSTNAME}/orders/confirm/${id}`);
+export const fetchConfirmOrder = async (id, shipperid) => {
+  return await axios.put(`${HOSTNAME}/orders/confirm/${id}`, {
+    shipperId: shipperid,
+  });
 };
 
 //shipping status order api
@@ -192,18 +222,66 @@ export const fetchCancelShippingOrder = async (id) => {
 //   );
 // };
 
-// //fetchUploadFeedback
-// export const fetchUploadFeedback = async (feedback, token) => {
-//   return await axios.post(
-//     `${SCHEMA_HOSTNAME}/feedbacks/reply/upload`,
-//     { ...feedback },
-//     {
-//       headers: {
-//         Authorization: `Bearer ${token.access_token}`,
-//       },
-//     },
-//   );
-// };
+// //feedback
+export const fetchAllFeedback = async () => {
+  return await axios.get(`${HOSTNAME}/reviews`);
+};
+
+export const fetchCheckFeedback = async (user_id, product_id) => {
+  return await axios.get(`${HOSTNAME}/reviews/${product_id}/${user_id}`);
+};
+
+//fetchUploadFeedback
+export const fetchUploadFeedback = async (user_id, feedback, token) => {
+  return await axios.post(
+    `${HOSTNAME}/reviews`,
+    {
+      user: {
+        id: user_id,
+      },
+      product: {
+        id: feedback.product_id,
+      },
+      rating: feedback.rating,
+      comment: feedback.description,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+};
+
+export const fetchAllReplyFeedback = async () => {
+  return await axios.get(`${HOSTNAME}/review-reply`);
+};
+
+// //fetchUploadReplyFeedback
+export const fetchUploadReplyFeedback = async (
+  user_id,
+  review_id,
+  replyText,
+  token,
+) => {
+  return await axios.post(
+    `${HOSTNAME}/review-reply`,
+    {
+      user: {
+        id: user_id,
+      },
+      review: {
+        id: review_id,
+      },
+      replyText: replyText,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+};
 
 // //fetchRefreshToken
 // export const fetchRefreshToken = async (token) => {
@@ -365,7 +443,7 @@ export const fetchAllUsers = async (result) => {
 export const fetchRole = async () => {
   return await axios.get(`${HOSTNAME}/roles`);
 };
-//get-all-user
+//create staff api
 export const fetchCreateStaff = async (token, userData) => {
   return await axios.post(`${HOSTNAME}/users/create-staff`, userData, {
     headers: {
@@ -373,6 +451,16 @@ export const fetchCreateStaff = async (token, userData) => {
     },
   });
 };
+
+//create shipper api
+export const fetchCreateShipper = async (token, userData) => {
+  return await axios.post(`${HOSTNAME}/users/create-shipper`, userData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
 export const fetchUserStatusById = async (id, token) => {
   return await axios.put(
     `http://localhost:8080/api/users/status/${id}`,
@@ -610,11 +698,6 @@ export const fetchGetVoucher = async () => {
 //   }
 // };
 
-// //feedback
-// export const fetchAllFeedback = async () => {
-//   return await axios.get(`${SCHEMA_HOSTNAME}/feedbacks/all-feedback`);
-// };
-
 //API province, district, ward
 const baseUrl = "https://open.oapi.vn/location";
 class Http {
@@ -639,7 +722,7 @@ class Store {
       const provinces = await this.http.get(`${baseUrl}/provinces?&size=64`);
       return provinces.data;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -651,7 +734,7 @@ class Store {
       );
       return districts.data;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
   //lấy danh sách các huyện phường dựa vào districtCode
@@ -663,7 +746,7 @@ class Store {
 
       return wards.data;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 }

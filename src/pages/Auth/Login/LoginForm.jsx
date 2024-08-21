@@ -6,6 +6,7 @@ import { Tabs } from "antd";
 
 import { fetchLogin } from "../../../data/api";
 import { useCartContext } from "../../../context/CartContext";
+
 import { usePreOrderContext } from "../../../context/PreOrderContext";
 
 const { TabPane } = Tabs;
@@ -13,6 +14,7 @@ const { TabPane } = Tabs;
 const LoginForm = () => {
   const navigate = useNavigate();
   const { clearCart } = useCartContext();
+
   const { clearPreOrder } = usePreOrderContext();
 
   const [formValues, setFormValues] = useState({
@@ -48,7 +50,11 @@ const LoginForm = () => {
         return;
       }
       if (activeTab === "customer") {
-        if (userRoles.includes("ADMIN") || userRoles.includes("STAFF")) {
+        if (
+          userRoles.includes("ADMIN") ||
+          userRoles.includes("STAFF") ||
+          userRoles.includes("SHIPPER")
+        ) {
           setErrorList([
             "Tài khoản không có quyền truy cập cho vai trò Customer.",
           ]);
@@ -67,11 +73,14 @@ const LoginForm = () => {
       localStorage.setItem("accessToken", res.data.data.accessToken);
       localStorage.setItem("user", JSON.stringify(res.data.data.user));
       localStorage.setItem("role", JSON.stringify(res.data.data.user.roles));
+      localStorage.removeItem("customer_infor");
 
       if (userRoles.includes("MEMBER")) {
         localStorage.setItem("isMember", "true");
       } else if (userRoles.includes("ADMIN")) {
         localStorage.setItem("isAdmin", "true");
+      } else if (userRoles.includes("SHIPPER")) {
+        localStorage.setItem("isShipper", "true");
       } else {
         localStorage.setItem("isStaff", "true");
       }
@@ -89,7 +98,7 @@ const LoginForm = () => {
       } else {
         clearCart();
         clearPreOrder();
-        navigate("/dashboard");
+        navigate("/");
       }
       window.location.reload();
     } catch (error) {

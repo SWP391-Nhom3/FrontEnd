@@ -21,7 +21,6 @@ const PreOrder = () => {
       try {
         const orderData = await fetchOrders();
         setOrders(orderData.data);
-        console.log(orderData.data);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching orders:", error);
@@ -107,7 +106,7 @@ const PreOrder = () => {
               key="detail"
               render={(text, item) => (
                 <Link
-                  to="/shipping-orderDetail"
+                  to="/order-detail"
                   state={{ order: item }}
                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                 >

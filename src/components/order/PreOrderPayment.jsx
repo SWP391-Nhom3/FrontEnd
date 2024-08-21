@@ -6,6 +6,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { usePreOrderContext } from "../../context/PreOrderContext";
 import {
   fetchCreateOrder,
+  fetchCreatePreOrder,
   fetchProductBatches,
   fetchProducts,
 } from "../../data/api";
@@ -34,22 +35,24 @@ const PreOrderPayment = () => {
     const fetchProductsData = async () => {
       try {
         const productResponse = await fetchProducts();
-        const batchResponse = await fetchProductBatches();
+        // const batchResponse = await fetchProductBatches();
 
         const products = productResponse.data.data;
-        const batches = batchResponse.data.data;
+        // const batches = batchResponse.data.data;
 
-        const combinedData = products.map((product) => {
-          const relatedBatches = batches.filter(
-            (batch) => batch.product.id === product.id,
-          );
-          return {
-            ...product,
-            batch: relatedBatches,
-          };
-        });
-        setProducts(combinedData);
-      } catch (error) {}
+        // const combinedData = products.map((product) => {
+        //   const relatedBatches = batches.filter(
+        //     (batch) => batch.product.id === product.id,
+        //   );
+        //   return {
+        //     ...product,
+        //     batch: relatedBatches,
+        //   };
+        // });
+        setProducts(products);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
 
     fetchProductsData();
@@ -95,8 +98,7 @@ const PreOrderPayment = () => {
     };
 
     try {
-      //   const response = await fetchCreateOrder(order_infor);
-
+      const response = await fetchCreatePreOrder(order_infor);
       clearPreOrder(); // Clear cart after order is placed
       navigate("/thanks", { state: { isCheck: true } });
     } catch (error) {

@@ -91,8 +91,6 @@ const AddProduct = () => {
     event.preventDefault();
     const form = event.target;
 
-    console.log("token:", token);
-
     const product = {
       name: product_name,
       description: description,

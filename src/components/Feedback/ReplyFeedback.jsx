@@ -1,7 +1,7 @@
 import { Modal, notification } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import React from "react";
-// import { fetchUploadFeedback } from "../../data/api";
+import { fetchUploadReplyFeedback } from "../../data/api";
 
 const ReplyFeedback = ({
   modalOpen,
@@ -11,33 +11,26 @@ const ReplyFeedback = ({
   setResponse,
 }) => {
   // !!Fetch Uploadfeedback!!
-  // const handleOk =async () => {
-  //   const user = JSON.parse(localStorage.getItem("user"));
-  //   const token = JSON.parse(localStorage.getItem("result"));
-  //   console.log("Phản hồi:", response);
-  //   setModalOpen(false);
-  //   setResponse("");
-  //   console.log(selectedFeedback);
-  //   const data = {
-  //     feedback_id: selectedFeedback._id,
-  //     product_id: selectedFeedback.product_id,
-  //     description: response,
-  //     rating: selectedFeedback.rating,
-  //     user_id: user._id,
-  //   };
-  //   console.log(data);
-  //   await fetchUploadFeedback(data, token).then((res) => {
-  //     console.log(res.data);
-  //     console.log("uyeh reply xong rồi");
-  //     window.location.reload();
-  //     notification.success({
-  //       message: "Trả lời thành công",
-  //       placement: 'top',
-  //     })
-  //   }).catch((error) => {
-  //     console.log(error);
-  //   })
-  // };
+  const handleOk = async () => {
+    const token = localStorage.getItem("accessToken");
+    const user = JSON.parse(localStorage.getItem("user"));
+    await fetchUploadReplyFeedback(
+      user.id,
+      selectedFeedback.id,
+      response,
+      token,
+    )
+      .then((res) => {
+        notification.success({
+          message: "Trả lời thành công",
+          placement: "top",
+        });
+        setModalOpen(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const handleCancel = () => {
     setModalOpen(false);

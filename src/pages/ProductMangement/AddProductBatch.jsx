@@ -49,8 +49,6 @@ const AddProductBatch = () => {
       .catch((error) => console.error("Error fetching product:", error));
   }, []);
 
-  console.log("pro ne:", products);
-
   const productTable = [
     {
       title: "Hình Ảnh",
@@ -199,6 +197,14 @@ const AddProductBatch = () => {
       const expirationDate = moment(product.expiryDate);
       const currentDate = moment();
 
+      if (productionDate.isAfter(currentDate.add(0, "days"))) {
+        notification.error({
+          message: "Ngày sản xuất phải nhỏ hơn ngày hiện tại",
+          placement: "top",
+        });
+        return false;
+      }
+
       if (expirationDate.isBefore(productionDate.add(1, "months"))) {
         notification.error({
           message: "Hạn sử dụng phải lớn hơn ngày sản xuất ít nhất 1 tháng",
@@ -218,9 +224,6 @@ const AddProductBatch = () => {
     return true;
   };
 
-  console.log("batch ne", batch);
-  console.log("batchBill ne", batchBill);
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -238,8 +241,6 @@ const AddProductBatch = () => {
             id: batch.product.id,
           },
         };
-
-        console.log("batchData ne", batchData);
 
         await fetchAddProductBatch(batchData, token);
       }

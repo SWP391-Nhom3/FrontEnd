@@ -1,7 +1,7 @@
 import { FaFilter, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { Table } from "flowbite-react";
 import { useEffect, useState } from "react";
-import { fetchOrdersByOrderId } from "../../data/api";
+import { fetchOrders } from "../../data/api";
 import { Link } from "react-router-dom";
 import Loader from "../../assets/loading2.gif";
 
@@ -37,18 +37,26 @@ const HistoryOrder = () => {
   useEffect(() => {
     const getOrders = async () => {
       try {
-        const orderData = await fetchOrdersByOrderId(user._id);
-        setOrders(orderData);
-        setFilteredOrders(orderData);
+        const orderData = await fetchOrders();
+        const filteredData = orderData.data.filter((order) => {
+          if (order.member) {
+            return order.member.id === user.id;
+          } else {
+            return false;
+          }
+        });
+
+        setOrders(filteredData);
+        setFilteredOrders(filteredData);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching orders:", error);
-      } finally {
         setLoading(false);
       }
     };
 
     getOrders();
-  }, [user?._id]);
+  }, []);
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
@@ -63,38 +71,36 @@ const HistoryOrder = () => {
 
     if (filters.orderId) {
       updatedOrders = updatedOrders.filter((item) =>
-        item.order._id.includes(filters.orderId),
+        item.id.includes(filters.orderId),
       );
     }
 
     if (filters.minPrice) {
       updatedOrders = updatedOrders.filter(
-        (item) => item.order.total_price >= Number(filters.minPrice),
+        (item) => item.totalPrice >= Number(filters.minPrice),
       );
     }
 
     if (filters.maxPrice) {
       updatedOrders = updatedOrders.filter(
-        (item) => item.order.total_price <= Number(filters.maxPrice),
+        (item) => item.totalPrice <= Number(filters.maxPrice),
       );
     }
 
     if (filters.fromDate) {
       updatedOrders = updatedOrders.filter(
-        (item) =>
-          new Date(item.order.required_date) >= new Date(filters.fromDate),
+        (item) => new Date(item.requiredDate) >= new Date(filters.fromDate),
       );
     }
 
     if (filters.toDate) {
       updatedOrders = updatedOrders.filter(
-        (item) =>
-          new Date(item.order.required_date) <= new Date(filters.toDate),
+        (item) => new Date(item.requiredDate) <= new Date(filters.toDate),
       );
     }
 
     setFilteredOrders(updatedOrders);
-    setCurrentPage(1); // Reset to first page when applying filters
+    setCurrentPage(1);
   };
 
   // Pagination logic
@@ -142,7 +148,7 @@ const HistoryOrder = () => {
             name="orderId"
             value={filters.orderId}
             onChange={handleFilterChange}
-            className="w-1/6 rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-1/6 rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
           />
           <input
             type="number"
@@ -150,7 +156,7 @@ const HistoryOrder = () => {
             name="minPrice"
             value={filters.minPrice}
             onChange={handleFilterChange}
-            className="w-1/6 rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-1/6 rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
           />
           <input
             type="number"
@@ -158,7 +164,7 @@ const HistoryOrder = () => {
             name="maxPrice"
             value={filters.maxPrice}
             onChange={handleFilterChange}
-            className="w-1/6 rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-1/6 rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
           />
           <input
             type="date"
@@ -166,7 +172,7 @@ const HistoryOrder = () => {
             name="fromDate"
             value={filters.fromDate}
             onChange={handleFilterChange}
-            className="w-1/6 rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-1/6 rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
           />
           <input
             type="date"
@@ -174,10 +180,10 @@ const HistoryOrder = () => {
             name="toDate"
             value={filters.toDate}
             onChange={handleFilterChange}
-            className="w-1/6 rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-1/6 rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
           />
           <button
-            className="flex items-center rounded-md bg-blue-500 p-2 text-white hover:bg-blue-600"
+            className="flex items-center rounded-md bg-primary-500 p-2 text-white hover:bg-primary-600"
             onClick={handleFilter}
           >
             <FaFilter className="mr-2" />
@@ -209,39 +215,35 @@ const HistoryOrder = () => {
             <Table.Body className="divide-y">
               {currentItems.length > 0 ? (
                 currentItems.map((item) => (
-                  <Table.Row key={item.order._id} className="border bg-white">
+                  <Table.Row
+                    key={item.requiredDate}
+                    className="border bg-white"
+                  >
                     <Table.Cell className="whitespace-nowrap border font-medium text-gray-900">
-                      {formatDate(item.order.required_date)}
+                      {formatDate(item.requiredDate)}
                     </Table.Cell>
                     <Table.Cell className="whitespace-nowrap border font-medium text-gray-900">
-                      {item.order._id}
+                      {item.id}
                     </Table.Cell>
                     <Table.Cell className="border">
-                      {item.order_detail.map((detail) => (
-                        <p className="mb-3 text-gray-900" key={detail._id}>
-                          {getProductName(detail.product_id)}
+                      {item.orderDetails.map((detail) => (
+                        <p className="mb-3 text-gray-900" key={detail.id}>
+                          - {detail.product.name}
                         </p>
                       ))}
                     </Table.Cell>
                     <Table.Cell className="border">
-                      {Number(item.order.total_price).toLocaleString("vi-VN", {
+                      {Number(item.totalPrice).toLocaleString("vi-VN", {
                         style: "currency",
                         currency: "VND",
                       })}
                     </Table.Cell>
-                    <Table.Cell className="border">
-                      {
-                        [
-                          "Chờ xác nhận",
-                          "Đã xác nhận",
-                          "Đã hoàn thành",
-                          "Hủy đơn",
-                        ][item.order.status]
-                      }
+                    <Table.Cell className="whitespace-nowrap border font-medium text-gray-900">
+                      {item.orderStatus.name}
                     </Table.Cell>
                     <Table.Cell>
                       <Link
-                        to="/order-detail"
+                        to="/order-detail-customer"
                         state={{ order: item }}
                         onClick={() => window.scrollTo(0, 0)}
                         className="font-medium text-cyan-600 hover:underline"
@@ -267,7 +269,7 @@ const HistoryOrder = () => {
             className={`rounded border px-2 py-1 ${
               currentPage === 1
                 ? "cursor-not-allowed bg-gray-300"
-                : "bg-white text-blue-500"
+                : "bg-white text-primary-500"
             }`}
             disabled={currentPage === 1}
           >
@@ -279,8 +281,8 @@ const HistoryOrder = () => {
               onClick={() => handleClick(index + 1)}
               className={`rounded border px-3 py-1 ${
                 index + 1 === currentPage
-                  ? "bg-blue-500 text-white"
-                  : "bg-white text-blue-500"
+                  ? "bg-primary-500 text-white"
+                  : "bg-white text-primary-500"
               }`}
             >
               {index + 1}
@@ -291,7 +293,7 @@ const HistoryOrder = () => {
             className={`rounded border px-2 py-1 ${
               currentPage === totalPages
                 ? "cursor-not-allowed bg-gray-300"
-                : "bg-white text-blue-500"
+                : "bg-white text-primary-500"
             }`}
             disabled={currentPage === totalPages}
           >

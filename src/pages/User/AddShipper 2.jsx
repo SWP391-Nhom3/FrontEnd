@@ -15,9 +15,9 @@ import {
 } from "@chakra-ui/react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import moment from "moment";
-import { fetchCreateStaff } from "../../data/api";
+import { fetchCreateShipper, fetchCreateStaff } from "../../data/api";
 
-const AddStaff = () => {
+const AddShipper = () => {
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -53,20 +53,20 @@ const AddStaff = () => {
     const active = true;
     if (validateInput(email, password)) {
       try {
-        const response = await fetchCreateStaff(token, {
+        const response = await fetchCreateShipper(token, {
           email,
           password,
           active,
         });
         if (response.status === 200) {
-          alert("Tạo Staff thành công!");
+          alert("Tạo Shipper thành công!");
           navigate("/users");
         } else {
-          alert("Có lỗi xảy ra khi tạo Staff.");
+          alert("Có lỗi xảy ra khi tạo Shipper.");
         }
       } catch (error) {
         console.error("Error during API call", error);
-        alert("Có lỗi xảy ra khi tạo Staff.");
+        alert("Có lỗi xảy ra khi tạo Shipper.");
       }
     }
   };
@@ -79,7 +79,7 @@ const AddStaff = () => {
       }}
     >
       <Card
-        title="Thêm tài khoản staff"
+        title="Thêm tài khoản Shipper"
         style={{ width: "90%", maxWidth: "1200px", margin: "30px auto" }}
         className="h-full"
       >
@@ -231,7 +231,7 @@ const AddStaff = () => {
                   borderRadius: "10px", // Rounded corners
                 }}
               >
-                Tạo Staff
+                Tạo Shipper
               </Button>
             </HStack>
           </Row>
@@ -241,4 +241,4 @@ const AddStaff = () => {
   );
 };
 
-export default AddStaff;
+export default AddShipper;

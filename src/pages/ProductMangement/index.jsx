@@ -54,9 +54,7 @@ const ProductManagement = () => {
           placement: "top",
         });
       },
-      onCancel() {
-        console.log("Cancel");
-      },
+      onCancel() {},
       okButtonProps: {
         style: {
           backgroundColor: "#46B5C1",

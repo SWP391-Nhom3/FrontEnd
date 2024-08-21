@@ -1,15 +1,17 @@
 import { Dropdown } from "flowbite-react";
 import { HiCog, HiViewGrid, HiLogout } from "react-icons/hi";
 import { FaUser } from "react-icons/fa";
-// import { fetchLogout } from "../../data/api.jsx";
 import { Link, useNavigate } from "react-router-dom";
+
 import { FaHistory } from "react-icons/fa";
 import { useCartContext } from "../../context/CartContext";
+
 import { usePreOrderContext } from "../../context/PreOrderContext";
 
 const UserBtn = () => {
   const navigate = useNavigate();
   const { clearCart } = useCartContext();
+
   const { clearPreOrder } = usePreOrderContext();
   const handleLogout = async () => {
     clearCart();
@@ -20,6 +22,7 @@ const UserBtn = () => {
     localStorage.removeItem("isMember");
     localStorage.removeItem("accessToken");
     localStorage.removeItem("cartItems");
+    localStorage.removeItem("customer_infor");
     navigate("/login");
   };
   const result = JSON.parse(localStorage.getItem("result")) || null;
@@ -52,30 +55,6 @@ const UserBtn = () => {
           </Dropdown.Item>
         </>
       ) : (
-        // ) : verify === 0 ? (
-        //   <>
-        //     <Link
-        //       to="/otp"
-        //       state={{
-        //         navigateTo: "/profile",
-        //         email: user.email,
-        //         user_id: user._id,
-        //       }}
-        //       onClick={() => window.scrollTo(0, 0)}
-        //     >
-        //       <Dropdown.Item icon={HiCog} className="w-48">
-        //         Xác Minh Email
-        //       </Dropdown.Item>
-        //     </Link>
-        //     <Dropdown.Divider />
-        //     <Dropdown.Item
-        //       icon={HiLogout}
-        //       onClick={handleLogout}
-        //       className="w-48"
-        //     >
-        //       Đăng Xuất
-        //     </Dropdown.Item>
-        //   </>
         <>
           <Dropdown.Header>
             <span className="block text-sm">

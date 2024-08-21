@@ -16,7 +16,7 @@ export function SideBarProfile() {
 
   const getItemClass = (path) =>
     currentPath === path
-      ? "bg-blue-500 text-white font-bold text-lg px-6 py-3 "
+      ? "bg-primary-500 text-white font-bold text-lg px-6 py-3 hover:bg-primary-600"
       : "text-gray-600 hover:bg-gray-100 text-lg px-6 py-3 ";
 
   return (

@@ -27,6 +27,7 @@ const ShippingOrderDetail = () => {
   //   const [orderDetails, setOrderDetails] = useState([]);
   const token = JSON.parse(localStorage.getItem("result"));
   const isAuthenticatedStaff = localStorage.getItem("isStaff") === "true";
+  const isAuthenticatedShipper = localStorage.getItem("isShipper") === "true";
 
   useEffect(() => {
     let isMounted = true; // Cờ để kiểm tra xem component có còn mounted không
@@ -35,7 +36,6 @@ const ShippingOrderDetail = () => {
       try {
         const productData = await fetchProducts();
         if (isMounted) {
-          // Chỉ cập nhật state nếu component vẫn còn mounted
           setProducts(productData);
           setLoading(false);
         }
@@ -54,8 +54,6 @@ const ShippingOrderDetail = () => {
     };
   }, []); // Mảng phụ thuộc rỗng để chỉ chạy khi component mount
 
-  console.log("order ne", order);
-
   if (loading) {
     return <Loading />;
   }
@@ -64,31 +62,21 @@ const ShippingOrderDetail = () => {
     const order_id = order.id;
     try {
       await fetchCancelShippingOrder(order_id, token);
-      sessionStorage.setItem("orderCancelled", "true");
-      window.location.reload();
+      notification.success({
+        message: "Thành công",
+        description: "Đơn hàng đã được huỷ!",
+        placement: "top",
+      });
+      sessionStorage.removeItem("orderCancelled");
+      navigate("/cancel-shipping-order");
     } catch (error) {
       notification.error({
         message: "Lỗi",
         description: "Đơn hàng không thể huỷ!",
         placement: "top",
       });
-      console.log(error);
     }
   };
-
-  if (sessionStorage.getItem("orderCancelled") === "true") {
-    // Hiển thị thông báo
-    notification.success({
-      message: "Thành công",
-      description: "Đơn hàng đã được huỷ!",
-      placement: "top",
-    });
-
-    // Xóa trạng thái khỏi sessionStorage
-    sessionStorage.removeItem("orderCancelled");
-    // Điều hướng đến trang khác nếu cần thiết
-    navigate("/await-order");
-  }
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -104,36 +92,23 @@ const ShippingOrderDetail = () => {
   const handleConfirmOrder = async () => {
     const order_id = order.id;
     await fetchShippingOrder(order_id, token)
-      .then((res) => {
-        sessionStorage.setItem("orderConfirmed", "true");
-        console.log(res.data);
-        window.location.reload();
+      .then(() => {
+        notification.success({
+          message: "Thành công",
+          description: "Đơn hàng đã được xác nhận!",
+          placement: "top",
+        });
+        sessionStorage.removeItem("orderConfirmed");
+        navigate("/orders");
       })
-      .catch((error) => {
-        console.log(error.response);
+      .catch(() => {
         notification.error({
           message: "Lỗi",
           description: "Đơn hàng không thể xác nhận!",
           placement: "top",
         });
-        console.log(error);
       });
   };
-
-  // Kiểm tra trạng thái sau khi trang tải lại
-  if (sessionStorage.getItem("orderConfirmed") === "true") {
-    // Hiển thị thông báo
-    notification.success({
-      message: "Thành công",
-      description: "Đơn hàng đã được xác nhận!",
-      placement: "top",
-    });
-
-    // Xóa trạng thái khỏi sessionStorage
-    sessionStorage.removeItem("orderConfirmed");
-    // Điều hướng đến trang khác nếu cần thiết
-    navigate("/await-order");
-  }
 
   const { Text } = Typography;
 
@@ -284,7 +259,12 @@ const ShippingOrderDetail = () => {
                 title={
                   <h1 className="text-2xl font-bold">Thông tin đơn hàng:</h1>
                 }
-                style={{ width: "90%", marginTop: "50px", height: "auto" }}
+                style={{
+                  width: "90%",
+                  marginTop: "50px",
+                  height: "auto",
+                  minHeight: "350px",
+                }}
               >
                 <div>
                   <div
@@ -546,14 +526,35 @@ const ShippingOrderDetail = () => {
                     })}
                   </Text>
                 </div>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <Text
+                    style={{
+                      fontSize: "17px",
+                      display: "inline-block",
+                      marginRight: "10px",
+                    }}
+                  >
+                    Nhân viên giao hàng:
+                  </Text>
+                  <Text
+                    strong
+                    style={{ fontSize: "17px", display: "inline-block" }}
+                  >
+                    {order.shipper.firstName
+                      ? order.shipper.firstName
+                      : order.shipper.email}
+                  </Text>
+                </div>
 
-                {isAuthenticatedStaff && (
+                {isAuthenticatedShipper && (
                   <div
                     style={{
                       display: "flex",
                       justifyContent: "space-between",
                       width: "100%",
-                      marginTop: "5vh",
+                      marginTop: "1vh",
                     }}
                   >
                     <Button

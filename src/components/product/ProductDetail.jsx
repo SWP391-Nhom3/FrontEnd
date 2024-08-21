@@ -1,5 +1,4 @@
 import { useLocation } from "react-router-dom";
-import { useCartContext } from "../../context/CartContext";
 import { Toaster } from "react-hot-toast";
 import {
   FaAngleDown,
@@ -11,6 +10,8 @@ import {
 import { FaCartPlus } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 
+import { useCartContext } from "../../context/CartContext";
+import { usePreOrderContext } from "../../context/PreOrderContext";
 // import { fetchGetFeedbackById } from "../../data/api";
 
 import ProductCard from "../card/Card";
@@ -18,8 +19,9 @@ import ProductCard from "../card/Card";
 const ProductDetail = () => {
   const location = useLocation();
   const product = location.state?.product || null;
-  console.log(product);
   const { addCartItem } = useCartContext();
+  const { addPreOrderItem } = usePreOrderContext();
+
   const [reviews, setReviews] = useState([]);
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [showAllReviews, setShowAllReviews] = useState(false);
@@ -159,9 +161,13 @@ const ProductDetail = () => {
                   Thêm Vào Giỏ Hàng
                 </button>
               ) : (
-                <span className="mt-4 flex items-center justify-center rounded-lg bg-gray-400 px-5 py-2.5 text-sm font-medium text-white sm:mt-0">
-                  Hết Hàng
-                </span>
+                <button
+                  onClick={() => addPreOrderItem(product)}
+                  className="mt-4 flex items-center justify-center rounded-lg bg-secondary-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-secondary-800 focus:ring-4 focus:ring-secondary-300 sm:mt-0"
+                >
+                  <FaCartPlus className="-ms-2 me-2 h-5 w-5" />
+                  Đặt trước
+                </button>
               )}
             </div>
           </div>

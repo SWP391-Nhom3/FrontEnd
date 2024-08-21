@@ -4,11 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 
 const OrderInfor = ({ paymentType, discount, ship, voucherCode }) => {
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user")) || null;
   const [formValues, setFormValues] = useState({
-    name: "",
-    email: "",
+    name: user.firstName + user.lastName,
+    email: user.email,
     phone: "",
-    address: "",
+    address: user.address || "",
   });
 
   const [provinces, setProvinces] = useState([]);
@@ -141,7 +142,6 @@ const OrderInfor = ({ paymentType, discount, ship, voucherCode }) => {
           selectedProvince.name,
     };
 
-    // Save customer information to localStorage
     localStorage.setItem("customer_infor", JSON.stringify(customer_infor));
 
     if (paymentType === "regular") {

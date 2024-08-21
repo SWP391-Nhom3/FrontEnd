@@ -39,6 +39,7 @@ import Orders from "./pages/OrderManagement/Order";
 import PreOrderPage from "./pages/PreOrder";
 import PreOrderPayment from "./components/order/PreOrderPayment";
 import OrderDetail from "./pages/OrderManagement/OrderDetail";
+import OrderDetailCustomer from "./components/order/OrderDetailCustomer";
 import CancelOrder from "./pages/OrderManagement/CancelOrder";
 import CompleteOrder from "./pages/OrderManagement/CompleteOrder";
 import ShippingOrder from "./pages/OrderManagement/ShippingOrder";
@@ -67,6 +68,7 @@ import AddNews from "./pages/News/AddNews";
 import EditNews from "./pages/News/EditNews";
 import AllNews from "./pages/News/AllNews";
 import "./App.css";
+import AddShipper from "./pages/User/AddShipper";
 
 const App = () => {
   const { currentMode, activeMenu, themeSettings } = useStateContext();
@@ -86,6 +88,8 @@ const App = () => {
 
   const isAuthenticatedAdmin = localStorage.getItem("isAdmin") === "true";
   const isAuthenticatedStaff = localStorage.getItem("isStaff") === "true";
+  const isAuthenticatedShipper = localStorage.getItem("isShipper") === "true";
+
   return (
     <div>
       <BrowserRouter>
@@ -112,12 +116,7 @@ const App = () => {
                   <AdminNavbar isAuthenticatedStaff={isAuthenticatedStaff} />
                 </div>
                 <Routes>
-                  <Route
-                    path="/dashboard"
-                    element={
-                      <Dashboard isAuthenticatedStaff={isAuthenticatedStaff} />
-                    }
-                  />
+                  <Route path="/" element={<AwaitOrder />} />
                   <Route path="/products" element={<ProductManagement />} />
                   <Route path="/add-product" element={<AddProduct />} />
                   <Route path="/voucher-batch" element={<VouchersBatch />} />
@@ -145,7 +144,7 @@ const App = () => {
                   />
                   <Route path="/preorder" element={<PreOrder />} />
                   <Route
-                    path="/await-orderDetail"
+                    path="/await-order-detail"
                     element={<AwaitOrderDetail />}
                   />
                   <Route path="/cancel-order" element={<CancelOrder />} />
@@ -187,6 +186,12 @@ const App = () => {
 
                 <Routes>
                   <Route
+                    path="/"
+                    element={
+                      <Dashboard isAuthenticatedAdmin={isAuthenticatedAdmin} />
+                    }
+                  />
+                  <Route
                     path="/dashboard"
                     element={
                       <Dashboard isAuthenticatedAdmin={isAuthenticatedAdmin} />
@@ -194,11 +199,54 @@ const App = () => {
                   />
                   <Route path="/users" element={<Users />} />
                   <Route path="/add-staff" element={<AddStaff />} />
+                  <Route path="/add-shipper" element={<AddShipper />} />
                   <Route path="/products" element={<ProductManagement />} />
                   <Route
                     path="/products-warehouse"
                     element={<ProductsWarehouse />}
                   />
+                </Routes>
+              </div>
+            </div>
+          </>
+        ) : isAuthenticatedShipper ? (
+          <>
+            <div className="dark:bg-main-dark-bg relative flex">
+              {activeMenu ? (
+                <div className="sidebar dark:bg-secondary-dark-bg fixed w-72 bg-white">
+                  <Sidebar isAuthenticatedShipper={isAuthenticatedShipper} />
+                </div>
+              ) : (
+                <div className="dark:bg-secondary-dark-bg w-0">
+                  <Sidebar isAuthenticatedShipper={isAuthenticatedShipper} />
+                </div>
+              )}
+              <div
+                className={
+                  activeMenu
+                    ? "dark:bg-main-dark-bg bg-main-bg min-h-screen w-full md:ml-72"
+                    : "bg-main-bg dark:bg-main-dark-bg flex-2 min-h-screen w-full"
+                }
+              >
+                <div className="bg-main-bg dark:bg-main-dark-bg navbar fixed w-full md:static">
+                  <AdminNavbar
+                    isAuthenticatedShipper={isAuthenticatedShipper}
+                  />
+                </div>
+
+                <Routes>
+                  <Route path="/" element={<ShippingOrder />} />
+                  <Route path="/shipping-order" element={<ShippingOrder />} />
+                  <Route path="/complete-order" element={<CompleteOrder />} />
+                  <Route
+                    path="/cancel-shipping-order"
+                    element={<CancelShippingOrder />}
+                  />
+                  <Route
+                    path="/shipping-orderDetail"
+                    element={<ShippingOrderDetail />}
+                  />
+                  <Route path="/order-detail" element={<OrderDetail />} />
                 </Routes>
               </div>
             </div>
@@ -224,6 +272,10 @@ const App = () => {
               <Route path="/contact" element={<Contact />} />
               <Route path="/exchange_policy" element={<ExchangePolicy />} />
               <Route path="/privacy_policy" element={<PrivacyPolicy />} />
+              <Route
+                path="/order-detail-customer"
+                element={<OrderDetailCustomer />}
+              />
               <Route path="/authenticate" element={<Authenticate />} />
               <Route path="/profile" element={<Profile />}>
                 <Route path="" element={<EditProfile />} />

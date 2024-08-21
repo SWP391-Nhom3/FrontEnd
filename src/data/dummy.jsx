@@ -7,6 +7,10 @@ import {
   FiStar,
   FiShoppingCart,
   FiUsers,
+  FiTruck,
+  FiCheckCircle,
+  FiXCircle,
+  FiSlash,
 } from "react-icons/fi";
 import {
   BsBoxSeam,
@@ -14,6 +18,7 @@ import {
   BsShield,
   BsChatLeft,
   BsNewspaper,
+  BsXCircle,
 } from "react-icons/bs";
 import { RiPriceTag3Line } from "react-icons/ri";
 import { MdOutlineCategory, MdOutlineSupervisorAccount } from "react-icons/md";
@@ -26,6 +31,7 @@ import avatar3 from "./avatar3.png";
 import avatar4 from "./avatar4.jpg";
 import { VscVerified } from "react-icons/vsc";
 import { FaRegStar } from "react-icons/fa";
+import { RxCrossCircled } from "react-icons/rx";
 
 export const stafflinks = [
   // {
@@ -202,6 +208,7 @@ export const adminlinks = [
         subLinks: [
           { name: "allUser", path: "users", label: "Tất cả người dùng" },
           { name: "addStaff", path: "add-staff", label: "Thêm nhân viên" },
+          { name: "", path: "add-shipper", label: "Thêm nhân viên giao hàng" },
         ],
       },
     ],
@@ -252,6 +259,32 @@ export const adminlinks = [
             label: "Sản phẩm trong kho",
           },
         ],
+      },
+    ],
+  },
+];
+
+export const shipperLinks = [
+  {
+    title: "Đơn hàng",
+    links: [
+      {
+        name: "Đơn đang giao",
+        icon: <FiTruck />,
+        type: "path",
+        path: "shipping-order",
+      },
+      {
+        name: "Đơn hoàn thành",
+        icon: <FiCheckCircle />,
+        type: "path",
+        path: "complete-order",
+      },
+      {
+        name: "Đơn giao hàng không thành công",
+        icon: <BsXCircle />,
+        type: "path",
+        path: "cancel-shipping-order",
       },
     ],
   },

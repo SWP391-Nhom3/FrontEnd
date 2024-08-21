@@ -6,12 +6,16 @@ import {
   MdOutlineCancel,
 } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
-import { adminlinks, stafflinks } from "../data/dummy";
+import { adminlinks, shipperLinks, stafflinks } from "../data/dummy";
 import { useStateContext } from "../context/ContextProvider";
 import logoImg from "../assets/images/logo/Logo.png";
 import { Badge } from "antd";
 
-const Sidebar = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
+const Sidebar = ({
+  isAuthenticatedAdmin,
+  isAuthenticatedStaff,
+  isAuthenticatedShipper,
+}) => {
   const { currentColor, activeMenu, setActiveMenu, screenSize } =
     useStateContext();
   const [activeSubmenu, setActiveSubmenu] = useState(null);
@@ -98,7 +102,7 @@ const Sidebar = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
         <>
           <div className="flex items-center justify-between">
             <Link
-              to="/dashboard"
+              to="/"
               onClick={handleCloseSideBar}
               className="ml-3 mt-4 flex items-center gap-3 text-xl font-extrabold tracking-tight text-slate-900 dark:text-white"
             >
@@ -293,6 +297,37 @@ const Sidebar = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
                           ))}
                         </div>
                       )}
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          )}
+          {isAuthenticatedShipper && (
+            <div className="mt-10">
+              {shipperLinks.map((item) => (
+                <div
+                  key={item.title}
+                  className="relative mb-4 border-b border-gray-300 pb-4 dark:border-gray-700"
+                >
+                  <p className="m-3 mt-4 uppercase text-gray-400 dark:text-gray-400">
+                    {item.title}
+                  </p>
+                  {item.links.map((link) => (
+                    <div key={link.name} className="relative mb-2">
+                      <NavLink
+                        to={`/${link.path}`}
+                        onClick={handleCloseSideBar}
+                        style={({ isActive }) => ({
+                          backgroundColor: isActive ? currentColor : "",
+                        })}
+                        className={({ isActive }) =>
+                          isActive ? activeLink : normalLink
+                        }
+                      >
+                        {link.icon}
+                        <span className="capitalize">{link.name}</span>
+                      </NavLink>
                     </div>
                   ))}
                 </div>

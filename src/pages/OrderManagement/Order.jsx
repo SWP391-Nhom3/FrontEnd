@@ -26,7 +26,6 @@ const Orders = () => {
       try {
         const orderData = await fetchOrders();
         setOrders(orderData.data);
-        console.log("order neeee", orderData.data);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching orders:", error);
@@ -149,7 +148,7 @@ const Orders = () => {
                 <Link
                   to={
                     item.orderStatus.name === "Chờ xác nhận"
-                      ? "/await-orderDetail"
+                      ? "/await-order-detail"
                       : "/order-detail"
                   }
                   state={{ order: item }}

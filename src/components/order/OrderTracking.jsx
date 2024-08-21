@@ -19,7 +19,6 @@ const OrderTracking = () => {
   //     const res = await fetchGetOrderById(orderId);
   //     toast.success("Tìm thành công đơn hàng");
   //     navigate(`/order-detail`, { state: { order: res.data.result } });
-  //     console.log(res.data.result);
   //   } catch {
   //     toast.error("Không tìm thấy đơn hàng");
   //   }
