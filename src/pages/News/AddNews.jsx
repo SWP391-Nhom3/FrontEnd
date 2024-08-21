@@ -201,7 +201,7 @@ const AddNews = () => {
       const url = await getDownloadURL(snapshot.ref);
 
       news.img_url = url;
-      await sendURL(news, id);
+      // await sendURL(news, id);
     }
   }
   //!! FETCH UPDATE NEW!!

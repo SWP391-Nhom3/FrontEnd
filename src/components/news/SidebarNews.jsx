@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const SidebarNews = ({ posts }) => {
@@ -8,6 +9,7 @@ const SidebarNews = ({ posts }) => {
   };
 
   const random = getRandomPosts(posts, 3);
+  const [searchTerm, setSearchTerm] = useState("");
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, "0");
@@ -18,6 +20,14 @@ const SidebarNews = ({ posts }) => {
     const seconds = String(date.getSeconds()).padStart(2, "0");
     return `${hours}:${minutes}:${seconds} - ${day}/${month}/${year} `;
   };
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredPosts = posts.filter((post) =>
+    post.title.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
+
   return (
     <div className="w-full p-4 md:w-1/4">
       <div className="mb-4">
@@ -25,58 +35,88 @@ const SidebarNews = ({ posts }) => {
           type="text"
           placeholder="Tìm kiếm...."
           className="w-full rounded-lg border p-2"
+          value={searchTerm}
+          onChange={handleSearchChange}
         />
       </div>
-      <div className="mb-4 rounded-lg border p-4">
-        <h2 className="mb-2 text-xl font-bold">Bài đăng gần đây</h2>
-        {recent.map((item) => (
-          <div key={item._id} className="mb-4 flex items-center">
-            <img
-              src={item.img_url}
-              alt={item.news_name}
-              className="mr-4 h-16 w-16 rounded-lg"
-            />
-            <div className="min-w-0 flex-1">
-              <Link
-                to={"/news-detail"}
-                state={{ news: item }}
-                onClick={() => window.scrollTo(0, 0)}
-                className="block w-full overflow-hidden truncate whitespace-nowrap font-bold"
-              >
-                {item.news_name}
-              </Link>
-              <p className="text-sm text-gray-600">
-                {formatDate(item.created_at)}
-              </p>
+      {searchTerm && (
+        <div className="mb-4 rounded-lg border p-4">
+          <h2 className="mb-2 text-xl font-bold">Kết quả tìm kiếm</h2>
+          {filteredPosts.map((item) => (
+            <div key={item.id} className="mb-4 flex items-center">
+              <img
+                src={item.imgUrl}
+                alt={item.title}
+                className="mr-4 h-16 w-16 rounded-lg"
+              />
+              <div className="min-w-0 flex-1">
+                <Link
+                  to={"/news-detail"}
+                  state={{ news: item }}
+                  onClick={() => window.scrollTo(0, 0)}
+                  className="block w-full overflow-hidden truncate whitespace-nowrap font-bold"
+                >
+                  {item.title}
+                </Link>
+              </div>
             </div>
+          ))}
+        </div>
+      )}
+      {!searchTerm && (
+        <>
+          <div className="mb-4 rounded-lg border p-4">
+            <h2 className="mb-2 text-xl font-bold">Bài đăng gần đây</h2>
+            {recent.map((item) => (
+              <div key={item.id} className="mb-4 flex items-center">
+                <img
+                  src={item.imgUrl}
+                  alt={item.title}
+                  className="mr-4 h-16 w-16 rounded-lg"
+                />
+                <div className="min-w-0 flex-1">
+                  <Link
+                    to={"/news-detail"}
+                    state={{ news: item }}
+                    onClick={() => window.scrollTo(0, 0)}
+                    className="block w-full overflow-hidden truncate whitespace-nowrap font-bold"
+                  >
+                    {item.title}
+                  </Link>
+                  <p className="text-sm text-gray-600">
+                    {formatDate(item.createdAt)}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      <div className="rounded-lg border p-4">
-        <h2 className="mb-2 text-xl font-bold">Bài viết đề xuất</h2>
-        {random.map((item) => (
-          <div key={item._id} className="mb-4 flex items-center">
-            <img
-              src={item.img_url}
-              alt={item.news_name}
-              className="mr-4 h-16 w-16 rounded-lg"
-            />
-            <div className="min-w-0 flex-1">
-              <Link
-                to={"/news-detail"}
-                state={{ news: item }}
-                onClick={() => window.scrollTo(0, 0)}
-                className="block w-full overflow-hidden truncate whitespace-nowrap font-bold"
-              >
-                {item.news_name}
-              </Link>
-              <p className="text-sm text-gray-600">
-                {formatDate(item.created_at)}
-              </p>
-            </div>
+          <div className="rounded-lg border p-4">
+            <h2 className="mb-2 text-xl font-bold">Bài viết đề xuất</h2>
+            {random.map((item) => (
+              <div key={item.id} className="mb-4 flex items-center">
+                <img
+                  src={item.imgUrl}
+                  alt={item.title}
+                  className="mr-4 h-16 w-16 rounded-lg"
+                />
+                <div className="min-w-0 flex-1">
+                  <Link
+                    to={"/news-detail"}
+                    state={{ news: item }}
+                    onClick={() => window.scrollTo(0, 0)}
+                    className="block w-full overflow-hidden truncate whitespace-nowrap font-bold"
+                  >
+                    {item.title}
+                  </Link>
+                  <p className="text-sm text-gray-600">
+                    {formatDate(item.createdAt)}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </>
+      )}
     </div>
   );
 };
