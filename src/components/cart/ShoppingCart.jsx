@@ -43,17 +43,32 @@ const ShoppingCart = () => {
   };
   const total = totalPrice + ship > 0 ? totalPrice + ship : 0;
 
-  const applyDiscount = (voucher) => {
+  const calculateTotal = (items, shippingFee) => {
+    let total = items.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0,
+    );
+    total += shippingFee;
+    return total;
+  };
+
+  const applyDiscount = (total, voucher) => {
     let newTotalAmount = total;
 
-    if (voucher.voucherType === "FIXED_AMOUNT") {
-      newTotalAmount -= voucher.value; // Giảm giá trực tiếp bằng số tiền cố định
-    } else if (voucher.voucherType === "PERCENTAGE") {
-      newTotalAmount -= (newTotalAmount * voucher.value) / 100; // Giảm giá theo phần trăm
+    if (voucher && voucher.voucherType === "FIXED_AMOUNT") {
+      newTotalAmount -= voucher.value;
+    } else if (voucher && voucher.voucherType === "PERCENTAGE") {
+      newTotalAmount -= (newTotalAmount * voucher.value) / 100;
     }
 
-    setTotalAmount(newTotalAmount); // Cập nhật tổng số tiền sau khi áp dụng giảm giá
+    return newTotalAmount;
   };
+  useEffect(() => {
+    const total = calculateTotal(cartItems, ship);
+    const discountedTotal = applyDiscount(total, selectedVoucher);
+    setTotalAmount(discountedTotal);
+  }, [cartItems, selectedVoucher, ship]);
+
   useEffect(() => {
     const getVouchers = async () => {
       try {
@@ -113,7 +128,18 @@ const ShoppingCart = () => {
       return 50000;
     }
   };
+  function formatCurrency(amount) {
+    // Kiểm tra và xử lý giá trị không hợp lệ của amount
+    if (isNaN(amount) || amount == null) {
+      return "0 VND"; // Hoặc một giá trị mặc định phù hợp
+    }
 
+    // Đảm bảo giá trị không âm và định dạng tiền tệ
+    return Number(Math.max(amount, 0)).toLocaleString("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    });
+  }
   useEffect(() => {
     setShip(calculateShip(cartAmount));
   }, [cartAmount]);
@@ -373,13 +399,7 @@ const ShoppingCart = () => {
                         Tổng Cộng
                       </dt>
                       <dd className="text-base font-bold text-gray-900">
-                        {Number(Math.max(totalAmount, 0)).toLocaleString(
-                          "vi-VN",
-                          {
-                            style: "currency",
-                            currency: "VND",
-                          },
-                        )}
+                        {formatCurrency(totalAmount)}
                       </dd>
                     </dl>
                   </div>
