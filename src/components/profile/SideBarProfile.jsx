@@ -8,6 +8,7 @@ import {
   HiGift,
   HiOutlineAdjustments,
 } from "react-icons/hi";
+import { MdReportGmailerrorred } from "react-icons/md";
 import { useLocation } from "react-router-dom";
 
 export function SideBarProfile() {
@@ -40,18 +41,18 @@ export function SideBarProfile() {
         </Sidebar.ItemGroup>
         <Sidebar.ItemGroup>
           <Sidebar.Item
-            href="/profile/accumulated-points"
-            icon={HiGift}
-            className={getItemClass("/profile/accumulated-points")}
-          >
-            Đổi quà
-          </Sidebar.Item>
-          <Sidebar.Item
             href="/profile/history-order"
             icon={HiClock}
             className={getItemClass("/profile/history-order")}
           >
             Lịch sử đơn hàng
+          </Sidebar.Item>
+          <Sidebar.Item
+            href="/profile/my-reports"
+            icon={MdReportGmailerrorred}
+            className={getItemClass("/profile/my-reports")}
+          >
+            Lịch sử khiếu nại
           </Sidebar.Item>
           <Sidebar.Item
             href="/profile/my-feedback"

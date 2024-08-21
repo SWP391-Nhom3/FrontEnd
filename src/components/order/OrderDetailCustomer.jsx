@@ -6,7 +6,12 @@ import { FcFeedback } from "react-icons/fc";
 import { MdReport } from "react-icons/md";
 import { useState, useEffect } from "react";
 import RenderRating from "../elements/RenderRating";
-import { fetchUploadFeedback, fetchCheckFeedback } from "../../data/api";
+import {
+  fetchUploadFeedback,
+  fetchCheckFeedback,
+  fetchAddReport,
+  fetchCheckReport,
+} from "../../data/api";
 import toast from "react-hot-toast";
 import { useCartContext } from "../../context/CartContext";
 import Loader from "../../assets/loading2.gif";
@@ -14,6 +19,7 @@ import { AiOutlineFieldTime } from "react-icons/ai";
 import { IoIosCloseCircle } from "react-icons/io";
 import { FaCheckCircle } from "react-icons/fa";
 import { FaRegSmileBeam } from "react-icons/fa";
+import { notification } from "antd";
 
 const OrderDetailCustomer = () => {
   const location = useLocation();
@@ -24,13 +30,18 @@ const OrderDetailCustomer = () => {
   const [loadingReviews, setLoadingReviews] = useState(false);
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
+  const [showOtherReason, setShowOtherReason] = useState(false);
+  const [isReported, setIsReported] = useState(false);
+
   const [feedback, setFeedback] = useState({
     rating: 0,
     description: "",
     product_id: null,
   });
   const [report, setReport] = useState({
-    description: "",
+    orderId: order.id,
+    customerId: order.member.id,
+    reason: "",
   });
   const token = localStorage.getItem("accessToken");
   const user = JSON.parse(localStorage.getItem("user"));
@@ -71,8 +82,35 @@ const OrderDetailCustomer = () => {
     }
   }, []);
 
+  useEffect(() => {
+    fetchCheckReport(report.orderId, report.customerId).then((res) => {
+      console.log(res.data.data);
+      if (res.data.data === undefined) {
+        setIsReported(false);
+      } else setIsReported(true);
+    });
+  }, []);
+
   const checkFeedbacked = () => {
     return;
+  };
+
+  const handleReasonChange = (e) => {
+    const { value } = e.target;
+
+    setReport((prevReport) => ({
+      ...prevReport,
+      reason: value,
+    }));
+    setShowOtherReason(value === "Vui lòng nhập lý do khác");
+  };
+
+  const handleOtherReasonChange = (e) => {
+    const { value } = e.target;
+    setReport((prevReport) => ({
+      ...prevReport,
+      reason: value,
+    }));
   };
 
   const formatDate = (dateString) => {
@@ -100,14 +138,14 @@ const OrderDetailCustomer = () => {
     setFeedback({ rating: 0, description: "", product_id: null });
   };
 
-  const openReportModal = (orderId) => {
-    setReport({ ...feedback, orderId });
+  const openReportModal = () => {
+    setReport({ ...report });
     setShowReportModal(true);
   };
 
   const closeReportModal = () => {
     setShowReportModal(false);
-    setFeedback({ description: "" });
+    setReport({ ...report, reason: "" });
   };
 
   const handleFeedbackChange = (e) => {
@@ -117,8 +155,10 @@ const OrderDetailCustomer = () => {
 
   const handleReportChange = (e) => {
     const { name, value } = e.target;
-    setFeedback({ ...feedback, [name]: value });
+    setReport({ ...report, [name]: value });
   };
+
+  console.log("report ne:", report);
 
   const handleRatingChange = (rating) => {
     setFeedback({ ...feedback, rating });
@@ -168,7 +208,15 @@ const OrderDetailCustomer = () => {
     closeFeedbackModal();
   };
 
-  const submitReport = async () => {};
+  const submitReport = async () => {
+    fetchAddReport(report);
+    closeReportModal();
+    notification.success({
+      message: "Gửi khiếu nại đơn hàng thành công",
+      placement: "top",
+    });
+    setIsReported(true);
+  };
 
   const calculateProgress = () => {
     const status = order.orderStatus.name;
@@ -242,15 +290,18 @@ const OrderDetailCustomer = () => {
               >
                 <FaCartPlus className="mx-2 mt-0.5 text-xl" /> Mua lại sản phẩm
               </Button>
-
-              <Button
-                color="light"
-                size={"xl"}
-                className="text-primary-600"
-                onClick={() => openReportModal(order.id)}
-              >
-                <MdReport className="mx-2 mt-0.5 text-xl" /> Khiếu nại đơn hàng
-              </Button>
+              {order.orderStatus.name === "Hoàn thành" && (
+                <Button
+                  disabled={isReported}
+                  color="light"
+                  size={"xl"}
+                  className="text-primary-600"
+                  onClick={() => openReportModal(order.id)}
+                >
+                  <MdReport className="mx-2 mt-0.5 text-xl" /> Khiếu nại đơn
+                  hàng
+                </Button>
+              )}
             </div>
           </div>
           {/* order tracking */}
@@ -487,19 +538,99 @@ const OrderDetailCustomer = () => {
               <label className="block text-xl font-medium text-gray-700 dark:text-gray-200">
                 Lí do khiếu nại:
               </label>
-              <textarea
-                name="description"
-                className="mt-1 w-full rounded border p-2"
-                rows="5"
-                value={report.description}
-                onChange={handleReportChange}
-                required
-              />
+              <div className="flex flex-col space-y-2">
+                <label>
+                  <input
+                    type="radio"
+                    name="reason"
+                    value="Giao hàng chậm"
+                    checked={report.reason === "Giao hàng chậm"}
+                    onChange={handleReasonChange}
+                  />
+                  Giao hàng chậm
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="reason"
+                    value="Chưa nhận được hàng"
+                    checked={report.reason === "Chưa nhận được hàng"}
+                    onChange={handleReasonChange}
+                  />
+                  Chưa nhận được hàng
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="reason"
+                    value="Sữa bị hỏng hoặc hết hạn sử dụng"
+                    checked={
+                      report.reason === "Sữa bị hỏng hoặc hết hạn sử dụng"
+                    }
+                    onChange={handleReasonChange}
+                  />
+                  Sữa bị hỏng hoặc hết hạn sử dụng
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="reason"
+                    value="Sữa thiếu số lượng"
+                    checked={report.reason === "Sữa thiếu số lượng"}
+                    onChange={handleReasonChange}
+                  />
+                  Sữa thiếu số lượng
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="reason"
+                    value="Thái độ nhân viên giao hàng không tốt"
+                    checked={
+                      report.reason === "Thái độ nhân viên giao hàng không tốt"
+                    }
+                    onChange={handleReasonChange}
+                  />
+                  Thái độ nhân viên giao hàng không tốt
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="reason"
+                    value="Vui lòng nhập lý do khác"
+                    checked={
+                      report.reason !== "" &&
+                      report.reason !==
+                        "Thái độ nhân viên giao hàng không tốt" &&
+                      report.reason !== "Chưa nhận được hàng" &&
+                      report.reason !== "Giao hàng chậm" &&
+                      report.reason !== "Sữa bị hỏng hoặc hết hạn sử dụng" &&
+                      report.reason !== "Sữa thiếu số lượng"
+                    }
+                    onChange={handleReasonChange}
+                  />
+                  Khác
+                </label>
+                {showOtherReason && (
+                  <textarea
+                    name="otherReason"
+                    className="mt-2 w-full rounded border p-2"
+                    rows="3"
+                    placeholder="Vui lòng nhập lý do khác"
+                    value={report.reason}
+                    onChange={handleOtherReasonChange}
+                  />
+                )}
+              </div>
             </div>
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button color="primary" onClick={submitReport}>
+          <Button
+            color="primary"
+            disabled={report.reason === ""}
+            onClick={submitReport}
+          >
             Gửi khiếu nại
           </Button>
           <Button color="gray" onClick={closeReportModal}>

@@ -69,6 +69,7 @@ import EditNews from "./pages/News/EditNews";
 import AllNews from "./pages/News/AllNews";
 import "./App.css";
 import AddShipper from "./pages/User/AddShipper";
+import Reports from "./components/profile/Reports";
 
 const App = () => {
   const { currentMode, activeMenu, themeSettings } = useStateContext();
@@ -283,6 +284,7 @@ const App = () => {
                 <Route path="history-order" element={<HistoryOrder />} />
                 <Route path="my-feedback" element={<Feedback />} />
                 <Route path="accumulated-points" element={<Accumulate />} />
+                <Route path="my-reports" element={<Reports />} />
               </Route>
               <Route path="/news" element={<News />} />
               <Route path="/news-detail" element={<NewsDetail />} />

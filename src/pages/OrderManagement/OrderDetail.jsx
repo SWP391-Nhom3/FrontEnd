@@ -543,9 +543,11 @@ const OrderDetail = () => {
                     strong
                     style={{ fontSize: "17px", display: "inline-block" }}
                   >
-                    {order.shipper.firstName
+                    {order.shipper
                       ? order.shipper.firstName
-                      : order.shipper.email}
+                        ? order.shipper.firstName
+                        : order.shipper.email
+                      : ""}
                   </Text>
                 </div>
               </Card>
