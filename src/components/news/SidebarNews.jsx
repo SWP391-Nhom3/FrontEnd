@@ -58,6 +58,9 @@ const SidebarNews = ({ posts }) => {
                 >
                   {item.title}
                 </Link>
+                <p className="text-sm text-gray-600">
+                  {formatDate(item.createdAt)}
+                </p>
               </div>
             </div>
           ))}

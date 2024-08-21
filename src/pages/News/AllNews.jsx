@@ -54,7 +54,7 @@ const AllNews = () => {
       content: "Hành động này không thể hoàn tác.",
       onOk: async () => {
         try {
-          handleDelete(Id);
+          // handleDelete(Id);
           notification.success({
             message: "Thành công",
             description: `Xóa thành công!`,

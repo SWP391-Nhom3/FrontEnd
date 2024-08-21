@@ -61,7 +61,7 @@ const PostListNews = ({ posts }) => {
             <div
               className="text-gray-500"
               style={truncateStyle}
-              dangerouslySetInnerHTML={{ __html: item.description }}
+              dangerouslySetInnerHTML={{ __html: item.content }}
             />
             <Link
               to={"/news-detail"}

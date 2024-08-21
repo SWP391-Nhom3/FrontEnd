@@ -10,7 +10,7 @@ const NewsDetail = () => {
   const findProductById = (product_id) => {
     return products.find((product) => product.id === product_id);
   };
-  const product = findProductById(news.product_id);
+  const product = findProductById(news.product.id);
   if (!news) {
     return <div>No news item selected.</div>;
   }
@@ -37,11 +37,11 @@ const NewsDetail = () => {
           style={{ width: "450px", height: "300px" }}
         />
         <h1 className="mb-2 text-center text-3xl font-bold">{news.title}</h1>
-        {/* <p className="mb-4 text-center text-sm text-gray-600">
-          {formatDate(news.created_at)}
-        </p> */}
+        <p className="mb-4 text-center text-sm text-gray-600">
+          {formatDate(news.createdAt)}
+        </p>
         <div
-          dangerouslySetInnerHTML={{ __html: news.description }}
+          dangerouslySetInnerHTML={{ __html: news.content }}
           className="leading-7 text-gray-800"
         />
         <div className="mt-4 text-center">
