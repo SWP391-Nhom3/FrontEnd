@@ -188,26 +188,28 @@ export const fetchCheckFeedback = async (user_id, product_id) => {
   return await axios.get(`${HOSTNAME}/reviews/${product_id}/${user_id}`);
 };
 
+export const fetchReivewByUser = async (user_id) => {
+  return await axios.get(`${HOSTNAME}/reviews/user/${user_id}`);
+};
+
 //fetchUploadFeedback
 export const fetchUploadFeedback = async (user_id, feedback, token) => {
-  return await axios.post(
-    `${HOSTNAME}/reviews`,
-    {
-      user: {
-        id: user_id,
-      },
-      product: {
-        id: feedback.product_id,
-      },
-      rating: feedback.rating,
-      comment: feedback.description,
+  console.log(`${HOSTNAME}/reviews`);
+  return await axios.post(`${HOSTNAME}/reviews`, {
+    user: {
+      id: user_id,
     },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+    product: {
+      id: feedback.product_id,
     },
-  );
+    rating: feedback.rating,
+    comment: feedback.description,
+  });
+};
+
+//delete:
+export const fetchDeleteFeedback = async (id, token) => {
+  return await axios.delete(`${HOSTNAME}/reviews/${id}`, {});
 };
 
 export const fetchAllReplyFeedback = async () => {
