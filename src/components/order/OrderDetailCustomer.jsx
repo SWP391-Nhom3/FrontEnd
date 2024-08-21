@@ -6,13 +6,12 @@ import { FcFeedback } from "react-icons/fc";
 import { MdReport } from "react-icons/md";
 import { useState, useEffect } from "react";
 import RenderRating from "../elements/RenderRating";
-import { fetchUploadFeedback } from "../../data/api";
+import { fetchUploadFeedback, fetchCheckFeedback } from "../../data/api";
 import toast from "react-hot-toast";
 import { useCartContext } from "../../context/CartContext";
 import Loader from "../../assets/loading2.gif";
 import { AiOutlineFieldTime } from "react-icons/ai";
 import { IoIosCloseCircle } from "react-icons/io";
-import { FaTruckFast } from "react-icons/fa6";
 import { FaCheckCircle } from "react-icons/fa";
 import { FaRegSmileBeam } from "react-icons/fa";
 
@@ -21,7 +20,7 @@ const OrderDetailCustomer = () => {
   const order = location.state?.order || {};
   const [orderDetails, setOrderDetails] = useState([]);
   const products = JSON.parse(localStorage.getItem("products")) || [];
-  const [reviews, setReviews] = useState([]);
+  const [allFeedback, setAllFeedback] = useState([]);
   const [loadingReviews, setLoadingReviews] = useState(false);
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
@@ -33,17 +32,17 @@ const OrderDetailCustomer = () => {
   const [report, setReport] = useState({
     description: "",
   });
-  const token = JSON.parse(localStorage.getItem("result"));
+  const token = localStorage.getItem("accessToken");
   const user = JSON.parse(localStorage.getItem("user"));
   const user_id = user.id;
   const member_id = order.member.id;
   const checkMember = user_id === member_id;
   const { addCartItems } = useCartContext();
-
   useEffect(() => {
     const findProductById = (product_id) => {
       return products.find((product) => product.id === product_id);
     };
+
     if (products.length > 0 && order) {
       const updateOrderDetails = async () => {
         const details = await Promise.all(
@@ -56,27 +55,24 @@ const OrderDetailCustomer = () => {
       };
       updateOrderDetails();
     }
-    // if (checkMember) {
-    //   const getReviews = async () => {
-    //     await fetchGetFeedbackByUser(user_id)
-    //       .then((res) => {
-    //         setReviews(res.data.result.map((review) => review.product_id));
-    //       })
-    //       .catch((err) => {
-    //         console.log(err);
-    //       })
-    //       .finally(() => {
-    //         setLoadingReviews(false);
-    //       });
-    //   };
-    //   getReviews();
-    // } else {
-    //   setLoadingReviews(false);
-    // }
+
+    if (checkMember) {
+      const getReviews = async () => {
+        const feedbacks = await Promise.all(
+          order.orderDetails.map(async (item) => {
+            const feedback = await fetchCheckFeedback(user_id, item.product.id);
+            return feedback.data.data;
+          }),
+        );
+        setAllFeedback(feedbacks);
+        setLoadingReviews(false);
+      };
+      getReviews();
+    }
   }, []);
 
-  const checkFeedback = (product_id) => {
-    return reviews.includes(product_id);
+  const checkFeedbacked = () => {
+    return;
   };
 
   const formatDate = (dateString) => {
@@ -156,20 +152,20 @@ const OrderDetailCustomer = () => {
   };
 
   const submitFeedback = async () => {
-    // if (feedback.rating === 0 || feedback.description.trim() === "") {
-    //   toast.error("Vui lòng nhập đủ thông tin đánh giá và mô tả sản phẩm.");
-    //   return;
-    // }
-    // await fetchUploadFeedback(feedback, token)
-    //   .then(() => {
-    //     toast.success("Đánh giá cho sản phẩm thành công!");
-    //     window.location.reload();
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     toast.error("Đánh giá cho sản phẩm thất bại!");
-    //   });
-    // closeFeedbackModal();
+    if (feedback.rating === 0 || feedback.description.trim() === "") {
+      toast.error("Vui lòng nhập đủ thông tin đánh giá và mô tả sản phẩm.");
+      return;
+    }
+    await fetchUploadFeedback(user_id, feedback, token)
+      .then(() => {
+        toast.success("Đánh giá cho sản phẩm thành công!");
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Đánh giá cho sản phẩm thất bại!");
+      });
+    closeFeedbackModal();
   };
 
   const submitReport = async () => {};
@@ -407,17 +403,30 @@ const OrderDetailCustomer = () => {
                         })}
                       </p>
                     </div>
-                    {checkMember && order.orderStatus.name === "Hoàn thành" && (
-                      <Button
-                        color="light"
-                        size={"xl"}
-                        className="ml-auto mt-4 text-primary-600 md:mt-0"
-                        onClick={() => openFeedbackModal(item.product.id)}
-                      >
-                        <FcFeedback className="mx-2 mt-0.5 text-xl" /> Đánh giá
-                        sản phẩm
-                      </Button>
-                    )}
+
+                    {checkMember &&
+                      order.orderStatus.name === "Hoàn thành" &&
+                      (!checkFeedbacked() ? (
+                        <Button
+                          color="light"
+                          size={"xl"}
+                          className="ml-auto mt-4 text-primary-600 md:mt-0"
+                          onClick={() => openFeedbackModal(item.product.id)}
+                        >
+                          <FcFeedback className="mx-2 mt-0.5 text-xl" /> Đánh
+                          giá sản phẩm
+                        </Button>
+                      ) : (
+                        <Button
+                          color="light"
+                          size={"xl"}
+                          className="text-screen-500 ml-auto mt-4 md:mt-0"
+                          disabled
+                        >
+                          <FcFeedback className="mx-2 mt-0.5 text-xl" /> Đã đánh
+                          giá sản phẩm
+                        </Button>
+                      ))}
                   </div>
                 </div>
               ))

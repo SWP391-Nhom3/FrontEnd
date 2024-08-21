@@ -227,7 +227,11 @@ export const fetchAllFeedback = async () => {
   return await axios.get(`${HOSTNAME}/reviews`);
 };
 
-// //fetchUploadFeedback
+export const fetchCheckFeedback = async (user_id, product_id) => {
+  return await axios.get(`${HOSTNAME}/reviews/${product_id}/${user_id}`);
+};
+
+//fetchUploadFeedback
 export const fetchUploadFeedback = async (user_id, feedback, token) => {
   return await axios.post(
     `${HOSTNAME}/reviews`,
