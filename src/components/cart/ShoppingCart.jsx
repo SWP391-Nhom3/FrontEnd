@@ -129,12 +129,10 @@ const ShoppingCart = () => {
     }
   };
   function formatCurrency(amount) {
-    // Kiểm tra và xử lý giá trị không hợp lệ của amount
     if (isNaN(amount) || amount == null) {
-      return "0 VND"; // Hoặc một giá trị mặc định phù hợp
+      return "0 VND";
     }
 
-    // Đảm bảo giá trị không âm và định dạng tiền tệ
     return Number(Math.max(amount, 0)).toLocaleString("vi-VN", {
       style: "currency",
       currency: "VND",
