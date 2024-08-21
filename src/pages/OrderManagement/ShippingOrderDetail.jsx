@@ -99,7 +99,7 @@ const ShippingOrderDetail = () => {
           placement: "top",
         });
         sessionStorage.removeItem("orderConfirmed");
-        navigate("/orders");
+        navigate("/complete-order");
       })
       .catch(() => {
         notification.error({
