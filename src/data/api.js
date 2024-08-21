@@ -222,14 +222,58 @@ export const fetchCancelShippingOrder = async (id) => {
 //   );
 // };
 
+// //feedback
+export const fetchAllFeedback = async () => {
+  return await axios.get(`${HOSTNAME}/reviews`);
+};
+
 // //fetchUploadFeedback
-export const fetchUploadFeedback = async (feedback, token) => {
+export const fetchUploadFeedback = async (user_id, feedback, token) => {
   return await axios.post(
-    `${SCHEMA_HOSTNAME}/feedbacks/reply/upload`,
-    { ...feedback },
+    `${HOSTNAME}/reviews`,
+    {
+      user: {
+        id: user_id,
+      },
+      product: {
+        id: feedback.product_id,
+      },
+      rating: feedback.rating,
+      comment: feedback.description,
+    },
     {
       headers: {
-        Authorization: `Bearer ${token.access_token}`,
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+};
+
+export const fetchAllReplyFeedback = async () => {
+  return await axios.get(`${HOSTNAME}/review-reply`);
+};
+
+// //fetchUploadReplyFeedback
+export const fetchUploadReplyFeedback = async (
+  user_id,
+  review_id,
+  replyText,
+  token,
+) => {
+  return await axios.post(
+    `${HOSTNAME}/review-reply`,
+    {
+      user: {
+        id: user_id,
+      },
+      review: {
+        id: review_id,
+      },
+      replyText: replyText,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
     },
   );
@@ -648,11 +692,6 @@ export const fetchGetVoucher = async () => {
 //   } catch (error) {
 //     throw error;
 //   }
-// };
-
-// //feedback
-// export const fetchAllFeedback = async () => {
-//   return await axios.get(`${SCHEMA_HOSTNAME}/feedbacks/all-feedback`);
 // };
 
 //API province, district, ward
