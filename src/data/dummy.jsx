@@ -21,7 +21,7 @@ import {
   BsXCircle,
 } from "react-icons/bs";
 import { RiPriceTag3Line } from "react-icons/ri";
-import { MdOutlineCategory, MdOutlineSupervisorAccount } from "react-icons/md";
+import { MdOutlineCategory, MdOutlineReport, MdOutlineReportProblem, MdOutlineSupervisorAccount, MdReport, MdReportGmailerrorred } from "react-icons/md";
 import { HiOutlineRefresh } from "react-icons/hi";
 import { TiTick } from "react-icons/ti";
 import { GrLocation } from "react-icons/gr";
@@ -122,6 +122,57 @@ export const stafflinks = [
           },
         ],
       },
+    ],
+  },
+  {
+    title: "Khiếu nại đơn hàng",
+    links: [
+      {
+        name: "Chưa giải quyết",
+        icon: <MdOutlineReportProblem />,
+        type: "sub",
+        // path: 'brands',
+        subLinks: [
+          { name: "",
+            path: "processing-report",
+            label: "Tất cả đơn chưa giải quyết", 
+          },
+        ],
+      },
+      {
+        name: "Đã giải quyết",
+        icon: <MdOutlineReport  />,
+        type: "sub",
+        // path: 'categories',
+        subLinks: [
+          {
+            name: "",
+            path: "complete-report",
+            label: "Tất cả đơn đã giải quyết",
+          },
+          {
+            name: "",
+            path: "voucher-report",
+            label: "Tặng voucher",
+          },
+          {
+            name: "",
+            path: "order-report",
+            label: "Đền bù sản phẩm",
+          },
+          {
+            name: "",
+            path: "refund-report",
+            label: "Hoàn tiền",
+          },
+          {
+            name: "",
+            path: "cancel-report", 
+            label: "Không giải quyết",
+          },
+        ],
+      },
+
     ],
   },
   {
