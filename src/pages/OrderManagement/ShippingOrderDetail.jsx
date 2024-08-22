@@ -109,6 +109,7 @@ const ShippingOrderDetail = () => {
       });
   };
 
+  console.log(order);
   const { Text } = Typography;
   return (
     <div style={{ height: "120vh" }}>

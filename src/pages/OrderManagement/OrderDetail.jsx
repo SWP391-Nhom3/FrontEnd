@@ -81,11 +81,6 @@ const OrderDetail = () => {
     return date.toISOString();
   };
 
-  console.log(
-    order.orderStatus.name === "Chờ xác nhận" &&
-      order.preOrderDetail.length > 0,
-  );
-
   const { Text } = Typography;
   return (
     <div style={{ height: "120vh" }}>
@@ -225,6 +220,33 @@ const OrderDetail = () => {
                         ]}
                       />
                     )}
+                    {order.orderStatus.name === "Đặt trước" && (
+                      <Steps
+                        items={[
+                          {
+                            title: "Đặt Trước",
+                            status: "finish",
+                            description: formatDate(order.createdAt),
+                            icon: <CalendarOutlined />,
+                          },
+                          {
+                            title: "Chờ xác nhận",
+                            status: "wait",
+                            icon: <FieldTimeOutlined />,
+                          },
+                          {
+                            title: "Đã xác nhận",
+                            status: "wait",
+                            icon: <CheckCircleOutlined />,
+                          },
+                          {
+                            title: "Đã hoàn thành",
+                            status: "wait",
+                            icon: <SmileOutlined />,
+                          },
+                        ]}
+                      />
+                    )}
                   </>
                 ) : (
                   <>
@@ -315,34 +337,6 @@ const OrderDetail = () => {
                             title: "Đã xác nhận",
                             status: "process",
                             description: formatDate(order.acceptedDate),
-                            icon: <CheckCircleOutlined />,
-                          },
-                          {
-                            title: "Đã hoàn thành",
-                            status: "wait",
-                            icon: <SmileOutlined />,
-                          },
-                        ]}
-                      />
-                    )}
-
-                    {order.orderStatus.name === "Đặt trước" && (
-                      <Steps
-                        items={[
-                          {
-                            title: "Đặt Trước",
-                            status: "finish",
-                            description: formatDate(order.createdAt),
-                            icon: <CalendarOutlined />,
-                          },
-                          {
-                            title: "Chờ xác nhận",
-                            status: "wait",
-                            icon: <FieldTimeOutlined />,
-                          },
-                          {
-                            title: "Đã xác nhận",
-                            status: "wait",
                             icon: <CheckCircleOutlined />,
                           },
                           {

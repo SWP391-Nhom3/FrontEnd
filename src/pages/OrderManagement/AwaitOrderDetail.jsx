@@ -170,7 +170,6 @@ const AwaitOrderDetail = () => {
                       {
                         title: "Chờ xác nhận",
                         status: "process",
-                        description: formatDate(order.requiredDate),
                         icon: <FieldTimeOutlined />,
                       },
                       {
@@ -195,10 +194,9 @@ const AwaitOrderDetail = () => {
                         icon: <FieldTimeOutlined />,
                       },
                       {
-                        title: "Đã hủy",
-                        status: "error",
-                        description: formatDate(order.acceptedDate),
-                        icon: <CloseCircleOutlined />,
+                        title: "Đã xác nhận",
+                        status: "wait",
+                        icon: <CheckCircleOutlined />,
                       },
                       {
                         title: "Đã hoàn thành",
