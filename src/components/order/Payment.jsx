@@ -363,7 +363,7 @@ const Payment = () => {
                       </dt>
                       <dd className="text-base font-medium text-gray-900 dark:text-white">
                         -
-                        {/* {selectedVoucher.voucherType === "FIXED_AMOUNT"
+                        {selectedVoucher.voucherType === "FIXED_AMOUNT"
                           ? Number(selectedVoucher.value).toLocaleString(
                               "vi-VN",
                               {
@@ -371,7 +371,7 @@ const Payment = () => {
                                 currency: "VND",
                               },
                             )
-                          : `${Number(selectedVoucher.value)}%`} */}
+                          : `${Number(selectedVoucher.value)}%`}
                       </dd>
                     </dl>
                   </div>

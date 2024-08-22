@@ -141,6 +141,7 @@ const ShoppingCart = () => {
   useEffect(() => {
     setShip(calculateShip(cartAmount));
   }, [cartAmount]);
+  console.log(selectedVoucher);
   return (
     <>
       <ol className="flex w-full items-center justify-center px-24 text-center text-sm font-medium text-gray-500 sm:text-base">
