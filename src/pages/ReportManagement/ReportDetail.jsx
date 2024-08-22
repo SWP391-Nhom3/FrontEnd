@@ -556,11 +556,10 @@ const ReportDetail = () => {
                       strong
                       style={{ fontSize: "17px", display: "inline-block" }}
                     >
-                      {" "}
-                      {/* {Number(order.voucher_fee).toLocaleString("vi-VN", {
+                      {report.order.voucher.voucherType === "FIXED_AMOUNT" ? Number(report.order.voucher.value).toLocaleString("vi-VN", {
                         style: "currency",
                         currency: "VND",
-                      })} */}
+                      }) : `${Number(report.order.voucher.value)}%` }
                     </Text>
                   </div>
                   <div
