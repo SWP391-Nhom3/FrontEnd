@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const HOSTNAME = "http://localhost:8080/api";
+const HOSTNAME = "https://milkjoy-shop.azurewebsites.net/api";
 
 //login api
 export const fetchLogin = async (email, password) => {

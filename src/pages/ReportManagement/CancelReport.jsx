@@ -6,7 +6,7 @@ import { Table, Tag } from "antd";
 import Column from "antd/es/table/Column";
 import { CheckCircleOutlined, SmileFilled, SyncOutlined } from "@ant-design/icons";
 import Loading from "../../components/Loading";
-import { fetchGetReportByStatus, fetchOrders } from "../../data/api";
+import { fetchGetReportByActionType, fetchGetReportByStatus, fetchOrders } from "../../data/api";
 const CancelReport = () => {
   const [loading, setLoading] = useState(true);
   const [report, setReport] = useState([]);
@@ -14,7 +14,7 @@ const CancelReport = () => {
   const [pageSize, setPageSize] = useState(7);
 
   useEffect(() => {
-    fetchGetReportByStatus("NO_ACTION")
+    fetchGetReportByActionType("NO_ACTION")
     .then((res) => {
         console.log(res.data.data);
         setReport(res.data.data);
