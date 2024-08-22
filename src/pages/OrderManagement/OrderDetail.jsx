@@ -705,11 +705,10 @@ const OrderDetail = () => {
                       strong
                       style={{ fontSize: "17px", display: "inline-block" }}
                     >
-                      {" "}
-                      {/* {Number(order.voucher_fee).toLocaleString("vi-VN", {
+                      {order.voucher.voucherType === "FIXED_AMOUNT" ? Number(order.voucher.value).toLocaleString("vi-VN", {
                         style: "currency",
                         currency: "VND",
-                      })} */}
+                      }) : `${Number(order.voucher.value)}%` }
                     </Text>
                   </div>
                   <div

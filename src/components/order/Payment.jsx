@@ -111,8 +111,7 @@ const Payment = () => {
         quantity: item.quantity,
       })),
       shipFee: ship,
-      totalPrice:
-        totalPrice + ship - discount > 0 ? totalPrice + ship - discount : 0,
+      totalPrice: totalAmount,
       voucherCode: voucher_code,
       userId: user && user.id ? user.id : null,
     };

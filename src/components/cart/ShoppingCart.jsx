@@ -390,7 +390,7 @@ const ShoppingCart = () => {
                           Mã giảm giá
                         </dt>
                         <dd className="text-base font-medium text-gray-900">
-                          - {formatVoucherValue(selectedVoucher)}
+                          - {selectedVoucher ? formatVoucherValue(selectedVoucher) : "0 đ"}
                         </dd>
                       </dl>
                     </div>
