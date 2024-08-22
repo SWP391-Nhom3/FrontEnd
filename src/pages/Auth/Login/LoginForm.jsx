@@ -100,7 +100,6 @@ const LoginForm = () => {
         clearPreOrder();
         navigate("/");
       }
-      window.location.reload();
     } catch (error) {
       console.error(error);
       setErrorList(["Đăng nhập thất bại. Vui lòng thử lại."]);

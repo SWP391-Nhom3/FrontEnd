@@ -96,7 +96,7 @@ const OrderDetailCustomer = () => {
 
   const checkFeedbacked = (productId) => {
     if (allFeedback && allFeedback.length > 0) {
-      return allFeedback.map((feedback) => feedback.product.id === productId);
+      return allFeedback.some((feedback) => feedback.product.id === productId);
     }
     return false;
   };
