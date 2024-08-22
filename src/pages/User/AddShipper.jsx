@@ -58,15 +58,27 @@ const AddShipper = () => {
           password,
           active,
         });
+        console.log(response);
         if (response.status === 200) {
           alert("Tạo Shipper thành công!");
           navigate("/users");
+        } else if (response.success === false) {
+          alert("Email đã tồn tại. Vui lòng sử dụng email khác.");
         } else {
           alert("Có lỗi xảy ra khi tạo Shipper.");
+          console.log(response);
         }
       } catch (error) {
         console.error("Error during API call", error);
-        alert("Có lỗi xảy ra khi tạo Shipper.");
+        if (
+          error.isAxiosError &&
+          error.response &&
+          error.response.data.code === 1002
+        ) {
+          alert("Email đã tồn tại. Vui lòng sử dụng email khác.");
+        } else {
+          alert("Có lỗi xảy ra khi tạo Shipper.");
+        }
       }
     }
   };
@@ -205,7 +217,7 @@ const AddShipper = () => {
           <Row justify="end" align="middle">
             <HStack spacing={10}>
               <Button
-                onClick={() => navigate(-1)}
+                onClick={() => navigate("/users")}
                 sx={{
                   borderWidth: "2px",
                   color: "#46B5C1",
