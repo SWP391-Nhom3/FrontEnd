@@ -9,7 +9,7 @@ import {
   Typography,
 } from "antd";
 import React, { useEffect, useState } from "react";
-import { fetchAllReplyFeedback } from "../../data/api";
+import { fetchAllFeedback } from "../../data/api";
 import ReplyFeedback from "../../components/Feedback/ReplyFeedback";
 import Loading from "../../components/Loading";
 import { Comment } from "@ant-design/compatible";
@@ -35,8 +35,9 @@ const AllFeedback = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const feedbackData = await fetchAllReplyFeedback();
+        const feedbackData = await fetchAllFeedback();
         setFeedback(feedbackData.data.data);
+        console.log(feedbackData.data.data);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -57,7 +58,7 @@ const AllFeedback = () => {
       key: "coverImageUrl",
       render: (text, record) => (
         <img
-          src={record.review.product.coverImageUrl}
+          src={record.product.coverImageUrl}
           alt="product"
           style={{ width: 100, height: 100 }}
         />
@@ -70,7 +71,7 @@ const AllFeedback = () => {
       key: "product_name",
       render: (text, record) => (
         <span style={{ wordBreak: "break-word", whiteSpace: "normal" }}>
-          {record.review.product.name}
+          {record.product.name}
         </span>
       ),
       width: "40%",
@@ -93,8 +94,8 @@ const AllFeedback = () => {
       render: (text, record) => {
         return (
           <div>
-            <Rate allowHalf disabled value={record.review.rating} />
-            <div>{record.review.rating.toFixed(1)} / 5 ( đánh giá)</div>
+            <Rate allowHalf disabled value={record.rating} />
+            <div>{record.rating.toFixed(1)} / 5 ( đánh giá)</div>
           </div>
         );
       },
@@ -104,16 +105,17 @@ const AllFeedback = () => {
   ];
 
   const renderComments = (feedback) => {
+    const userFirstName = feedback.user?.firstName || "Không xác định";
+    const userInitial = userFirstName.charAt(0) || "?";
+
     return (
       <Comment
         author={
           <Text type="secondary" style={{ fontSize: "15px" }}>
-            {feedback.review.user.firstName || "Không xác định"}
+            {userFirstName}
           </Text>
         }
-        avatar={
-          <Avatar>{feedback.review.user.firstName.charAt(0) || "?"}</Avatar>
-        }
+        avatar={<Avatar>{userInitial}</Avatar>}
         content={
           <>
             <span
@@ -124,12 +126,12 @@ const AllFeedback = () => {
               }}
             >
               <p style={{ wordBreak: "break-word", whiteSpace: "normal" }}>
-                {feedback.review.comment}
+                {feedback.comment}
               </p>
             </span>
           </>
         }
-        datetime={formatDate(feedback.review.createdAt)}
+        datetime={formatDate(feedback.createdAt)}
         actions={[
           <Button
             type="default"
@@ -142,13 +144,13 @@ const AllFeedback = () => {
               fontSize: "15px",
               color: "white",
             }}
-            disabled={feedback.replyText}
+            disabled={feedback.reply?.replyText}
           >
             Trả lời
           </Button>,
         ]}
       >
-        {feedback.replyText && renderReplies(feedback)}
+        {feedback.reply?.replyText && renderReplies(feedback)}
       </Comment>
     );
   };
@@ -158,13 +160,15 @@ const AllFeedback = () => {
       <Comment
         author={
           <Text type="secondary" style={{ fontSize: "15px" }}>
-            {feedback.user.firstName || "Không xác định"}
+            {feedback.reply.user.firstName || "Không xác định"}
           </Text>
         }
-        avatar={<Avatar>{feedback.user.firstName?.charAt(0) || "?"}</Avatar>}
+        avatar={
+          <Avatar>{feedback.reply.user.firstName?.charAt(0) || "?"}</Avatar>
+        }
         content={
           <p style={{ wordBreak: "break-word", whiteSpace: "normal" }}>
-            {feedback.replyText}
+            {feedback.reply.replyText}
           </p>
         }
         datetime={formatDate(feedback.createdAt)}

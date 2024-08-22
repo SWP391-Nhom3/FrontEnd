@@ -26,7 +26,7 @@ const OrderDetailCustomer = () => {
   const order = location.state?.order || {};
   const [orderDetails, setOrderDetails] = useState([]);
   const products = JSON.parse(localStorage.getItem("products")) || [];
-  const [allFeedback, setAllFeedback] = useState([]);
+  const [allFeedback, setAllFeedback] = useState();
   const [loadingReviews, setLoadingReviews] = useState(false);
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
@@ -72,12 +72,16 @@ const OrderDetailCustomer = () => {
         const feedbacks = await Promise.all(
           order.orderDetails.map(async (item) => {
             const feedback = await fetchCheckFeedback(user_id, item.product.id);
-            return feedback.data.data;
+            return feedback.data.data ? feedback.data.data : undefined;
           }),
         );
-        setAllFeedback(feedbacks);
+        const validFeedbacks = feedbacks.filter(
+          (feedback) => feedback !== undefined,
+        );
+        setAllFeedback(validFeedbacks);
         setLoadingReviews(false);
       };
+
       getReviews();
     }
   }, []);
@@ -90,8 +94,11 @@ const OrderDetailCustomer = () => {
     });
   }, []);
 
-  const checkFeedbacked = () => {
-    return;
+  const checkFeedbacked = (productId) => {
+    if (allFeedback && allFeedback.length > 0) {
+      return allFeedback.some((feedback) => feedback.product.id === productId);
+    }
+    return false;
   };
 
   const handleReasonChange = (e) => {
@@ -454,7 +461,7 @@ const OrderDetailCustomer = () => {
 
                     {checkMember &&
                       order.orderStatus.name === "Hoàn thành" &&
-                      (!checkFeedbacked() ? (
+                      (!checkFeedbacked(item.product.id) ? (
                         <Button
                           color="light"
                           size={"xl"}

@@ -4,14 +4,17 @@ import Loader from "../../assets/loading2.gif";
 import { FaFilter } from "react-icons/fa6";
 import { AiOutlineDelete } from "react-icons/ai";
 import { RxUpdate } from "react-icons/rx";
-// import { fetchDeleteFeedback, fetchGetFeedbackByUser, fetchUpdateFeedback } from "../../data/api";
+import {
+  fetchUploadFeedback,
+  fetchReivewByUser,
+  fetchDeleteFeedback,
+} from "../../data/api";
 import RenderRating from "../elements/RenderRating";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import toast from "react-hot-toast";
 
 const Feedback = () => {
   const [loading, setLoading] = useState(true);
-  const [reviews, setReviews] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [currentFeedback, setCurrentFeedback] = useState(null);
@@ -20,41 +23,25 @@ const Feedback = () => {
   const [startFilter, setStartFilter] = useState("");
   const [endFilter, setEndFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [myFeedback, setMyFeedback] = useState();
   const itemsPerPage = 6;
 
   const products = JSON.parse(localStorage.getItem("products"));
   const user = JSON.parse(localStorage.getItem("user")) || null;
-  const token = JSON.parse(localStorage.getItem("result"));
+  const token = localStorage.getItem("accessToken");
 
-  // useEffect(() => {
-  //   const findProductById = (product_id) => {
-  //     return products.find((product) => product._id === product_id);
-  //   };
+  useEffect(() => {
+    if (user) {
+      const getReviews = async () => {
+        const feedback = await fetchReivewByUser(user.id);
+        setMyFeedback(feedback.data.data);
+        setFilter(feedback.data.data);
+        setLoading(false);
+      };
 
-  //   const getReviews = async () => {
-  //     try {
-  //       //!! FETCH FEEDBACK BY USER !!
-  //       // const feedbackData = await fetchGetFeedbackByUser(user._id);
-  //       const reviews = feedbackData.data.result;
-
-  //       const updatedReviews = await Promise.all(
-  //         reviews.map(async (item) => {
-  //           const product = findProductById(item.product_id);
-  //           return { ...item, product };
-  //         })
-  //       );
-
-  //       setReviews(updatedReviews);
-  //       setFilter(updatedReviews);
-  //       setLoading(false);
-  //     } catch (error) {
-  //       console.log(error);
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   getReviews();
-  // }, []);
+      getReviews();
+    }
+  }, []);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -89,41 +76,41 @@ const Feedback = () => {
   const handleRatingChange = (newRating) => {
     setCurrentFeedback({ ...currentFeedback, rating: newRating });
   };
-  //!! SUBMIT FEEDBACK !!
-  // const submitFeedback = async () => {
-  //   if (currentFeedback.rating === 0 || currentFeedback.description === "") {
-  //     toast.error("Vui lòng nhập đủ thông tin đánh giá và mô tả sản phẩm.");
-  //     return;
-  //   }
-  //   await fetchUpdateFeedback(currentFeedback._id, currentFeedback, token)
-  //     .then(() => {
-  //       toast.success("Cập nhật thành công");
-  //       window.location.reload();
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       toast.error("Cập nhật thất bại");
-  //     });
-  //   closeFeedbackModal();
-  // };
+  // !! SUBMIT FEEDBACK !!
+  const submitFeedback = async () => {
+    //   if (currentFeedback.rating === 0 || currentFeedback.description === "") {
+    //     toast.error("Vui lòng nhập đủ thông tin đánh giá và mô tả sản phẩm.");
+    //     return;
+    //   }
+    //   await fetchUpdateFeedback(currentFeedback._id, currentFeedback, token)
+    //     .then(() => {
+    //       toast.success("Cập nhật thành công");
+    //       window.location.reload();
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //       toast.error("Cập nhật thất bại");
+    //     });
+    //   closeFeedbackModal();
+  };
   //!! FETCH DELETE FEEDBACK!!
-  // const deleteFeedback = async () => {
-  //   await fetchDeleteFeedback(currentFeedback._id, token)
-  //     .then(() => {
-  //       toast.success("Xóa đánh giá thành công");
-  //       window.location.reload();
-  //     })
-  //     .catch(() => {
-  //       toast.error("Xóa đánh giá thất bại");
-  //     });
-  //   closeDeleteModal();
-  //   closeFeedbackModal();
-  // };
+  const deleteFeedback = async () => {
+    await fetchDeleteFeedback(currentFeedback.id, token)
+      .then(() => {
+        toast.success("Xóa đánh giá thành công");
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error("Xóa đánh giá thất bại");
+      });
+    closeDeleteModal();
+    closeFeedbackModal();
+  };
 
   const handleSubmitFilter = (e) => {
     e.preventDefault();
-    let filteredReviews = reviews;
-
+    let filteredReviews = myFeedback;
     if (textFilter) {
       filteredReviews = filteredReviews.filter((review) =>
         review.description.toLowerCase().includes(textFilter.toLowerCase()),
@@ -132,13 +119,13 @@ const Feedback = () => {
 
     if (startFilter) {
       filteredReviews = filteredReviews.filter(
-        (review) => new Date(review.created_at) >= new Date(startFilter),
+        (review) => new Date(review.createdAt) >= new Date(startFilter),
       );
     }
 
     if (endFilter) {
       filteredReviews = filteredReviews.filter(
-        (review) => new Date(review.created_at) <= new Date(endFilter),
+        (review) => new Date(review.createdAt) <= new Date(endFilter),
       );
     }
 
@@ -167,7 +154,7 @@ const Feedback = () => {
       setCurrentPage(currentPage + 1);
     }
   };
-
+  // console.log(currentItems)
   if (loading) {
     return (
       <div className="flex items-center justify-center">
@@ -180,7 +167,7 @@ const Feedback = () => {
     <div>
       <div>
         <h1 className="text-2xl font-semibold">Bình luận của tôi</h1>
-        <p>Hiển thị thông tin các đánh giá của bạn tại MomBabyMilk Shop</p>
+        <p>Hiển thị thông tin các đánh giá của bạn tại MilkJoy Shop</p>
       </div>
       <hr className="my-4" />
       <div className="space-y-4">
@@ -190,25 +177,25 @@ const Feedback = () => {
             placeholder="Nội dung đánh giá..."
             value={textFilter}
             onChange={(e) => setTextFilter(e.target.value)}
-            className="w-3/6 rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-3/6 rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
           />
           <input
             type="date"
             placeholder="Từ ngày"
             value={startFilter}
             onChange={(e) => setStartFilter(e.target.value)}
-            className="w-1/6 rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-1/6 rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
           />
           <input
             type="date"
             placeholder="Đến ngày"
             value={endFilter}
             onChange={(e) => setEndFilter(e.target.value)}
-            className="w-1/6 rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-1/6 rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
           />
           <button
             type="submit"
-            className="flex items-center rounded-md bg-blue-500 p-2 text-white hover:bg-blue-600"
+            className="flex items-center rounded-md bg-primary-500 p-2 text-white hover:bg-primary-600"
           >
             <FaFilter className="mr-2" />
             Lọc
@@ -223,7 +210,7 @@ const Feedback = () => {
               <Table.HeadCell className="w-2/7 border">Nội dung</Table.HeadCell>
               <Table.HeadCell className="w-1/7 border">Đánh giá</Table.HeadCell>
               <Table.HeadCell className="w-2/7 border">
-                Trả lời từ MomBabyMilk
+                Trả lời từ MilkJoy
               </Table.HeadCell>
               <Table.HeadCell className="w-1/7 border">
                 <span className="sr-only"></span>
@@ -232,20 +219,18 @@ const Feedback = () => {
             <Table.Body className="divide-y">
               {currentItems.length > 0 ? (
                 currentItems.map((item) => (
-                  <Table.Row key={item._id} className="border bg-white">
+                  <Table.Row key={item.id} className="border bg-white">
                     <Table.Cell className="whitespace-nowrap border font-medium text-gray-900">
-                      {formatDate(item.created_at)}
+                      {formatDate(item.updatedAt)}
                     </Table.Cell>
                     <Table.Cell className="whitespace-nowrap border font-medium text-gray-900">
-                      {item.description}
+                      {item.comment}
                     </Table.Cell>
                     <Table.Cell className="whitespace-nowrap border font-medium text-gray-900">
                       <RenderRating rating={item.rating} />
                     </Table.Cell>
                     <Table.Cell className="whitespace-nowrap border font-medium text-gray-900">
-                      {item.reply_feedback !== null
-                        ? item.reply_feedback.description
-                        : ""}
+                      {item.reply ? item.reply.replyText : ""}
                     </Table.Cell>
                     <Table.Cell>
                       <Button
@@ -275,7 +260,7 @@ const Feedback = () => {
             className={`rounded border px-2 py-1 ${
               currentPage === 1
                 ? "cursor-not-allowed bg-gray-300"
-                : "bg-white text-blue-500"
+                : "bg-white text-primary-500"
             }`}
             disabled={currentPage === 1}
           >
@@ -287,8 +272,8 @@ const Feedback = () => {
               onClick={() => handleClick(index + 1)}
               className={`rounded border px-3 py-1 ${
                 index + 1 === currentPage
-                  ? "bg-blue-500 text-white"
-                  : "bg-white text-blue-500"
+                  ? "bg-primary-500 text-white"
+                  : "bg-white text-primary-500"
               }`}
             >
               {index + 1}
@@ -299,7 +284,7 @@ const Feedback = () => {
             className={`rounded border px-2 py-1 ${
               currentPage === totalPages
                 ? "cursor-not-allowed bg-gray-300"
-                : "bg-white text-blue-500"
+                : "bg-white text-primary-500"
             }`}
             disabled={currentPage === totalPages}
           >
@@ -317,8 +302,8 @@ const Feedback = () => {
             <div className="space-y-6">
               <div>
                 <img
-                  src={currentFeedback.product.imgUrl}
-                  alt={currentFeedback.product.product_name}
+                  src={currentFeedback.product.coverImageUrl}
+                  alt={currentFeedback.product.name}
                   className="mx-auto h-32 w-32 object-cover"
                 />
               </div>
@@ -328,7 +313,7 @@ const Feedback = () => {
                 </label>
                 <input
                   type="text"
-                  value={currentFeedback.product.product_name}
+                  value={currentFeedback.product.name}
                   className="mt-1 w-full rounded border p-2"
                   readOnly
                 />
@@ -341,8 +326,9 @@ const Feedback = () => {
                   name="description"
                   className="mt-1 w-full rounded border p-2"
                   rows="5"
-                  value={currentFeedback.description}
+                  value={currentFeedback.comment}
                   onChange={handleFeedbackChange}
+                  readOnly
                 />
               </div>
               <div className="flex items-center">
@@ -357,9 +343,9 @@ const Feedback = () => {
             </div>
           </Modal.Body>
           <Modal.Footer>
-            <Button color="blue" size={"md"} onClick={submitFeedback}>
+            {/* <Button color="primary" size={"md"} onClick={submitFeedback}>
               <RxUpdate className="mr-1 text-lg" /> Cập nhật
-            </Button>
+            </Button> */}
             <Button color="failure" size={"md"} onClick={openDeleteModal}>
               <AiOutlineDelete className="mr-1 text-lg" /> Xóa
             </Button>

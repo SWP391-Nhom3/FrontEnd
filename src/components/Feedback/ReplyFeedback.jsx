@@ -26,6 +26,7 @@ const ReplyFeedback = ({
           placement: "top",
         });
         setModalOpen(false);
+        window.location.reload();
       })
       .catch((error) => {
         console.log(error);

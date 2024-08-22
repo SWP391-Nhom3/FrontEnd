@@ -84,7 +84,7 @@ const Accumulate = () => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold">Đổi quà tặng</h1>
-          <p>Dùng membership tích lũy để đổi quà tại MomBabyMilk Shop</p>
+          <p>Dùng membership tích lũy để đổi quà tại MilkJoy Shop</p>
         </div>
         <div>
           <Button
