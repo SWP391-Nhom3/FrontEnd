@@ -1,57 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { fetchProducts } from "../../data/api";
+
 import { Button } from "flowbite-react";
-import { Card, Col, Divider, Row, Steps, Typography } from "antd";
-import Loading from "../../components/Loading";
+import {
+  Card,
+  Col,
+  Divider,
+  Row,
+  Select,
+  Steps,
+  Typography,
+  notification,
+} from "antd";
+import { fetchUpdateReport } from "../../data/api";
+import { Option } from "antd/es/mentions";
+import TextArea from "antd/es/input/TextArea";
 
-const OrderDetail = () => {
+const ReportDetail = () => {
   const location = useLocation();
-  const order = location.state?.order;
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const [report, setReport] = useState(location.state?.report || {});
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
-  const [products, setProducts] = useState([]);
-  const [orderDetails, setOrderDetails] = useState([]);
-  // const user = JSON.parse(localStorage.getItem("user")) || null;
-  // const token = JSON.parse(localStorage.getItem("result"));
-
-  useEffect(() => {
-    const getProducts = async () => {
-      try {
-        const productData = await fetchProducts();
-        setProducts(productData);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-        setLoading(false);
-      }
-    };
-    getProducts();
-  }, []);
-
-  useEffect(() => {
-    const findProductById = (product_id) => {
-      return products.find((product) => product._id === product_id);
-    };
-
-    if (products.length > 0 && order) {
-      const updateOrderDetails = async () => {
-        const details = await Promise.all(
-          order.order_detail.map(async (item) => {
-            const product = findProductById(item.product_id);
-            return { ...item, product };
-          }),
-        );
-        setOrderDetails(details);
-      };
-
-      updateOrderDetails();
-    }
-  }, [products, order]);
-
-  if (loading) {
-    return <Loading />;
-  }
+  // const [loading, setLoading] = useState(true);
+  const isAuthenticatedStaff = localStorage.getItem("isStaff") === "true";
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -64,66 +36,220 @@ const OrderDetail = () => {
     return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
   };
 
-  const addOneDay = (dateString) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    date.setDate(date.getDate() + 1);
-    date.setHours(date.getHours() + 2);
-    date.setMinutes(date.getMinutes() + 30);
-    return date.toISOString();
+  const handleSubmit = async () => {
+    if (report.actionType === "UNKNOWN") {
+      notification.warning({
+        message: "Vui lòng chọn hướng giải quyết",
+        placement: "top",
+      });
+      return;
+    }
+    if (report.note === null) {
+      notification.warning({
+        message: "Vui lòng nhập ghi chú gửi tới khách hàng",
+        placement: "top",
+      });
+      return;
+    }
+    const rp = {
+      staffId: user.id,
+      actionType: report.actionType,
+      note: report.note,
+    };
+    try {
+      await fetchUpdateReport(report.id, rp);
+      notification.success({
+        message: "Gửi phản hồi đơn khiếu nại thành công",
+        placement: "top",
+      });
+      navigate("/complete-report");
+    } catch (error) {
+      notification.success({
+        message: "Gửi phản hồi đơn khiếu nại thất bại. Vui lòng thử lại",
+        placement: "top",
+      });
+    }
   };
 
   const { Text } = Typography;
 
   return (
     <div style={{ height: "120vh" }}>
-      {/* <div
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                }}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Row justify="center" style={{ width: "100%", marginTop: "50px" }}>
+          <Col span={22} style={{ display: "flex", justifyContent: "center" }}>
+            <Card
+              style={{ width: "100%" }}
+              title={<h2 className="text-2xl font-bold">Đơn khiếu nại</h2>}
             >
-                <Row justify="center" style={{ width: "100%", marginTop: "50px" }}>
-                    {/*start tracking order*/}
-      {/* <Col span={22} style={{ display: "flex", justifyContent: "center" }}>
-                        <Card
-                            style={{ width: "100%" }}
-                            title={<h2 className="text-2xl font-bold">Theo dõi đơn hàng</h2>}
-                        >
-                            <div style={{ display: "flex", justifyContent: "center" }}>
-                                <Steps
-                                    items={[
-                                        {
-                                            title: "Chờ xác nhận",
-                                            status: "process",
-                                            description: formatDate(order.requiredDate),
-                                            icon: <FieldTimeOutlined />,
-                                        },
-                                        {
-                                            title: "Đã xác nhận",
-                                            status: "wait",
-                                            icon: <CheckCircleOutlined />,
-                                        },
-                                        {
-                                            title: "Đã giao cho ĐVVC",
-                                            status: "wait",
-                                            icon: <TruckOutlined />,
-                                        },
-                                        {
-                                            title: "Đã hoàn thành",
-                                            status: "wait",
-                                            icon: <SmileOutlined />,
-                                        },
-                                    ]}
-                                />
-                            </div>
-                        </Card>
-                    </Col> */}
-      {/*end tracking order*/}
-
-      {/* </Row>
-            </div>  */}
+              <div>
+                <div
+                  style={{
+                    marginBottom: "10px",
+                  }}
+                >
+                  <Text
+                    type="secondary"
+                    style={{
+                      fontSize: "15px",
+                      display: "inline-block",
+                      marginRight: "10px",
+                    }}
+                  >
+                    Ngày làm đơn:
+                  </Text>
+                  <Text
+                    strong
+                    style={{ fontSize: "17px", display: "inline-block" }}
+                  >
+                    {formatDate(report.createdAt)}
+                  </Text>
+                </div>
+                <div
+                  style={{
+                    marginBottom: "10px",
+                  }}
+                >
+                  {" "}
+                  <Text
+                    type="secondary"
+                    style={{
+                      fontSize: "15px",
+                      display: "inline-block",
+                      marginRight: "10px",
+                    }}
+                  >
+                    Trạng thái đơn khiếu nại:
+                  </Text>
+                  <Text
+                    strong
+                    style={{ fontSize: "17px", display: "inline-block" }}
+                  >
+                    {report.status === "PENDING"
+                      ? "Đang xử lý"
+                      : report.status === "COMPLETED"
+                        ? "Đã xử lý"
+                        : ""}
+                  </Text>
+                </div>
+                <div
+                  style={{
+                    marginBottom: "10px",
+                  }}
+                >
+                  {" "}
+                  <Text
+                    type="secondary"
+                    style={{
+                      fontSize: "15px",
+                      display: "inline-block",
+                      marginRight: "10px",
+                    }}
+                  >
+                    Lý do gửi đơn:
+                  </Text>
+                  <Text
+                    strong
+                    style={{ fontSize: "17px", display: "inline-block" }}
+                  >
+                    {report.reason}
+                  </Text>
+                </div>
+                <div
+                  style={{
+                    marginBottom: "10px",
+                  }}
+                >
+                  {" "}
+                  <Text
+                    type="secondary"
+                    style={{
+                      fontSize: "15px",
+                      display: "inline-block",
+                      marginRight: "10px",
+                    }}
+                  >
+                    Hướng giải quyết:
+                  </Text>
+                  <Text
+                    strong
+                    style={{ fontSize: "17px", display: "inline-block" }}
+                  >
+                    {report.actionType === "NO_ACTION"
+                      ? "Không giải quyết"
+                      : report.actionType === "CREATE_VOUCHER"
+                        ? "Tặng voucher"
+                        : report.actionType === "CREATE_ORDER"
+                          ? "Đền bù sản phẩm"
+                          : report.actionType === "REFUND"
+                            ? "Hoàn tiền"
+                            : report.actionType === "OTHER"
+                              ? "Khác"
+                              : report.actionType === "UNKNOWN"
+                                ? "Chưa xử lý"
+                                : report.actionType}
+                  </Text>
+                </div>
+                <div
+                  style={{
+                    marginBottom: "10px",
+                  }}
+                >
+                  <Text
+                    type="secondary"
+                    style={{
+                      fontSize: "15px",
+                      marginRight: "10px",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    Nhân viên phụ trách:
+                  </Text>
+                  <Text
+                    strong
+                    style={{ fontSize: "17px", display: "inline-block" }}
+                  >
+                    {report.staff
+                      ? report.staff.firstName
+                        ? report.staff.firstName
+                        : report.staff.email
+                      : ""}
+                  </Text>
+                </div>
+                <div
+                  style={{
+                    marginBottom: "10px",
+                  }}
+                >
+                  {" "}
+                  <Text
+                    type="secondary"
+                    style={{
+                      fontSize: "15px",
+                      marginRight: "10px",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    Ghi chú của nhân viên:
+                  </Text>
+                  <Text
+                    strong
+                    style={{ fontSize: "17px", display: "inline-block" }}
+                  >
+                    {report.note}
+                  </Text>
+                </div>
+              </div>
+            </Card>
+          </Col>
+        </Row>
+      </div>
       <div style={{ display: "flex", flexDirection: "column" }}>
         <Row justify="space-between" style={{ flexGrow: 1 }}>
           <Col span={15}>
@@ -137,7 +263,7 @@ const OrderDetail = () => {
               <Card
                 title={
                   <h1 className="text-2xl font-bold">
-                    Chi tiết đơn hàng: #{order.id}
+                    Chi tiết đơn hàng: #{report.order.id}
                   </h1>
                 }
                 style={{
@@ -164,91 +290,48 @@ const OrderDetail = () => {
                     justifyContent: "space-between",
                   }}
                 >
-                  {order.orderDetails.length === 0
-                    ? order.preOrderDetail.map((item) => (
-                        <Card
-                          type="inner"
-                          key={item.product.id}
-                          className={`mb-4 rounded-lg border border-[rgba(0,0,0,0.2)] bg-white shadow-sm`}
-                          style={{ marginBottom: "10px", padding: "10px" }}
-                        >
-                          <div className="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
-                            <img
-                              className="h-20 w-20 dark:hidden"
-                              src={item.product.coverImageUrl}
-                              alt={item.product.name}
-                            />
-                            <img
-                              className="hidden h-20 w-20 dark:block"
-                              src={item.product.coverImageUrl}
-                              alt={item.product.name}
-                            />
-                            <div className="flex items-center justify-between md:order-3 md:justify-end">
-                              <div className="text-end md:order-4 md:w-32">
-                                <p className="text-base font-bold text-gray-900 dark:text-white">
-                                  {Number(item.product.price).toLocaleString(
-                                    "vi-VN",
-                                    {
-                                      style: "currency",
-                                      currency: "VND",
-                                    },
-                                  )}
-                                </p>
-                              </div>
-                            </div>
-                            <div className="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
-                              <p className="text-base font-medium text-gray-900 hover:underline dark:text-white">
-                                {item.product.name}
-                              </p>
-                              <div className="flex items-start gap-4 text-lg">
-                                x{item.quantity} sản phẩm
-                              </div>
-                            </div>
+                  {report.order.orderDetails.map((item) => (
+                    <Card
+                      type="inner"
+                      key={item.product.id}
+                      className={`mb-4 rounded-lg border border-[rgba(0,0,0,0.2)] bg-white shadow-sm`}
+                      style={{ marginBottom: "10px", padding: "10px" }}
+                    >
+                      <div className="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
+                        <img
+                          className="h-20 w-20 dark:hidden"
+                          src={item.product.coverImageUrl}
+                          alt={item.product.name}
+                        />
+                        <img
+                          className="hidden h-20 w-20 dark:block"
+                          src={item.product.coverImageUrl}
+                          alt={item.product.name}
+                        />
+                        <div className="flex items-center justify-between md:order-3 md:justify-end">
+                          <div className="text-end md:order-4 md:w-32">
+                            <p className="text-base font-bold text-gray-900 dark:text-white">
+                              {Number(item.product.price).toLocaleString(
+                                "vi-VN",
+                                {
+                                  style: "currency",
+                                  currency: "VND",
+                                },
+                              )}
+                            </p>
                           </div>
-                        </Card>
-                      ))
-                    : order.orderDetails.map((item) => (
-                        <Card
-                          type="inner"
-                          key={item.product.id}
-                          className={`mb-4 rounded-lg border border-[rgba(0,0,0,0.2)] bg-white shadow-sm`}
-                          style={{ marginBottom: "10px", padding: "10px" }}
-                        >
-                          <div className="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
-                            <img
-                              className="h-20 w-20 dark:hidden"
-                              src={item.product.coverImageUrl}
-                              alt={item.product.name}
-                            />
-                            <img
-                              className="hidden h-20 w-20 dark:block"
-                              src={item.product.coverImageUrl}
-                              alt={item.product.name}
-                            />
-                            <div className="flex items-center justify-between md:order-3 md:justify-end">
-                              <div className="text-end md:order-4 md:w-32">
-                                <p className="text-base font-bold text-gray-900 dark:text-white">
-                                  {Number(item.product.price).toLocaleString(
-                                    "vi-VN",
-                                    {
-                                      style: "currency",
-                                      currency: "VND",
-                                    },
-                                  )}
-                                </p>
-                              </div>
-                            </div>
-                            <div className="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
-                              <p className="text-base font-medium text-gray-900 hover:underline dark:text-white">
-                                {item.product.name}
-                              </p>
-                              <div className="flex items-start gap-4 text-lg">
-                                x{item.quantity} sản phẩm
-                              </div>
-                            </div>
+                        </div>
+                        <div className="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
+                          <p className="text-base font-medium text-gray-900 hover:underline dark:text-white">
+                            {item.product.name}
+                          </p>
+                          <div className="flex items-start gap-4 text-lg">
+                            x{item.quantity} sản phẩm
                           </div>
-                        </Card>
-                      ))}
+                        </div>
+                      </div>
+                    </Card>
+                  ))}
                 </div>
               </Card>
             </div>
@@ -265,7 +348,12 @@ const OrderDetail = () => {
                 title={
                   <h1 className="text-2xl font-bold">Thông tin đơn hàng:</h1>
                 }
-                style={{ width: "90%", marginTop: "50px", height: "auto" }}
+                style={{
+                  width: "90%",
+                  marginTop: "50px",
+                  height: "auto",
+                  minHeight: "350px",
+                }}
               >
                 <div>
                   <div
@@ -289,7 +377,7 @@ const OrderDetail = () => {
                       strong
                       style={{ fontSize: "17px", display: "inline-block" }}
                     >
-                      {formatDate(order.requiredDate)}
+                      {formatDate(report.order.requiredDate)}
                     </Text>
                   </div>
                   <div
@@ -313,7 +401,7 @@ const OrderDetail = () => {
                       strong
                       style={{ fontSize: "17px", display: "inline-block" }}
                     >
-                      {order.fullName}
+                      {report.order.fullName}
                     </Text>
                   </div>
                   <div
@@ -337,7 +425,7 @@ const OrderDetail = () => {
                       strong
                       style={{ fontSize: "17px", display: "inline-block" }}
                     >
-                      {order.email}
+                      {report.order.email}
                     </Text>
                   </div>
                   <div
@@ -361,7 +449,7 @@ const OrderDetail = () => {
                       strong
                       style={{ fontSize: "17px", display: "inline-block" }}
                     >
-                      {order.phone}
+                      {report.order.phone}
                     </Text>
                   </div>
                   <div
@@ -385,7 +473,7 @@ const OrderDetail = () => {
                       strong
                       style={{ fontSize: "17px", textAlign: "right" }}
                     >
-                      {order.address}
+                      {report.order.address}
                     </Text>
                   </div>
                   <div
@@ -409,7 +497,7 @@ const OrderDetail = () => {
                       strong
                       style={{ fontSize: "17px", display: "inline-block" }}
                     >
-                      {order.paymentMethod}
+                      {report.order.paymentMethod}
                     </Text>
                   </div>
                 </div>
@@ -438,7 +526,7 @@ const OrderDetail = () => {
                     >
                       {" "}
                       {Number(
-                        order.totalPrice - order.shipFee,
+                        report.order.totalPrice - report.order.shipFee,
                         // + order.order.voucher_fee
                       ).toLocaleString("vi-VN", {
                         style: "currency",
@@ -496,7 +584,7 @@ const OrderDetail = () => {
                       strong
                       style={{ fontSize: "17px", display: "inline-block" }}
                     >
-                      {Number(order.shipFee).toLocaleString("vi-VN", {
+                      {Number(report.order.shipFee).toLocaleString("vi-VN", {
                         style: "currency",
                         currency: "VND",
                       })}
@@ -521,35 +609,38 @@ const OrderDetail = () => {
                     strong
                     style={{ fontSize: "17px", display: "inline-block" }}
                   >
-                    {Number(order.totalPrice).toLocaleString("vi-VN", {
+                    {Number(report.order.totalPrice).toLocaleString("vi-VN", {
                       style: "currency",
                       currency: "VND",
                     })}
                   </Text>
                 </div>
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  <Text
-                    style={{
-                      fontSize: "17px",
-                      display: "inline-block",
-                      marginRight: "10px",
-                    }}
+
+                {isAuthenticatedStaff && (
+                  <div
+                    style={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    Nhân viên giao hàng:
-                  </Text>
-                  <Text
-                    strong
-                    style={{ fontSize: "17px", display: "inline-block" }}
-                  >
-                    {order.shipper
-                      ? order.shipper.firstName
-                        ? order.shipper.firstName
-                        : order.shipper.email
-                      : ""}
-                  </Text>
-                </div>
+                    <Text
+                      style={{
+                        fontSize: "17px",
+                        display: "inline-block",
+                        marginRight: "10px",
+                      }}
+                    >
+                      Nhân viên giao hàng:
+                    </Text>
+                    <Text
+                      strong
+                      style={{ fontSize: "17px", display: "inline-block" }}
+                    >
+                      {report.order.shipper
+                        ? report.order.shipper.firstName
+                          ? report.order.shipper.firstName
+                          : report.order.shipper.email
+                        : ""}
+                    </Text>
+                  </div>
+                )}
               </Card>
             </div>
           </Col>
@@ -559,4 +650,4 @@ const OrderDetail = () => {
   );
 };
 
-export default OrderDetail;
+export default ReportDetail;

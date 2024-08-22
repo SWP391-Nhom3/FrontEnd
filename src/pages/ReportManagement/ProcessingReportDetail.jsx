@@ -12,87 +12,39 @@ import {
   Typography,
   notification,
 } from "antd";
-import Loading from "../../components/Loading";
-import {
-  CheckCircleOutlined,
-  FieldTimeOutlined,
-  SmileOutlined,
-  TruckOutlined,
-} from "@ant-design/icons";
-import {
-  fetchAllShipper,
-  fetchCancelOrder,
-  fetchConfirmOrder,
-  fetchProducts,
-} from "../../data/api";
+import { fetchUpdateReport } from "../../data/api";
 import { Option } from "antd/es/mentions";
+import TextArea from "antd/es/input/TextArea";
 
-const AwaitOrderDetail = () => {
+const ProcessingReportDetail = () => {
   const location = useLocation();
-  const order = location.state?.order;
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const [report, setReport] = useState(location.state?.report || {});
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
-  const [products, setProducts] = useState([]);
+  // const [loading, setLoading] = useState(true);
   const token = JSON.parse(localStorage.getItem("result"));
   const isAuthenticatedStaff = localStorage.getItem("isStaff") === "true";
-  const [shipper, setShipper] = useState([]);
   const [selectedShipperID, setSelectedShipperID] = useState(null);
+  const [note, setNote] = useState(report?.note || "");
+  const maxLength = 500;
 
-  useEffect(() => {
-    let isMounted = true;
-    const getProducts = async () => {
-      try {
-        const productData = await fetchProducts();
-        if (isMounted) {
-          setProducts(productData);
-          setLoading(false);
-        }
-      } catch (error) {
-        if (isMounted) {
-          console.error("Error fetching products:", error);
-          setLoading(false);
-        }
-      }
-    };
-
-    getProducts();
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-
-  useEffect(() => {
-    fetchAllShipper().then((res) => {
-      setShipper(res.data.data);
-    });
-  }, []);
-
-  const handleShipperChange = (value) => {
-    setSelectedShipperID(value);
+  const handleChange = (e) => {
+    const value = e.target.value;
+    if (value.length <= maxLength) {
+      setNote(value);
+      setReport((prevReport) => ({
+        ...prevReport,
+        note: value,
+      }));
+    }
   };
 
-  if (loading) {
-    return <Loading />;
-  }
-
-  const handleCancelOrder = async () => {
-    const order_id = order.id;
-    try {
-      await fetchCancelOrder(order_id, token);
-      notification.success({
-        message: "Thành công",
-        description: "Đơn hàng đã được huỷ!",
-        placement: "top",
-      });
-      navigate("/cancel-order");
-    } catch (error) {
-      notification.error({
-        message: "Lỗi",
-        description: "Đơn hàng không thể huỷ!",
-        placement: "top",
-      });
-      console.log(error);
-    }
+  const handleChangeActionType = (value) => {
+    setReport({
+      ...report,
+      actionType: value,
+    });
   };
 
   const formatDate = (dateString) => {
@@ -106,89 +58,244 @@ const AwaitOrderDetail = () => {
     return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
   };
 
-  const handleConfirmOrder = async () => {
-    const order_id = order.id;
-    const shipper_id = selectedShipperID;
-    await fetchConfirmOrder(order_id, shipper_id)
-      .then((res) => {
-        sessionStorage.setItem("orderConfirmed", "true");
-        window.location.reload();
-      })
-      .catch(() => {
-        notification.error({
-          message: "Lỗi",
-          description: "Đơn hàng không thể xác nhận!",
-          placement: "top",
-        });
+  const handleSubmit = async () => {
+    if (report.actionType === "UNKNOWN") {
+      notification.warning({
+        message: "Vui lòng chọn hướng giải quyết",
+        placement: "top",
       });
+      return;
+    }
+    if (report.note === null) {
+      notification.warning({
+        message: "Vui lòng nhập ghi chú gửi tới khách hàng",
+        placement: "top",
+      });
+      return;
+    }
+    const rp = {
+      staffId: user.id,
+      actionType: report.actionType,
+      note: report.note,
+    };
+    try {
+      await fetchUpdateReport(report.id, rp);
+      notification.success({
+        message: "Gửi phản hồi đơn khiếu nại thành công",
+        placement: "top",
+      });
+      navigate("/complete-report");
+    } catch (error) {
+      notification.success({
+        message: "Gửi phản hồi đơn khiếu nại thất bại. Vui lòng thử lại",
+        placement: "top",
+      });
+    }
   };
-
-  // Kiểm tra trạng thái sau khi trang tải lại
-  if (sessionStorage.getItem("orderConfirmed") === "true") {
-    // Hiển thị thông báo
-    notification.success({
-      message: "Thành công",
-      description: "Đơn hàng đã được xác nhận!",
-      placement: "top",
-    });
-
-    // Xóa trạng thái khỏi sessionStorage
-    sessionStorage.removeItem("orderConfirmed");
-    // Điều hướng đến trang khác nếu cần thiết
-    navigate("/await-order");
-  }
 
   const { Text } = Typography;
 
   return (
     <div style={{ height: "120vh" }}>
-      {/* <div
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                }}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Row justify="center" style={{ width: "100%", marginTop: "50px" }}>
+          <Col span={22} style={{ display: "flex", justifyContent: "center" }}>
+            <Card
+              style={{ width: "100%" }}
+              title={<h2 className="text-2xl font-bold">Đơn khiếu nại</h2>}
             >
-                <Row justify="center" style={{ width: "100%", marginTop: "50px" }}>
-                    {/*start tracking order*/}
-      {/* <Col span={22} style={{ display: "flex", justifyContent: "center" }}>
-                        <Card
-                            style={{ width: "100%" }}
-                            title={<h2 className="text-2xl font-bold">Theo dõi đơn hàng</h2>}
-                        >
-                            <div style={{ display: "flex", justifyContent: "center" }}>
-                                <Steps
-                                    items={[
-                                        {
-                                            title: "Chờ xác nhận",
-                                            status: "process",
-                                            description: formatDate(order.requiredDate),
-                                            icon: <FieldTimeOutlined />,
-                                        },
-                                        {
-                                            title: "Đã xác nhận",
-                                            status: "wait",
-                                            icon: <CheckCircleOutlined />,
-                                        },
-                                        {
-                                            title: "Đã giao cho ĐVVC",
-                                            status: "wait",
-                                            icon: <TruckOutlined />,
-                                        },
-                                        {
-                                            title: "Đã hoàn thành",
-                                            status: "wait",
-                                            icon: <SmileOutlined />,
-                                        },
-                                    ]}
-                                />
-                            </div>
-                        </Card>
-                    </Col> */}
-      {/*end tracking order*/}
-
-      {/* </Row>
-            </div>  */}
+              <div>
+                <div
+                  style={{
+                    marginBottom: "10px",
+                  }}
+                >
+                  <Text
+                    type="secondary"
+                    style={{
+                      fontSize: "15px",
+                      display: "inline-block",
+                      marginRight: "10px",
+                    }}
+                  >
+                    Ngày làm đơn:
+                  </Text>
+                  <Text
+                    strong
+                    style={{ fontSize: "17px", display: "inline-block" }}
+                  >
+                    {formatDate(report.createdAt)}
+                  </Text>
+                </div>
+                <div
+                  style={{
+                    marginBottom: "10px",
+                  }}
+                >
+                  {" "}
+                  <Text
+                    type="secondary"
+                    style={{
+                      fontSize: "15px",
+                      display: "inline-block",
+                      marginRight: "10px",
+                    }}
+                  >
+                    Trạng thái đơn khiếu nại:
+                  </Text>
+                  <Text
+                    strong
+                    style={{ fontSize: "17px", display: "inline-block" }}
+                  >
+                    {report.status === "PENDING"
+                      ? "Đang xử lý"
+                      : report.status === "COMPLETE"
+                        ? "Đã xử lý"
+                        : ""}
+                  </Text>
+                </div>
+                <div
+                  style={{
+                    marginBottom: "10px",
+                  }}
+                >
+                  {" "}
+                  <Text
+                    type="secondary"
+                    style={{
+                      fontSize: "15px",
+                      display: "inline-block",
+                      marginRight: "10px",
+                    }}
+                  >
+                    Lý do gửi đơn:
+                  </Text>
+                  <Text
+                    strong
+                    style={{ fontSize: "17px", display: "inline-block" }}
+                  >
+                    {report.reason}
+                  </Text>
+                </div>
+                <div
+                  style={{
+                    marginBottom: "10px",
+                  }}
+                >
+                  {" "}
+                  <Text
+                    type="secondary"
+                    style={{
+                      fontSize: "15px",
+                      display: "inline-block",
+                      marginRight: "10px",
+                    }}
+                  >
+                    Hướng giải quyết:
+                  </Text>
+                  <Text
+                    strong
+                    style={{ fontSize: "17px", display: "inline-block" }}
+                  >
+                    <Select
+                      value={report.actionType}
+                      onChange={handleChangeActionType}
+                      style={{ width: 200 }}
+                      placeholder="Chọn hành động"
+                    >
+                      <Option value="NO_ACTION">Không giải quyết</Option>
+                      <Option value="CREATE_VOUCHER">Tặng voucher</Option>
+                      <Option value="CREATE_ORDER">Đền bù sản phẩm</Option>
+                      <Option value="REFUND">Hoàn tiền</Option>
+                      <Option value="OTHER">Khác</Option>
+                      <Option value="UNKNOWN">Chưa xử lý</Option>
+                    </Select>
+                  </Text>
+                </div>
+                <div
+                  style={{
+                    marginBottom: "10px",
+                  }}
+                >
+                  {" "}
+                  <Text
+                    type="secondary"
+                    style={{
+                      fontSize: "15px",
+                      marginRight: "10px",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    Nhân viên phụ trách:
+                  </Text>
+                  <Text
+                    strong
+                    style={{ fontSize: "17px", display: "inline-block" }}
+                  >
+                    {user.firstName ? user.firstName : user.email}
+                  </Text>
+                </div>
+                <div
+                  style={{
+                    marginBottom: "10px",
+                  }}
+                >
+                  {" "}
+                  <Text
+                    type="secondary"
+                    style={{
+                      fontSize: "15px",
+                      marginRight: "10px",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    Ghi chú của nhân viên:
+                  </Text>
+                  <TextArea
+                    value={note}
+                    onChange={handleChange}
+                    maxLength={maxLength}
+                    rows={4}
+                    style={{ fontSize: "17px", width: "100%" }}
+                    placeholder="Nhập ghi chú"
+                  />
+                  <Text
+                    type="secondary"
+                    style={{ fontSize: "12px", float: "right" }}
+                  >
+                    {note.length}/{maxLength}
+                  </Text>
+                </div>
+                <div
+                  style={{
+                    marginBottom: "10px",
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Button
+                    type="default"
+                    onClick={handleSubmit}
+                    // disabled={}
+                    style={{
+                      backgroundColor: "#55B6C3",
+                      fontSize: "15px",
+                    }}
+                  >
+                    Gửi phản hồi
+                  </Button>
+                </div>
+              </div>
+            </Card>
+          </Col>
+        </Row>
+      </div>
       <div style={{ display: "flex", flexDirection: "column" }}>
         <Row justify="space-between" style={{ flexGrow: 1 }}>
           <Col span={15}>
@@ -202,7 +309,7 @@ const AwaitOrderDetail = () => {
               <Card
                 title={
                   <h1 className="text-2xl font-bold">
-                    Chi tiết đơn hàng: #{order.id}
+                    Chi tiết đơn hàng: #{report.order.id}
                   </h1>
                 }
                 style={{
@@ -229,7 +336,7 @@ const AwaitOrderDetail = () => {
                     justifyContent: "space-between",
                   }}
                 >
-                  {order.orderDetails.map((item) => (
+                  {report.order.orderDetails.map((item) => (
                     <Card
                       type="inner"
                       key={item.product.id}
@@ -316,7 +423,7 @@ const AwaitOrderDetail = () => {
                       strong
                       style={{ fontSize: "17px", display: "inline-block" }}
                     >
-                      {formatDate(order.requiredDate)}
+                      {formatDate(report.order.requiredDate)}
                     </Text>
                   </div>
                   <div
@@ -340,7 +447,7 @@ const AwaitOrderDetail = () => {
                       strong
                       style={{ fontSize: "17px", display: "inline-block" }}
                     >
-                      {order.fullName}
+                      {report.order.fullName}
                     </Text>
                   </div>
                   <div
@@ -364,7 +471,7 @@ const AwaitOrderDetail = () => {
                       strong
                       style={{ fontSize: "17px", display: "inline-block" }}
                     >
-                      {order.email}
+                      {report.order.email}
                     </Text>
                   </div>
                   <div
@@ -388,7 +495,7 @@ const AwaitOrderDetail = () => {
                       strong
                       style={{ fontSize: "17px", display: "inline-block" }}
                     >
-                      {order.phone}
+                      {report.order.phone}
                     </Text>
                   </div>
                   <div
@@ -412,7 +519,7 @@ const AwaitOrderDetail = () => {
                       strong
                       style={{ fontSize: "17px", textAlign: "right" }}
                     >
-                      {order.address}
+                      {report.order.address}
                     </Text>
                   </div>
                   <div
@@ -436,7 +543,7 @@ const AwaitOrderDetail = () => {
                       strong
                       style={{ fontSize: "17px", display: "inline-block" }}
                     >
-                      {order.paymentMethod}
+                      {report.order.paymentMethod}
                     </Text>
                   </div>
                 </div>
@@ -465,7 +572,7 @@ const AwaitOrderDetail = () => {
                     >
                       {" "}
                       {Number(
-                        order.totalPrice - order.shipFee,
+                        report.order.totalPrice - report.order.shipFee,
                         // + order.order.voucher_fee
                       ).toLocaleString("vi-VN", {
                         style: "currency",
@@ -523,7 +630,7 @@ const AwaitOrderDetail = () => {
                       strong
                       style={{ fontSize: "17px", display: "inline-block" }}
                     >
-                      {Number(order.shipFee).toLocaleString("vi-VN", {
+                      {Number(report.order.shipFee).toLocaleString("vi-VN", {
                         style: "currency",
                         currency: "VND",
                       })}
@@ -548,7 +655,7 @@ const AwaitOrderDetail = () => {
                     strong
                     style={{ fontSize: "17px", display: "inline-block" }}
                   >
-                    {Number(order.totalPrice).toLocaleString("vi-VN", {
+                    {Number(report.order.totalPrice).toLocaleString("vi-VN", {
                       style: "currency",
                       currency: "VND",
                     })}
@@ -556,50 +663,28 @@ const AwaitOrderDetail = () => {
                 </div>
 
                 {isAuthenticatedStaff && (
-                  <div>
-                    <Select
-                      style={{ width: 200, marginTop: "2vh" }}
-                      placeholder="Chọn shipper"
-                      onChange={handleShipperChange}
-                    >
-                      {shipper.map((shipper) => (
-                        <Option key={shipper.id} value={shipper.id}>
-                          {shipper.firstName
-                            ? shipper.firstName
-                            : shipper.email}
-                        </Option>
-                      ))}
-                    </Select>
-                    <div
+                  <div
+                    style={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <Text
                       style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        width: "100%",
-                        marginTop: "1vh",
+                        fontSize: "17px",
+                        display: "inline-block",
+                        marginRight: "10px",
                       }}
                     >
-                      <Button
-                        type="default"
-                        onClick={handleCancelOrder}
-                        style={{
-                          backgroundColor: "#ff4d4f",
-                          fontSize: "15px",
-                        }}
-                      >
-                        Hủy đơn hàng
-                      </Button>
-                      <Button
-                        type="default"
-                        onClick={handleConfirmOrder}
-                        disabled={selectedShipperID === null}
-                        style={{
-                          backgroundColor: "#55B6C3",
-                          fontSize: "15px",
-                        }}
-                      >
-                        Xác nhận đơn hàng
-                      </Button>
-                    </div>
+                      Nhân viên giao hàng:
+                    </Text>
+                    <Text
+                      strong
+                      style={{ fontSize: "17px", display: "inline-block" }}
+                    >
+                      {report.order.shipper
+                        ? report.order.shipper.firstName
+                          ? report.order.shipper.firstName
+                          : report.order.shipper.email
+                        : ""}
+                    </Text>
                   </div>
                 )}
               </Card>
@@ -611,4 +696,4 @@ const AwaitOrderDetail = () => {
   );
 };
 
-export default AwaitOrderDetail;
+export default ProcessingReportDetail;

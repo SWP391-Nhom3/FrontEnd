@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const HOSTNAME = "http://localhost:8080/api";
+const HOSTNAME = "https://milkjoy-shop.azurewebsites.net/api";
 
 //login api
 export const fetchLogin = async (email, password) => {
@@ -179,49 +179,6 @@ export const fetchCancelShippingOrder = async (id) => {
   return await axios.put(`${HOSTNAME}/orders/cancel-shipping/${id}`);
 };
 
-// // eslint-disable-next-line no-undef
-// const SCHEMA_HOSTNAME = process.env.REACT_APP_SCHEMA_HOSTNAME;
-
-// //fetchDeleteNews
-// export const fetchDeleteNews = async (id, token) => {
-//   return await axios.delete(`${SCHEMA_HOSTNAME}/news/delete/${id}`, {
-//     headers: {
-//       Authorization: `Bearer ${token.access_token}`,
-//     },
-//   });
-// };
-
-// //fetchUpdateNews
-// export const fetchUpdateNews = async (data, token, id) => {
-//   return await axios.patch(
-//     `${SCHEMA_HOSTNAME}/news/update/${id}`,
-//     { ...data },
-//     {
-//       headers: {
-//         Authorization: `Bearer ${token.access_token}`,
-//       },
-//     },
-//   );
-// };
-
-// //fetchNewsByID
-// export const fetchNewsByID = async (id) => {
-//   return await axios.get(`${SCHEMA_HOSTNAME}/news/news/${id}`);
-// };
-
-// //fetchUploadNews
-// export const fetchUploadNews = async (data, token) => {
-//   return await axios.post(
-//     `${SCHEMA_HOSTNAME}/news/upload`,
-//     { ...data },
-//     {
-//       headers: {
-//         Authorization: `Bearer ${token.access_token}`,
-//       },
-//     },
-//   );
-// };
-
 // //feedback
 export const fetchAllFeedback = async () => {
   return await axios.get(`${HOSTNAME}/reviews`);
@@ -283,88 +240,6 @@ export const fetchUploadReplyFeedback = async (
   );
 };
 
-// //fetchRefreshToken
-// export const fetchRefreshToken = async (token) => {
-//   return await axios.post(`${SCHEMA_HOSTNAME}/users/refresh-token`, {
-//     refresh_token: token.refresh_token,
-//   });
-// };
-
-// //fetchUploadVoucher
-// export const fetchUploadVoucher = async (data, token) => {
-//   return await axios.post(
-//     `${SCHEMA_HOSTNAME}/vouchers/upload`,
-//     { ...data },
-//     {
-//       headers: {
-//         Authorization: `Bearer ${token.access_token}`,
-//       },
-//     },
-//   );
-// };
-
-// export const fetchAllNews = async () => {
-//   try {
-//     const res = await axios.get(`${SCHEMA_HOSTNAME}/news/all-news`);
-//     return res.data.result;
-//   } catch (error) {
-//     console.error("Error fetching products:", error);
-//     throw error;
-//   }
-// };
-
-// //fetchGetVoucherType
-// export const fetchGetVoucherType = async () => {
-//   return await axios.get(`${SCHEMA_HOSTNAME}/vouchers/get-voucher-type`);
-// };
-
-// //fetchConfirmOrder
-// export const fetchConfirmOrder = async (order_id, token) => {
-//   return await axios.post(
-//     `http://localhost:4000/orders/status-order`,
-//     {
-//       order_id: order_id,
-//       status: "Processing",
-//     },
-//     {
-//       headers: {
-//         Authorization: `Bearer ${token.access_token}`,
-//       },
-//     },
-//   );
-// };
-
-// //fetchCancelOrder
-// export const fetchCancelOrder = async (order_id, token) => {
-//   return await axios.post(
-//     `http://localhost:4000/orders/status-order`,
-//     {
-//       order_id: order_id,
-//       status: "Cancel",
-//     },
-//     {
-//       headers: {
-//         Authorization: `Bearer ${token.access_token}`,
-//       },
-//     },
-//   );
-// };
-
-// //get-prodduct
-// export const fetchProductById = async (id) => {
-//   return fetch(`${SCHEMA_HOSTNAME}/products/product/${id}`);
-// };
-
-// //get-all-brand
-// export const fetchBrandStaff = async () => {
-//   return fetch(`${SCHEMA_HOSTNAME}/brands/all-brands`);
-// };
-
-// //get-categories
-// export const fetchCategories = async () => {
-//   return fetch(`${SCHEMA_HOSTNAME}/categories/all-categories`);
-// };
-
 //get-category-by-id
 export const fetchCategoryById = async (id) => {
   return fetch(`${HOSTNAME}/categories/category/${id}`);
@@ -405,31 +280,6 @@ export const fetchUpdateCategory = async (category, token, id) => {
     },
   );
 };
-
-// //upload -bill
-// export const fetchUploadBill = async (inputBill, token) => {
-//   return await axios.post(`${SCHEMA_HOSTNAME}/inputBills/upload`, inputBill, {
-//     headers: {
-//       Authorization: `Bearer ${token.access_token}`,
-//     },
-//   });
-// };
-
-// //get-all-bill
-// export const fetchAllBills = async () => {
-//   try {
-//     const res = await axios.get(`${SCHEMA_HOSTNAME}/inputBills/all-inputbills`);
-//     return res.data.result;
-//   } catch (error) {
-//     console.error("Error fetching products:", error);
-//     throw error;
-//   }
-// };
-
-// //get-all-warehouse:
-// export const fetchProductInWarehouse = async () => {
-//   return await axios.get(`${SCHEMA_HOSTNAME}/warehouse/all-warehouse`);
-// };
 
 //get-all-user
 export const fetchAllUsers = async (result) => {
@@ -473,130 +323,6 @@ export const fetchUserStatusById = async (id, token) => {
   );
 };
 
-// //get-user-by-id
-// export const fetchUserById = async (id, token) => {
-//   return await axios.get(`${SCHEMA_HOSTNAME}/users/user/${id}`, {
-//     headers: {
-//       Authorization: `Bearer ${token.access_token}`,
-//     },
-//   });
-// };
-
-// //update-user
-// export const fetchUpdateUser = async (user, token, id) => {
-//   return await axios.post(
-//     `${SCHEMA_HOSTNAME}/users/change-status/${id}`,
-//     {},
-//     {
-//       headers: {
-//         Authorization: `Bearer ${token.access_token}`,
-//       },
-//     },
-//   );
-// };
-
-// //add-staff
-// export const fetchUploadStaff = async (user, token) => {
-//   return await axios.post(
-//     `${SCHEMA_HOSTNAME}/users/add-user`,
-//     { ...user },
-//     {
-//       headers: {
-//         Authorization: `Bearer ${token.access_token}`,
-//       },
-//     },
-//   );
-// };
-
-// //updateProduct
-// export const fetchUpdateProduct = async (product, token, id) => {
-//   return await axios.patch(
-//     `${SCHEMA_HOSTNAME}/products/product/${id}`,
-//     {
-//       brand_id: product.brand_id,
-//       category_id: product.category_id,
-//       product_name: product.product_name,
-//       price: product.price,
-//       description: product.description,
-//       age: product.age,
-//       discount: product.discount,
-//       imgUrl: product.imgUrl,
-//       isActive: product.isActive,
-//     },
-//     {
-//       headers: {
-//         Authorization: `Bearer ${token.access_token}`,
-//       },
-//     },
-//   );
-// };
-
-// //upload
-// export const fetchUploadProduct = async (product, token) => {
-//   return await axios.post(
-//     `${SCHEMA_HOSTNAME}/products/upload`,
-//     { ...product },
-//     {
-//       headers: {
-//         Authorization: `Bearer ${token.access_token}`,
-//       },
-//     },
-//   );
-// };
-
-// //reset-pssword:
-// export const fetchResetPassword = async ({
-//   user_id,
-//   digit,
-//   password,
-//   confirm_password,
-// }) => {
-//   await axios.post(
-//     `${SCHEMA_HOSTNAME}/users/reset-password`,
-//     {
-//       password,
-//       confirm_password,
-//     },
-//     {
-//       params: {
-//         user_id: user_id,
-//         digit: digit,
-//       },
-//     },
-//   );
-// };
-
-// //otp
-// export const fetchOtp = async ({ user_id, digit, email, key }) => {
-//   if (key === "resend") {
-//     return await axios.post(`${SCHEMA_HOSTNAME}/users/forgot-password`, {
-//       email,
-//     });
-//   } else {
-//     return await axios.get(`${SCHEMA_HOSTNAME}/users/verify-forgot-password`, {
-//       params: {
-//         user_id,
-//         digit: digit,
-//       },
-//     });
-//   }
-// };
-
-// //login
-// export const fetchLogin = async (email, password) => {
-//   return await axios.post(`${SCHEMA_HOSTNAME}/users/login-admin-staff`, {
-//     email,
-//     password,
-//   });
-// };
-
-// //forgot-password
-// export const fetchForgotPassword = async (email) => {
-//   return await axios.post(`${SCHEMA_HOSTNAME}/users/forgot-password`, {
-//     email,
-//   });
-// };
-
 //addbrand
 export const fetchAddBrand = async (brand, token) => {
   return await axios.post(
@@ -609,50 +335,6 @@ export const fetchAddBrand = async (brand, token) => {
     },
   );
 };
-// //logout
-// export const fetchLogout = async (result) => {
-//   return await axios.post(
-//     `${SCHEMA_HOSTNAME}/users/logout`,
-//     {
-//       refresh_token: result.refresh_token,
-//     },
-//     {
-//       headers: {
-//         Authorization: `Bearer ${result.access_token}`,
-//       },
-//     },
-//   );
-// };
-
-// export const fetchProducts = async () => {
-//   try {
-//     const res = await axios.get(`${SCHEMA_HOSTNAME}/products/all-products`);
-//     return res.data.result;
-//   } catch (error) {
-//     console.error("Error fetching products:", error);
-//     throw error;
-//   }
-// };
-
-// export const fetchOrder = async () => {
-//   try {
-//     const res = await axios.get(`${SCHEMA_HOSTNAME}/orders/all-orders`);
-//     return res.data.result;
-//   } catch (error) {
-//     console.error("Error fetching products:", error);
-//     throw error;
-//   }
-// };
-// //revenue:
-// export const fetchRevenue = async () => {
-//   try {
-//     const res = await axios.get(`${SCHEMA_HOSTNAME}/revenue/all-revenue`);
-//     return res.data.result;
-//   } catch (error) {
-//     console.error("Error fetching products:", error);
-//     throw error;
-//   }
-// };
 
 // //voucher:
 // //getall:
@@ -665,39 +347,39 @@ export const fetchGetVoucher = async () => {
     throw error;
   }
 };
-// //update:
-// export const fetchUpdateVoucher = async (voucher, token, id) => {
-//   return await axios.post(
-//     `${SCHEMA_HOSTNAME}/vouchers/update/${id}`,
-//     { ...voucher },
-//     {
-//       headers: {
-//         Authorization: `Bearer ${token.access_token}`,
-//       },
-//     },
-//   );
-// };
-// //delete:
-// export const fetchDeleteVoucher = async (voucherId, token) => {
-//   // eslint-disable-next-line no-useless-catch
-//   try {
-//     const response = await axios.post(
-//       `${SCHEMA_HOSTNAME}/vouchers/delete`,
-//       {
-//         id: voucherId,
-//       },
-//       {
-//         headers: {
-//           Authorization: `Bearer ${token.access_token}`,
-//         },
-//       },
-//     );
-//     return response.data;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
 
+//add report
+export const fetchAddReport = async (report) => {
+  return await axios.post(`${HOSTNAME}/reports`, report);
+};
+
+//get report by order id and customer id
+export const fetchCheckReport = async (order_id, customer_id) => {
+  return await axios.get(`${HOSTNAME}/reports/${order_id}/${customer_id}`);
+};
+
+//get report by customer id
+export const fetchGetReportByCustomer = async (customer_id) => {
+  return await axios.get(`${HOSTNAME}/reports/user/${customer_id}`);
+};
+
+//get report by status
+export const fetchGetReportByStatus = async (status) => {
+  return await axios.get(`${HOSTNAME}/reports/status/${status}`);
+};
+
+//get report by actionType
+export const fetchGetReportByActionType = async (actionType) => {
+  return await axios.get(`${HOSTNAME}/reports/action/${actionType}`);
+};
+//get report by id
+export const fetchReportById = async (id) => {
+  return await axios.get(`${HOSTNAME}/reports/${id}`);
+};
+//staff reply report api
+export const fetchUpdateReport = async (id, report) => {
+  return await axios.put(`${HOSTNAME}/reports/${id}`, report);
+};
 //API province, district, ward
 const baseUrl = "https://open.oapi.vn/location";
 class Http {

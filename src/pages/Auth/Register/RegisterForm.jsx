@@ -32,22 +32,20 @@ const RegisterForm = () => {
       return;
     }
 
-    navigate("/profile", {
-      state: { email },
-    });
-
     await fetchRegister({
       email,
       password,
     })
       .then((res) => {
-        console.log(res);
         localStorage.setItem("result", JSON.stringify(res.data.data));
         localStorage.setItem("accessToken", res.data.data.accessToken);
         localStorage.setItem("user", JSON.stringify(res.data.data.user));
         localStorage.setItem("role", JSON.stringify(res.data.data.user.roles));
+        toast.success("Đăng kí thành công");
+        navigate("/profile", {
+          state: { email },
+        });
         window.location.reload();
-        toast.success(`Đăng kí thành công`);
       })
       .catch((error) => {
         toast.error("Có lỗi xảy ra khi đăng ký.");

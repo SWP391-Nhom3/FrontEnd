@@ -69,6 +69,15 @@ import EditNews from "./pages/News/EditNews";
 import AllNews from "./pages/News/AllNews";
 import "./App.css";
 import AddShipper from "./pages/User/AddShipper";
+import Reports from "./components/profile/Reports";
+import ProcessingReport from "./pages/ReportManagement/ProcessingReport";
+import CompleteReport from "./pages/ReportManagement/CompleteReport";
+import VoucherReport from "./pages/ReportManagement/VoucherReport";
+import OrderReport from "./pages/ReportManagement/OrderReport";
+import RefundReport from "./pages/ReportManagement/RefundReport";
+import CancelReport from "./pages/ReportManagement/CancelReport";
+import ProcessingReportDetail from "./pages/ReportManagement/ProcessingReportDetail";
+import ReportDetail from "./pages/ReportManagement/ReportDetail";
 
 const App = () => {
   const { currentMode, activeMenu, themeSettings } = useStateContext();
@@ -157,6 +166,20 @@ const App = () => {
                   <Route path="/all-blog" element={<AllNews />} />
                   <Route path="/add-news" element={<AddNews />} />
                   <Route path="/edit-news" element={<EditNews />} />
+                  <Route
+                    path="/processing-report"
+                    element={<ProcessingReport />}
+                  />
+                  <Route path="/complete-report" element={<CompleteReport />} />
+                  <Route path="/voucher-report" element={<VoucherReport />} />
+                  <Route path="/order-report" element={<OrderReport />} />
+                  <Route path="/refund-report" element={<RefundReport />} />
+                  <Route path="/cancel-report" element={<CancelReport />} />
+                  <Route
+                    path="/processing-report-detail"
+                    element={<ProcessingReportDetail />}
+                  />
+                  <Route path="/report-detail" element={<ReportDetail />} />
                 </Routes>
               </div>
             </div>
@@ -283,6 +306,7 @@ const App = () => {
                 <Route path="history-order" element={<HistoryOrder />} />
                 <Route path="my-feedback" element={<Feedback />} />
                 <Route path="accumulated-points" element={<Accumulate />} />
+                <Route path="my-reports" element={<Reports />} />
               </Route>
               <Route path="/news" element={<News />} />
               <Route path="/news-detail" element={<NewsDetail />} />

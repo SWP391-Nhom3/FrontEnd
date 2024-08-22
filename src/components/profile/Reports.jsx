@@ -1,14 +1,15 @@
 import { FaFilter, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { Table } from "flowbite-react";
 import { useEffect, useState } from "react";
-import { fetchOrders } from "../../data/api";
+import { fetchGetReportByCustomer, fetchOrders } from "../../data/api";
 import { Link } from "react-router-dom";
 import Loader from "../../assets/loading2.gif";
 
-const HistoryOrder = () => {
+const Reports = () => {
   const user = JSON.parse(localStorage.getItem("user")) || null;
   const [loading, setLoading] = useState(true);
   const [orders, setOrders] = useState([]);
+  const [reports, setReports] = useState([]);
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [filters, setFilters] = useState({
     orderId: "",
@@ -56,6 +57,12 @@ const HistoryOrder = () => {
     };
 
     getOrders();
+  }, []);
+
+  useEffect(() => {
+    fetchGetReportByCustomer(user.id).then((data) => {
+      setReports(data.data.data);
+    });
   }, []);
 
   const handleFilterChange = (e) => {
@@ -106,8 +113,8 @@ const HistoryOrder = () => {
   // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredOrders.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
+  const currentItems = reports.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(reports.length / itemsPerPage);
 
   const handleClick = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -136,12 +143,12 @@ const HistoryOrder = () => {
   return (
     <div>
       <div>
-        <h1 className="text-2xl font-semibold">Lịch sử đơn hàng</h1>
-        <p>Hiển thị thông tin các sản phẩm bạn đã mua tại MilkJoy Shop</p>
+        <h1 className="text-2xl font-semibold">Lịch sử khiếu nại</h1>
+        <p>Hiển thị thông tin các đơn khiếu nại của bạn tại MilkJoy Shop</p>
       </div>
       <hr className="my-4" />
       <div className="space-y-4">
-        <div className="flex space-x-4">
+        {/* <div className="flex space-x-4">
           <input
             type="text"
             placeholder="Mã đơn hàng"
@@ -189,74 +196,66 @@ const HistoryOrder = () => {
             <FaFilter className="mr-2" />
             Lọc
           </button>
-        </div>
+        </div> */}
         <div className="overflow-x-auto">
           <Table hoverable className="border">
             <Table.Head>
-              <Table.HeadCell className="w-1/24 border">
-                Ngày đặt
+              <Table.HeadCell className="w-2/24 border">
+                Ngày gửi đơn
               </Table.HeadCell>
-              <Table.HeadCell className="w-1/24 border">
-                Mã đơn hàng
+
+              <Table.HeadCell className="w-4/24 border">
+                Đơn hàng
               </Table.HeadCell>
-              <Table.HeadCell className="w-5/12 border">
-                Sản phẩm
-              </Table.HeadCell>
-              <Table.HeadCell className="w-2/12 border">
-                Tổng tiền
-              </Table.HeadCell>
-              <Table.HeadCell className="w-3/12 border">
+              <Table.HeadCell className="w-5/24 border">Lý do</Table.HeadCell>
+              <Table.HeadCell className="w-4/24 border">
                 Trạng thái
               </Table.HeadCell>
-              <Table.HeadCell className="w-2/12 border">
-                <span className="sr-only">Chi tiết</span>
+              <Table.HeadCell className="w-3/24 border">
+                Hướng giải quyết
+              </Table.HeadCell>
+              <Table.HeadCell className="w-6/24 border">
+                Phản hồi từ nhân viên
               </Table.HeadCell>
             </Table.Head>
             <Table.Body className="divide-y">
               {currentItems.length > 0 ? (
                 currentItems.map((item) => (
-                  <Table.Row
-                    key={item.requiredDate}
-                    className="border bg-white"
-                  >
+                  <Table.Row key={item} className="border bg-white">
                     <Table.Cell className="whitespace-nowrap border font-medium text-gray-900">
-                      {formatDate(item.requiredDate)}
+                      {formatDate(item.createdAt)}
                     </Table.Cell>
+                    <Table.Cell className="border">{item.order.id}</Table.Cell>
+                    <Table.Cell className="border">{item.reason}</Table.Cell>
                     <Table.Cell className="whitespace-nowrap border font-medium text-gray-900">
-                      {item.id}
-                    </Table.Cell>
-                    <Table.Cell className="border">
-                      {item.orderDetails.map((detail) => (
-                        <p className="mb-3 text-gray-900" key={detail.id}>
-                          - {detail.product.name}
-                        </p>
-                      ))}
-                    </Table.Cell>
-                    <Table.Cell className="border">
-                      {Number(item.totalPrice).toLocaleString("vi-VN", {
-                        style: "currency",
-                        currency: "VND",
-                      })}
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap border font-medium text-gray-900">
-                      {item.orderStatus.name}
+                      {item.status === "PENDING"
+                        ? "Đang xử lý"
+                        : item.status === "COMPLETED"
+                          ? "Đã hoàn thành"
+                          : item.status}
                     </Table.Cell>
                     <Table.Cell>
-                      <Link
-                        to="/order-detail-customer"
-                        state={{ order: item }}
-                        onClick={() => window.scrollTo(0, 0)}
-                        className="font-medium text-cyan-600 hover:underline"
-                      >
-                        Chi tiết
-                      </Link>
+                      {item.actionType === "NO_ACTION"
+                        ? "Không giải quyết"
+                        : item.actionType === "CREATE_VOUCHER"
+                          ? "Tặng voucher"
+                          : item.actionType === "CREATE_ORDER"
+                            ? "Đền bù sản phẩm"
+                            : item.actionType === "REFUND"
+                              ? "Hoàn tiền"
+                              : item.actionType === "OTHER"
+                                ? "Khác"
+                                : item.actionType === "UNKNOWN"
+                                  ? "Chưa xử lý"
+                                  : item.actionType}
                     </Table.Cell>
+                    <Table.Cell>{item.note ? item.note : "-"}</Table.Cell>
                   </Table.Row>
                 ))
               ) : (
                 <Table.Row>
                   <Table.Cell colSpan="6" className="text-center">
-                    Bạn chưa mua đơn hàng nào hết!
+                    Bạn chưa có đơn khiếu nại!
                   </Table.Cell>
                 </Table.Row>
               )}
@@ -305,4 +304,4 @@ const HistoryOrder = () => {
   );
 };
 
-export default HistoryOrder;
+export default Reports;

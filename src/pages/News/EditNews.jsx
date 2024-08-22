@@ -192,7 +192,6 @@ const EditNews = () => {
 
   const handleChangeSelectedProduct = (value) => {
     setSelectedProductId(value);
-    console.log(selectedProductId);
   };
 
   const handleChangeNewsName = (event) => {
@@ -269,7 +268,6 @@ const EditNews = () => {
   // }
 
   async function uploadImage(news, id) {
-    console.log("img: ", img !== null);
     if (fileList[0] !== null) {
       const imgRef = ref(imageDb, `news_img/${v4()}`);
       const imgRefOld = ref(imageDb, news.img_url);

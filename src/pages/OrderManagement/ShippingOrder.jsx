@@ -18,7 +18,6 @@ const ShippingOrder = () => {
   const isShipper = localStorage.getItem("isShipper") === "true";
   const user = JSON.parse(localStorage.getItem("user"));
   const shipperId = user.id;
-  console.log("dfasdf", user.id);
   useEffect(() => {
     const getOrders = async () => {
       try {
