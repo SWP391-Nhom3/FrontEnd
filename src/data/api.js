@@ -366,7 +366,7 @@ export const fetchCreateShipper = async (token, userData) => {
 
 export const fetchUserStatusById = async (id, token) => {
   return await axios.put(
-    `http://localhost:8080/api/users/status/${id}`,
+    `${HOSTNAME}/users/status/${id}`,
     { id },
     {
       headers: {

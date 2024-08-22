@@ -35,7 +35,7 @@ const ProductManagement = () => {
       })
       .catch((error) => console.error("Error fetching categories:", error));
   }, []);
-
+  console.log(products);
   const handleSwitchChange = (checked, product) => {
     Modal.confirm({
       title: "Xác nhận thay đổi trạng thái sản phẩm",
@@ -98,31 +98,32 @@ const ProductManagement = () => {
       title: "Thương Hiệu",
       key: "brand",
       render: (text, record) => <span>{record.brand.name}</span>,
-      width: "10%",
+      width: "15%",
     },
     {
       title: "Số Lượng",
       dataIndex: "stockQuantity",
       key: "stockQuantity",
-      width: "5%",
+      width: "15%",
     },
     {
       title: "Đánh Giá",
       dataIndex: "rating",
       key: "rating",
       width: "15%",
+      sorter: (a, b) => a.rating - b.rating,
       render: (text) => {
-        // const roundedRating = 4;
-        // // parseFloat(text).toFixed(1);
+        const roundedRating = 4;
+        // parseFloat(text).toFixed(1);
         return (
           <div className="flex items-center">
             <Rate
               allowHalf
               disabled
-              value={text.rating}
+              value={parseFloat(roundedRating)}
               style={{ fontSize: "12px" }}
             />
-            <span className="ml-1 text-gray-500">{text.rating}</span>
+            <span className="ml-1 text-gray-500">{roundedRating}</span>
           </div>
         );
       },
@@ -147,10 +148,10 @@ const ProductManagement = () => {
     //   ),
     // },
     {
-      title: "Đơn giá",
-      dataIndex: "price",
-      key: "price",
-      width: 100,
+      title: "Doanh Thu",
+      dataIndex: "revenue",
+      key: "revenue",
+      width: 110,
       render: (text, record) => {
         const revenue = record.price;
         return new Intl.NumberFormat("vi-VN", {
@@ -232,7 +233,7 @@ const ProductManagement = () => {
                 <div className="text-gray-500">Tổng sản phẩm: </div>
                 <div className="dark:text-white">{products.length}</div>
               </h5>
-              {/* <h5 className="flex justify-between text-sm sm:text-base">
+              <h5 className="flex justify-between text-sm sm:text-base">
                 <div className="mr-1 text-gray-500">Tổng doanh thu: </div>
                 <div className="ml-1 dark:text-white">
                   {new Intl.NumberFormat("vi-VN", {
@@ -242,7 +243,7 @@ const ProductManagement = () => {
                     products.reduce((sum, product) => sum + product.price, 0),
                   )}
                 </div>
-              </h5> */}
+              </h5>
             </div>
           </div>
           <Table
