@@ -37,18 +37,18 @@ const PostListNews = ({ posts }) => {
     <div className="w-full p-4 md:w-3/4">
       {selectedPosts.map((item) => (
         <div
-          key={item._id}
+          key={item.id}
           className="mb-8 flex flex-col items-start rounded-lg border p-4 md:flex-row"
         >
           <img
-            src={item.img_url}
-            alt={item.news_name}
+            src={item.imgUrl}
+            alt={item.title}
             className="mb-2 w-full rounded-lg object-contain md:mb-0 md:mr-4 md:w-1/3"
             style={{ width: "300px", height: "200px" }}
           />
           <div className="min-w-0 flex-1">
             <p className="mb-2 text-sm text-gray-600">
-              {formatDate(item.created_at)}
+              {formatDate(item.createdAt)}
             </p>
             <Link
               to={"/news-detail"}
@@ -56,12 +56,12 @@ const PostListNews = ({ posts }) => {
               onClick={() => window.scrollTo(0, 0)}
               className="mb-2 block truncate text-xl font-bold"
             >
-              {item.news_name}
+              {item.title}
             </Link>
             <div
               className="text-gray-500"
               style={truncateStyle}
-              dangerouslySetInnerHTML={{ __html: item.description }}
+              dangerouslySetInnerHTML={{ __html: item.content }}
             />
             <Link
               to={"/news-detail"}

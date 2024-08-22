@@ -179,6 +179,38 @@ export const fetchCancelShippingOrder = async (id) => {
   return await axios.put(`${HOSTNAME}/orders/cancel-shipping/${id}`);
 };
 
+<<<<<<< HEAD
+=======
+// // eslint-disable-next-line no-undef
+// const SCHEMA_HOSTNAME = process.env.REACT_APP_SCHEMA_HOSTNAME;
+
+export const fetchDeleteNews = async (id) => {
+  return await axios.delete(`${HOSTNAME}/articles/${id}`);
+};
+
+// //fetchUpdateNews
+// export const fetchUpdateNews = async (data, token, id) => {
+//   return await axios.patch(
+//     `${HOSTNAME}/news/update/${id}`,
+//     { ...data },
+//     {
+//       headers: {
+//         Authorization: `Bearer ${token.access_token}`,
+//       },
+//     },
+//   );
+// };
+
+export const fetchNewsByID = async (id) => {
+  const res = await axios.get(`${HOSTNAME}/articles/${id}`);
+  return res.data.data;
+};
+
+export const fetchUploadNews = async (data) => {
+  return await axios.post(`${HOSTNAME}/articles`, { ...data });
+};
+
+>>>>>>> ff72298 (news)
 // //feedback
 export const fetchAllFeedback = async () => {
   return await axios.get(`${HOSTNAME}/reviews`);
@@ -241,7 +273,91 @@ export const fetchUploadReplyFeedback = async (
     },
   );
 };
+export const fetchAllNews = async () => {
+  try {
+    const res = await axios.get(`${HOSTNAME}/articles`);
+    return res.data.data;
+  } catch (error) {
+    console.error("Error fetching news:", error);
+    throw error;
+  }
+};
 
+<<<<<<< HEAD
+=======
+// //fetchRefreshToken
+// export const fetchRefreshToken = async (token) => {
+//   return await axios.post(`${SCHEMA_HOSTNAME}/users/refresh-token`, {
+//     refresh_token: token.refresh_token,
+//   });
+// };
+
+// //fetchUploadVoucher
+// export const fetchUploadVoucher = async (data, token) => {
+//   return await axios.post(
+//     `${SCHEMA_HOSTNAME}/vouchers/upload`,
+//     { ...data },
+//     {
+//       headers: {
+//         Authorization: `Bearer ${token.access_token}`,
+//       },
+//     },
+//   );
+// };
+
+// //fetchGetVoucherType
+// export const fetchGetVoucherType = async () => {
+//   return await axios.get(`${SCHEMA_HOSTNAME}/vouchers/get-voucher-type`);
+// };
+
+// //fetchConfirmOrder
+// export const fetchConfirmOrder = async (order_id, token) => {
+//   return await axios.post(
+//     `http://localhost:4000/orders/status-order`,
+//     {
+//       order_id: order_id,
+//       status: "Processing",
+//     },
+//     {
+//       headers: {
+//         Authorization: `Bearer ${token.access_token}`,
+//       },
+//     },
+//   );
+// };
+
+// //fetchCancelOrder
+// export const fetchCancelOrder = async (order_id, token) => {
+//   return await axios.post(
+//     `http://localhost:4000/orders/status-order`,
+//     {
+//       order_id: order_id,
+//       status: "Cancel",
+//     },
+//     {
+//       headers: {
+//         Authorization: `Bearer ${token.access_token}`,
+//       },
+//     },
+//   );
+// };
+
+// //get-prodduct
+// export const fetchProductById = async (id) => {
+//   return fetch(`${SCHEMA_HOSTNAME}/products/product/${id}`);
+// };
+
+// //get-all-brand
+// export const fetchBrandStaff = async () => {
+//   return fetch(`${SCHEMA_HOSTNAME}/brands/all-brands`);
+// };
+
+// //get-categories
+// export const fetchCategories = async () => {
+//   return fetch(`${SCHEMA_HOSTNAME}/categories/all-categories`);
+// };
+
+>>>>>>> ff72298 (news)
 //get-category-by-id
 export const fetchCategoryById = async (id) => {
   return fetch(`${HOSTNAME}/categories/category/${id}`);

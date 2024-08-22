@@ -1,21 +1,21 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-// import { fetchGetAllNews } from "../../data/api";
+import { fetchAllNews } from "../../data/api";
 
 const NewsSection = () => {
   const [posts, setPosts] = useState([]);
-  //!! FETCH ALL NEWS!!
-  // useEffect(() => {
-  //   const getAllPosts = async () => {
-  //     try {
-  //       const data = await fetchGetAllNews();
-  //       setPosts(data.data.result);
-  //     } catch (error) {
-  //       console.error("Error fetching news:", error);
-  //     }
-  //   };
-  //   getAllPosts();
-  // }, []);
+  useEffect(() => {
+    const getAllPosts = async () => {
+      try {
+        const data = await fetchAllNews();
+        console.log("Data:", data);
+        setPosts(data);
+      } catch (error) {
+        console.error("Error fetching news:", error);
+      }
+    };
+    getAllPosts();
+  }, []);
 
   const truncateStyle = {
     display: "-webkit-box",
@@ -52,33 +52,35 @@ const NewsSection = () => {
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {news.map((item) => (
           <div
-            key={item._id}
+            key={item.id}
             className="overflow-hidden rounded-lg bg-white shadow-md"
           >
             <div className="relative">
               <img
-                src={item.img_url}
-                alt={item.news_name}
+                src={item.imgUrl}
+                alt={item.title}
                 className="h-48 w-full object-cover"
               />
               <div className="absolute left-2 top-2 rounded-lg bg-orange-500 px-2 py-1 text-white">
                 <span className="block text-sm">
-                  {formatDate(item.created_at)}
+                  {formatDate(item.createdAt)}
                 </span>
               </div>
             </div>
             <div className="p-4">
-              <h3 className="mb-2 text-lg font-bold">{item.news_name}</h3>
-              <div
-                className="text-gray-500"
-                style={truncateStyle}
-                dangerouslySetInnerHTML={{ __html: item.description }}
-              />
+              <h3 className="mb-2 text-lg font-bold">{item.title}</h3>
+              <p className="mt-2 text-sm text-red-600">{item.content}</p>
               <div className="flex items-center justify-between">
-                <div className="flex items-center text-orange-500">
-                  <span>{item.comments} Bình luận</span>
-                  <span className="ml-2">{item.author}</span>
-                </div>
+                {/* {item.comments && item.author ? (
+                  <div className="flex items-center text-orange-500">
+                    <span>{item.comments} Bình luận</span>
+                    <span className="ml-2">{item.author}</span>
+                  </div>
+                ) : (
+                  <div className="text-orange-500">
+                    No comments or author info available
+                  </div>
+                )} */}
                 <Link
                   to={"/news-detail"}
                   state={{ news: item }}
