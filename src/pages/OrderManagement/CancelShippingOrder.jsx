@@ -193,7 +193,7 @@ const CancelShippingOrder = () => {
                   key="detail"
                   render={(text, item) => (
                     <Link
-                      to="/shipping-orderDetail"
+                      to="/order-detail"
                       state={{ order: item }}
                       className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                     >

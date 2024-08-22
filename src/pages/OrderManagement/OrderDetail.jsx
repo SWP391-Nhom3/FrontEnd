@@ -215,6 +215,7 @@ const OrderDetail = () => {
                           {
                             title: "Giao hàng thất bại",
                             status: "error",
+                            description: formatDate(order.shippedDate),
                             icon: <ExclamationCircleOutlined />,
                           },
                         ]}
@@ -294,6 +295,7 @@ const OrderDetail = () => {
                           {
                             title: "Giao hàng thất bại",
                             status: "error",
+                            description: formatDate(order.shippedDate),
                             icon: <ExclamationCircleOutlined />,
                           },
                         ]}

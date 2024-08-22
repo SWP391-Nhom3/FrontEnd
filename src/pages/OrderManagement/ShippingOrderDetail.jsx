@@ -152,8 +152,7 @@ const ShippingOrderDetail = () => {
                         },
                         {
                           title: "Hoàn thành",
-                          status: "process",
-                          description: formatDate(order.shippedDate),
+                          status: "wait",
                           icon: <ExclamationCircleOutlined />,
                         },
                       ]}
@@ -177,8 +176,7 @@ const ShippingOrderDetail = () => {
                         },
                         {
                           title: "Hoàn thành",
-                          status: "process",
-                          description: formatDate(order.shippedDate),
+                          status: "wait",
                           icon: <ExclamationCircleOutlined />,
                         },
                       ]}
