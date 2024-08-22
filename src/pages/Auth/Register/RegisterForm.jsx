@@ -69,7 +69,7 @@ const RegisterForm = () => {
       </p>
       <form className="mt-8" onSubmit={handleSubmit}>
         <div className="mt-4 flex flex-col">
-        <label className="text-lg font-medium">Địa Chỉ Email</label>
+          <label className="text-lg font-medium">Địa Chỉ Email</label>
           <input
             className="mt-1 w-full rounded-xl border-2 border-[rgba(0,0,0,0.2)] bg-transparent p-4"
             placeholder="Nhập email..."

@@ -164,7 +164,6 @@ const OrderDetail = () => {
                     justifyContent: "space-between",
                   }}
                 >
-<<<<<<< HEAD
                   {order.orderDetails.length === 0
                     ? order.preOrderDetail.map((item) => (
                         <Card
@@ -250,89 +249,6 @@ const OrderDetail = () => {
                           </div>
                         </Card>
                       ))}
-=======
-                  {order.orderDetails.length === 0 ? (
-                    order.preOrderDetail.map((item) => (
-                      <Card
-                        type="inner"
-                        key={item.product.id}
-                        className={`mb-4 rounded-lg border border-[rgba(0,0,0,0.2)] bg-white shadow-sm`}
-                        style={{ marginBottom: "10px", padding: "10px" }}
-                      >
-                        <div className="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
-                          <img
-                            className="h-20 w-20 dark:hidden"
-                            src={item.product.coverImageUrl}
-                            alt={item.product.name}
-                          />
-                          <img
-                            className="hidden h-20 w-20 dark:block"
-                            src={item.product.coverImageUrl}
-                            alt={item.product.name}
-                          />
-                          <div className="flex items-center justify-between md:order-3 md:justify-end">
-                            <div className="text-end md:order-4 md:w-32">
-                              <p className="text-base font-bold text-gray-900 dark:text-white">
-                                {Number(item.product.price).toLocaleString("vi-VN", {
-                                  style: "currency",
-                                  currency: "VND",
-                                })}
-                              </p>
-                            </div>
-                          </div>
-                          <div className="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
-                            <p className="text-base font-medium text-gray-900 hover:underline dark:text-white">
-                              {item.product.name}
-                            </p>
-                            <div className="flex items-start gap-4 text-lg">
-                              x{item.quantity} sản phẩm
-                            </div>
-                          </div>
-                        </div>
-                      </Card>
-                    ))
-                  ) : (
-                    order.orderDetails.map((item) => (
-                      <Card
-                        type="inner"
-                        key={item.product.id}
-                        className={`mb-4 rounded-lg border border-[rgba(0,0,0,0.2)] bg-white shadow-sm`}
-                        style={{ marginBottom: "10px", padding: "10px" }}
-                      >
-                        <div className="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
-                          <img
-                            className="h-20 w-20 dark:hidden"
-                            src={item.product.coverImageUrl}
-                            alt={item.product.name}
-                          />
-                          <img
-                            className="hidden h-20 w-20 dark:block"
-                            src={item.product.coverImageUrl}
-                            alt={item.product.name}
-                          />
-                          <div className="flex items-center justify-between md:order-3 md:justify-end">
-                            <div className="text-end md:order-4 md:w-32">
-                              <p className="text-base font-bold text-gray-900 dark:text-white">
-                                {Number(item.product.price).toLocaleString("vi-VN", {
-                                  style: "currency",
-                                  currency: "VND",
-                                })}
-                              </p>
-                            </div>
-                          </div>
-                          <div className="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
-                            <p className="text-base font-medium text-gray-900 hover:underline dark:text-white">
-                              {item.product.name}
-                            </p>
-                            <div className="flex items-start gap-4 text-lg">
-                              x{item.quantity} sản phẩm
-                            </div>
-                          </div>
-                        </div>
-                      </Card>
-                    ))
-                  )}
->>>>>>> a95890d (Feat/(customer-preorder): api for customer pre-order (#40))
                 </div>
               </Card>
             </div>
