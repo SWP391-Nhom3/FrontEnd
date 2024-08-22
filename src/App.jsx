@@ -76,6 +76,7 @@ import VoucherReport from "./pages/ReportManagement/VoucherReport";
 import OrderReport from "./pages/ReportManagement/OrderReport";
 import RefundReport from "./pages/ReportManagement/RefundReport";
 import CancelReport from "./pages/ReportManagement/CancelReport";
+import ProcessingReportDetail from "./pages/ReportManagement/ProcessingReportDetail";
 
 const App = () => {
   const { currentMode, activeMenu, themeSettings } = useStateContext();
@@ -170,6 +171,8 @@ const App = () => {
                   <Route path="/order-report" element={<OrderReport />} />
                   <Route path="/refund-report" element={<RefundReport />} />
                   <Route path="/cancel-report" element={<CancelReport />} />
+                  <Route path="/cancel-report" element={<CancelReport />} />
+                  <Route path="/processing-report-detail" element={<ProcessingReportDetail />} />
 
                 </Routes>
               </div>

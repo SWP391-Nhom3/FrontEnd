@@ -363,6 +363,18 @@ export const fetchGetReportByCustomer = async (customer_id) => {
   return await axios.get(`${HOSTNAME}/reports/user/${customer_id}`);
 };
 
+//get report by status
+export const fetchGetReportByStatus = async (status) => {
+  return await axios.get(`${HOSTNAME}/reports/status/${status}`);
+}
+//get report by id
+export const fetchReportById = async (id) => {
+  return await axios.get(`${HOSTNAME}/reports/${id}`);
+}
+//staff reply report api
+export const fetchUpdateReport = async (id, report) => {
+  return await axios.put(`${HOSTNAME}/reports/${id}`, report);
+}
 //API province, district, ward
 const baseUrl = "https://open.oapi.vn/location";
 class Http {
