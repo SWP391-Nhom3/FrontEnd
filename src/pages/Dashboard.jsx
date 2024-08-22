@@ -19,6 +19,7 @@ import MonthlyProfit from "../components/Dashboard/MonthlyProfit";
 import BestCategory from "../components/Dashboard/BestCategory";
 import ProductStock from "../components/Dashboard/ProductStock";
 import MonthlyOrder from "../components/Dashboard/MonthlyOrder";
+import SoldProductsChart from "../components/Dashboard/SoldProductsChart";
 
 const DropDown = ({ currentMode, onSelect }) => (
   <div className="border-1 border-color w-28 rounded-md px-2 py-1">
@@ -517,6 +518,7 @@ const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
               </div>
               <div>
                 <RevenueMixCost />
+                <SoldProductsChart />
               </div>
             </div>
             <div>
