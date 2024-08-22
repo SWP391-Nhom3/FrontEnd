@@ -26,7 +26,6 @@ const ShoppingCart = () => {
   const [errorList, setErrorList] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [voucherList, setVoucherList] = useState([]);
-  const token = JSON.parse(localStorage.getItem("result"));
   const [totalAmount, setTotalAmount] = useState(totalPrice); // initialTotalAmount là tổng số tiền ban đầu của giỏ hàng
 
   const handleChangeVoucherCode = (event) => {
@@ -41,7 +40,6 @@ const ShoppingCart = () => {
       setDiscount(0);
     }
   };
-  const total = totalPrice + ship > 0 ? totalPrice + ship : 0;
 
   const calculateTotal = (items, shippingFee) => {
     let total = items.reduce(
@@ -88,10 +86,6 @@ const ShoppingCart = () => {
     setVoucherCode(selectedValue);
   };
 
-  const handChangeVoucherCode = (e) => {
-    setVoucherCode(e.target.value);
-  };
-
   const handClickVoucher = async (event) => {
     event.preventDefault();
 
@@ -100,7 +94,7 @@ const ShoppingCart = () => {
         const allVouchers = res;
         let selectedVoucher = allVouchers.find(
           (voucher) => voucher.code === voucherCode,
-        ); // Tìm voucher đã chọn dựa trên mã.
+        );
 
         if (selectedVoucher) {
           selectedVoucher = {
@@ -115,7 +109,6 @@ const ShoppingCart = () => {
         }
       })
       .catch((error) => {
-        // Xử lý lỗi nếu có
         console.error("Lỗi khi lấy dữ liệu voucher:", error);
       });
   };
@@ -128,6 +121,16 @@ const ShoppingCart = () => {
       return 50000;
     }
   };
+  function formatVoucherValue(selectedVoucher) {
+    if (selectedVoucher.voucherType === "FIXED_AMOUNT") {
+      return Number(selectedVoucher.value).toLocaleString("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      });
+    } else {
+      return `${Number(selectedVoucher.value)}%`;
+    }
+  }
   function formatCurrency(amount) {
     if (isNaN(amount) || amount == null) {
       return "0 VND";
@@ -138,10 +141,16 @@ const ShoppingCart = () => {
       currency: "VND",
     });
   }
+  const sendDataToOrderDetail = () => {
+    const detail = { selectedVoucher, totalAmount }; // Dữ liệu bạn muốn gửi
+    document.dispatchEvent(
+      new CustomEvent("sendDataToOrderDetail", { detail }),
+    );
+  };
+  sendDataToOrderDetail();
   useEffect(() => {
     setShip(calculateShip(cartAmount));
   }, [cartAmount]);
-  console.log(selectedVoucher);
   return (
     <>
       <ol className="flex w-full items-center justify-center px-24 text-center text-sm font-medium text-gray-500 sm:text-base">
@@ -381,15 +390,7 @@ const ShoppingCart = () => {
                           Mã giảm giá
                         </dt>
                         <dd className="text-base font-medium text-gray-900">
-                          {selectedVoucher.voucherType === "FIXED_AMOUNT"
-                            ? Number(selectedVoucher.value).toLocaleString(
-                                "vi-VN",
-                                {
-                                  style: "currency",
-                                  currency: "VND",
-                                },
-                              )
-                            : `${Number(selectedVoucher.value)}%`}
+                          - {formatVoucherValue(selectedVoucher)}
                         </dd>
                       </dl>
                     </div>
@@ -453,18 +454,14 @@ const ShoppingCart = () => {
                       Bạn có voucher hoặc thẻ quà tặng không?
                     </label>
                     <div className="flex w-full items-center justify-between gap-2">
-                      <select
+                      <input
                         id="voucherCode"
                         name="voucherCode"
-                        value={voucherCode} // Đảm bảo rằng giá trị này được cập nhật đúng cách
-                        onChange={handleChangeVoucherCode}
-                      >
-                        {voucherList.map((voucher) => (
-                          <option key={voucher.code} value={voucher.code}>
-                            {voucher.code}
-                          </option>
-                        ))}
-                      </select>
+                        type="text"
+                        value={voucherCode} // Liên kết giá trị này với state voucherCode
+                        onChange={handleChangeVoucherCode} // Cập nhật state khi người dùng nhập mã
+                        placeholder="Nhập mã voucher của bạn"
+                      />
                       <div className="w-1/4">
                         <Button color="blue" size="xs" type="submit">
                           Áp Dụng

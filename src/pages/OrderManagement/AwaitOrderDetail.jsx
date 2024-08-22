@@ -67,6 +67,17 @@ const AwaitOrderDetail = () => {
       setShipper(res.data.data);
     });
   }, []);
+  useEffect(() => {
+    const handleData = (event) => {
+      console.log("event", event.detail);
+    };
+
+    document.addEventListener("sendDataToOrderDetail", handleData);
+
+    return () => {
+      document.removeEventListener("sendDataToOrderDetail", handleData);
+    };
+  }, []);
 
   const handleShipperChange = (value) => {
     setSelectedShipperID(value);

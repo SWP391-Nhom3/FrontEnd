@@ -36,6 +36,10 @@ const OrderDetail = () => {
     };
     getProducts();
   }, []);
+  document.addEventListener("sendDataToOrderDetail", (event) => {
+    const data = event.detail;
+    console.log("DATA", data);
+  });
 
   useEffect(() => {
     const findProductById = (product_id) => {
