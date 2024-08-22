@@ -179,6 +179,35 @@ export const fetchCancelShippingOrder = async (id) => {
   return await axios.put(`${HOSTNAME}/orders/cancel-shipping/${id}`);
 };
 
+// // eslint-disable-next-line no-undef
+// const SCHEMA_HOSTNAME = process.env.REACT_APP_SCHEMA_HOSTNAME;
+
+export const fetchDeleteNews = async (id) => {
+  return await axios.delete(`${HOSTNAME}/articles/${id}`);
+};
+
+// //fetchUpdateNews
+// export const fetchUpdateNews = async (data, token, id) => {
+//   return await axios.patch(
+//     `${HOSTNAME}/news/update/${id}`,
+//     { ...data },
+//     {
+//       headers: {
+//         Authorization: `Bearer ${token.access_token}`,
+//       },
+//     },
+//   );
+// };
+
+export const fetchNewsByID = async (id) => {
+  const res = await axios.get(`${HOSTNAME}/articles/${id}`);
+  return res.data.data;
+};
+
+export const fetchUploadNews = async (data) => {
+  return await axios.post(`${HOSTNAME}/articles`, { ...data });
+};
+
 // //feedback
 export const fetchAllFeedback = async () => {
   return await axios.get(`${HOSTNAME}/reviews`);
@@ -240,6 +269,15 @@ export const fetchUploadReplyFeedback = async (
       },
     },
   );
+};
+export const fetchAllNews = async () => {
+  try {
+    const res = await axios.get(`${HOSTNAME}/articles`);
+    return res.data.data;
+  } catch (error) {
+    console.error("Error fetching news:", error);
+    throw error;
+  }
 };
 
 //get-category-by-id

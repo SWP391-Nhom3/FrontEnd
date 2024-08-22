@@ -15,6 +15,7 @@ import { usePreOrderContext } from "../../context/PreOrderContext";
 // import { fetchGetFeedbackById } from "../../data/api";
 
 import ProductCard from "../card/Card";
+import { fetchAllNews } from "../../data/api";
 
 const ProductDetail = () => {
   const location = useLocation();
@@ -23,26 +24,19 @@ const ProductDetail = () => {
   const { addPreOrderItem } = usePreOrderContext();
 
   const [reviews, setReviews] = useState([]);
+  const [news, setNews] = useState([]);
+
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [showAllReviews, setShowAllReviews] = useState(false);
   const products = JSON.parse(localStorage.getItem("products"));
   const [relatedProducts, setRelatedProducts] = useState([]);
   useEffect(() => {
     if (product) {
-      // const getFeedback = async () => {
-      //   const data = await fetchGetFeedbackById(product._id);
-      //   setReviews(data.data.result);
-      // };
-      // getFeedback();
-      // const relatedProduct = async () => {
-      //   const relatedItems = products.filter(
-      //     (item) =>
-      //       item.category_id === product.category_id &&
-      //       item._id !== product._id,
-      //   );
-      //   setRelatedProducts(relatedItems);
-      // };
-      // relatedProduct();
+      const getNews = async () => {
+        const data = await fetchAllNews();
+        setNews(data);
+      };
+      getNews();
     }
   }, [product]);
 
@@ -176,7 +170,7 @@ const ProductDetail = () => {
         <hr className="my-6 border-gray-200 md:my-8" />
         {/* Mô tả */}
         <h2 className="mb-4 text-3xl font-semibold">Mô tả sản phẩm</h2>
-        {/* <div className="text-justify text-lg text-gray-500">
+        <div className="text-justify text-lg text-gray-500">
           {showFullDescription
             ? formatDescription(product.description)
             : formatDescription(product.description.slice(0, 100))}
@@ -193,7 +187,7 @@ const ProductDetail = () => {
               )}
             </div>
           </button>
-        </div> */}
+        </div>
 
         {/* feedback */}
         <div className="mt-8">

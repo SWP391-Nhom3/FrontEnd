@@ -8,9 +8,9 @@ const NewsDetail = () => {
   const products = JSON.parse(localStorage.getItem("products")) || [];
 
   const findProductById = (product_id) => {
-    return products.find((product) => product._id === product_id);
+    return products.find((product) => product.id === product_id);
   };
-  const product = findProductById(news.product_id);
+  const product = findProductById(news.product.id);
   if (!news) {
     return <div>No news item selected.</div>;
   }
@@ -31,19 +31,17 @@ const NewsDetail = () => {
       <Breadcrumbs headline="Chi tiết bài viết" />
       <div className="mx-auto max-w-7xl p-4">
         <img
-          src={news.img_url}
-          alt={news.news_name}
+          src={news.imgUrl}
+          alt={news.title}
           className="w-450 h-300 mx-auto mb-4 object-cover"
           style={{ width: "450px", height: "300px" }}
         />
-        <h1 className="mb-2 text-center text-3xl font-bold">
-          {news.news_name}
-        </h1>
+        <h1 className="mb-2 text-center text-3xl font-bold">{news.title}</h1>
         <p className="mb-4 text-center text-sm text-gray-600">
-          {formatDate(news.created_at)}
+          {formatDate(news.createdAt)}
         </p>
         <div
-          dangerouslySetInnerHTML={{ __html: news.description }}
+          dangerouslySetInnerHTML={{ __html: news.content }}
           className="leading-7 text-gray-800"
         />
         <div className="mt-4 text-center">
