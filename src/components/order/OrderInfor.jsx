@@ -6,10 +6,10 @@ const OrderInfor = ({ paymentType, discount, ship, voucherCode }) => {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user")) || null;
   const [formValues, setFormValues] = useState({
-    name: user.firstName + user.lastName,
-    email: user.email,
+    name: user ? `${user.firstName} ${user.lastName}` : "",
+    email: user?.email || "",
     phone: "",
-    address: user.address || "",
+    address: user?.address || "",
   });
 
   const [provinces, setProvinces] = useState([]);
