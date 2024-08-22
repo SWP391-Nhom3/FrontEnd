@@ -347,6 +347,57 @@ export const fetchGetVoucher = async () => {
     throw error;
   }
 };
+export const fetchCreateVoucher = async (voucher) => {
+  try {
+    const response = await axios.post(`${HOSTNAME}/vouchers`, voucher);
+    return response.data.data;
+  } catch (error) {
+    console.error("Error creating voucher:", error);
+    throw error;
+  }
+};
+
+export const fetchDeleteVoucher = async (id) => {
+  try {
+    const response = await axios.delete(`${HOSTNAME}/vouchers/${id}`);
+    return response.data.data;
+  } catch (error) {
+    console.error("Error deleting voucher:", error);
+    throw error;
+  }
+};
+// //update:
+// export const fetchUpdateVoucher = async (voucher, token, id) => {
+//   return await axios.post(
+//     `${SCHEMA_HOSTNAME}/vouchers/update/${id}`,
+//     { ...voucher },
+//     {
+//       headers: {
+//         Authorization: `Bearer ${token.access_token}`,
+//       },
+//     },
+//   );
+// };
+// //delete:
+// export const fetchDeleteVoucher = async (voucherId, token) => {
+//   // eslint-disable-next-line no-useless-catch
+//   try {
+//     const response = await axios.post(
+//       `${SCHEMA_HOSTNAME}/vouchers/delete`,
+//       {
+//         id: voucherId,
+//       },
+//       {
+//         headers: {
+//           Authorization: `Bearer ${token.access_token}`,
+//         },
+//       },
+//     );
+//     return response.data;
+//   } catch (error) {
+//     throw error;
+//   }
+// };
 
 //add report
 export const fetchAddReport = async (report) => {

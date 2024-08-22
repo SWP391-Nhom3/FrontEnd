@@ -119,13 +119,13 @@ export const stafflinks = [
         subLinks: [
           {
             name: "allVoucher",
-            path: "voucher-batch",
-            label: "Tất cả lô mã giảm giá",
+            path: "voucher",
+            label: "Tất cả mã giảm giá",
           },
           {
             name: "addVoucher",
             path: "add-voucher",
-            label: "Thêm lô mã giảm giá",
+            label: "Thêm mã giảm giá",
           },
         ],
       },

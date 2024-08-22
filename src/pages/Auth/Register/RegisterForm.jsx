@@ -32,6 +32,15 @@ const RegisterForm = () => {
       return;
     }
 
+    navigate("/profile", {
+      state: { email },
+    });
+
+    if (password !== confirm_password) {
+      toast.error("Mật khẩu và mật khẩu xác nhận không khớp.");
+      return;
+    }
+
     await fetchRegister({
       email,
       password,

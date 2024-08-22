@@ -1,45 +1,68 @@
 import React, { useEffect, useState } from "react";
-import { Button, Datepicker, Select, TextInput } from "flowbite-react";
-// import { fetchGetVoucherType, fetchUploadVoucher } from "../../data/api";
+import { Button, Select, TextInput } from "flowbite-react";
+import { fetchCreateVoucher, fetchGetVoucher } from "../../data/api";
 import { Card, Col, notification, Row } from "antd";
 import { HStack } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { addMonths } from "date-fns";
 
 const AddVoucher = () => {
   const [voucherTypes, setVoucherTypes] = useState([]);
-  const [memberShip, setMemberShip] = useState(0);
-  const [discount, setDiscount] = useState(0);
+  const [maxUses, setMaxUses] = useState("");
+  const [expiryDate, setExpiryDate] = useState("");
   const [amount, setAmount] = useState(0);
   const [selectedVoucherType, setSelectedVoucherType] = useState("");
   const [isType, SetIsType] = useState(false);
-  const token = JSON.parse(localStorage.getItem("result"));
-
-  const date = new Date();
-  const [dateInput, setDateInput] = useState(date);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Gọi API để lấy dữ liệu category
-    // fetchGetVoucherType().then((res) => {
-    //   console.log(res);
-    //   if (res && res.data.result) {
-    //     setVoucherTypes(res.data.result);
-    //   }
-    // });
+    fetchGetVoucher().then((res) => {
+      if (res && res.length > 0) {
+        const filteredVouchers = res.filter(
+          (voucher) =>
+            voucher.voucherType === "FIXED_AMOUNT" ||
+            voucher.voucherType === "PERCENTAGE",
+        );
+        const voucherTypes = [
+          ...new Set(filteredVouchers.map((voucher) => voucher.voucherType)),
+        ];
+        console.log(voucherTypes);
+        setVoucherTypes(voucherTypes);
+      }
+    });
   }, []);
+
+  const validateExpiryDate = (expiryDate) => {
+    const currentDate = new Date();
+    const oneMonthLater = addMonths(currentDate, 1);
+    oneMonthLater.setHours(0, 0, 0, 0); // Set time to midnight for comparison
+
+    const expiryDateObject = new Date(expiryDate);
+    expiryDateObject.setHours(0, 0, 0, 0); // Ensure expiryDate has the same format
+
+    // Return true if expiryDate is after one month later
+    return expiryDateObject > oneMonthLater;
+  };
 
   const handleChangeSelectedVoucherType = (event) => {
     setSelectedVoucherType(event.target.value);
     SetIsType(event.target.value === "0");
   };
 
-  const handleChangeMemberShip = (event) => {
-    setMemberShip(event.target.value);
+  const handleChangeMaxUses = (event) => {
+    setMaxUses(event.target.value);
   };
 
-  const handleChangeDiscount = (event) => {
-    setDiscount(event.target.value);
+  const handleChangeExpiryDate = (event) => {
+    const expiryDate = event.target.value;
+    console.log("Selected expiry date:", expiryDate);
+
+    if (!validateExpiryDate(expiryDate)) {
+      alert("Ngày hết hạn phải lớn hơn ngày hiện tại ít nhất 1 tháng.");
+    } else {
+      setExpiryDate(expiryDate);
+    }
   };
 
   const handleChangeAmount = (event) => {
@@ -48,31 +71,44 @@ const AddVoucher = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const date_input = new Date(dateInput);
-    date_input.setDate(date_input.getDate() + 1);
+    let adjustedAmount = Number(amount);
+    if (selectedVoucherType === "PERCENTAGE" && adjustedAmount > 100) {
+      notification.error({
+        message: "Giá trị tối đa cho loại voucher PERCENTAGE là 100.",
+        placement: "top",
+      });
+      return;
+    }
+    if (!validateExpiryDate(expiryDate)) {
+      notification.error({
+        message: "Ngày hết hạn phải sau ngày hiện tại ít nhất 1 tháng.",
+        placement: "top",
+      });
+      return;
+    }
+    const expiryDateISO = new Date(expiryDate).toISOString();
     const voucher = {
-      voucher_type: Number(selectedVoucherType),
-      membership: Number(memberShip),
-      expire_date: date_input.toISOString(),
-      discount: Number(discount),
-      amount: Number(amount),
+      type: selectedVoucherType,
+      value: adjustedAmount,
+      maxUses: Number(maxUses),
+      expiryDate: expiryDateISO,
     };
 
-    // await fetchUploadVoucher(voucher, token)
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     notification.success({
-    //       message: "Thêm voucher thành công",
-    //       placement: "top",
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     notification.error({
-    //       message: "Thêm voucher thất bại",
-    //       placement: "top",
-    //     });
-    //   });
+    await fetchCreateVoucher(voucher)
+      .then((res) => {
+        console.log(res);
+        notification.success({
+          message: "Thêm voucher thành công",
+          placement: "top",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        notification.error({
+          message: "Thêm voucher thất bại",
+          placement: "top",
+        });
+      });
   };
 
   return (
@@ -104,7 +140,7 @@ const AddVoucher = () => {
                   fontWeight: "bold",
                 }}
               >
-                Chọn voucher
+                Chọn loại voucher
               </label>
             </Col>
             <Col span={18}>
@@ -124,8 +160,8 @@ const AddVoucher = () => {
                   Chọn Loại Voucher
                 </option>
                 {voucherTypes.map((option) => (
-                  <option key={option.id} value={option.id}>
-                    {option.name}
+                  <option key={option} value={option}>
+                    {option}
                   </option>
                 ))}
               </Select>
@@ -139,7 +175,37 @@ const AddVoucher = () => {
           >
             <Col span={4}>
               <label
-                htmlFor="amount"
+                htmlFor="value"
+                style={{
+                  fontSize: "17px",
+                  color: "#1F5070",
+                  fontWeight: "bold",
+                }}
+              >
+                Khuyến mãi
+              </label>
+            </Col>
+            <Col span={18}>
+              <TextInput
+                id="value"
+                type="number"
+                min={0}
+                onChange={handleChangeAmount}
+                className="w-full"
+                required
+              />
+            </Col>
+          </Row>
+
+          {/* Max Uses */}
+          <Row
+            justify="space-around"
+            align="middle"
+            style={{ marginBottom: "40px", marginTop: "20px" }}
+          >
+            <Col span={4}>
+              <label
+                htmlFor="maxUses"
                 style={{
                   fontSize: "17px",
                   color: "#1F5070",
@@ -151,26 +217,17 @@ const AddVoucher = () => {
             </Col>
             <Col span={18}>
               <TextInput
-                id="amount"
+                id="maxUses"
                 type="number"
                 min={0}
-                value={amount}
-                name="amount"
-                placeholder="Số lượng..."
-                defaultValue={0}
-                onChange={handleChangeAmount}
+                onChange={handleChangeMaxUses}
                 className="w-full"
-                style={{
-                  height: "50px",
-                  fontSize: "15px",
-                  border: "1px solid #6b7280",
-                  borderRadius: "0.375rem",
-                }}
                 required
               />
             </Col>
           </Row>
 
+          {/* Expiry Date */}
           <Row
             justify="space-around"
             align="middle"
@@ -178,106 +235,22 @@ const AddVoucher = () => {
           >
             <Col span={4}>
               <label
-                htmlFor="membership"
+                htmlFor="expiryDate"
                 style={{
                   fontSize: "17px",
                   color: "#1F5070",
                   fontWeight: "bold",
                 }}
               >
-                Điểm membership
+                Ngày hết hạn
               </label>
             </Col>
             <Col span={18}>
-              <TextInput
-                id="memberShip"
-                type="number"
-                name="memberShip"
-                placeholder="MemberShip..."
-                min={0}
-                value={memberShip}
-                onChange={handleChangeMemberShip}
-                readOnly={isType}
+              <input
+                id="expiryDate"
+                type="date"
+                onChange={handleChangeExpiryDate}
                 className="w-full"
-                style={{
-                  height: "50px",
-                  fontSize: "15px",
-                  border: "1px solid #6b7280",
-                  borderRadius: "0.375rem",
-                }}
-                required
-              />
-            </Col>
-          </Row>
-
-          <Row
-            justify="space-around"
-            align="middle"
-            style={{ marginBottom: "40px", marginTop: "20px" }}
-          >
-            <Col span={4}>
-              <label
-                htmlFor="discount"
-                style={{
-                  fontSize: "17px",
-                  color: "#1F5070",
-                  fontWeight: "bold",
-                }}
-              >
-                Mức giảm giá (VND)
-              </label>
-            </Col>
-            <Col span={18}>
-              <TextInput
-                id="discount"
-                type="number"
-                min={0}
-                name="discount"
-                value={discount}
-                placeholder="Mức giảm giá..."
-                defaultValue={0}
-                onChange={handleChangeDiscount}
-                className="w-full"
-                style={{
-                  height: "50px",
-                  fontSize: "15px",
-                  border: "1px solid #6b7280",
-                  borderRadius: "0.375rem",
-                }}
-                required
-              />
-            </Col>
-          </Row>
-
-          <Row
-            justify="space-around"
-            align="middle"
-            style={{ marginBottom: "40px", marginTop: "20px" }}
-          >
-            <Col span={4}>
-              <label
-                htmlFor="product"
-                style={{
-                  fontSize: "17px",
-                  color: "#1F5070",
-                  fontWeight: "bold",
-                }}
-              >
-                Sản phẩm
-              </label>
-            </Col>
-            <Col span={18}>
-              <Datepicker
-                language="vi"
-                defaultDate={dateInput}
-                onSelectedDateChanged={(date) => setDateInput(date)}
-                className="w-full"
-                style={{
-                  height: "50px",
-                  fontSize: "15px",
-                  border: "1px solid #6b7280",
-                  borderRadius: "0.375rem",
-                }}
                 required
               />
             </Col>
@@ -287,7 +260,7 @@ const AddVoucher = () => {
             <HStack spacing={10}>
               <Button
                 type="default"
-                onClick={() => navigate("/voucher-batch")}
+                onClick={() => navigate("/voucher")}
                 style={{
                   borderColor: "#fb7185",
                   color: "#fb7185",
