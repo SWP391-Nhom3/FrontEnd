@@ -3,6 +3,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { fetchProducts } from "../../data/api";
 import { Button } from "flowbite-react";
 import { Card, Col, Divider, Row, Steps, Typography } from "antd";
+import {
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  FieldTimeOutlined,
+  SmileOutlined,
+  CalendarOutlined,
+  ExclamationCircleOutlined,
+} from "@ant-design/icons";
 import Loading from "../../components/Loading";
 
 const OrderDetail = () => {
@@ -73,57 +81,286 @@ const OrderDetail = () => {
     return date.toISOString();
   };
 
-  const { Text } = Typography;
+  console.log(
+    order.orderStatus.name === "Chờ xác nhận" &&
+      order.preOrderDetail.length > 0,
+  );
 
+  const { Text } = Typography;
   return (
     <div style={{ height: "120vh" }}>
-      {/* <div
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                }}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Row justify="center" style={{ width: "100%", marginTop: "50px" }}>
+          {/*start tracking order*/}
+          <Col span={22} style={{ display: "flex", justifyContent: "center" }}>
+            <Card
+              style={{ width: "100%" }}
+              title={<h2 className="text-2xl font-bold">Theo dõi đơn hàng</h2>}
             >
-                <Row justify="center" style={{ width: "100%", marginTop: "50px" }}>
-                    {/*start tracking order*/}
-      {/* <Col span={22} style={{ display: "flex", justifyContent: "center" }}>
-                        <Card
-                            style={{ width: "100%" }}
-                            title={<h2 className="text-2xl font-bold">Theo dõi đơn hàng</h2>}
-                        >
-                            <div style={{ display: "flex", justifyContent: "center" }}>
-                                <Steps
-                                    items={[
-                                        {
-                                            title: "Chờ xác nhận",
-                                            status: "process",
-                                            description: formatDate(order.requiredDate),
-                                            icon: <FieldTimeOutlined />,
-                                        },
-                                        {
-                                            title: "Đã xác nhận",
-                                            status: "wait",
-                                            icon: <CheckCircleOutlined />,
-                                        },
-                                        {
-                                            title: "Đã giao cho ĐVVC",
-                                            status: "wait",
-                                            icon: <TruckOutlined />,
-                                        },
-                                        {
-                                            title: "Đã hoàn thành",
-                                            status: "wait",
-                                            icon: <SmileOutlined />,
-                                        },
-                                    ]}
-                                />
-                            </div>
-                        </Card>
-                    </Col> */}
-      {/*end tracking order*/}
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                {order.preOrderDetail.length > 0 ? (
+                  <>
+                    {" "}
+                    {order.orderStatus.name === "Đang giao hàng" && (
+                      <Steps
+                        items={[
+                          {
+                            title: "Đặt Trước",
+                            status: "finish",
+                            description: formatDate(order.createdAt),
+                            icon: <CalendarOutlined />,
+                          },
+                          {
+                            title: "Chờ xác nhận",
+                            status: "finish",
+                            description: formatDate(order.requiredDate),
+                            icon: <FieldTimeOutlined />,
+                          },
+                          {
+                            title: "Đã xác nhận",
+                            status: "process",
+                            description: formatDate(order.acceptedDate),
+                            icon: <CheckCircleOutlined />,
+                          },
+                          {
+                            title: "Đã hoàn thành",
+                            status: "wait",
+                            icon: <SmileOutlined />,
+                          },
+                        ]}
+                      />
+                    )}
+                    {order.orderStatus.name === "Đã hủy" && (
+                      <Steps
+                        items={[
+                          {
+                            title: "Đặt Trước",
+                            status: "finish",
+                            description: formatDate(order.createdAt),
+                            icon: <CalendarOutlined />,
+                          },
+                          {
+                            title: "Chờ xác nhận",
+                            status: "finish",
+                            description: formatDate(order.requiredDate),
+                            icon: <FieldTimeOutlined />,
+                          },
+                          {
+                            title: "Đã hủy",
+                            status: "error",
+                            description: formatDate(order.acceptedDate),
+                            icon: <CloseCircleOutlined />,
+                          },
+                          {
+                            title: "Đã hoàn thành",
+                            status: "wait",
+                            icon: <SmileOutlined />,
+                          },
+                        ]}
+                      />
+                    )}
+                    {order.orderStatus.name === "Hoàn thành" && (
+                      <Steps
+                        items={[
+                          {
+                            title: "Đặt Trước",
+                            status: "finish",
+                            description: formatDate(order.createdAt),
+                            icon: <CalendarOutlined />,
+                          },
+                          {
+                            title: "Chờ xác nhận",
+                            status: "finish",
+                            description: formatDate(order.requiredDate),
+                            icon: <FieldTimeOutlined />,
+                          },
+                          {
+                            title: "Đã xác nhận",
+                            status: "finish",
+                            description: formatDate(order.acceptedDate),
+                            icon: <CheckCircleOutlined />,
+                          },
+                          {
+                            title: "Đã hoàn thành",
+                            status: "finish",
+                            description: formatDate(order.shippedDate),
+                            icon: <SmileOutlined />,
+                          },
+                        ]}
+                      />
+                    )}
+                    {order.orderStatus.name ===
+                      "Giao hàng không thành công" && (
+                      <Steps
+                        items={[
+                          {
+                            title: "Đặt Trước",
+                            status: "finish",
+                            description: formatDate(order.createdAt),
+                            icon: <CalendarOutlined />,
+                          },
+                          {
+                            title: "Chờ xác nhận",
+                            status: "finish",
+                            description: formatDate(order.requiredDate),
+                            icon: <FieldTimeOutlined />,
+                          },
+                          {
+                            title: "Đã xác nhận",
+                            status: "finish",
+                            description: formatDate(order.acceptedDate),
+                            icon: <CheckCircleOutlined />,
+                          },
+                          {
+                            title: "Giao hàng thất bại",
+                            status: "error",
+                            icon: <ExclamationCircleOutlined />,
+                          },
+                        ]}
+                      />
+                    )}
+                  </>
+                ) : (
+                  <>
+                    {order.orderStatus.name === "Hoàn thành" && (
+                      <Steps
+                        items={[
+                          {
+                            title: "Chờ xác nhận",
+                            status: "finish",
+                            description: formatDate(order.requiredDate),
+                            icon: <FieldTimeOutlined />,
+                          },
+                          {
+                            title: "Đã xác nhận",
+                            status: "finish",
+                            description: formatDate(order.acceptedDate),
+                            icon: <CheckCircleOutlined />,
+                          },
+                          {
+                            title: "Đã hoàn thành",
+                            status: "finish",
+                            description: formatDate(order.shippedDate),
+                            icon: <SmileOutlined />,
+                          },
+                        ]}
+                      />
+                    )}
 
-      {/* </Row>
-            </div>  */}
+                    {order.orderStatus.name ===
+                      "Giao hàng không thành công" && (
+                      <Steps
+                        items={[
+                          {
+                            title: "Chờ xác nhận",
+                            status: "finish",
+                            description: formatDate(order.requiredDate),
+                            icon: <FieldTimeOutlined />,
+                          },
+                          {
+                            title: "Đã xác nhận",
+                            status: "finish",
+                            description: formatDate(order.acceptedDate),
+                            icon: <CheckCircleOutlined />,
+                          },
+                          {
+                            title: "Giao hàng thất bại",
+                            status: "error",
+                            icon: <ExclamationCircleOutlined />,
+                          },
+                        ]}
+                      />
+                    )}
+
+                    {order.orderStatus.name === "Đã hủy" && (
+                      <Steps
+                        items={[
+                          {
+                            title: "Chờ xác nhận",
+                            status: "finish",
+                            description: formatDate(order.requiredDate),
+                            icon: <FieldTimeOutlined />,
+                          },
+                          {
+                            title: "Đã hủy",
+                            status: "error",
+                            description: formatDate(order.acceptedDate),
+                            icon: <CloseCircleOutlined />,
+                          },
+                          {
+                            title: "Đã hoàn thành",
+                            status: "wait",
+                            icon: <SmileOutlined />,
+                          },
+                        ]}
+                      />
+                    )}
+
+                    {order.orderStatus.name === "Đang giao hàng" && (
+                      <Steps
+                        items={[
+                          {
+                            title: "Chờ xác nhận",
+                            status: "finish",
+                            description: formatDate(order.requiredDate),
+                            icon: <FieldTimeOutlined />,
+                          },
+                          {
+                            title: "Đã xác nhận",
+                            status: "process",
+                            description: formatDate(order.acceptedDate),
+                            icon: <CheckCircleOutlined />,
+                          },
+                          {
+                            title: "Đã hoàn thành",
+                            status: "wait",
+                            icon: <SmileOutlined />,
+                          },
+                        ]}
+                      />
+                    )}
+
+                    {order.orderStatus.name === "Đặt trước" && (
+                      <Steps
+                        items={[
+                          {
+                            title: "Đặt Trước",
+                            status: "finish",
+                            description: formatDate(order.createdAt),
+                            icon: <CalendarOutlined />,
+                          },
+                          {
+                            title: "Chờ xác nhận",
+                            status: "wait",
+                            icon: <FieldTimeOutlined />,
+                          },
+                          {
+                            title: "Đã xác nhận",
+                            status: "wait",
+                            icon: <CheckCircleOutlined />,
+                          },
+                          {
+                            title: "Đã hoàn thành",
+                            status: "wait",
+                            icon: <SmileOutlined />,
+                          },
+                        ]}
+                      />
+                    )}
+                  </>
+                )}
+              </div>
+            </Card>
+          </Col>
+          {/*end tracking order*/}
+        </Row>
+      </div>
       <div style={{ display: "flex", flexDirection: "column" }}>
         <Row justify="space-between" style={{ flexGrow: 1 }}>
           <Col span={15}>

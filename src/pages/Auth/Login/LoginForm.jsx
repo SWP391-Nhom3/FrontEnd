@@ -98,7 +98,8 @@ const LoginForm = () => {
       } else {
         clearCart();
         clearPreOrder();
-        navigate("/");
+        navigate("/Dashboard");
+        window.location.reload();
       }
     } catch (error) {
       console.error(error);

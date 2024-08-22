@@ -7,8 +7,7 @@ import Loading from "../../components/Loading";
 import {
   CheckCircleOutlined,
   FieldTimeOutlined,
-  SmileOutlined,
-  TruckOutlined,
+  ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import {
   fetchCancelOrder,
@@ -111,56 +110,86 @@ const ShippingOrderDetail = () => {
   };
 
   const { Text } = Typography;
-
   return (
     <div style={{ height: "120vh" }}>
-      {/* <div
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                }}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Row justify="center" style={{ width: "100%", marginTop: "50px" }}>
+          {/*start tracking order*/}
+          <Col span={22} style={{ display: "flex", justifyContent: "center" }}>
+            <Card
+              style={{ width: "100%" }}
+              title={<h2 className="text-2xl font-bold">Theo dõi đơn hàng</h2>}
             >
-                <Row justify="center" style={{ width: "100%", marginTop: "50px" }}>
-                    {/*start tracking order*/}
-      {/* <Col span={22} style={{ display: "flex", justifyContent: "center" }}>
-                        <Card
-                            style={{ width: "100%" }}
-                            title={<h2 className="text-2xl font-bold">Theo dõi đơn hàng</h2>}
-                        >
-                            <div style={{ display: "flex", justifyContent: "center" }}>
-                                <Steps
-                                    items={[
-                                        {
-                                            title: "Chờ xác nhận",
-                                            status: "process",
-                                            description: formatDate(order.requiredDate),
-                                            icon: <FieldTimeOutlined />,
-                                        },
-                                        {
-                                            title: "Đã xác nhận",
-                                            status: "wait",
-                                            icon: <CheckCircleOutlined />,
-                                        },
-                                        {
-                                            title: "Đã giao cho ĐVVC",
-                                            status: "wait",
-                                            icon: <TruckOutlined />,
-                                        },
-                                        {
-                                            title: "Đã hoàn thành",
-                                            status: "wait",
-                                            icon: <SmileOutlined />,
-                                        },
-                                    ]}
-                                />
-                            </div>
-                        </Card>
-                    </Col> */}
-      {/*end tracking order*/}
-
-      {/* </Row>
-            </div>  */}
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                {order.preOrderDetail.length > 0 ? (
+                  <>
+                    <Steps
+                      items={[
+                        {
+                          title: "Đặt Trước",
+                          status: "finish",
+                          description: formatDate(order.createdAt),
+                          icon: <CalendarOutlined />,
+                        },
+                        {
+                          title: "Chờ xác nhận",
+                          status: "process",
+                          description: formatDate(order.requiredDate),
+                          icon: <FieldTimeOutlined />,
+                        },
+                        {
+                          title: "Đang giao hàng",
+                          status: "process",
+                          description: formatDate(order.acceptedDate),
+                          icon: <CheckCircleOutlined />,
+                        },
+                        {
+                          title: "Hoàn thành",
+                          status: "process",
+                          description: formatDate(order.shippedDate),
+                          icon: <ExclamationCircleOutlined />,
+                        },
+                      ]}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Steps
+                      items={[
+                        {
+                          title: "Chờ xác nhận",
+                          status: "process",
+                          description: formatDate(order.requiredDate),
+                          icon: <FieldTimeOutlined />,
+                        },
+                        {
+                          title: "Đang giao hàng",
+                          status: "process",
+                          description: formatDate(order.acceptedDate),
+                          icon: <CheckCircleOutlined />,
+                        },
+                        {
+                          title: "Hoàn thành",
+                          status: "process",
+                          description: formatDate(order.shippedDate),
+                          icon: <ExclamationCircleOutlined />,
+                        },
+                      ]}
+                    />
+                  </>
+                )}
+              </div>
+            </Card>
+          </Col>
+          {/*end tracking order*/}
+        </Row>
+      </div>
       <div style={{ display: "flex", flexDirection: "column" }}>
         <Row justify="space-between" style={{ flexGrow: 1 }}>
           <Col span={15}>

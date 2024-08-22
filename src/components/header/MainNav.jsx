@@ -37,11 +37,11 @@ export function MainNav() {
             Sản Phẩm Bán Chạy
           </Link>
         </Navbar.Link>
-        <Navbar.Link className="text-lg">
+        {/* <Navbar.Link className="text-lg">
           <Link to="/order-tracking" onClick={() => window.scrollTo(0, 0)}>
             Theo Dõi Đơn Hàng
           </Link>
-        </Navbar.Link>
+        </Navbar.Link> */}
         <Navbar.Link className="text-lg">
           <Link to="/news" onClick={() => window.scrollTo(0, 0)}>
             Tin Tức
