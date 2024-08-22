@@ -166,16 +166,20 @@ const App = () => {
                   <Route path="/all-blog" element={<AllNews />} />
                   <Route path="/add-news" element={<AddNews />} />
                   <Route path="/edit-news" element={<EditNews />} />
-                  <Route path="/processing-report" element={<ProcessingReport />} />
+                  <Route
+                    path="/processing-report"
+                    element={<ProcessingReport />}
+                  />
                   <Route path="/complete-report" element={<CompleteReport />} />
                   <Route path="/voucher-report" element={<VoucherReport />} />
                   <Route path="/order-report" element={<OrderReport />} />
                   <Route path="/refund-report" element={<RefundReport />} />
                   <Route path="/cancel-report" element={<CancelReport />} />
-                  <Route path="/processing-report-detail" element={<ProcessingReportDetail />} />
+                  <Route
+                    path="/processing-report-detail"
+                    element={<ProcessingReportDetail />}
+                  />
                   <Route path="/report-detail" element={<ReportDetail />} />
-
-
                 </Routes>
               </div>
             </div>

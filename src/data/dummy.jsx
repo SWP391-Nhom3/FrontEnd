@@ -21,7 +21,14 @@ import {
   BsXCircle,
 } from "react-icons/bs";
 import { RiPriceTag3Line } from "react-icons/ri";
-import { MdOutlineCategory, MdOutlineReport, MdOutlineReportProblem, MdOutlineSupervisorAccount, MdReport, MdReportGmailerrorred } from "react-icons/md";
+import {
+  MdOutlineCategory,
+  MdOutlineReport,
+  MdOutlineReportProblem,
+  MdOutlineSupervisorAccount,
+  MdReport,
+  MdReportGmailerrorred,
+} from "react-icons/md";
 import { HiOutlineRefresh } from "react-icons/hi";
 import { TiTick } from "react-icons/ti";
 import { GrLocation } from "react-icons/gr";
@@ -133,15 +140,16 @@ export const stafflinks = [
         type: "sub",
         // path: 'brands',
         subLinks: [
-          { name: "",
+          {
+            name: "",
             path: "processing-report",
-            label: "Tất cả đơn chưa giải quyết", 
+            label: "Tất cả đơn chưa giải quyết",
           },
         ],
       },
       {
         name: "Đã giải quyết",
-        icon: <MdOutlineReport  />,
+        icon: <MdOutlineReport />,
         type: "sub",
         // path: 'categories',
         subLinks: [
@@ -167,12 +175,11 @@ export const stafflinks = [
           },
           {
             name: "",
-            path: "cancel-report", 
+            path: "cancel-report",
             label: "Không giải quyết",
           },
         ],
       },
-
     ],
   },
   {

@@ -11,7 +11,6 @@ const ProductStock = ({ selectedOption }) => {
     const getProducts = async () => {
       try {
         const data = await fetchProductBatches();
-        console.log("Product data:", data.data.data);
         setProducts(data.data.data);
         setLoading(false);
       } catch (error) {

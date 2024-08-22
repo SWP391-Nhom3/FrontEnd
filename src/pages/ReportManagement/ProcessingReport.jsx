@@ -14,11 +14,9 @@ const ProcessingReport = () => {
   const [pageSize, setPageSize] = useState(7);
 
   useEffect(() => {
-    fetchGetReportByStatus("PENDING")
-    .then((res) => {
-        console.log(res.data.data);
-        setReport(res.data.data);
-    })
+    fetchGetReportByStatus("PENDING").then((res) => {
+      setReport(res.data.data);
+    });
     setLoading(false);
   }, []);
 
@@ -50,7 +48,7 @@ const ProcessingReport = () => {
             pagination={{
               current: currentPage,
               pageSize: pageSize,
-              total:report.length,
+              total: report.length,
               onChange: (page, pageSize) => {
                 setCurrentPage(page);
                 setPageSize(pageSize);
@@ -58,7 +56,12 @@ const ProcessingReport = () => {
             }}
             bordered
           >
-            <Column title="Mã Đơn Hàng" dataIndex={"order.id"} key="id" render={(text, record) => record.order.id} />
+            <Column
+              title="Mã Đơn Hàng"
+              dataIndex={"order.id"}
+              key="id"
+              render={(text, record) => record.order.id}
+            />
             <Column
               title="Ngày tạo đơn"
               dataIndex={"createdAt"}
@@ -69,11 +72,7 @@ const ProcessingReport = () => {
               }
               key="required_date"
             />
-            <Column
-              title="Lý do khiếu nại"
-              dataIndex={"reason"}
-              key="reason"
-            />
+            <Column title="Lý do khiếu nại" dataIndex={"reason"} key="reason" />
             <Column
               title="Trạng Thái"
               key="status"

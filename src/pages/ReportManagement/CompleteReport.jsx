@@ -4,7 +4,11 @@ import { Link } from "react-router-dom";
 import { Card } from "antd";
 import { Table, Tag } from "antd";
 import Column from "antd/es/table/Column";
-import { CheckCircleOutlined, SmileFilled, SyncOutlined } from "@ant-design/icons";
+import {
+  CheckCircleOutlined,
+  SmileFilled,
+  SyncOutlined,
+} from "@ant-design/icons";
 import Loading from "../../components/Loading";
 import { fetchGetReportByStatus, fetchOrders } from "../../data/api";
 const CompleteReport = () => {
@@ -14,11 +18,9 @@ const CompleteReport = () => {
   const [pageSize, setPageSize] = useState(7);
 
   useEffect(() => {
-    fetchGetReportByStatus("COMPLETED")
-    .then((res) => {
-        console.log(res.data.data);
-        setReport(res.data.data);
-    })
+    fetchGetReportByStatus("COMPLETED").then((res) => {
+      setReport(res.data.data);
+    });
     setLoading(false);
   }, []);
 
@@ -50,7 +52,7 @@ const CompleteReport = () => {
             pagination={{
               current: currentPage,
               pageSize: pageSize,
-              total:report.length,
+              total: report.length,
               onChange: (page, pageSize) => {
                 setCurrentPage(page);
                 setPageSize(pageSize);
@@ -58,7 +60,12 @@ const CompleteReport = () => {
             }}
             bordered
           >
-            <Column title="Mã Đơn Hàng" dataIndex={"order.id"} key="id" render={(text, record) => record.order.id} />
+            <Column
+              title="Mã Đơn Hàng"
+              dataIndex={"order.id"}
+              key="id"
+              render={(text, record) => record.order.id}
+            />
             <Column
               title="Ngày tạo đơn"
               dataIndex={"createdAt"}
@@ -69,11 +76,7 @@ const CompleteReport = () => {
               }
               key="required_date"
             />
-            <Column
-              title="Lý do khiếu nại"
-              dataIndex={"reason"}
-              key="reason"
-            />
+            <Column title="Lý do khiếu nại" dataIndex={"reason"} key="reason" />
             <Column
               title="Trạng Thái"
               key="status"

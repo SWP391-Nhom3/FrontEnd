@@ -84,7 +84,6 @@ const OrderDetailCustomer = () => {
 
   useEffect(() => {
     fetchCheckReport(report.orderId, report.customerId).then((res) => {
-      console.log(res.data.data);
       if (res.data.data === undefined) {
         setIsReported(false);
       } else setIsReported(true);
@@ -157,8 +156,6 @@ const OrderDetailCustomer = () => {
     const { name, value } = e.target;
     setReport({ ...report, [name]: value });
   };
-
-  console.log("report ne:", report);
 
   const handleRatingChange = (rating) => {
     setFeedback({ ...feedback, rating });

@@ -37,7 +37,6 @@ const RegisterForm = () => {
       password,
     })
       .then((res) => {
-        console.log(res);
         localStorage.setItem("result", JSON.stringify(res.data.data));
         localStorage.setItem("accessToken", res.data.data.accessToken);
         localStorage.setItem("user", JSON.stringify(res.data.data.user));

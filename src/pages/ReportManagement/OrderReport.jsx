@@ -4,9 +4,17 @@ import { Link } from "react-router-dom";
 import { Card } from "antd";
 import { Table, Tag } from "antd";
 import Column from "antd/es/table/Column";
-import { CheckCircleOutlined, SmileFilled, SyncOutlined } from "@ant-design/icons";
+import {
+  CheckCircleOutlined,
+  SmileFilled,
+  SyncOutlined,
+} from "@ant-design/icons";
 import Loading from "../../components/Loading";
-import { fetchGetReportByActionType, fetchGetReportByStatus, fetchOrders } from "../../data/api";
+import {
+  fetchGetReportByActionType,
+  fetchGetReportByStatus,
+  fetchOrders,
+} from "../../data/api";
 const OrderReport = () => {
   const [loading, setLoading] = useState(true);
   const [report, setReport] = useState([]);
@@ -14,11 +22,9 @@ const OrderReport = () => {
   const [pageSize, setPageSize] = useState(7);
 
   useEffect(() => {
-    fetchGetReportByActionType("CREATE_ORDER")
-    .then((res) => {
-        console.log(res.data.data);
-        setReport(res.data.data);
-    })
+    fetchGetReportByActionType("CREATE_ORDER").then((res) => {
+      setReport(res.data.data);
+    });
     setLoading(false);
   }, []);
 
@@ -50,7 +56,7 @@ const OrderReport = () => {
             pagination={{
               current: currentPage,
               pageSize: pageSize,
-              total:report.length,
+              total: report.length,
               onChange: (page, pageSize) => {
                 setCurrentPage(page);
                 setPageSize(pageSize);
@@ -58,7 +64,12 @@ const OrderReport = () => {
             }}
             bordered
           >
-            <Column title="Mã Đơn Hàng" dataIndex={"order.id"} key="id" render={(text, record) => record.order.id} />
+            <Column
+              title="Mã Đơn Hàng"
+              dataIndex={"order.id"}
+              key="id"
+              render={(text, record) => record.order.id}
+            />
             <Column
               title="Ngày tạo đơn"
               dataIndex={"createdAt"}
@@ -69,11 +80,7 @@ const OrderReport = () => {
               }
               key="required_date"
             />
-            <Column
-              title="Lý do khiếu nại"
-              dataIndex={"reason"}
-              key="reason"
-            />
+            <Column title="Lý do khiếu nại" dataIndex={"reason"} key="reason" />
             <Column
               title="Trạng Thái"
               key="status"

@@ -69,7 +69,6 @@ const AwaitOrderDetail = () => {
 
   const handleShipperChange = (value) => {
     setSelectedShipperID(value);
-    console.log(selectedShipperID);
   };
 
   if (loading) {
@@ -113,7 +112,6 @@ const AwaitOrderDetail = () => {
     await fetchConfirmOrder(order_id, shipper_id)
       .then((res) => {
         sessionStorage.setItem("orderConfirmed", "true");
-        console.log(res.data);
         window.location.reload();
       })
       .catch(() => {
@@ -139,8 +137,6 @@ const AwaitOrderDetail = () => {
     // Điều hướng đến trang khác nếu cần thiết
     navigate("/await-order");
   }
-
-  console.log("shipper ne", shipper);
 
   const { Text } = Typography;
 

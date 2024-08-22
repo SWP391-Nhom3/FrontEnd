@@ -61,10 +61,9 @@ const Reports = () => {
 
   useEffect(() => {
     fetchGetReportByCustomer(user.id).then((data) => {
-      console.log(data.data.data);
       setReports(data.data.data);
     });
-  });
+  }, []);
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
