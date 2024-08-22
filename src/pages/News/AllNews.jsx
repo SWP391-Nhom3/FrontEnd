@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Col, Modal, notification, Pagination, Row } from "antd";
 import { Card } from "primereact/card";
 import { Button } from "flowbite-react";
-// import { fetchAllNews, fetchDeleteNews } from '../../data/api'; // Import hàm deleteNews
+import { fetchAllNews, fetchDeleteNews } from "../../data/api";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../components/Loading";
 
@@ -28,21 +28,20 @@ const AllNews = () => {
     </div>
   );
 
-  //!! FETCH ALL NEWS !!
-  // useEffect(() => {
-  //     const getNews = async () => {
-  //         try {
-  //             const news = await fetchAllNews();
-  //             setNews(news);
-  //             setLoading(false);
-  //         } catch (error) {
-  //             console.error("Error fetching products:", error);
-  //             setLoading(false);
-  //         }
-  //     };
+  useEffect(() => {
+    const getNews = async () => {
+      try {
+        const news = await fetchAllNews();
+        setNews(news);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        setLoading(false);
+      }
+    };
 
-  //     getNews();
-  // }, []);
+    getNews();
+  }, []);
 
   if (loading) {
     <Loading />;
@@ -54,7 +53,7 @@ const AllNews = () => {
       content: "Hành động này không thể hoàn tác.",
       onOk: async () => {
         try {
-          // handleDelete(Id);
+          handleDelete(Id);
           notification.success({
             message: "Thành công",
             description: `Xóa thành công!`,
@@ -90,17 +89,15 @@ const AllNews = () => {
     });
   };
 
-  // !! FETCH DELETE NEWS !!
-  // const handleDelete = async (id) => {
-  //     try {
-  //         const token = JSON.parse(localStorage.getItem("result"));
-  //         await fetchDeleteNews(id, token);
-  //         const updatedNews = news.filter(n => n._id !== id);
-  //         setNews(updatedNews);
-  //     } catch (error) {
-  //         console.error("Error deleting news:", error);
-  //     }
-  // };
+  const handleDelete = async (id) => {
+    try {
+      await fetchDeleteNews(id);
+      const updatedNews = news.filter((n) => n.id !== id);
+      setNews(updatedNews);
+    } catch (error) {
+      console.error("Error deleting news:", error);
+    }
+  };
 
   const footer = (id) => (
     <div
@@ -154,12 +151,12 @@ const AllNews = () => {
       >
         <Row gutter={[24, 24]} justify="center">
           {currentNews.map((n) => (
-            <Col span={8} key={n._id} style={{ marginBottom: "30px" }}>
+            <Col span={8} key={n.id} style={{ marginBottom: "30px" }}>
               <Card
-                title={<h5 className="truncate">{n.news_name}</h5>}
-                subTitle={<span>{formatDate(n.created_at)}</span>}
-                header={header(n.img_url)}
-                footer={footer(n._id)}
+                title={<h5 className="truncate">{n.title}</h5>}
+                subTitle={<span>{formatDate(n.createdAt)}</span>}
+                header={header(n.imgUrl)}
+                footer={footer(n.id)}
               >
                 <div className="card-content">
                   <div
@@ -170,7 +167,7 @@ const AllNews = () => {
                       WebkitLineClamp: 1,
                       overflow: "hidden",
                     }}
-                    dangerouslySetInnerHTML={{ __html: n.description }}
+                    dangerouslySetInnerHTML={{ __html: n.content }}
                   />
                 </div>
               </Card>

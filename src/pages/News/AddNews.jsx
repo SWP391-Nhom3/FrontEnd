@@ -3,11 +3,7 @@ import { Button, TextInput } from "flowbite-react";
 import { imageDb } from "../../data/firebase.config";
 import { getDownloadURL, listAll, ref, uploadBytes } from "firebase/storage";
 import { v4 } from "uuid";
-// import {
-//   fetchProducts,
-//   fetchUpdateNews,
-//   fetchUploadNews,
-// } from "../../data/api";
+import { fetchProducts, fetchUploadNews } from "../../data/api";
 
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import { Col, Input, notification, Row, Select, Upload } from "antd";
@@ -49,30 +45,25 @@ import {
 import "./ckeditor.css";
 
 const AddNews = () => {
-  const [news_name, setNews_name] = useState("");
-
   const [products, setProducts] = useState([]);
-
-  const [description, setDescription] = useState("");
 
   const [selectedProductId, setSelectedProductId] = useState("");
 
   const [img, setImg] = useState(null);
-  const [imgUrl, setImgUrl] = useState([]);
 
   const editorContainerRef = useRef(null);
   const editorRef = useRef(null);
   const [isLayoutReady, setIsLayoutReady] = useState(false);
   const [fileList, setFileList] = useState([]);
   const navigate = useNavigate();
-  const [username, setUsername] = useState("");
-  const [currentDateTime, setCurrentDateTime] = useState("");
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
 
   const { Option } = Select;
 
   const handleEditorChange = (event, editor) => {
     const data = editor.getData();
-    setDescription(data);
+    setContent(data);
   };
 
   useEffect(() => {
@@ -148,41 +139,25 @@ const AddNews = () => {
     placeholder: "Type or paste your content here!",
   };
 
-  const token = JSON.parse(localStorage.getItem("result"));
-
   useEffect(() => {
-    // Gọi API để lấy dữ liệu category
-    // fetchProducts()
-    //   .then((data) => {
-    //     console.log(data);
-    //     setProducts(data);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
+    fetchProducts()
+      .then((data) => {
+        console.log("product", data);
+        setProducts(data.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
     // Gọi API để lấy dữ liệu brand
 
-    listAll(ref(imageDb, "files")).then((imgs) => {
-      imgs.items.forEach((val) => {
-        getDownloadURL(val).then((url) => {
-          setImgUrl(url);
-        });
-      });
-    });
-  }, []);
-
-  useEffect(() => {
-    // Lấy ngày và thời gian hiện tại
-    const now = new Date();
-    const formattedDateTime = now.toLocaleString();
-
-    setCurrentDateTime(formattedDateTime);
-
-    // Lấy thông tin người dùng từ local storage
-
-    const user = JSON.parse(localStorage.getItem("user"));
-    setUsername(user.username);
+    // listAll(ref(imageDb, "files")).then((imgs) => {
+    //   imgs.items.forEach((val) => {
+    //     getDownloadURL(val).then((url) => {
+    //       setImgUrl(url);
+    //     });
+    //   });
+    // });
   }, []);
 
   const handleChangeSelectedProduct = (value) => {
@@ -190,58 +165,53 @@ const AddNews = () => {
     console.log(selectedProductId);
   };
 
-  const handleChangeNewsName = (event) => {
-    setNews_name(event.target.value);
+  const handleChangeTitle = (event) => {
+    setTitle(event.target.value);
   };
 
-  async function uploadImage(news, id) {
-    if (img !== null) {
-      const imgRef = ref(imageDb, `news_img/${v4()}`);
-      const snapshot = await uploadBytes(imgRef, img);
-      const url = await getDownloadURL(snapshot.ref);
+  // async function uploadImage(news, id) {
+  //   if (img !== null) {
+  //     const imgRef = ref(imageDb, `news_img/${v4()}`);
+  //     const snapshot = await uploadBytes(imgRef, img);
+  //     const url = await getDownloadURL(snapshot.ref);
 
-      news.img_url = url;
-      // await sendURL(news, id);
-    }
-  }
+  //     news.img_url = url;
+  //     // await sendURL(news, id);
+  //   }
+  // }
   //!! FETCH UPDATE NEW!!
   // const sendURL = async (news, id) => {
   //   return await fetchUpdateNews(news, token, id);
   // };
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    event.preventDefault(); // Prevent default form submission behavior
+
     const form = event.target;
 
     const news = {
-      product_id: selectedProductId,
-      news_name,
-      description,
+      title,
+      content,
+      product: selectedProductId,
+      file: img,
     };
-    // !! FETCH UPLOAD NEWS !!
-    // await fetchUploadNews(news, token)
-    //   .then(async (res) => {
-    //     console.log(res.data);
-    //     const id = res.data.result.insertedId;
-    //     await uploadImage(news, id);
-    //   })
-    //   .then((data) => {
-    //     notification.success({
-    //       message: "Thêm bài viết thành công!",
-    //       placement: "top",
-    //     });
-    //     form.reset();
-    //     setDescription("");
-    //     setNews_name("");
-    //     setSelectedProductId("");
-    //     setFileList([]);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error.response);
-    //   });
+    console.log(img);
+
+    try {
+      const data = await fetchUploadNews(news);
+      console.log("news", data);
+      notification.success({
+        message: "Thêm bài viết thành công!",
+        placement: "top",
+      });
+      if (document.body.contains(form)) {
+        form.reset();
+      }
+    } catch (error) {
+      console.log(error.response);
+    }
   };
 
   const handleChange = ({ fileList: newFileList }) => {
-    // Only keep the latest file in the list
     setFileList(newFileList.slice(-1));
     if (newFileList.length > 0) {
       setImg(newFileList[0].originFileObj);
@@ -327,9 +297,9 @@ const AddNews = () => {
             </Col>
             <Col span={18}>
               <TextInput
-                id="news_name"
+                id="title"
                 type="text"
-                name="news_name"
+                name="title"
                 placeholder="Nhập tiêu đề"
                 style={{
                   height: "50px",
@@ -337,76 +307,11 @@ const AddNews = () => {
                   border: "1px solid #6b7280",
                   borderRadius: "0.375rem",
                 }}
-                onChange={handleChangeNewsName}
+                onChange={handleChangeTitle}
                 required
               />
             </Col>
           </Row>
-
-          <Row
-            justify="space-around"
-            align="middle"
-            style={{ marginBottom: "40px", marginTop: "20px" }}
-          >
-            <Col span={4}>
-              <label
-                htmlFor="img"
-                style={{
-                  fontSize: "17px",
-                  color: "#1F5070",
-                  fontWeight: "bold",
-                }}
-              >
-                Ngày tạo
-              </label>
-            </Col>
-            <Col span={18}>
-              <Input
-                readOnly
-                value={currentDateTime}
-                className="w-full"
-                style={{
-                  height: "50px",
-                  fontSize: "15px",
-                  border: "1px solid #6b7280",
-                  borderRadius: "0.375rem",
-                }}
-              />
-            </Col>
-          </Row>
-
-          <Row
-            justify="space-around"
-            align="middle"
-            style={{ marginBottom: "40px", marginTop: "20px" }}
-          >
-            <Col span={4}>
-              <label
-                htmlFor="img"
-                style={{
-                  fontSize: "17px",
-                  color: "#1F5070",
-                  fontWeight: "bold",
-                }}
-              >
-                Nhân viên
-              </label>
-            </Col>
-            <Col span={18}>
-              <Input
-                readOnly
-                value={username}
-                className="w-full"
-                style={{
-                  height: "50px",
-                  fontSize: "15px",
-                  border: "1px solid #6b7280",
-                  borderRadius: "0.375rem",
-                }}
-              />
-            </Col>
-          </Row>
-
           <Row
             justify="space-around"
             align="middle"
@@ -439,18 +344,22 @@ const AddNews = () => {
                 placeholder="Chọn sản phẩm"
                 required
               >
-                {products.map((option) => (
-                  <Option key={option._id} value={option._id}>
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <img
-                        src={option.imgUrl}
-                        style={{ width: 20, height: 20, marginRight: 10 }}
-                        alt={option.product_name}
-                      />
-                      {option.product_name}
-                    </div>
-                  </Option>
-                ))}
+                {products
+                  .filter(
+                    (option) => option.name.trim() && option.coverImageUrl,
+                  )
+                  .map((option) => (
+                    <Option key={option.id} value={option.id}>
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <img
+                          src={option.coverImageUrl}
+                          style={{ width: 20, height: 20, marginRight: 10 }}
+                          alt={option.name}
+                        />
+                        {option.name}
+                      </div>
+                    </Option>
+                  ))}
               </Select>
             </Col>
           </Row>
@@ -479,11 +388,11 @@ const AddNews = () => {
                     className="editor-container editor-container_inline-editor"
                     ref={editorContainerRef}
                   >
-                    <div className="editor-container__editor">
+                    <div className="editor-container__editor mr-80">
                       <div ref={editorRef}>
                         {isLayoutReady && (
                           <CKEditor
-                            data={description}
+                            data={content}
                             onChange={handleEditorChange}
                             editor={InlineEditor}
                             config={editorConfig}
@@ -521,7 +430,7 @@ const AddNews = () => {
                   fontSize: "10px",
                 }}
               >
-                Lưu
+                Tạo bài viết
               </Button>
             </HStack>
           </Row>

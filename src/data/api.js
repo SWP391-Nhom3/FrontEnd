@@ -212,8 +212,24 @@ export const fetchNewsByID = async (id) => {
   return res.data.data;
 };
 
-export const fetchUploadNews = async (data) => {
-  return await axios.post(`${HOSTNAME}/articles`, { ...data });
+export const fetchUploadNews = async (newsData) => {
+  const formData = new FormData();
+  Object.keys(newsData).forEach((key) => {
+    if (key === "file" && Array.isArray(newsData[key])) {
+      newsData[key].forEach((file) => {
+        formData.append("file", file);
+      });
+    } else {
+      formData.append(key, newsData[key]);
+    }
+  });
+
+  try {
+    return await axios.post(`${HOSTNAME}/articles`, formData, {});
+  } catch (error) {
+    console.error("Error uploading news:", error);
+    throw error;
+  }
 };
 
 //review by product id
