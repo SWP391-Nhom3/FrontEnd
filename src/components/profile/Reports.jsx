@@ -231,7 +231,7 @@ const Reports = () => {
                     <Table.Cell className="whitespace-nowrap border font-medium text-gray-900">
                       {item.status === "PENDING"
                         ? "Đang xử lý"
-                        : item.status === "COMPLETE"
+                        : item.status === "COMPLETED"
                           ? "Đã hoàn thành"
                           : item.status}
                     </Table.Cell>
