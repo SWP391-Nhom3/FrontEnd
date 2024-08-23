@@ -5,11 +5,11 @@ import { FaHeart, FaRegHeart } from "react-icons/fa6";
 
 import cartEmptyImg from "../../assets/images/background/cart_empty.png";
 import { useCartContext } from "../../context/CartContext";
-import { fetchGetVoucher } from "../../data/api";
+import { fetchGetVoucher, fetchUserById } from "../../data/api";
 import { Button } from "flowbite-react";
 import { ImGift } from "react-icons/im";
 const ShoppingCart = () => {
-  const user = JSON.parse(localStorage.getItem("user")) || null;
+  const user = JSON.parse(localStorage.getItem("user"));
   const verify = user === null ? 0 : user.verify;
   const {
     cartItems,
@@ -26,8 +26,29 @@ const ShoppingCart = () => {
   const [errorList, setErrorList] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [voucherList, setVoucherList] = useState([]);
-  const token = JSON.parse(localStorage.getItem("result"));
-  const [totalAmount, setTotalAmount] = useState(totalPrice); // initialTotalAmount là tổng số tiền ban đầu của giỏ hàng
+  const [totalAmount, setTotalAmount] = useState(totalPrice);
+  const [usePoints, setUsePoints] = useState(false);
+  const [points, setPoints] = useState(0);
+  const [userPoints, setUserPoints] = useState(0);
+
+  const isAuthenticatedMember = localStorage.getItem("isMember") === "true";
+  if (isAuthenticatedMember) {
+    useEffect(() => {
+      fetchUserById(user.id).then((res) => {
+        setUserPoints(res.data.data.point);
+      });
+    }, []);
+  }
+
+  const handleUsePointsChange = (e) => {
+    const checked = e.target.checked;
+    setUsePoints(checked);
+    if (checked) {
+      setTotalAmount(totalAmount - userPoints);
+    } else {
+      setPoints(0);
+    }
+  };
 
   const handleChangeVoucherCode = (event) => {
     const selectedVoucherCode = event.target.value;
@@ -41,40 +62,49 @@ const ShoppingCart = () => {
       setDiscount(0);
     }
   };
-  const total = totalPrice + ship > 0 ? totalPrice + ship : 0;
 
-  const applyDiscount = (voucher) => {
+  const calculateTotal = (items, shippingFee) => {
+    let total = items.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0,
+    );
+    total += shippingFee;
+    return total;
+  };
+
+  const applyDiscount = (total, voucher) => {
     let newTotalAmount = total;
 
-    if (voucher.voucherType === "FIXED_AMOUNT") {
-      newTotalAmount -= voucher.value; // Giảm giá trực tiếp bằng số tiền cố định
-    } else if (voucher.voucherType === "PERCENTAGE") {
-      newTotalAmount -= (newTotalAmount * voucher.value) / 100; // Giảm giá theo phần trăm
+    if (voucher && voucher.voucherType === "FIXED_AMOUNT") {
+      newTotalAmount -= voucher.value;
+    } else if (voucher && voucher.voucherType === "PERCENTAGE") {
+      newTotalAmount -= (newTotalAmount * voucher.value) / 100;
     }
 
-    setTotalAmount(newTotalAmount); // Cập nhật tổng số tiền sau khi áp dụng giảm giá
+    return newTotalAmount;
   };
+  useEffect(() => {
+    const total = calculateTotal(cartItems, ship);
+    const discountedTotal = applyDiscount(total, selectedVoucher);
+    setTotalAmount(discountedTotal);
+  }, [cartItems, selectedVoucher, ship]);
+
   useEffect(() => {
     const getVouchers = async () => {
       try {
         const data = await fetchGetVoucher();
-        console.log(data);
         setVoucherList(data);
       } catch (error) {
         console.log(error);
       }
     };
     getVouchers();
-  }, [user]);
+  }, []);
 
   const handleRadioChange = (event) => {
     const selectedValue = event.target.value;
     document.getElementById("voucherCode").value = selectedValue;
     setVoucherCode(selectedValue);
-  };
-
-  const handChangeVoucherCode = (e) => {
-    setVoucherCode(e.target.value);
   };
 
   const handClickVoucher = async (event) => {
@@ -85,7 +115,7 @@ const ShoppingCart = () => {
         const allVouchers = res;
         let selectedVoucher = allVouchers.find(
           (voucher) => voucher.code === voucherCode,
-        ); // Tìm voucher đã chọn dựa trên mã.
+        );
 
         if (selectedVoucher) {
           selectedVoucher = {
@@ -100,7 +130,6 @@ const ShoppingCart = () => {
         }
       })
       .catch((error) => {
-        // Xử lý lỗi nếu có
         console.error("Lỗi khi lấy dữ liệu voucher:", error);
       });
   };
@@ -113,7 +142,33 @@ const ShoppingCart = () => {
       return 50000;
     }
   };
+  function formatVoucherValue(selectedVoucher) {
+    if (selectedVoucher.voucherType === "FIXED_AMOUNT") {
+      return Number(selectedVoucher.value).toLocaleString("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      });
+    } else {
+      return `${Number(selectedVoucher.value)}%`;
+    }
+  }
+  function formatCurrency(amount) {
+    if (isNaN(amount) || amount == null) {
+      return "0 VND";
+    }
 
+    return Number(Math.max(amount, 0)).toLocaleString("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    });
+  }
+  const sendDataToOrderDetail = () => {
+    const detail = { selectedVoucher, totalAmount };
+    document.dispatchEvent(
+      new CustomEvent("sendDataToOrderDetail", { detail }),
+    );
+  };
+  sendDataToOrderDetail();
   useEffect(() => {
     setShip(calculateShip(cartAmount));
   }, [cartAmount]);
@@ -356,30 +411,39 @@ const ShoppingCart = () => {
                           Mã giảm giá
                         </dt>
                         <dd className="text-base font-medium text-gray-900">
-                          {selectedVoucher.voucherType === "FIXED_AMOUNT"
-                            ? Number(selectedVoucher.value).toLocaleString(
-                                "vi-VN",
-                                {
-                                  style: "currency",
-                                  currency: "VND",
-                                },
-                              )
-                            : `${Number(selectedVoucher.value)}%`}
+                          -{" "}
+                          {selectedVoucher
+                            ? formatVoucherValue(selectedVoucher)
+                            : "0 đ"}
                         </dd>
                       </dl>
                     </div>
+
+                    {isAuthenticatedMember ? (
+                      <div className="flex items-center gap-4">
+                        <input
+                          type="checkbox"
+                          id="usePoints"
+                          checked={usePoints}
+                          onChange={handleUsePointsChange}
+                        />
+                        <label
+                          htmlFor="usePoints"
+                          className="text-base font-normal text-gray-500"
+                        >
+                          Sử dụng {userPoints} điểm tích lũy
+                        </label>
+                      </div>
+                    ) : (
+                      <div>Đăng nhập để dùng điểm tích lũy</div>
+                    )}
+
                     <dl className="flex items-center justify-between gap-4 border-t border-gray-200 pt-2">
                       <dt className="text-base font-bold text-gray-900">
                         Tổng Cộng
                       </dt>
                       <dd className="text-base font-bold text-gray-900">
-                        {Number(Math.max(totalAmount, 0)).toLocaleString(
-                          "vi-VN",
-                          {
-                            style: "currency",
-                            currency: "VND",
-                          },
-                        )}
+                        {formatCurrency(totalAmount)}
                       </dd>
                     </dl>
                   </div>
@@ -392,6 +456,7 @@ const ShoppingCart = () => {
                       selectedVoucher: selectedVoucher,
                       totalAmount: totalAmount,
                       paymentType: "regular",
+                      points: usePoints ? userPoints : 0,
                     }}
                     className="flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-500 focus:outline-none focus:ring-4 focus:ring-[#93c5fd]"
                   >
@@ -434,18 +499,14 @@ const ShoppingCart = () => {
                       Bạn có voucher hoặc thẻ quà tặng không?
                     </label>
                     <div className="flex w-full items-center justify-between gap-2">
-                      <select
+                      <input
                         id="voucherCode"
                         name="voucherCode"
-                        value={voucherCode} // Đảm bảo rằng giá trị này được cập nhật đúng cách
+                        type="text"
+                        value={voucherCode}
                         onChange={handleChangeVoucherCode}
-                      >
-                        {voucherList.map((voucher) => (
-                          <option key={voucher.code} value={voucher.code}>
-                            {voucher.code}
-                          </option>
-                        ))}
-                      </select>
+                        placeholder="Nhập mã voucher của bạn"
+                      />
                       <div className="w-1/4">
                         <Button color="blue" size="xs" type="submit">
                           Áp Dụng

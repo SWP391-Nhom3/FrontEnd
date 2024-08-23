@@ -9,14 +9,16 @@ const OrderInfor = ({
   voucherCode,
   selectedVoucher,
   totalAmount,
+  points,
 }) => {
+  console.log(points);
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user")) || null;
   const [formValues, setFormValues] = useState({
     name: user ? `${user.firstName} ${user.lastName}` : "",
     email: user?.email || "",
     phone: "",
-    address: user?.address || "",
+    address: "",
   });
 
   const [provinces, setProvinces] = useState([]);
@@ -160,11 +162,20 @@ const OrderInfor = ({
           voucherCode,
           selectedVoucher,
           totalAmount,
+          points,
         },
       });
     } else if (paymentType === "preOrder") {
       navigate("/pre-order-payment", {
-        state: { customer_infor, discount, ship, voucherCode },
+        state: {
+          customer_infor,
+          discount,
+          ship,
+          voucherCode,
+          selectedVoucher,
+          totalAmount,
+          points,
+        },
       });
     }
   };

@@ -67,6 +67,17 @@ const AwaitOrderDetail = () => {
       setShipper(res.data.data);
     });
   }, []);
+  useEffect(() => {
+    const handleData = (event) => {
+      console.log("event", event.detail);
+    };
+
+    document.addEventListener("sendDataToOrderDetail", handleData);
+
+    return () => {
+      document.removeEventListener("sendDataToOrderDetail", handleData);
+    };
+  }, []);
 
   const handleShipperChange = (value) => {
     setSelectedShipperID(value);
@@ -95,6 +106,20 @@ const AwaitOrderDetail = () => {
       console.log(error);
     }
   };
+
+  const mergedOrderDetails = order.orderDetails.reduce((acc, item) => {
+    const existingProductIndex = acc.findIndex(
+      (detail) => detail.product.id === item.product.id,
+    );
+
+    if (existingProductIndex !== -1) {
+      acc[existingProductIndex].quantity += item.quantity;
+    } else {
+      acc.push({ ...item });
+    }
+
+    return acc;
+  }, []);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -138,6 +163,8 @@ const AwaitOrderDetail = () => {
     // Điều hướng đến trang khác nếu cần thiết
     navigate("/await-order");
   }
+
+  console.log("shipper ne", shipper);
 
   const { Text } = Typography;
 
@@ -252,7 +279,7 @@ const AwaitOrderDetail = () => {
                     justifyContent: "space-between",
                   }}
                 >
-                  {order.orderDetails.map((item) => (
+                  {mergedOrderDetails.map((item) => (
                     <Card
                       type="inner"
                       key={item.product.id}
@@ -314,7 +341,7 @@ const AwaitOrderDetail = () => {
                   width: "90%",
                   marginTop: "50px",
                   height: "auto",
-                  minHeight: "350px",
+                  minHeight: "700px",
                 }}
               >
                 <div>
@@ -511,18 +538,54 @@ const AwaitOrderDetail = () => {
                         marginRight: "10px",
                       }}
                     >
-                      Giảm giá:
+                      Voucher:
                     </Text>
                     {/* <Text strong style={{ fontSize: '17px', display: 'inline-block' }}>{order.order.voucher_code}</Text> */}
                     <Text
                       strong
                       style={{ fontSize: "17px", display: "inline-block" }}
                     >
-                      {" "}
-                      {/* {Number(order.voucher_fee).toLocaleString("vi-VN", {
-                        style: "currency",
-                        currency: "VND",
-                      })} */}
+                      {order.voucher
+                        ? order.voucher.voucherType === "FIXED_AMOUNT"
+                          ? Number(order.voucher.value).toLocaleString(
+                              "vi-VN",
+                              {
+                                style: "currency",
+                                currency: "VND",
+                              },
+                            )
+                          : `${Number(order.voucher.value)}%`
+                        : ""}
+                    </Text>
+                  </div>
+                  <div
+                    style={{
+                      marginBottom: "10px",
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Text
+                      type="secondary"
+                      style={{
+                        fontSize: "15px",
+                        display: "inline-block",
+                        marginRight: "10px",
+                      }}
+                    >
+                      Điểm tích lũy:
+                    </Text>
+                    {/* <Text strong style={{ fontSize: '17px', display: 'inline-block' }}>{order.order.voucher_code}</Text> */}
+                    <Text
+                      strong
+                      style={{ fontSize: "17px", display: "inline-block" }}
+                    >
+                      {order.point
+                        ? Number(order.point).toLocaleString("vi-VN", {
+                            style: "currency",
+                            currency: "VND",
+                          })
+                        : ""}
                     </Text>
                   </div>
                   <div

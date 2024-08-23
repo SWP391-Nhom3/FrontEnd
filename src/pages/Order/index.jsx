@@ -10,6 +10,9 @@ const Order = () => {
   const ship = location.state?.ship;
   const voucherCode = location.state?.voucherCode;
   const paymentType = location.state?.paymentType;
+  const selectedVoucher = location.state?.selectedVoucher;
+  const totalAmount = location.state?.totalAmount;
+  const points = location.state?.points;
 
   return (
     <>
@@ -20,6 +23,9 @@ const Order = () => {
         ship={ship}
         voucherCode={voucherCode}
         paymentType={paymentType}
+        selectedVoucher={selectedVoucher}
+        totalAmount={totalAmount}
+        points={points}
       />
     </>
   );

@@ -35,6 +35,10 @@ const RegisterForm = () => {
     navigate("/profile", {
       state: { email },
     });
+
+    navigate("/profile", {
+      state: { email },
+    });
     await fetchRegister({
       email,
       password,

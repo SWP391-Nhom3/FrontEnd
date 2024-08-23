@@ -74,7 +74,7 @@ const PreOrder = () => {
             <Column title="Mã Đơn Hàng" dataIndex={"id"} key="id" />
             <Column
               title="Ngày Đặt"
-              dataIndex={"requiredDate"}
+              dataIndex={"createdAt"}
               render={(required_date) => formatDate(required_date)}
               sorter={(a, b) =>
                 new Date(a.order.required_date) -

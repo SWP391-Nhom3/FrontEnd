@@ -17,6 +17,7 @@ import {
 
 const Payment = () => {
   const user = JSON.parse(localStorage.getItem("user"));
+  const isAuthenticatedMember = localStorage.getItem("isMember") === "true";
   const location = useLocation();
 
   const navigate = useNavigate();
@@ -35,6 +36,7 @@ const Payment = () => {
   const totalAmount = location.state?.totalAmount;
   const discount = location.state?.discount;
   const voucher_code = location.state?.voucherCode;
+  const points = location.state?.points;
   // const [totalAmount, setTotalAmount] = useState(totalPrice);
   const callTime = 300000; // 5 minutes
 
@@ -77,7 +79,7 @@ const Payment = () => {
   //   fetchVoucher();
   // });
 
-  console.log(totalAmount);
+  console.log(selectedVoucher, totalAmount);
   const handlePaymentChange = (e) => {
     setPaymentMethod(e.target.value);
   };
@@ -111,10 +113,10 @@ const Payment = () => {
         quantity: item.quantity,
       })),
       shipFee: ship,
-      totalPrice:
-        totalPrice + ship - discount > 0 ? totalPrice + ship - discount : 0,
+      totalPrice: totalAmount,
       voucherCode: voucher_code,
       userId: user && user.id ? user.id : null,
+      point: points,
     };
 
     try {
@@ -262,6 +264,8 @@ const Payment = () => {
                       ship: ship,
                       discount: discount,
                       voucherCode: voucher_code,
+                      selectedVoucher: selectedVoucher,
+                      totalAmount: totalAmount,
                     }}
                     data-modal-target="billingInformationModal"
                     data-modal-toggle="billingInformationModal"
@@ -361,7 +365,7 @@ const Payment = () => {
                       </dt>
                       <dd className="text-base font-medium text-gray-900 dark:text-white">
                         -
-                        {/* {selectedVoucher.voucherType === "FIXED_AMOUNT"
+                        {selectedVoucher.voucherType === "FIXED_AMOUNT"
                           ? Number(selectedVoucher.value).toLocaleString(
                               "vi-VN",
                               {
@@ -369,19 +373,38 @@ const Payment = () => {
                                 currency: "VND",
                               },
                             )
-                          : `${Number(selectedVoucher.value)}%`} */}
+                          : `${Number(selectedVoucher.value)}%`}
                       </dd>
                     </dl>
+
+                    {points > 0 ? (
+                      <dl className="flex items-center justify-between gap-4">
+                        <dt className="text-gray-500 dark:text-gray-400">
+                          Điểm đã dùng
+                        </dt>
+                        <dd className="text-base font-medium text-gray-900 dark:text-white">
+                          {points}
+                        </dd>
+                      </dl>
+                    ) : isAuthenticatedMember ? (
+                      <div className="text-gray-500 dark:text-gray-400">
+                        Bạn chưa có điểm để dùng
+                      </div>
+                    ) : (
+                      <div className="text-gray-500 dark:text-gray-400">
+                        Đăng nhập để tích điểm và dùng điểm
+                      </div>
+                    )}
                   </div>
                   <dl className="flex items-center justify-between gap-4 border-y border-[rgba(0,0,0,0.2)] py-2">
                     <dt className="text-lg font-bold text-gray-900 dark:text-white">
                       Tổng Giá Trị
                     </dt>
                     <dd className="text-lg font-bold text-gray-900 dark:text-white">
-                      {/* {Number(totalAmount).toLocaleString("vi-VN", {
+                      {Number(totalAmount).toLocaleString("vi-VN", {
                         style: "currency",
                         currency: "VND",
-                      })} */}
+                      })}
                     </dd>
                   </dl>
                 </div>

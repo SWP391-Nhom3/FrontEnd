@@ -36,6 +36,10 @@ const OrderDetail = () => {
     };
     getProducts();
   }, []);
+  document.addEventListener("sendDataToOrderDetail", (event) => {
+    const data = event.detail;
+    console.log("DATA", data);
+  });
 
   useEffect(() => {
     const findProductById = (product_id) => {
@@ -80,6 +84,20 @@ const OrderDetail = () => {
     date.setMinutes(date.getMinutes() + 30);
     return date.toISOString();
   };
+
+  const mergedOrderDetails = order.orderDetails.reduce((acc, item) => {
+    const existingProductIndex = acc.findIndex(
+      (detail) => detail.product.id === item.product.id,
+    );
+
+    if (existingProductIndex !== -1) {
+      acc[existingProductIndex].quantity += item.quantity;
+    } else {
+      acc.push({ ...item });
+    }
+
+    return acc;
+  }, []);
 
   const { Text } = Typography;
   return (
@@ -440,7 +458,7 @@ const OrderDetail = () => {
                           </div>
                         </Card>
                       ))
-                    : order.orderDetails.map((item) => (
+                    : mergedOrderDetails.map((item) => (
                         <Card
                           type="inner"
                           key={item.product.id}
@@ -498,7 +516,12 @@ const OrderDetail = () => {
                 title={
                   <h1 className="text-2xl font-bold">Thông tin đơn hàng:</h1>
                 }
-                style={{ width: "90%", marginTop: "50px", height: "auto" }}
+                style={{
+                  width: "90%",
+                  marginTop: "50px",
+                  height: "auto",
+                  minHeight: "700px",
+                }}
               >
                 <div>
                   <div
@@ -522,7 +545,9 @@ const OrderDetail = () => {
                       strong
                       style={{ fontSize: "17px", display: "inline-block" }}
                     >
-                      {formatDate(order.requiredDate)}
+                      {order.preOrderDetail.length > 0
+                        ? formatDate(order.createdAt)
+                        : formatDate(order.requiredDate)}
                     </Text>
                   </div>
                   <div
@@ -694,18 +719,54 @@ const OrderDetail = () => {
                         marginRight: "10px",
                       }}
                     >
-                      Giảm giá:
+                      Voucher:
                     </Text>
                     {/* <Text strong style={{ fontSize: '17px', display: 'inline-block' }}>{order.order.voucher_code}</Text> */}
                     <Text
                       strong
                       style={{ fontSize: "17px", display: "inline-block" }}
                     >
-                      {" "}
-                      {/* {Number(order.voucher_fee).toLocaleString("vi-VN", {
-                        style: "currency",
-                        currency: "VND",
-                      })} */}
+                      {order.voucher
+                        ? order.voucher.voucherType === "FIXED_AMOUNT"
+                          ? Number(order.voucher.value).toLocaleString(
+                              "vi-VN",
+                              {
+                                style: "currency",
+                                currency: "VND",
+                              },
+                            )
+                          : `${Number(order.voucher.value)}%`
+                        : ""}
+                    </Text>
+                  </div>
+                  <div
+                    style={{
+                      marginBottom: "10px",
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Text
+                      type="secondary"
+                      style={{
+                        fontSize: "15px",
+                        display: "inline-block",
+                        marginRight: "10px",
+                      }}
+                    >
+                      Điểm tích lũy:
+                    </Text>
+                    {/* <Text strong style={{ fontSize: '17px', display: 'inline-block' }}>{order.order.voucher_code}</Text> */}
+                    <Text
+                      strong
+                      style={{ fontSize: "17px", display: "inline-block" }}
+                    >
+                      {order.point
+                        ? Number(order.point).toLocaleString("vi-VN", {
+                            style: "currency",
+                            currency: "VND",
+                          })
+                        : ""}
                     </Text>
                   </div>
                   <div

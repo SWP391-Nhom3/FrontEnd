@@ -67,6 +67,20 @@ const OrderDetailCustomer = () => {
       updateOrderDetails();
     }
 
+    const mergedOrderDetails = order.orderDetails.reduce((acc, item) => {
+      const existingProductIndex = acc.findIndex(
+        (detail) => detail.product.id === item.product.id,
+      );
+
+      if (existingProductIndex !== -1) {
+        acc[existingProductIndex].quantity += item.quantity;
+      } else {
+        acc.push({ ...item });
+      }
+
+      return acc;
+    }, []);
+
     if (checkMember) {
       const getReviews = async () => {
         const feedbacks = await Promise.all(

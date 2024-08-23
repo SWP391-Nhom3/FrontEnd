@@ -111,46 +111,45 @@ const ProductManagement = () => {
       dataIndex: "rating",
       key: "rating",
       width: "15%",
-      sorter: (a, b) => a.rating - b.rating,
       render: (text) => {
-        const roundedRating = 4;
-        // parseFloat(text).toFixed(1);
+        // const roundedRating = 4;
+        // // parseFloat(text).toFixed(1);
         return (
           <div className="flex items-center">
             <Rate
               allowHalf
               disabled
-              value={parseFloat(roundedRating)}
+              value={text.rating}
               style={{ fontSize: "12px" }}
             />
-            <span className="ml-1 text-gray-500">{roundedRating}</span>
+            <span className="ml-1 text-gray-500">{text.rating}</span>
           </div>
         );
       },
     },
+    // {
+    //   title: "Lượng Bán",
+    //   dataIndex: "sales",
+    //   key: "sales",
+    //   width: 100,
+    //   render: (text) => (
+    //     <div className="flex items-center">
+    //       <svg
+    //         xmlns="http://www.w3.org/2000/svg"
+    //         viewBox="0 0 24 24"
+    //         fill="currentColor"
+    //         className="mr-2 h-5 w-5 text-gray-400"
+    //       >
+    //         <path d="M2.25 2.25a.75.75 0 000 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 00-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 000-1.5H5.378A2.25 2.25 0 017.5 15h11.218a.75.75 0 00.674-.421 60.358 60.358 0 002.96-7.228.75.75 0 00-.525-.965A60.864 60.864 0 005.68 4.509l-.232-.867A1.875 1.875 0 003.636 2.25H2.25zM3.75 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM16.5 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z" />
+    //       </svg>
+    //       {text}
+    //     </div>
+    //   ),
+    // },
     {
-      title: "Lượng Bán",
-      dataIndex: "sales",
-      key: "sales",
-      width: 100,
-      render: (text) => (
-        <div className="flex items-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            className="mr-2 h-5 w-5 text-gray-400"
-          >
-            <path d="M2.25 2.25a.75.75 0 000 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 00-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 000-1.5H5.378A2.25 2.25 0 017.5 15h11.218a.75.75 0 00.674-.421 60.358 60.358 0 002.96-7.228.75.75 0 00-.525-.965A60.864 60.864 0 005.68 4.509l-.232-.867A1.875 1.875 0 003.636 2.25H2.25zM3.75 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM16.5 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z" />
-          </svg>
-          {text}
-        </div>
-      ),
-    },
-    {
-      title: "Doanh Thu",
-      dataIndex: "revenue",
-      key: "revenue",
+      title: "Đơn giá",
+      dataIndex: "price",
+      key: "price",
       width: 100,
       render: (text, record) => {
         const revenue = record.price;
@@ -233,7 +232,7 @@ const ProductManagement = () => {
                 <div className="text-gray-500">Tổng sản phẩm: </div>
                 <div className="dark:text-white">{products.length}</div>
               </h5>
-              <h5 className="flex justify-between text-sm sm:text-base">
+              {/* <h5 className="flex justify-between text-sm sm:text-base">
                 <div className="mr-1 text-gray-500">Tổng doanh thu: </div>
                 <div className="ml-1 dark:text-white">
                   {new Intl.NumberFormat("vi-VN", {
@@ -243,7 +242,7 @@ const ProductManagement = () => {
                     products.reduce((sum, product) => sum + product.price, 0),
                   )}
                 </div>
-              </h5>
+              </h5> */}
             </div>
           </div>
           <Table

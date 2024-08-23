@@ -352,7 +352,7 @@ const ReportDetail = () => {
                   width: "90%",
                   marginTop: "50px",
                   height: "auto",
-                  minHeight: "350px",
+                  minHeight: "700px",
                 }}
               >
                 <div>
@@ -549,18 +549,54 @@ const ReportDetail = () => {
                         marginRight: "10px",
                       }}
                     >
-                      Giảm giá:
+                      Voucher:
                     </Text>
                     {/* <Text strong style={{ fontSize: '17px', display: 'inline-block' }}>{order.order.voucher_code}</Text> */}
                     <Text
                       strong
                       style={{ fontSize: "17px", display: "inline-block" }}
                     >
-                      {" "}
-                      {/* {Number(order.voucher_fee).toLocaleString("vi-VN", {
-                        style: "currency",
-                        currency: "VND",
-                      })} */}
+                      {report.order.voucher
+                        ? report.order.voucher.voucherType === "FIXED_AMOUNT"
+                          ? Number(report.order.voucher.value).toLocaleString(
+                              "vi-VN",
+                              {
+                                style: "currency",
+                                currency: "VND",
+                              },
+                            )
+                          : `${Number(report.order.voucher.value)}%`
+                        : ""}
+                    </Text>
+                  </div>
+                  <div
+                    style={{
+                      marginBottom: "10px",
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Text
+                      type="secondary"
+                      style={{
+                        fontSize: "15px",
+                        display: "inline-block",
+                        marginRight: "10px",
+                      }}
+                    >
+                      Điểm tích lũy:
+                    </Text>
+                    {/* <Text strong style={{ fontSize: '17px', display: 'inline-block' }}>{order.order.voucher_code}</Text> */}
+                    <Text
+                      strong
+                      style={{ fontSize: "17px", display: "inline-block" }}
+                    >
+                      {report.order.point
+                        ? Number(report.order.point).toLocaleString("vi-VN", {
+                            style: "currency",
+                            currency: "VND",
+                          })
+                        : ""}
                     </Text>
                   </div>
                   <div

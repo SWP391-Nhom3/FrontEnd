@@ -38,7 +38,10 @@ export const fetchMyProfile = async (token) => {
     },
   });
 };
-
+//get user by id
+export const fetchUserById = async (id) => {
+  return await axios.get(`${HOSTNAME}/users/${id}`);
+};
 //get all shipper
 export const fetchAllShipper = async () => {
   return await axios.get(`${HOSTNAME}/users/shippers`);
@@ -211,6 +214,11 @@ export const fetchNewsByID = async (id) => {
 
 export const fetchUploadNews = async (data) => {
   return await axios.post(`${HOSTNAME}/articles`, { ...data });
+};
+
+//review by product id
+export const fetchReviewByProductId = async (id) => {
+  return await axios.get(`${HOSTNAME}/reviews/product/${id}`);
 };
 
 // //feedback

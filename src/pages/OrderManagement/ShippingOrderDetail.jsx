@@ -111,6 +111,21 @@ const ShippingOrderDetail = () => {
 
   console.log(order);
   const { Text } = Typography;
+
+  const mergedOrderDetails = order.orderDetails.reduce((acc, item) => {
+    const existingProductIndex = acc.findIndex(
+      (detail) => detail.product.id === item.product.id,
+    );
+
+    if (existingProductIndex !== -1) {
+      acc[existingProductIndex].quantity += item.quantity;
+    } else {
+      acc.push({ ...item });
+    }
+
+    return acc;
+  }, []);
+
   return (
     <div style={{ height: "120vh" }}>
       <div
@@ -229,7 +244,7 @@ const ShippingOrderDetail = () => {
                     justifyContent: "space-between",
                   }}
                 >
-                  {order.orderDetails.map((item) => (
+                  {mergedOrderDetails.map((item) => (
                     <Card
                       type="inner"
                       key={item.product.id}
@@ -291,7 +306,7 @@ const ShippingOrderDetail = () => {
                   width: "90%",
                   marginTop: "50px",
                   height: "auto",
-                  minHeight: "350px",
+                  minHeight: "700px",
                 }}
               >
                 <div>
@@ -495,11 +510,17 @@ const ShippingOrderDetail = () => {
                       strong
                       style={{ fontSize: "17px", display: "inline-block" }}
                     >
-                      {" "}
-                      {/* {Number(order.voucher_fee).toLocaleString("vi-VN", {
-                        style: "currency",
-                        currency: "VND",
-                      })} */}
+                      {order.voucher
+                        ? order.voucher.voucherType === "FIXED_AMOUNT"
+                          ? Number(order.voucher.value).toLocaleString(
+                              "vi-VN",
+                              {
+                                style: "currency",
+                                currency: "VND",
+                              },
+                            )
+                          : `${Number(order.voucher.value)}%`
+                        : ""}
                     </Text>
                   </div>
                   <div
