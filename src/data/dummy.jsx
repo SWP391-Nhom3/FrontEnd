@@ -279,7 +279,9 @@ export const adminlinks = [
         icon: <AiOutlineShoppingCart />,
         type: "sub",
         // path: 'orders',
-        subLinks: [{ name: "orders", path: "", label: "Tất cả đơn hàng" }],
+        subLinks: [
+          { name: "orders", path: "orders", label: "Tất cả đơn hàng" },
+        ],
       },
     ],
   },
@@ -297,29 +299,29 @@ export const adminlinks = [
       },
     ],
   },
-  {
-    title: "Kho",
-    links: [
-      {
-        name: "Quản lý kho",
-        icon: <BsBoxSeam />,
-        type: "sub",
-        // path: '',
-        subLinks: [
-          {
-            name: "allBill",
-            path: "input-bills",
-            label: "Tất cả đơn nhập hàng",
-          },
-          {
-            name: "ProductInWarehouse",
-            path: "products-warehouse",
-            label: "Sản phẩm trong kho",
-          },
-        ],
-      },
-    ],
-  },
+  // {
+  //   title: "Kho",
+  //   links: [
+  //     {
+  //       name: "Quản lý kho",
+  //       icon: <BsBoxSeam />,
+  //       type: "sub",
+  //       // path: '',
+  //       subLinks: [
+  //         {
+  //           name: "allBill",
+  //           path: "input-bills",
+  //           label: "Tất cả đơn nhập hàng",
+  //         },
+  //         {
+  //           name: "ProductInWarehouse",
+  //           path: "products-warehouse",
+  //           label: "Sản phẩm trong kho",
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
 ];
 
 export const shipperLinks = [
