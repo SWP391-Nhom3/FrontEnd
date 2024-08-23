@@ -157,6 +157,11 @@ export const fetchOrders = async () => {
   return await axios.get(`${HOSTNAME}/orders`);
 };
 
+//getOrderbyId
+export const fetchGetOrderById = async (id) => {
+  return await axios.get(`${HOSTNAME}/orders/${id}`);
+};
+
 //cancel order api
 export const fetchCancelOrder = async (id) => {
   return await axios.put(`${HOSTNAME}/orders/cancel/${id}`);

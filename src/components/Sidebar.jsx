@@ -9,6 +9,7 @@ import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { adminlinks, shipperLinks, stafflinks } from "../data/dummy";
 import { useStateContext } from "../context/ContextProvider";
 import logoImg from "../assets/images/logo/Logo.png";
+import { fetchOrders, fetchAllFeedback } from "../data/api";
 import { Badge } from "antd";
 
 const Sidebar = ({
@@ -51,27 +52,40 @@ const Sidebar = ({
       }
     };
   }, []);
-  //!! FETCH ALL FEEDBACK !!
-  // useEffect(() => {
-  //   const getFeedbacks = async () => {
-  //     try {
-  //       const feedbackData = await fetchAllFeedback();
-  //       setFeedbacks(feedbackData.data.result);
-  //     } catch (error) {
-  //       console.error("Error fetching feedback:", error);
-  //     }
-  //   };
 
-  //   getFeedbacks();
-  //   console.log(feedbacks);
-  // }, []);
+  useEffect(() => {
+    const getOrders = async () => {
+      try {
+        const orderData = await fetchOrders();
+        setOrders(orderData.data);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
+
+    getOrders();
+  }, []);
+
+  //!! FETCH ALL FEEDBACK !!
+  useEffect(() => {
+    const getFeedbacks = async () => {
+      try {
+        const feedbackData = await fetchAllFeedback();
+        setFeedbacks(feedbackData.data.data);
+      } catch (error) {
+        console.error("Error fetching feedback:", error);
+      }
+    };
+
+    getFeedbacks();
+  }, []);
 
   const feedbackCount = feedbacks.filter((fb) => !fb.reply_feedback).length;
   const badFeedbackCount = feedbacks.filter(
     (fb) => !fb.reply_feedback && fb.rating < 3,
   ).length;
   const awaitOrderCount = orders.filter(
-    (order) => order.order.status === 0,
+    (order) => order.orderStatus.name === "Chờ xác nhận",
   ).length;
 
   const activeLink =
@@ -227,7 +241,9 @@ const Sidebar = ({
                           awaitOrderCount > 0) ||
                         (link.name === "Quản lý đánh giá" &&
                           feedbackCount > 0) ? (
-                          <Badge dot>{link.icon}</Badge>
+                          <Badge color="blue" dot>
+                            {link.icon}{" "}
+                          </Badge>
                         ) : (
                           link.icon
                         )}
@@ -275,6 +291,7 @@ const Sidebar = ({
                                     {subLink.label}
                                   </span>
                                   <Badge
+                                    color="blue"
                                     style={{ marginRight: "10px" }}
                                     count={
                                       subLink.name === "await-order"

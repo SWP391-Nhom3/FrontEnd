@@ -3,7 +3,7 @@ import "tailwindcss/tailwind.css";
 import { FaSearch } from "react-icons/fa";
 import toast from "react-hot-toast";
 import Breadcrumbs from "../elements/Breadcrumb";
-// import { fetchGetOrderById } from '../../data/api';
+import { fetchGetOrderById } from "../../data/api";
 import { useNavigate } from "react-router-dom";
 const OrderTracking = () => {
   const [orderId, setOrderId] = useState("");
@@ -13,16 +13,16 @@ const OrderTracking = () => {
     setOrderId(e.target.value);
   };
   //!! FETCH ORDER BY ID !!
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const res = await fetchGetOrderById(orderId);
-  //     toast.success("Tìm thành công đơn hàng");
-  //     navigate(`/order-detail`, { state: { order: res.data.result } });
-  //   } catch {
-  //     toast.error("Không tìm thấy đơn hàng");
-  //   }
-  // };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetchGetOrderById(orderId);
+      toast.success("Tìm thành công đơn hàng");
+      navigate(`/order-detail`, { state: { order: res.data } });
+    } catch {
+      toast.error("Không tìm thấy đơn hàng");
+    }
+  };
 
   return (
     <>
@@ -34,7 +34,7 @@ const OrderTracking = () => {
         {/* !!Handle submit at * !! */}
         <form
           className="mb-4 flex w-full max-w-2xl items-center"
-          onSubmit={"*"}
+          onSubmit={handleSubmit}
         >
           <input
             type="text"
