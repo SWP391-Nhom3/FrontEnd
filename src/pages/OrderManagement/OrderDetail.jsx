@@ -85,6 +85,20 @@ const OrderDetail = () => {
     return date.toISOString();
   };
 
+  const mergedOrderDetails = order.orderDetails.reduce((acc, item) => {
+    const existingProductIndex = acc.findIndex(
+      (detail) => detail.product.id === item.product.id
+    );
+  
+    if (existingProductIndex !== -1) {
+      acc[existingProductIndex].quantity += item.quantity;
+    } else {
+      acc.push({ ...item });
+    }
+  
+    return acc;
+  }, []);
+
   const { Text } = Typography;
   return (
     <div style={{ height: "120vh" }}>
@@ -444,7 +458,7 @@ const OrderDetail = () => {
                         </div>
                       </Card>
                     ))
-                    : order.orderDetails.map((item) => (
+                    : mergedOrderDetails.map((item) => (
                       <Card
                         type="inner"
                         key={item.product.id}
@@ -527,7 +541,7 @@ const OrderDetail = () => {
                       strong
                       style={{ fontSize: "17px", display: "inline-block" }}
                     >
-                      {formatDate(order.requiredDate)}
+                      {order.preOrderDetail.length > 0 ? formatDate(order.createdAt) : formatDate(order.requiredDate)}
                     </Text>
                   </div>
                   <div

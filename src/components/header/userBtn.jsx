@@ -74,13 +74,6 @@ const UserBtn = () => {
           >
             Lịch Sử Đơn Hàng
           </Dropdown.Item>
-          <Dropdown.Item
-            icon={HiCog}
-            className="w-48"
-            href="/profile/accumulated-points"
-          >
-            Tích Điểm
-          </Dropdown.Item>
           <Dropdown.Divider />
           <Dropdown.Item
             icon={HiLogout}

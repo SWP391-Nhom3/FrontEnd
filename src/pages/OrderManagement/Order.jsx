@@ -122,13 +122,16 @@ const Orders = () => {
             <Column title="Mã Đơn Hàng" dataIndex={"id"} key="id" />
             <Column
               title="Ngày Đặt"
-              dataIndex={"requiredDate"}
-              render={(required_date) => formatDate(required_date)}
+              key="required_date"
+              render={(text, record) => 
+                record.orderStatus.name === "Đặt trước" 
+                  ? formatDate(record.createdAt) 
+                  : formatDate(record.requiredDate)
+              }
               sorter={(a, b) =>
                 new Date(a.order.required_date) -
                 new Date(b.order.required_date)
               }
-              key="required_date"
             />
             <Column
               title="Phương Thức Thanh Toán"

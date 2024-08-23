@@ -15,7 +15,8 @@ import { usePreOrderContext } from "../../context/PreOrderContext";
 // import { fetchGetFeedbackById } from "../../data/api";
 
 import ProductCard from "../card/Card";
-import { fetchAllNews } from "../../data/api";
+import { fetchAllNews, fetchReviewByProductId } from "../../data/api";
+import { Rate } from "antd";
 
 const ProductDetail = () => {
   const location = useLocation();
@@ -39,6 +40,15 @@ const ProductDetail = () => {
       getNews();
     }
   }, [product]);
+
+  useEffect(() => {
+    fetchReviewByProductId(product.id)
+    .then((res) => {
+      console.log(res);
+      setReviews(res.data.data);
+    })
+  }, []);
+    
 
   if (!product) {
     return <div>Product not found</div>;
@@ -82,6 +92,8 @@ const ProductDetail = () => {
     const seconds = String(date.getSeconds()).padStart(2, "0");
     return `${hours}:${minutes}:${seconds} - ${day}/${month}/${year}`;
   };
+
+  console.log(reviews);
 
   return product.active ? (
     <section className="bg-white py-8 antialiased md:py-16">
@@ -136,12 +148,12 @@ const ProductDetail = () => {
                 <div className="flex items-center gap-1">
                   {/* <RenderRating rating={product.rating} /> */}
                 </div>
-                {/* <p className="text-sm font-medium leading-none text-gray-500">
-                  ({product.rating.toFixed(1)})
-                </p> */}
-                {/* <a className="text-sm font-medium leading-none text-gray-900 underline hover:no-underline">
-                  {product.reviewer} Đánh Giá
-                </a> */}
+                <p className="text-sm font-medium leading-none text-gray-500">
+                  <Rate disabled value={product.rating}/>
+                </p>
+                <a className="text-sm font-medium leading-none text-gray-900 underline hover:no-underline">
+                  {reviews.length} Đánh Giá
+                </a>
               </div>
             </div>
 
@@ -197,28 +209,28 @@ const ProductDetail = () => {
               {showAllReviews
                 ? reviews.map((review) => (
                     <div
-                      key={review._id}
+                      key={review.id}
                       className="mb-4 rounded-lg p-4 text-black"
                     >
                       <div className="mb-2 flex items-center">
                         <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-yellow-400 text-xl font-bold text-gray-900">
-                          {review.username.charAt(0).toUpperCase()}
+                          {review.user.firstName ? review.user.firstName.charAt(0).toUpperCase() : "?"}
                         </div>
                         <div className="ml-2 flex w-full items-start justify-between">
                           <p className="text-lg font-semibold">
-                            {review.username}
+                          {review.user.firstName ? review.user.firstName : review.user.email}
                           </p>
-                          {/* <RenderRating rating={review.rating} /> */}
+                          <Rate disabled value={review.rating} />
                         </div>
                       </div>
                       <div className="mx-2 flex text-black">
                         <FaReply className="mx-2 mt-1 rotate-180 transform text-sm" />
-                        {review.description}
+                        {review.comment}
                       </div>
                       <p className="mt-2 text-sm text-gray-500">
-                        {formatDate(review.created_at)}
+                        {formatDate(review.createdAt)}
                       </p>
-                      {review.reply_feedback && (
+                      {review.reply && (
                         <div className="ml-10 mt-4 rounded-lg bg-gray-200 p-4">
                           <div className="mb-2 flex items-center">
                             <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-yellow-400 text-lg font-bold text-gray-900">
@@ -228,11 +240,11 @@ const ProductDetail = () => {
                           </div>
                           <div className="mx-8 flex text-black">
                             <FaReply className="mx-1 mt-1 rotate-180 transform text-sm" />
-                            {review.reply_feedback.description}
+                            {review.reply.replyText}
                           </div>
 
                           <div className="mt-2 text-sm text-gray-500">
-                            {formatDate(review.reply_feedback.created_at)}
+                            {formatDate(review.reply.createdAt)}
                           </div>
                         </div>
                       )}
@@ -240,28 +252,28 @@ const ProductDetail = () => {
                   ))
                 : reviews.slice(0, 1).map((review) => (
                     <div
-                      key={review._id}
+                      key={review.id}
                       className="mb-4 rounded-lg p-4 text-black"
                     >
                       <div className="mb-2 flex items-center">
                         <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-yellow-400 text-xl font-bold text-gray-900">
-                          {review.username.charAt(0).toUpperCase()}
+                        {review.user.firstName ? review.user.firstName.charAt(0).toUpperCase() : "?"}
                         </div>
                         <div className="ml-2 flex w-full items-start justify-between">
                           <p className="text-lg font-semibold">
-                            {review.username}
+                          {review.user.firstName ? review.user.firstName : review.user.email}
                           </p>
-                          {/* <RenderRating rating={review.rating} /> */}
+                          <Rate disabled value={review.rating} />
                         </div>
                       </div>
                       <div className="mx-2 flex text-black">
                         <FaReply className="mx-2 mt-1 rotate-180 transform text-sm" />
-                        {review.description}
+                        {review.comment}
                       </div>
                       <p className="mt-2 text-sm text-gray-500">
-                        {formatDate(review.created_at)}
+                        {formatDate(review.createdAt)}
                       </p>
-                      {review.reply_feedback && (
+                      {review.reply && (
                         <div className="ml-10 mt-4 rounded-lg bg-gray-200 p-4">
                           <div className="mb-2 flex items-center">
                             <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-yellow-400 text-lg font-bold text-gray-900">
@@ -271,11 +283,11 @@ const ProductDetail = () => {
                           </div>
                           <div className="mx-8 flex text-black">
                             <FaReply className="mx-1 mt-1 rotate-180 transform text-sm" />
-                            {review.reply_feedback.description}
+                            {review.reply.replyText}
                           </div>
 
                           <div className="mt-2 text-sm text-gray-500">
-                            {formatDate(review.reply_feedback.created_at)}
+                            {formatDate(review.reply.createdAt)}
                           </div>
                         </div>
                       )}

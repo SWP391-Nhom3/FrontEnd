@@ -107,6 +107,20 @@ const AwaitOrderDetail = () => {
     }
   };
 
+  const mergedOrderDetails = order.orderDetails.reduce((acc, item) => {
+    const existingProductIndex = acc.findIndex(
+      (detail) => detail.product.id === item.product.id
+    );
+  
+    if (existingProductIndex !== -1) {
+      acc[existingProductIndex].quantity += item.quantity;
+    } else {
+      acc.push({ ...item });
+    }
+  
+    return acc;
+  }, []);
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, "0");
@@ -265,7 +279,7 @@ const AwaitOrderDetail = () => {
                     justifyContent: "space-between",
                   }}
                 >
-                  {order.orderDetails.map((item) => (
+                  {mergedOrderDetails.map((item) => (
                     <Card
                       type="inner"
                       key={item.product.id}

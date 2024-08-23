@@ -250,11 +250,11 @@ const AddProductBatch = () => {
         placement: "top",
       });
 
-      setBatchBill([]); // Reset batchBill sau khi thành công
+      setBatchBill([]);
       setFormState({});
     } catch (error) {
       notification.error({
-        message: "Lỗi nhập sản phẩm",
+        message: "Lỗi nhập sản phẩm, hãy thử đăng nhập lại",
         placement: "top",
       });
     }

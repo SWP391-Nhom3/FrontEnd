@@ -73,6 +73,20 @@ const ReportDetail = () => {
 
   const { Text } = Typography;
 
+  const mergedOrderDetails = report.order.orderDetails.reduce((acc, item) => {
+    const existingProductIndex = acc.findIndex(
+      (detail) => detail.product.id === item.product.id
+    );
+  
+    if (existingProductIndex !== -1) {
+      acc[existingProductIndex].quantity += item.quantity;
+    } else {
+      acc.push({ ...item });
+    }
+  
+    return acc;
+  }, []);
+
   return (
     <div style={{ height: "120vh" }}>
       <div
@@ -290,7 +304,7 @@ const ReportDetail = () => {
                     justifyContent: "space-between",
                   }}
                 >
-                  {report.order.orderDetails.map((item) => (
+                  {mergedOrderDetails.map((item) => (
                     <Card
                       type="inner"
                       key={item.product.id}

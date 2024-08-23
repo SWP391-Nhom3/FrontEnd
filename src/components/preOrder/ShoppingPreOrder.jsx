@@ -375,8 +375,8 @@ const ShoppingPreOrder = () => {
                           Mã giảm giá
                         </dt>
                         <dd className="text-base font-medium text-gray-900">
-                          -
-                          {selectedVoucher.voucherType === "FIXED_AMOUNT"
+                          {console.log("dasfasdf",selectedVoucher)}
+                          {Object.keys(selectedVoucher).length > 0 ? (selectedVoucher.voucherType === "FIXED_AMOUNT"
                             ? Number(selectedVoucher.value).toLocaleString(
                                 "vi-VN",
                                 {
@@ -384,7 +384,7 @@ const ShoppingPreOrder = () => {
                                   currency: "VND",
                                 },
                               )
-                            : `${Number(selectedVoucher.value)}%`}
+                            : `${Number(selectedVoucher.value)}%`) : ""}
                         </dd>
                       </dl>
                     </div>

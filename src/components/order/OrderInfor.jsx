@@ -18,7 +18,7 @@ const OrderInfor = ({
     name: user ? `${user.firstName} ${user.lastName}` : "",
     email: user?.email || "",
     phone: "",
-    address: user?.address || "",
+    address: "",
   });
 
   const [provinces, setProvinces] = useState([]);
