@@ -26,18 +26,20 @@ const ShoppingCart = () => {
   const [errorList, setErrorList] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [voucherList, setVoucherList] = useState([]);
-  const [totalAmount, setTotalAmount] = useState(totalPrice); // initialTotalAmount là tổng số tiền ban đầu của giỏ hàng
+  const [totalAmount, setTotalAmount] = useState(totalPrice);
   const [usePoints, setUsePoints] = useState(false);
   const [points, setPoints] = useState(0);
   const [userPoints, setUserPoints] = useState(0);
 
-  useEffect(() => {
-    fetchUserById(user.id).then((res) => {
-      console.log();
-      setUserPoints(res.data.data.point);
+  const isAuthenticatedMember = localStorage.getItem("isMember") === "true";
+  if (isAuthenticatedMember) {
+    useEffect(() => {
+      fetchUserById(user.id).then((res) => {
+        setUserPoints(res.data.data.point);
+      });
+    }, []);
+  }
 
-    })
-  })
   const handleUsePointsChange = (e) => {
     const checked = e.target.checked;
     setUsePoints(checked);
@@ -85,20 +87,19 @@ const ShoppingCart = () => {
     const total = calculateTotal(cartItems, ship);
     const discountedTotal = applyDiscount(total, selectedVoucher);
     setTotalAmount(discountedTotal);
-  }, [cartItems, selectedVoucher, ship, ]);
+  }, [cartItems, selectedVoucher, ship]);
 
   useEffect(() => {
     const getVouchers = async () => {
       try {
         const data = await fetchGetVoucher();
-        console.log(data);
         setVoucherList(data);
       } catch (error) {
         console.log(error);
       }
     };
     getVouchers();
-  }, [user]);
+  }, []);
 
   const handleRadioChange = (event) => {
     const selectedValue = event.target.value;
@@ -162,7 +163,7 @@ const ShoppingCart = () => {
     });
   }
   const sendDataToOrderDetail = () => {
-    const detail = { selectedVoucher, totalAmount }; // Dữ liệu bạn muốn gửi
+    const detail = { selectedVoucher, totalAmount };
     document.dispatchEvent(
       new CustomEvent("sendDataToOrderDetail", { detail }),
     );
@@ -410,21 +411,33 @@ const ShoppingCart = () => {
                           Mã giảm giá
                         </dt>
                         <dd className="text-base font-medium text-gray-900">
-                          - {selectedVoucher ? formatVoucherValue(selectedVoucher) : "0 đ"}
+                          -{" "}
+                          {selectedVoucher
+                            ? formatVoucherValue(selectedVoucher)
+                            : "0 đ"}
                         </dd>
                       </dl>
                     </div>
-                    <div className="flex items-center gap-4">
-                      <input
-                        type="checkbox"
-                        id="usePoints"
-                        checked={usePoints}
-                        onChange={handleUsePointsChange}
-                      />
-                      <label htmlFor="usePoints" className="text-base font-normal text-gray-500">
-                        Sử dụng {userPoints} điểm tích lũy
-                      </label>
-                    </div>
+
+                    {isAuthenticatedMember ? (
+                      <div className="flex items-center gap-4">
+                        <input
+                          type="checkbox"
+                          id="usePoints"
+                          checked={usePoints}
+                          onChange={handleUsePointsChange}
+                        />
+                        <label
+                          htmlFor="usePoints"
+                          className="text-base font-normal text-gray-500"
+                        >
+                          Sử dụng {userPoints} điểm tích lũy
+                        </label>
+                      </div>
+                    ) : (
+                      <div>Đăng nhập để dùng điểm tích lũy</div>
+                    )}
+
                     <dl className="flex items-center justify-between gap-4 border-t border-gray-200 pt-2">
                       <dt className="text-base font-bold text-gray-900">
                         Tổng Cộng
@@ -447,7 +460,7 @@ const ShoppingCart = () => {
                     }}
                     className="flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-500 focus:outline-none focus:ring-4 focus:ring-[#93c5fd]"
                   >
-\                    Thanh Toán Ngay
+                    Thanh Toán Ngay
                   </Link>
                   <div className="flex items-center justify-center gap-2">
                     <span className="text-sm font-normal text-gray-500">
@@ -490,8 +503,8 @@ const ShoppingCart = () => {
                         id="voucherCode"
                         name="voucherCode"
                         type="text"
-                        value={voucherCode} // Liên kết giá trị này với state voucherCode
-                        onChange={handleChangeVoucherCode} // Cập nhật state khi người dùng nhập mã
+                        value={voucherCode}
+                        onChange={handleChangeVoucherCode}
                         placeholder="Nhập mã voucher của bạn"
                       />
                       <div className="w-1/4">

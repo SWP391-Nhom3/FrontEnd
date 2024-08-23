@@ -123,9 +123,9 @@ const Orders = () => {
             <Column
               title="Ngày Đặt"
               key="required_date"
-              render={(text, record) => 
-                record.orderStatus.name === "Đặt trước" 
-                  ? formatDate(record.createdAt) 
+              render={(text, record) =>
+                record.orderStatus.name === "Đặt trước"
+                  ? formatDate(record.createdAt)
                   : formatDate(record.requiredDate)
               }
               sorter={(a, b) =>

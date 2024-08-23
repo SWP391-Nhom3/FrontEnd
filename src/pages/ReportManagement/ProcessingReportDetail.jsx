@@ -602,11 +602,17 @@ const ProcessingReportDetail = () => {
                       strong
                       style={{ fontSize: "17px", display: "inline-block" }}
                     >
-
-                      {report.order.voucher ? (report.order.voucher.voucherType === "FIXED_AMOUNT" ? Number(report.order.voucher.value).toLocaleString("vi-VN", {
-                        style: "currency",
-                        currency: "VND",
-                      }) : `${Number(report.order.voucher.value)}%`) : "" }
+                      {report.order.voucher
+                        ? report.order.voucher.voucherType === "FIXED_AMOUNT"
+                          ? Number(report.order.voucher.value).toLocaleString(
+                              "vi-VN",
+                              {
+                                style: "currency",
+                                currency: "VND",
+                              },
+                            )
+                          : `${Number(report.order.voucher.value)}%`
+                        : ""}
                     </Text>
                   </div>
                   <div
@@ -631,11 +637,12 @@ const ProcessingReportDetail = () => {
                       strong
                       style={{ fontSize: "17px", display: "inline-block" }}
                     >
-
-                      {report.order.point ? Number(report.order.point).toLocaleString("vi-VN", {
-                        style: "currency",
-                        currency: "VND",
-                      }): "" }
+                      {report.order.point
+                        ? Number(report.order.point).toLocaleString("vi-VN", {
+                            style: "currency",
+                            currency: "VND",
+                          })
+                        : ""}
                     </Text>
                   </div>
                   <div

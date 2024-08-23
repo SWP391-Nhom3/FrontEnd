@@ -16,7 +16,9 @@ function SoldProductsChart() {
 
   useEffect(() => {
     axios
-      .get("https://milkjoy-shop.azurewebsites.net/api/admin/statistics/total-sold-by-products")
+      .get(
+        "https://milkjoy-shop.azurewebsites.net/api/admin/statistics/total-sold-by-products",
+      )
       .then((response) => {
         const chartData = response.data.map((item) => ({
           name: item.productName,

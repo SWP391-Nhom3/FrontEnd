@@ -5,7 +5,7 @@ import { FaHeart, FaRegHeart } from "react-icons/fa6";
 
 import cartEmptyImg from "../../assets/images/background/cart_empty.png";
 import { usePreOrderContext } from "../../context/PreOrderContext";
-import { fetchGetVoucher } from "../../data/api";
+import { fetchGetVoucher, fetchUserById } from "../../data/api";
 import { Button } from "flowbite-react";
 import { ImGift } from "react-icons/im";
 const ShoppingPreOrder = () => {
@@ -27,6 +27,28 @@ const ShoppingPreOrder = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [voucherList, setVoucherList] = useState([]);
   const [totalAmount, setTotalAmount] = useState(totalPrice);
+  const [usePoints, setUsePoints] = useState(false);
+  const [points, setPoints] = useState(0);
+  const [userPoints, setUserPoints] = useState(0);
+
+  const isAuthenticatedMember = localStorage.getItem("isMember") === "true";
+  if (isAuthenticatedMember) {
+    useEffect(() => {
+      fetchUserById(user.id).then((res) => {
+        setUserPoints(res.data.data.point);
+      });
+    }, []);
+  }
+
+  const handleUsePointsChange = (e) => {
+    const checked = e.target.checked;
+    setUsePoints(checked);
+    if (checked) {
+      setTotalAmount(totalAmount - userPoints);
+    } else {
+      setPoints(0);
+    }
+  };
 
   const handleChangeVoucherCode = (event) => {
     const selectedVoucherCode = event.target.value;
@@ -71,14 +93,13 @@ const ShoppingPreOrder = () => {
     const getVouchers = async () => {
       try {
         const data = await fetchGetVoucher();
-        console.log(data);
         setVoucherList(data);
       } catch (error) {
         console.log(error);
       }
     };
     getVouchers();
-  }, [user]);
+  }, []);
 
   const handleRadioChange = (event) => {
     const selectedValue = event.target.value;
@@ -121,6 +142,18 @@ const ShoppingPreOrder = () => {
       return 50000;
     }
   };
+
+  function formatVoucherValue(selectedVoucher) {
+    if (selectedVoucher.voucherType === "FIXED_AMOUNT") {
+      return Number(selectedVoucher.value).toLocaleString("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      });
+    } else {
+      return `${Number(selectedVoucher.value)}%`;
+    }
+  }
+
   function formatCurrency(amount) {
     if (isNaN(amount) || amount == null) {
       return "0 VND";
@@ -131,6 +164,13 @@ const ShoppingPreOrder = () => {
       currency: "VND",
     });
   }
+
+  const sendDataToOrderDetail = () => {
+    const detail = { selectedVoucher, totalAmount };
+    document.dispatchEvent(
+      new CustomEvent("sendDataToOrderDetail", { detail }),
+    );
+  };
 
   useEffect(() => {
     setShip(calculateShip(preOrderAmount));
@@ -375,19 +415,41 @@ const ShoppingPreOrder = () => {
                           Mã giảm giá
                         </dt>
                         <dd className="text-base font-medium text-gray-900">
-                          {console.log("dasfasdf",selectedVoucher)}
-                          {Object.keys(selectedVoucher).length > 0 ? (selectedVoucher.voucherType === "FIXED_AMOUNT"
-                            ? Number(selectedVoucher.value).toLocaleString(
-                                "vi-VN",
-                                {
-                                  style: "currency",
-                                  currency: "VND",
-                                },
-                              )
-                            : `${Number(selectedVoucher.value)}%`) : ""}
+                          {console.log("dasfasdf", selectedVoucher)}
+                          {Object.keys(selectedVoucher).length > 0
+                            ? selectedVoucher.voucherType === "FIXED_AMOUNT"
+                              ? Number(selectedVoucher.value).toLocaleString(
+                                  "vi-VN",
+                                  {
+                                    style: "currency",
+                                    currency: "VND",
+                                  },
+                                )
+                              : `${Number(selectedVoucher.value)}%`
+                            : ""}
                         </dd>
                       </dl>
                     </div>
+
+                    {isAuthenticatedMember ? (
+                      <div className="flex items-center gap-4">
+                        <input
+                          type="checkbox"
+                          id="usePoints"
+                          checked={usePoints}
+                          onChange={handleUsePointsChange}
+                        />
+                        <label
+                          htmlFor="usePoints"
+                          className="text-base font-normal text-gray-500"
+                        >
+                          Sử dụng {userPoints} điểm tích lũy
+                        </label>
+                      </div>
+                    ) : (
+                      <div>Đăng nhập để dùng điểm tích lũy</div>
+                    )}
+
                     <dl className="flex items-center justify-between gap-4 border-t border-gray-200 pt-2">
                       <dt className="text-base font-bold text-gray-900">
                         Tổng Cộng
@@ -406,6 +468,7 @@ const ShoppingPreOrder = () => {
                       selectedVoucher: selectedVoucher,
                       totalAmount: totalAmount,
                       paymentType: "preOrder",
+                      points: usePoints ? userPoints : 0,
                     }}
                     className="flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-500 focus:outline-none focus:ring-4 focus:ring-[#93c5fd]"
                   >
@@ -452,8 +515,8 @@ const ShoppingPreOrder = () => {
                         id="voucherCode"
                         name="voucherCode"
                         type="text"
-                        value={voucherCode} // Liên kết giá trị này với state voucherCode
-                        onChange={handleChangeVoucherCode} // Cập nhật state khi người dùng nhập mã
+                        value={voucherCode}
+                        onChange={handleChangeVoucherCode}
                         placeholder="Nhập mã voucher của bạn"
                       />
                       <div className="w-1/4">

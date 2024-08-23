@@ -109,15 +109,15 @@ const AwaitOrderDetail = () => {
 
   const mergedOrderDetails = order.orderDetails.reduce((acc, item) => {
     const existingProductIndex = acc.findIndex(
-      (detail) => detail.product.id === item.product.id
+      (detail) => detail.product.id === item.product.id,
     );
-  
+
     if (existingProductIndex !== -1) {
       acc[existingProductIndex].quantity += item.quantity;
     } else {
       acc.push({ ...item });
     }
-  
+
     return acc;
   }, []);
 
@@ -545,11 +545,17 @@ const AwaitOrderDetail = () => {
                       strong
                       style={{ fontSize: "17px", display: "inline-block" }}
                     >
-
-                      {order.voucher ? (order.voucher.voucherType === "FIXED_AMOUNT" ? Number(order.voucher.value).toLocaleString("vi-VN", {
-                        style: "currency",
-                        currency: "VND",
-                      }) : `${Number(order.voucher.value)}%`) : "" }
+                      {order.voucher
+                        ? order.voucher.voucherType === "FIXED_AMOUNT"
+                          ? Number(order.voucher.value).toLocaleString(
+                              "vi-VN",
+                              {
+                                style: "currency",
+                                currency: "VND",
+                              },
+                            )
+                          : `${Number(order.voucher.value)}%`
+                        : ""}
                     </Text>
                   </div>
                   <div
@@ -574,11 +580,12 @@ const AwaitOrderDetail = () => {
                       strong
                       style={{ fontSize: "17px", display: "inline-block" }}
                     >
-
-                      {order.point ? Number(order.point).toLocaleString("vi-VN", {
-                        style: "currency",
-                        currency: "VND",
-                      }): "" }
+                      {order.point
+                        ? Number(order.point).toLocaleString("vi-VN", {
+                            style: "currency",
+                            currency: "VND",
+                          })
+                        : ""}
                     </Text>
                   </div>
                   <div

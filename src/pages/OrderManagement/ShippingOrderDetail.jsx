@@ -114,15 +114,15 @@ const ShippingOrderDetail = () => {
 
   const mergedOrderDetails = order.orderDetails.reduce((acc, item) => {
     const existingProductIndex = acc.findIndex(
-      (detail) => detail.product.id === item.product.id
+      (detail) => detail.product.id === item.product.id,
     );
-  
+
     if (existingProductIndex !== -1) {
       acc[existingProductIndex].quantity += item.quantity;
     } else {
       acc.push({ ...item });
     }
-  
+
     return acc;
   }, []);
 
@@ -510,10 +510,17 @@ const ShippingOrderDetail = () => {
                       strong
                       style={{ fontSize: "17px", display: "inline-block" }}
                     >
-                      {order.voucher ? (order.voucher.voucherType === "FIXED_AMOUNT" ? Number(order.voucher.value).toLocaleString("vi-VN", {
-                        style: "currency",
-                        currency: "VND",
-                      }) : `${Number(order.voucher.value)}%`) : "" }
+                      {order.voucher
+                        ? order.voucher.voucherType === "FIXED_AMOUNT"
+                          ? Number(order.voucher.value).toLocaleString(
+                              "vi-VN",
+                              {
+                                style: "currency",
+                                currency: "VND",
+                              },
+                            )
+                          : `${Number(order.voucher.value)}%`
+                        : ""}
                     </Text>
                   </div>
                   <div

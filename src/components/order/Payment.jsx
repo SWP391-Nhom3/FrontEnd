@@ -17,6 +17,7 @@ import {
 
 const Payment = () => {
   const user = JSON.parse(localStorage.getItem("user"));
+  const isAuthenticatedMember = localStorage.getItem("isMember") === "true";
   const location = useLocation();
 
   const navigate = useNavigate();
@@ -36,7 +37,6 @@ const Payment = () => {
   const discount = location.state?.discount;
   const voucher_code = location.state?.voucherCode;
   const points = location.state?.points;
-  console.log("point", points);
   // const [totalAmount, setTotalAmount] = useState(totalPrice);
   const callTime = 300000; // 5 minutes
 
@@ -376,6 +376,25 @@ const Payment = () => {
                           : `${Number(selectedVoucher.value)}%`}
                       </dd>
                     </dl>
+
+                    {points > 0 ? (
+                      <dl className="flex items-center justify-between gap-4">
+                        <dt className="text-gray-500 dark:text-gray-400">
+                          Điểm đã dùng
+                        </dt>
+                        <dd className="text-base font-medium text-gray-900 dark:text-white">
+                          {points}
+                        </dd>
+                      </dl>
+                    ) : isAuthenticatedMember ? (
+                      <div className="text-gray-500 dark:text-gray-400">
+                        Bạn chưa có điểm để dùng
+                      </div>
+                    ) : (
+                      <div className="text-gray-500 dark:text-gray-400">
+                        Đăng nhập để tích điểm và dùng điểm
+                      </div>
+                    )}
                   </div>
                   <dl className="flex items-center justify-between gap-4 border-y border-[rgba(0,0,0,0.2)] py-2">
                     <dt className="text-lg font-bold text-gray-900 dark:text-white">

@@ -42,13 +42,11 @@ const ProductDetail = () => {
   }, [product]);
 
   useEffect(() => {
-    fetchReviewByProductId(product.id)
-    .then((res) => {
+    fetchReviewByProductId(product.id).then((res) => {
       console.log(res);
       setReviews(res.data.data);
-    })
+    });
   }, []);
-    
 
   if (!product) {
     return <div>Product not found</div>;
@@ -149,7 +147,7 @@ const ProductDetail = () => {
                   {/* <RenderRating rating={product.rating} /> */}
                 </div>
                 <p className="text-sm font-medium leading-none text-gray-500">
-                  <Rate disabled value={product.rating}/>
+                  <Rate disabled value={product.rating} />
                 </p>
                 <a className="text-sm font-medium leading-none text-gray-900 underline hover:no-underline">
                   {reviews.length} Đánh Giá
@@ -214,11 +212,15 @@ const ProductDetail = () => {
                     >
                       <div className="mb-2 flex items-center">
                         <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-yellow-400 text-xl font-bold text-gray-900">
-                          {review.user.firstName ? review.user.firstName.charAt(0).toUpperCase() : "?"}
+                          {review.user.firstName
+                            ? review.user.firstName.charAt(0).toUpperCase()
+                            : "?"}
                         </div>
                         <div className="ml-2 flex w-full items-start justify-between">
                           <p className="text-lg font-semibold">
-                          {review.user.firstName ? review.user.firstName : review.user.email}
+                            {review.user.firstName
+                              ? review.user.firstName
+                              : review.user.email}
                           </p>
                           <Rate disabled value={review.rating} />
                         </div>
@@ -257,11 +259,15 @@ const ProductDetail = () => {
                     >
                       <div className="mb-2 flex items-center">
                         <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-yellow-400 text-xl font-bold text-gray-900">
-                        {review.user.firstName ? review.user.firstName.charAt(0).toUpperCase() : "?"}
+                          {review.user.firstName
+                            ? review.user.firstName.charAt(0).toUpperCase()
+                            : "?"}
                         </div>
                         <div className="ml-2 flex w-full items-start justify-between">
                           <p className="text-lg font-semibold">
-                          {review.user.firstName ? review.user.firstName : review.user.email}
+                            {review.user.firstName
+                              ? review.user.firstName
+                              : review.user.email}
                           </p>
                           <Rate disabled value={review.rating} />
                         </div>
