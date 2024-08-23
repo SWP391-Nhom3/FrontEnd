@@ -9,7 +9,9 @@ const OrderInfor = ({
   voucherCode,
   selectedVoucher,
   totalAmount,
+  points
 }) => {
+  console.log("Received points:", points);
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user")) || null;
   const [formValues, setFormValues] = useState({
@@ -160,6 +162,7 @@ const OrderInfor = ({
           voucherCode,
           selectedVoucher,
           totalAmount,
+          points
         },
       });
     } else if (paymentType === "preOrder") {

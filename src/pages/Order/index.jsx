@@ -12,6 +12,7 @@ const Order = () => {
   const paymentType = location.state?.paymentType;
   const selectedVoucher = location.state?.selectedVoucher;
   const totalAmount = location.state?.totalAmount;
+  const points = location.state?.points;
 
   return (
     <>
@@ -24,6 +25,7 @@ const Order = () => {
         paymentType={paymentType}
         selectedVoucher={selectedVoucher}
         totalAmount={totalAmount}
+        points={points}
       />
     </>
   );

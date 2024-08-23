@@ -35,6 +35,8 @@ const Payment = () => {
   const totalAmount = location.state?.totalAmount;
   const discount = location.state?.discount;
   const voucher_code = location.state?.voucherCode;
+  const points = location.state?.points;
+  console.log("point", points);
   // const [totalAmount, setTotalAmount] = useState(totalPrice);
   const callTime = 300000; // 5 minutes
 
@@ -114,6 +116,7 @@ const Payment = () => {
       totalPrice: totalAmount,
       voucherCode: voucher_code,
       userId: user && user.id ? user.id : null,
+      point: points,
     };
 
     try {

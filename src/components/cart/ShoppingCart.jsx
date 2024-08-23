@@ -5,11 +5,11 @@ import { FaHeart, FaRegHeart } from "react-icons/fa6";
 
 import cartEmptyImg from "../../assets/images/background/cart_empty.png";
 import { useCartContext } from "../../context/CartContext";
-import { fetchGetVoucher } from "../../data/api";
+import { fetchGetVoucher, fetchUserById } from "../../data/api";
 import { Button } from "flowbite-react";
 import { ImGift } from "react-icons/im";
 const ShoppingCart = () => {
-  const user = JSON.parse(localStorage.getItem("user")) || null;
+  const user = JSON.parse(localStorage.getItem("user"));
   const verify = user === null ? 0 : user.verify;
   const {
     cartItems,
@@ -27,6 +27,26 @@ const ShoppingCart = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [voucherList, setVoucherList] = useState([]);
   const [totalAmount, setTotalAmount] = useState(totalPrice); // initialTotalAmount là tổng số tiền ban đầu của giỏ hàng
+  const [usePoints, setUsePoints] = useState(false);
+  const [points, setPoints] = useState(0);
+  const [userPoints, setUserPoints] = useState(0);
+
+  useEffect(() => {
+    fetchUserById(user.id).then((res) => {
+      console.log();
+      setUserPoints(res.data.data.point);
+
+    })
+  })
+  const handleUsePointsChange = (e) => {
+    const checked = e.target.checked;
+    setUsePoints(checked);
+    if (checked) {
+      setTotalAmount(totalAmount - userPoints);
+    } else {
+      setPoints(0);
+    }
+  };
 
   const handleChangeVoucherCode = (event) => {
     const selectedVoucherCode = event.target.value;
@@ -65,7 +85,7 @@ const ShoppingCart = () => {
     const total = calculateTotal(cartItems, ship);
     const discountedTotal = applyDiscount(total, selectedVoucher);
     setTotalAmount(discountedTotal);
-  }, [cartItems, selectedVoucher, ship]);
+  }, [cartItems, selectedVoucher, ship, ]);
 
   useEffect(() => {
     const getVouchers = async () => {
@@ -394,6 +414,17 @@ const ShoppingCart = () => {
                         </dd>
                       </dl>
                     </div>
+                    <div className="flex items-center gap-4">
+                      <input
+                        type="checkbox"
+                        id="usePoints"
+                        checked={usePoints}
+                        onChange={handleUsePointsChange}
+                      />
+                      <label htmlFor="usePoints" className="text-base font-normal text-gray-500">
+                        Sử dụng {userPoints} điểm tích lũy
+                      </label>
+                    </div>
                     <dl className="flex items-center justify-between gap-4 border-t border-gray-200 pt-2">
                       <dt className="text-base font-bold text-gray-900">
                         Tổng Cộng
@@ -412,10 +443,11 @@ const ShoppingCart = () => {
                       selectedVoucher: selectedVoucher,
                       totalAmount: totalAmount,
                       paymentType: "regular",
+                      points: usePoints ? userPoints : 0,
                     }}
                     className="flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-500 focus:outline-none focus:ring-4 focus:ring-[#93c5fd]"
                   >
-                    Thanh Toán Ngay
+\                    Thanh Toán Ngay
                   </Link>
                   <div className="flex items-center justify-center gap-2">
                     <span className="text-sm font-normal text-gray-500">

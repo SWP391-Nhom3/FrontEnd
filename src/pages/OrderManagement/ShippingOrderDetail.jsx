@@ -291,7 +291,7 @@ const ShippingOrderDetail = () => {
                   width: "90%",
                   marginTop: "50px",
                   height: "auto",
-                  minHeight: "350px",
+                  minHeight: "700px",
                 }}
               >
                 <div>
@@ -495,10 +495,10 @@ const ShippingOrderDetail = () => {
                       strong
                       style={{ fontSize: "17px", display: "inline-block" }}
                     >
-                      {order.voucher.voucherType === "FIXED_AMOUNT" ? Number(order.voucher.value).toLocaleString("vi-VN", {
+                      {order.voucher ? (order.voucher.voucherType === "FIXED_AMOUNT" ? Number(order.voucher.value).toLocaleString("vi-VN", {
                         style: "currency",
                         currency: "VND",
-                      }) : `${Number(order.voucher.value)}%` }
+                      }) : `${Number(order.voucher.value)}%`) : "" }
                     </Text>
                   </div>
                   <div
