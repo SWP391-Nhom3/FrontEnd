@@ -181,7 +181,6 @@ const Vouchers = () => {
         return <span>{localDate}</span>;
       },
     },
-
     {
       title: "Hành động",
       key: "action",
