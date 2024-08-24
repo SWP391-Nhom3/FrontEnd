@@ -15,7 +15,7 @@ export default function Authenticate() {
 
     if (isMatch) {
       const authCode = isMatch[1];
-
+      console.log("ssssssssssssssssssssssssssssssssss".authCode);
       fetch(
         `http://localhost:8080/api/auth/outbound/login-google?code=${authCode}`,
         {
@@ -26,7 +26,7 @@ export default function Authenticate() {
           return response.json();
         })
         .then((data) => {
-          setToken(data.result?.token);
+          setToken(data.data?.accessToken);
           setIsLoggedin(true);
         });
     }
