@@ -44,12 +44,15 @@ const Vouchers = () => {
       content: "Hành động này không thể hoàn tác.",
       onOk: async () => {
         try {
-          handleDelete(voucherId);
-          notification.success({
-            message: "Thành công",
-            description: `Xóa thành công!`,
-            placement: "top",
-          });
+          const res = handleDelete(voucherId);
+          if (res.success === true) {
+            notification.success({
+              message: "Thành công",
+              description: "Xóa voucher thành công",
+              placement: "top",
+            });
+            setVouchers(vouchers.filter((voucher) => voucher.id !== voucherId));
+          }
         } catch (error) {
           console.log(error);
           notification.error({
@@ -107,7 +110,11 @@ const Vouchers = () => {
   const handleDelete = async (voucherId) => {
     await fetchDeleteVoucher(voucherId)
       .then((res) => {
-        window.location.reload();
+        setVouchers(vouchers.filter((voucher) => voucher.id !== voucherId));
+        notification.success({
+          message: "Xóa voucher thành công",
+          placement: "top",
+        });
       })
       .catch((err) => {
         console.log(err);
