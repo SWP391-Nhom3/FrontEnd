@@ -232,16 +232,7 @@ const Dashboard = ({ isAuthenticatedAdmin, isAuthenticatedStaff }) => {
                   <RevenueStatistic orders = {orders}/>
                 </div>
               </div>
-              <div className="dark:bg-secondary-dark-bg md:w-400 m-3 flex items-center justify-center gap-10 rounded-2xl bg-white p-8 dark:text-gray-200">
-                <div>
-                  <p className="text-xl font-semibold">
-                    Thống kê phân loại sữa theo lượt mua
-                  </p>
-                </div>
-                <div className="w-40">
-                  <BestCategory />
-                </div>
-              </div>
+
             </div>
           </div>
 

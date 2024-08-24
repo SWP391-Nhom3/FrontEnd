@@ -131,8 +131,6 @@ const Payment = () => {
       timer = setInterval(() => {
         setCountdown((prev) => prev - 1);
       }, 1000);
-    } else if (countdown === 0) {
-      setShowQR(false);
     }
     return () => clearInterval(timer);
   }, [countdown]);

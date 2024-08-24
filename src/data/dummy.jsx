@@ -211,18 +211,18 @@ export const stafflinks = [
       },
     ],
   },
-  {
-    title: "Khách hàng",
-    links: [
-      {
-        name: "Quản lý khách hàng",
-        icon: <FiUsers />,
-        type: "sub",
-        // path: '',
-        subLinks: [{ name: "customers", path: "", label: "Tất cả khách hàng" }],
-      },
-    ],
-  },
+  // {
+  //   title: "Khách hàng",
+  //   links: [
+  //     {
+  //       name: "Quản lý khách hàng",
+  //       icon: <FiUsers />,
+  //       type: "sub",
+  //       // path: '',
+  //       subLinks: [{ name: "customers", path: "", label: "Tất cả khách hàng" }],
+  //     },
+  //   ],
+  // },
   {
     title: "Tin tức",
     links: [

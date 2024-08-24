@@ -292,6 +292,7 @@ const App = () => {
               <Route path="/pre-order-payment" element={<PreOrderPayment />} />
 
               <Route path="/thanks" element={<Thanks />} />
+              <Route path="/success" element={<Thanks />} />
               <Route path="/cancel" element={<CancelPage />} />
               <Route path="/filter" element={<Filter />} />
               <Route path="/about_us" element={<AboutUs />} />
