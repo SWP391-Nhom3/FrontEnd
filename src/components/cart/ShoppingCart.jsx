@@ -8,6 +8,7 @@ import { useCartContext } from "../../context/CartContext";
 import { fetchGetVoucher, fetchUserById } from "../../data/api";
 import { Button } from "flowbite-react";
 import { ImGift } from "react-icons/im";
+import { notification } from "antd";
 const ShoppingCart = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const verify = user === null ? 0 : user.verify;
@@ -30,23 +31,27 @@ const ShoppingCart = () => {
   const [usePoints, setUsePoints] = useState(false);
   const [points, setPoints] = useState(0);
   const [userPoints, setUserPoints] = useState(0);
+  const [originalTotalAmount, setOriginalTotalAmount] = useState(totalAmount);
+
 
   const isAuthenticatedMember = localStorage.getItem("isMember") === "true";
-  if (isAuthenticatedMember) {
-    useEffect(() => {
+  useEffect(() => {
+    if (isAuthenticatedMember) {
       fetchUserById(user.id).then((res) => {
         setUserPoints(res.data.data.point);
       });
-    }, []);
-  }
+    }
+  }, [isAuthenticatedMember, user.id]);
 
   const handleUsePointsChange = (e) => {
     const checked = e.target.checked;
     setUsePoints(checked);
+    
     if (checked) {
+      setOriginalTotalAmount(totalAmount);
       setTotalAmount(totalAmount - userPoints);
     } else {
-      setPoints(0);
+      setTotalAmount(originalTotalAmount);
     }
   };
 
@@ -60,6 +65,7 @@ const ShoppingCart = () => {
       applyDiscount(selectedVoucher);
     } else {
       setDiscount(0);
+
     }
   };
 
@@ -109,29 +115,59 @@ const ShoppingCart = () => {
 
   const handClickVoucher = async (event) => {
     event.preventDefault();
-
-    await fetchGetVoucher()
-      .then((res) => {
-        const allVouchers = res;
-        let selectedVoucher = allVouchers.find(
-          (voucher) => voucher.code === voucherCode,
-        );
-
-        if (selectedVoucher) {
-          selectedVoucher = {
-            ...selectedVoucher,
-            maxUses: selectedVoucher.maxUses - 1,
-          };
-
-          setDiscount(Number(selectedVoucher.value));
-          setSelectedVoucher(selectedVoucher);
-        } else {
-          console.log("Voucher không tồn tại hoặc đã hết hạn.");
-        }
-      })
-      .catch((error) => {
-        console.error("Lỗi khi lấy dữ liệu voucher:", error);
+  
+    try {
+      const res = await fetchGetVoucher(); // Fetching vouchers
+      const allVouchers = res;
+      let selectedVoucher = allVouchers.find(
+        (voucher) => voucher.code === voucherCode
+      );
+  
+      if (!selectedVoucher) {
+        notification.error({
+          message: "Mã voucher không tồn tại!",
+          placement: "top",
+        });
+        setVoucherCode("");
+        setSelectedVoucher({});
+        return;
+      }
+  
+      const currentDate = new Date();
+      if (selectedVoucher.expiryDate && new Date(selectedVoucher.expiryDate) < currentDate) {
+        notification.error({
+          message: "Mã voucher đã hết hạn!",
+          placement: "top",
+        });
+        setVoucherCode("");
+        setSelectedVoucher({});
+        return;
+      }
+  
+      if (selectedVoucher.maxUses <= 0) {
+        notification.error({
+          message: "Mã voucher đã được sử dụng hết!",
+          placement: "top",
+        });
+        setVoucherCode("");
+        setSelectedVoucher({});
+        return;
+      }
+        selectedVoucher = {
+        ...selectedVoucher,
+        maxUses: selectedVoucher.maxUses - 1,
+      };
+  
+      setDiscount(Number(selectedVoucher.value));
+      setSelectedVoucher(selectedVoucher);
+  
+    } catch (error) {
+      console.error("Lỗi khi lấy dữ liệu voucher:", error);
+      notification.error({
+        message: "Có lỗi xảy ra khi áp dụng mã voucher!",
+        placement: "top",
       });
+    }
   };
   const calculateShip = (cartAmount) => {
     if (cartAmount > 20) {
@@ -411,10 +447,7 @@ const ShoppingCart = () => {
                           Mã giảm giá
                         </dt>
                         <dd className="text-base font-medium text-gray-900">
-                          -{" "}
-                          {selectedVoucher
-                            ? formatVoucherValue(selectedVoucher)
-                            : "0 đ"}
+                            {Object.keys(selectedVoucher).length > 0 ? formatVoucherValue(selectedVoucher) : "0 đ"}
                         </dd>
                       </dl>
                     </div>

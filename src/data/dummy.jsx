@@ -105,11 +105,7 @@ export const stafflinks = [
             path: "all-feedback",
             label: "Tất cả đánh giá",
           },
-          {
-            name: "badFeedback",
-            path: "bad-feedback",
-            label: "Đánh giá tiêu cực",
-          },
+          
         ],
       },
       {
