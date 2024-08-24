@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCartContext } from "../../context/CartContext";
 import { fetchCreateOrder } from "../../data/api";
@@ -8,6 +8,7 @@ const SuccessPage = () => {
   const { clearCart } = useCartContext();
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  const isApiCalled = useRef(false); // Sử dụng useRef để lưu trạng thái của API call
 
   useEffect(() => {
     const processOrder = async () => {
@@ -17,7 +18,8 @@ const SuccessPage = () => {
       console.log("Pending Order:", pendingOrder);
       console.log("Order Created:", orderCreated);
 
-      if (pendingOrder && !orderCreated) {
+      if (pendingOrder && !orderCreated && !isApiCalled.current) {
+        isApiCalled.current = true; // Đặt cờ để ngăn chặn gọi API liên tiếp
         const order_infor = JSON.parse(pendingOrder);
         try {
           console.log("Attempting to create order...");
@@ -35,14 +37,6 @@ const SuccessPage = () => {
           );
           setLoading(false);
         }
-      } else if (orderCreated) {
-        // Nếu đơn hàng đã được tạo, không gọi API nữa
-        console.log("Order already created, skipping API call.");
-        setLoading(false);
-      } else {
-        console.log("No pending order found.");
-        setErrorMessage("Không có đơn hàng nào để xử lý.");
-        setLoading(false);
       }
     };
 
