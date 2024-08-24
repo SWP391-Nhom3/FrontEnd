@@ -4,7 +4,7 @@ import { fetchCreateVoucher, fetchGetVoucher } from "../../data/api";
 import { Card, Col, notification, Row } from "antd";
 import { HStack } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { addMonths } from "date-fns";
+import { addMonths, set } from "date-fns";
 
 const AddVoucher = () => {
   const [voucherTypes, setVoucherTypes] = useState([]);
@@ -59,9 +59,15 @@ const AddVoucher = () => {
     console.log("Selected expiry date:", expiryDate);
 
     if (!validateExpiryDate(expiryDate)) {
+      // notification.error({
+      //   message: "Ngày hết hạn phải sau ngày hiện tại ít nhất 1 tháng.",
+      //   placement: "top",
+      // });
+      setExpiryDate(expiryDate);
       // alert("Ngày hết hạn phải lớn hơn ngày hiện tại ít nhất 1 tháng.");
     } else {
       setExpiryDate(expiryDate);
+      console.log("Expiry date:", expiryDate);
     }
   };
 
@@ -84,9 +90,11 @@ const AddVoucher = () => {
         message: "Ngày hết hạn phải sau ngày hiện tại ít nhất 1 tháng.",
         placement: "top",
       });
+      setExpiryDate(expiryDate);
       return;
     }
     const expiryDateISO = new Date(expiryDate).toISOString();
+    console.log("Expiry date:", expiryDateISO);
     const voucher = {
       type: selectedVoucherType,
       value: adjustedAmount,
