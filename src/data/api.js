@@ -2,6 +2,19 @@ import axios from "axios";
 
 const HOSTNAME = "https://milkjoy-shop.azurewebsites.net/api";
 
+export const createPaymentLink = async (paymentData) => {
+  try {
+    const response = await axios.post(
+      `${HOSTNAME}/checkout/create-payment-link`,
+      paymentData,
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error creating payment link:", error);
+    throw error;
+  }
+};
+
 //login api
 export const fetchLogin = async (email, password) => {
   return await axios.post(`${HOSTNAME}/auth/login`, {

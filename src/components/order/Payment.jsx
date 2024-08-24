@@ -2,17 +2,12 @@ import { useState, useEffect } from "react";
 import Breadcrumbs from "../elements/Breadcrumb";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useCartContext } from "../../context/CartContext";
-// import {
-//   checkQRPaymet,
-//   deleteOrder,
-//   fetchCreateOrder,
-// } from "../../data/api";
 import toast, { Toaster } from "react-hot-toast";
 import {
   fetchCreateOrder,
   fetchProductBatches,
   fetchProducts,
-  fetchCreateVoucher,
+  createPaymentLink,
 } from "../../data/api";
 
 const Payment = () => {
@@ -26,10 +21,6 @@ const Payment = () => {
   const [paymentMethod, setPaymentMethod] = useState("");
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [products, setProducts] = useState([]);
-  const [batches, setBatches] = useState([]);
-  const [showQR, setShowQR] = useState(false);
-  const [QR, setQR] = useState(``);
   const [countdown, setCountdown] = useState(null);
   const ship = location.state?.ship;
   const selectedVoucher = location.state?.selectedVoucher;
@@ -37,8 +28,6 @@ const Payment = () => {
   const discount = location.state?.discount;
   const voucher_code = location.state?.voucherCode;
   const points = location.state?.points;
-  // const [totalAmount, setTotalAmount] = useState(totalPrice);
-  const callTime = 300000; // 5 minutes
 
   useEffect(() => {
     const fetchProductsData = async () => {
@@ -66,20 +55,7 @@ const Payment = () => {
 
     fetchProductsData();
   }, []);
-  // useEffect(() => {
-  //   const fetchVoucher = async () => {
-  //     try {
-  //       const response = await fetchCreateVoucher();
-  //       setSelectedVoucher(response);
-  //     } catch (error) {
-  //       console.error("Error creating voucher:", error);
-  //     }
-  //   };
 
-  //   fetchVoucher();
-  // });
-
-  console.log(selectedVoucher, totalAmount);
   const handlePaymentChange = (e) => {
     setPaymentMethod(e.target.value);
   };
@@ -120,10 +96,26 @@ const Payment = () => {
     };
 
     try {
-      const response = await fetchCreateOrder(order_infor); // Assuming fetchCreateOrder is implemented
+      if (paymentMethod === "Online") {
+        // Call API to create payment link
+        const paymentLinkResponse = await createPaymentLink({
+          baseUrl: window.location.origin, // Current site URL
+          productName: `Order from ${customer_infor.full_name}`,
+          price: totalAmount,
+        });
 
-      clearCart(); // Clear cart after order is placed
-      navigate("/thanks", { state: { isCheck: true } }); // Redirect to thank you page
+        const paymentLink = paymentLinkResponse;
+
+        // Redirect to the payment link
+        window.location.href = paymentLink;
+
+        return; // Stop further execution
+      }
+
+      // If COD, continue to place the order
+      const response = await fetchCreateOrder(order_infor);
+      clearCart();
+      navigate("/thanks", { state: { isCheck: true } });
     } catch (error) {
       console.error("Error creating order:", error);
       setErrorMessage("Có lỗi xảy ra khi đặt hàng. Vui lòng thử lại sau.");
@@ -488,21 +480,6 @@ const Payment = () => {
                     Thanh Toán
                   </button>
                 </div>
-
-                {showQR && (
-                  <div className="mt-4">
-                    <h4 className="text-lg font-bold text-gray-900 dark:text-white">
-                      Quét Mã QR Để Thanh Toán
-                    </h4>
-                    {countdown && (
-                      <p className="my-2 text-center text-lg font-semibold text-red-500">
-                        Thời gian còn lại: {Math.floor(countdown / 60)}:
-                        {("0" + (countdown % 60)).slice(-2)}
-                      </p>
-                    )}
-                    <img src={QR} alt="QR Code" className="mx-auto" />
-                  </div>
-                )}
               </div>
             </div>
           </form>
