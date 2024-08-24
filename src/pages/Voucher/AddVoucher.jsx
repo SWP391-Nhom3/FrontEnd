@@ -159,7 +159,7 @@ const AddVoucher = () => {
                 <option value="" disabled selected>
                   Chọn Loại Voucher
                 </option>
-                {voucherTypes.map((option) => (
+                {["FIXED_AMOUNT", "PERCENTAGE"].map((option) => (
                   <option key={option} value={option}>
                     {option}
                   </option>
