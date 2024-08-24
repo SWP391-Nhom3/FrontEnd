@@ -98,9 +98,12 @@ const Payment = () => {
     try {
       if (paymentMethod === "Online") {
         // Call API to create payment link
+        const productNameString = cartItems
+          .map((item) => `${item.name} x${item.quantity}`)
+          .join(", ");
         const paymentLinkResponse = await createPaymentLink({
           baseUrl: window.location.origin, // Current site URL
-          productName: `Order from ${customer_infor.full_name}`,
+          productName: productNameString,
           price: totalAmount,
         });
 
