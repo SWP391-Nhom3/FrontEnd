@@ -21,15 +21,24 @@ const ProductStock = ({ selectedOption }) => {
     getProducts();
   }, []);
 
+  function convertIsoToDate(isoString) {
+    const date = new Date(isoString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+  
+    return `${day}/${month}/${year}`;
+  }
+
   useEffect(() => {
     if (products.length > 0) {
       const sortedByAmountAsc = [...products].sort(
-        (a, b) => a.amount - b.amount,
+        (a, b) => new Date(a.expiryDate) - new Date(b.expiryDate)
       );
       setSmallestAmounts(sortedByAmountAsc.slice(0, 6));
-
+  
       const sortedByAmountDesc = [...products].sort(
-        (a, b) => b.amount - a.amount,
+        (a, b) => new Date(b.expiryDate) - new Date(a.expiryDate)
       );
       setLargestAmounts(sortedByAmountDesc.slice(0, 6));
     }
@@ -59,7 +68,7 @@ const ProductStock = ({ selectedOption }) => {
                 },
               )}`}
             />
-            <div>Số lượng: {item.quantity}</div>
+            <div>Ngày hết hạn: {convertIsoToDate(item.expiryDate)}</div>
           </List.Item>
         )}
       />

@@ -33,7 +33,6 @@ function SoldProductsChart() {
 
   return (
     <div style={{ width: "100%", height: 400 }}>
-      <h2>Biểu đồ số lượng sản phẩm đã bán</h2>
       <ResponsiveContainer>
         <BarChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
