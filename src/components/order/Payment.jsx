@@ -29,33 +29,6 @@ const Payment = () => {
   const voucher_code = location.state?.voucherCode;
   const points = location.state?.points;
 
-  // useEffect(() => {
-  //   const fetchProductsData = async () => {
-  //     try {
-  //       const productResponse = await fetchProducts();
-  //       const batchResponse = await fetchProductBatches();
-
-  //       const products = productResponse.data.data;
-  //       const batches = batchResponse.data.data;
-
-  //       const combinedData = products.map((product) => {
-  //         const relatedBatches = batches.filter(
-  //           (batch) => batch.product.id === product.id,
-  //         );
-  //         return {
-  //           ...product,
-  //           batch: relatedBatches,
-  //         };
-  //       });
-  //       setProducts(combinedData);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     }
-  //   };
-
-  //   fetchProductsData();
-  // }, []);
-
   const handlePaymentChange = (e) => {
     setPaymentMethod(e.target.value);
   };
@@ -97,6 +70,7 @@ const Payment = () => {
 
     try {
       if (paymentMethod === "Online") {
+        localStorage.setItem("pendingOrder", JSON.stringify(order_infor));
         // Call API to create payment link
         const productNameString = cartItems
           .map((item) => `${item.name} x${item.quantity}`)
@@ -108,7 +82,6 @@ const Payment = () => {
         });
 
         const paymentLink = paymentLinkResponse;
-
         // Redirect to the payment link
         window.location.href = paymentLink;
 
@@ -116,7 +89,7 @@ const Payment = () => {
       }
 
       // If COD, continue to place the order
-       await fetchCreateOrder(order_infor);
+      await fetchCreateOrder(order_infor);
       clearCart();
       navigate("/thanks", { state: { isCheck: true } });
     } catch (error) {
@@ -357,17 +330,18 @@ const Payment = () => {
                         Mã giảm giá
                       </dt>
                       <dd className="text-base font-medium text-gray-900 dark:text-white">
-
-                        {
-                          selectedVoucher && Object.keys(selectedVoucher).length > 0
-                            ? selectedVoucher.voucherType === "FIXED_AMOUNT"
-                              ? Number(selectedVoucher.value).toLocaleString("vi-VN", {
-                                style: "currency",
-                                currency: "VND",
-                              })
-                              : `${Number(selectedVoucher.value)}%`
-                            : "0đ"
-                        }
+                        {selectedVoucher &&
+                        Object.keys(selectedVoucher).length > 0
+                          ? selectedVoucher.voucherType === "FIXED_AMOUNT"
+                            ? Number(selectedVoucher.value).toLocaleString(
+                                "vi-VN",
+                                {
+                                  style: "currency",
+                                  currency: "VND",
+                                },
+                              )
+                            : `${Number(selectedVoucher.value)}%`
+                          : "0đ"}
                       </dd>
                     </dl>
 

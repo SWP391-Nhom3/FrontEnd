@@ -78,6 +78,7 @@ import CancelReport from "./pages/ReportManagement/CancelReport";
 import ProcessingReportDetail from "./pages/ReportManagement/ProcessingReportDetail";
 import ReportDetail from "./pages/ReportManagement/ReportDetail";
 import CancelPage from "./components/order/CancelPagge";
+import SuccessPage from "./components/order/SuccessPage";
 
 const App = () => {
   const { currentMode, activeMenu, themeSettings } = useStateContext();
@@ -292,7 +293,7 @@ const App = () => {
               <Route path="/pre-order-payment" element={<PreOrderPayment />} />
 
               <Route path="/thanks" element={<Thanks />} />
-              <Route path="/success" element={<Thanks />} />
+              <Route path="/success" element={<SuccessPage />} />
               <Route path="/cancel" element={<CancelPage />} />
               <Route path="/filter" element={<Filter />} />
               <Route path="/about_us" element={<AboutUs />} />
