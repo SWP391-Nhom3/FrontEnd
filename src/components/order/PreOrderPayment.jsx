@@ -17,13 +17,14 @@ const PreOrderPayment = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const customer_infor = location.state?.customer_infor;
+  const selectedVoucher = location.state?.selectedVoucher;
   const { preOrderItems, totalPrice, clearPreOrder } = usePreOrderContext();
 
   const [paymentMethod, setPaymentMethod] = useState("");
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [products, setProducts] = useState([]);
-  const [batches, setBatches] = useState([]);
+  
   const [showQR, setShowQR] = useState(false);
   const [QR, setQR] = useState(``);
   const [countdown, setCountdown] = useState(null);
@@ -32,6 +33,7 @@ const PreOrderPayment = () => {
   const voucher_code = location.state?.voucherCode;
   const callTime = 300000; // 5 minutes
   const points = location.state?.points;
+  const totalAmount = location.state?.totalAmount;
 
   useEffect(() => {
     const fetchProductsData = async () => {
@@ -94,9 +96,10 @@ const PreOrderPayment = () => {
       })),
       shipFee: ship,
       totalPrice:
-        totalPrice + ship - discount > 0 ? totalPrice + ship - discount : 0,
+      totalAmount,
       voucherCode: voucher_code,
       userId: user && user.id ? user.id : null,
+      point: points,
     };
 
     try {
@@ -121,8 +124,7 @@ const PreOrderPayment = () => {
     return () => clearInterval(timer);
   }, [countdown]);
 
-  const total =
-    totalPrice + ship - discount > 0 ? totalPrice + ship - discount : 0;
+
 
   return (
     <>
@@ -341,11 +343,17 @@ const PreOrderPayment = () => {
                         Mã giảm giá
                       </dt>
                       <dd className="text-base font-medium text-gray-900 dark:text-white">
-                        -
-                        {Number(discount).toLocaleString("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
-                        })}
+
+                        {
+                          selectedVoucher && Object.keys(selectedVoucher).length > 0
+                            ? selectedVoucher.voucherType === "FIXED_AMOUNT"
+                              ? Number(selectedVoucher.value).toLocaleString("vi-VN", {
+                                style: "currency",
+                                currency: "VND",
+                              })
+                              : `${Number(selectedVoucher.value)}%`
+                            : "0đ"
+                        }
                       </dd>
                     </dl>
                     {points > 0 ? (
@@ -372,7 +380,7 @@ const PreOrderPayment = () => {
                       Tổng Giá Trị
                     </dt>
                     <dd className="text-lg font-bold text-gray-900 dark:text-white">
-                      {Number(total).toLocaleString("vi-VN", {
+                      {Number(totalAmount).toLocaleString("vi-VN", {
                         style: "currency",
                         currency: "VND",
                       })}

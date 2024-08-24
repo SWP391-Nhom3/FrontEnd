@@ -328,7 +328,7 @@ const OrderDetailCustomer = () => {
               <div className="mb-4 flex items-center justify-between">
                 <div className="text-center">
                   {/* <AiOutlineFieldTime className="text-center w-full"/> */}
-                  <div className="mb-1">{formatDate(order.requiredDate)}</div>
+                  {order.requiredDate ? formatDate(order.requiredDate) : "-"}
                   <div
                     className={`font-semibold ${getTrackingStageColor(25)} flex items-center gap-2`}
                   >

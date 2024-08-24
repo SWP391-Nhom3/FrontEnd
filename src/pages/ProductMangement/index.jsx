@@ -104,30 +104,16 @@ const ProductManagement = () => {
       title: "Số Lượng",
       dataIndex: "stockQuantity",
       key: "stockQuantity",
-      width: "15%",
+      width: "10%",
     },
     {
       title: "Đánh Giá",
       dataIndex: "rating",
       key: "rating",
       width: "15%",
-      sorter: (a, b) => a.rating - b.rating,
-      render: (text) => {
-        const roundedRating = 4;
-        // parseFloat(text).toFixed(1);
-        return (
-          <div className="flex items-center">
-            <Rate
-              allowHalf
-              disabled
-              value={parseFloat(roundedRating)}
-              style={{ fontSize: "12px" }}
-            />
-            <span className="ml-1 text-gray-500">{roundedRating}</span>
-          </div>
-        );
-      },
+      render: (text, record) => <span className="flex items-center space-between"><Rate allowHalf disabled value={record.rating}/> {record.rating}</span>,
     },
+    
     // {
     //   title: "Lượng Bán",
     //   dataIndex: "sales",
@@ -148,9 +134,9 @@ const ProductManagement = () => {
     //   ),
     // },
     {
-      title: "Doanh Thu",
-      dataIndex: "revenue",
-      key: "revenue",
+      title: "Đơn giá",
+      dataIndex: "price",
+      key: "price",
       width: 110,
       render: (text, record) => {
         const revenue = record.price;
@@ -233,7 +219,7 @@ const ProductManagement = () => {
                 <div className="text-gray-500">Tổng sản phẩm: </div>
                 <div className="dark:text-white">{products.length}</div>
               </h5>
-              <h5 className="flex justify-between text-sm sm:text-base">
+              {/* <h5 className="flex justify-between text-sm sm:text-base">
                 <div className="mr-1 text-gray-500">Tổng doanh thu: </div>
                 <div className="ml-1 dark:text-white">
                   {new Intl.NumberFormat("vi-VN", {
@@ -243,7 +229,7 @@ const ProductManagement = () => {
                     products.reduce((sum, product) => sum + product.price, 0),
                   )}
                 </div>
-              </h5>
+              </h5> */}
             </div>
           </div>
           <Table

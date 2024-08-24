@@ -144,7 +144,6 @@ const ProductDetail = () => {
 
               <div className="mt-2 flex items-center gap-2 sm:mt-0">
                 <div className="flex items-center gap-1">
-                  {/* <RenderRating rating={product.rating} /> */}
                 </div>
                 <p className="text-sm font-medium leading-none text-gray-500">
                   <Rate disabled value={product.rating} />

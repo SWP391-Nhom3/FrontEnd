@@ -99,6 +99,16 @@ const OrderDetail = () => {
     return acc;
   }, []);
 
+  const originalPrice = order.orderDetails.reduce((total, detail) => {
+    return total + detail.product.price * detail.quantity;
+  }, 0);
+  
+  const preOrderPrice = order.preOrderDetail.reduce((total, detail) => {
+    return total + detail.product.price * detail.quantity;
+  }, 0);
+
+console.log(order)
+
   const { Text } = Typography;
   return (
     <div style={{ height: "120vh" }}>
@@ -690,19 +700,30 @@ const OrderDetail = () => {
                     >
                       Giá gốc:
                     </Text>
-                    <Text
+                    {order.preOrder === true?(<Text
                       strong
                       style={{ fontSize: "17px", display: "inline-block" }}
                     >
                       {" "}
                       {Number(
-                        order.totalPrice - order.shipFee,
-                        // + order.order.voucher_fee
+                       preOrderPrice
                       ).toLocaleString("vi-VN", {
                         style: "currency",
                         currency: "VND",
                       })}
-                    </Text>
+                    </Text>):(<Text
+                      strong
+                      style={{ fontSize: "17px", display: "inline-block" }}
+                    >
+                      {" "}
+                      {Number(
+                       originalPrice
+                      ).toLocaleString("vi-VN", {
+                        style: "currency",
+                        currency: "VND",
+                      })}
+                    </Text>)}
+                    
                   </div>
                   <div
                     style={{

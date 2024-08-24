@@ -160,7 +160,7 @@ export const fetchProductBatches = async () => {
 
 //create order api
 export const fetchCreateOrder = async (order) => {
-  return await axios.post(`${HOSTNAME}/orders`, order, {});
+  return await axios.post(`${HOSTNAME}/orders`, order);
 };
 
 //create preorder api

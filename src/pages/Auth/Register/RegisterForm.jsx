@@ -48,6 +48,7 @@ const RegisterForm = () => {
         localStorage.setItem("accessToken", res.data.data.accessToken);
         localStorage.setItem("user", JSON.stringify(res.data.data.user));
         localStorage.setItem("role", JSON.stringify(res.data.data.user.roles));
+        localStorage.setItem("isMember", "true");
         toast.success("Đăng kí thành công");
         navigate("/profile", {
           state: { email },

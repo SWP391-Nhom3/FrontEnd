@@ -220,8 +220,9 @@ const HistoryOrder = () => {
                     className="border bg-white"
                   >
                     <Table.Cell className="whitespace-nowrap border font-medium text-gray-900">
-                      {formatDate(item.requiredDate)}
-                    </Table.Cell>
+  {item.requiredDate ? formatDate(item.requiredDate) : formatDate(item.createdAt)}
+</Table.Cell>
+
                     <Table.Cell className="whitespace-nowrap border font-medium text-gray-900">
                       {item.id}
                     </Table.Cell>
