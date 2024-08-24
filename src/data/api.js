@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const HOSTNAME = "http://localhost:8080/api";
+const HOSTNAME = "https://milkjoy-shop.azurewebsites.net/api";
 
 export const createPaymentLink = async (paymentData) => {
   try {
@@ -160,7 +160,7 @@ export const fetchProductBatches = async () => {
 
 //create order api
 export const fetchCreateOrder = async (order) => {
-  return await axios.post(`${HOSTNAME}/orders`, order, {});
+  return await axios.post(`${HOSTNAME}/orders`, order);
 };
 
 //create preorder api

@@ -35,13 +35,14 @@ const ShoppingCart = () => {
 
 
   const isAuthenticatedMember = localStorage.getItem("isMember") === "true";
+  console.log(isAuthenticatedMember)
   useEffect(() => {
     if (isAuthenticatedMember) {
       fetchUserById(user.id).then((res) => {
         setUserPoints(res.data.data.point);
       });
     }
-  }, [isAuthenticatedMember, user.id]);
+  }, []);
 
   const handleUsePointsChange = (e) => {
     const checked = e.target.checked;
@@ -570,14 +571,14 @@ const ShoppingCart = () => {
                                   aria-labelledby="dropdownRadioHelperButton"
                                 >
                                   {voucherList.map((voucher) => (
-                                    <li key={voucher._id}>
+                                    <li key={voucher.id}>
                                       <div className="flex rounded p-2 hover:bg-gray-100">
                                         <div className="flex h-5 items-center">
                                           <input
                                             id="helper-radio-4"
                                             name="helper-radio"
                                             type="radio"
-                                            value={voucher._id}
+                                            value={voucher.id}
                                             className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-blue-500"
                                             onChange={handleRadioChange}
                                           />

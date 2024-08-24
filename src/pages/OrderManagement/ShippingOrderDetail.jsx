@@ -110,7 +110,11 @@ const ShippingOrderDetail = () => {
       });
   };
 
-  console.log(order);
+  const originalPrice = order.orderDetails.reduce((total, detail) => {
+    return total + detail.product.price * detail.quantity;
+  }, 0);
+  
+
   const { Text } = Typography;
 
   const mergedOrderDetails = order.orderDetails.reduce((acc, item) => {
@@ -481,7 +485,7 @@ const ShippingOrderDetail = () => {
                     >
                       {" "}
                       {Number(
-                        order.totalPrice - order.shipFee,
+                    originalPrice
                         // + order.order.voucher_fee
                       ).toLocaleString("vi-VN", {
                         style: "currency",
@@ -552,6 +556,28 @@ const ShippingOrderDetail = () => {
                     </Text>
                   </div>
                 </div>
+                <Text
+                      type="secondary"
+                      style={{
+                        fontSize: "15px",
+                        display: "inline-block",
+                        marginRight: "10px",
+                      }}
+                    >
+                      Điểm tích lũy:
+                    </Text>
+                    {/* <Text strong style={{ fontSize: '17px', display: 'inline-block' }}>{order.order.voucher_code}</Text> */}
+                    <Text
+                      strong
+                      style={{ fontSize: "17px", display: "inline-block" }}
+                    >
+                      {order.point
+                        ? Number(order.point).toLocaleString("vi-VN", {
+                            style: "currency",
+                            currency: "VND",
+                          })
+                        : ""}
+                    </Text>
                 <Divider />
                 <div
                   style={{ display: "flex", justifyContent: "space-between" }}

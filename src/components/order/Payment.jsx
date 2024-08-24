@@ -113,7 +113,7 @@ const Payment = () => {
       }
 
       // If COD, continue to place the order
-      const response = await fetchCreateOrder(order_infor);
+       await fetchCreateOrder(order_infor);
       clearCart();
       navigate("/thanks", { state: { isCheck: true } });
     } catch (error) {

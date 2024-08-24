@@ -164,7 +164,9 @@ const AwaitOrderDetail = () => {
     navigate("/await-order");
   }
 
-  console.log("shipper ne", shipper);
+  const originalPrice = order.orderDetails.reduce((total, detail) => {
+    return total + detail.product.price * detail.quantity;
+  }, 0);
 
   const { Text } = Typography;
 
@@ -515,8 +517,7 @@ const AwaitOrderDetail = () => {
                     >
                       {" "}
                       {Number(
-                        order.totalPrice - order.shipFee,
-                        // + order.order.voucher_fee
+                        originalPrice
                       ).toLocaleString("vi-VN", {
                         style: "currency",
                         currency: "VND",
