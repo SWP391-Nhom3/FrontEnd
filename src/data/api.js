@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const HOSTNAME = "http://localhost:8080/api";
+const HOSTNAME = "https://milkjoy-shop.azurewebsites.net/api";
 
 export const createPaymentLink = async (paymentData) => {
   try {
