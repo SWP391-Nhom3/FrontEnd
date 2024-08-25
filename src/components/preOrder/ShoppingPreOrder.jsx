@@ -41,7 +41,7 @@ const ShoppingPreOrder = () => {
         setUserPoints(res.data.data.point);
       });
     }
-  }, [isAuthenticatedMember, user.id]);
+  }, []);
 
   const handleUsePointsChange = (e) => {
     const checked = e.target.checked;
